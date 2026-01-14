@@ -1,0 +1,84 @@
+{
+  "color": {
+    "interactive": {
+      "primary": {
+        "background": {
+          "value": "{accent.accent-500}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{color.white}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{accent.accent-600}",
+          "type": "color"
+        },
+        "background-disabled": {
+          "value": "{neutral.neutral-300}",
+          "type": "color"
+        },
+        "text-disabled": {
+          "value": "{color.white}",
+          "type": "color"
+        }
+      },
+      "secondary": {
+        "background": {
+          "value": "{neutral.neutral-100}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{neutral.neutral-900}",
+          "type": "color"
+        }
+      },
+      "surface": {
+        "default": {
+          "value": "{neutral.neutral-50}",
+          "type": "color"
+        },
+        "subtle": {
+          "value": "{neutral.neutral-100}",
+          "type": "color"
+        }
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "{neutral.neutral-900}",
+        "type": "color"
+      },
+      "secondary": {
+        "value": "{neutral.neutral-600}",
+        "type": "color"
+      },
+      "disabled": {
+        "value": "{neutral.neutral-400}",
+        "type": "color"
+      }
+    },
+    "spinner": {
+      "on-interactive": {
+        "value": "{color.interactive.primary.text}",
+        "type": "color"
+      }
+    }
+  },
+  "state": {
+    "loading": {
+      "cursor": {
+        "value": "progress",
+        "type": "text"
+      },
+      "pointer-events": {
+        "value": "none",
+        "type": "text"
+      },
+      "opacity": {
+        "value": "{opacity.opacity-50}",
+        "type": "number"
+      }
+    }
+  }
+}

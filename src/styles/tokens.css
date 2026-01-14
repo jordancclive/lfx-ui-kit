@@ -1,0 +1,353 @@
+/*
+ * LFX One UI Kit - Design Tokens
+ * Auto-generated from Figma design tokens
+ */
+
+:root {
+  /* ========================================
+     PRIMITIVES - Color Palette
+     ======================================== */
+  
+  /* Slate */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cad5e2;
+  --color-slate-400: #90a1b9;
+  --color-slate-500: #62748e;
+  --color-slate-600: #45556c;
+  --color-slate-700: #314158;
+  --color-slate-800: #1d293d;
+  --color-slate-900: #0f172b;
+
+  /* Red */
+  --color-red-50: #fef2f2;
+  --color-red-100: #ffe2e2;
+  --color-red-200: #ffc9c9;
+  --color-red-300: #ffa2a2;
+  --color-red-400: #ff6467;
+  --color-red-500: #fb2c36;
+  --color-red-600: #e7000b;
+  --color-red-700: #c10007;
+  --color-red-800: #9f0712;
+  --color-red-900: #82181a;
+
+  /* Emerald */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d0fae5;
+  --color-emerald-200: #a4f4cf;
+  --color-emerald-300: #5ee9b5;
+  --color-emerald-400: #00d492;
+  --color-emerald-500: #00bc7d;
+  --color-emerald-600: #009966;
+  --color-emerald-700: #007a55;
+  --color-emerald-800: #006045;
+  --color-emerald-900: #004f3b;
+
+  /* Amber */
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c6;
+  --color-amber-200: #fee685;
+  --color-amber-300: #ffd230;
+  --color-amber-400: #ffb900;
+  --color-amber-500: #fe9a00;
+  --color-amber-600: #e17100;
+  --color-amber-700: #bb4d00;
+  --color-amber-800: #973c00;
+  --color-amber-900: #7b3306;
+
+  /* Azure */
+  --color-azure-50: #f8fbff;
+  --color-azure-100: #ecf4ff;
+  --color-azure-200: #d9e9ff;
+  --color-azure-300: #b8d9ff;
+  --color-azure-400: #85c2ff;
+  --color-azure-500: #009aff;
+  --color-azure-600: #0082d9;
+  --color-azure-700: #0061a3;
+  --color-azure-800: #00426f;
+  --color-azure-900: #002741;
+
+  /* Violet */
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6ff;
+  --color-violet-300: #c4b4ff;
+  --color-violet-400: #a684ff;
+  --color-violet-500: #8e51ff;
+  --color-violet-600: #7f22fe;
+  --color-violet-700: #7008e7;
+  --color-violet-800: #5d0ec0;
+  --color-violet-900: #4d179a;
+
+  /* Base Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ========================================
+     PRIMITIVES - Typography
+     ======================================== */
+  
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --letter-spacing: 0;
+
+  /* Font Sizes */
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+  --text-6xl: 60px;
+  --text-7xl: 72px;
+  --text-8xl: 96px;
+  --text-9xl: 128px;
+
+  /* Font Weights */
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-text-2xs: 14px;
+  --leading-text-xs: 16px;
+  --leading-text-sm: 20px;
+  --leading-text-base: 24px;
+  --leading-text-lg: 28px;
+  --leading-text-xl: 32px;
+  --leading-text-2xl: 36px;
+  --leading-text-3xl: 44px;
+  --leading-text-4xl: 56px;
+  --leading-text-5xl: 72px;
+  --leading-text-6xl: 90px;
+  --leading-text-7xl: 110px;
+  --leading-text-8xl: 140px;
+  --leading-text-9xl: 180px;
+
+  /* ========================================
+     PRIMITIVES - Spacing
+     ======================================== */
+  
+  --spacing-0: 0px;
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-120: 120px;
+
+  /* ========================================
+     PRIMITIVES - Border Radius
+     ======================================== */
+  
+  --rounded-none: 0px;
+  --rounded-xs: 2px;
+  --rounded-sm: 4px;
+  --rounded-md: 6px;
+  --rounded-lg: 8px;
+  --rounded-xl: 12px;
+  --rounded-2xl: 16px;
+  --rounded-3xl: 24px;
+  --rounded-4xl: 32px;
+  --rounded-full: 9999px;
+
+  /* ========================================
+     PRIMITIVES - Opacity
+     ======================================== */
+  
+  --opacity-0: 0;
+  --opacity-25: 0.25;
+  --opacity-50: 0.5;
+  --opacity-75: 0.75;
+  --opacity-100: 1;
+
+  /* ========================================
+     SEMANTIC - Color Aliases
+     ======================================== */
+  
+  /* Accent (Azure) */
+  --accent-50: var(--color-azure-50);
+  --accent-100: var(--color-azure-100);
+  --accent-200: var(--color-azure-200);
+  --accent-300: var(--color-azure-300);
+  --accent-400: var(--color-azure-400);
+  --accent-500: var(--color-azure-500);
+  --accent-600: var(--color-azure-600);
+  --accent-700: var(--color-azure-700);
+  --accent-800: var(--color-azure-800);
+  --accent-900: var(--color-azure-900);
+
+  /* Neutral (Slate) */
+  --neutral-50: var(--color-slate-50);
+  --neutral-100: var(--color-slate-100);
+  --neutral-200: var(--color-slate-200);
+  --neutral-300: var(--color-slate-300);
+  --neutral-400: var(--color-slate-400);
+  --neutral-500: var(--color-slate-500);
+  --neutral-600: var(--color-slate-600);
+  --neutral-700: var(--color-slate-700);
+  --neutral-800: var(--color-slate-800);
+  --neutral-900: var(--color-slate-900);
+
+  /* Success (Emerald) */
+  --success-50: var(--color-emerald-50);
+  --success-100: var(--color-emerald-100);
+  --success-200: var(--color-emerald-200);
+  --success-300: var(--color-emerald-300);
+  --success-400: var(--color-emerald-400);
+  --success-500: var(--color-emerald-500);
+  --success-600: var(--color-emerald-600);
+  --success-700: var(--color-emerald-700);
+  --success-800: var(--color-emerald-800);
+  --success-900: var(--color-emerald-900);
+
+  /* Warning (Amber) */
+  --warning-50: var(--color-amber-50);
+  --warning-100: var(--color-amber-100);
+  --warning-200: var(--color-amber-200);
+  --warning-300: var(--color-amber-300);
+  --warning-400: var(--color-amber-400);
+  --warning-500: var(--color-amber-500);
+  --warning-600: var(--color-amber-600);
+  --warning-700: var(--color-amber-700);
+  --warning-800: var(--color-amber-800);
+  --warning-900: var(--color-amber-900);
+
+  /* Danger (Red) */
+  --danger-50: var(--color-red-50);
+  --danger-100: var(--color-red-100);
+  --danger-200: var(--color-red-200);
+  --danger-300: var(--color-red-300);
+  --danger-400: var(--color-red-400);
+  --danger-500: var(--color-red-500);
+  --danger-600: var(--color-red-600);
+  --danger-700: var(--color-red-700);
+  --danger-800: var(--color-red-800);
+  --danger-900: var(--color-red-900);
+
+  /* Discovery (Violet) */
+  --discovery-50: var(--color-violet-50);
+  --discovery-100: var(--color-violet-100);
+  --discovery-200: var(--color-violet-200);
+  --discovery-300: var(--color-violet-300);
+  --discovery-400: var(--color-violet-400);
+  --discovery-500: var(--color-violet-500);
+  --discovery-600: var(--color-violet-600);
+  --discovery-700: var(--color-violet-700);
+  --discovery-800: var(--color-violet-800);
+  --discovery-900: var(--color-violet-900);
+
+  /* Information (Azure) */
+  --information-50: var(--color-azure-50);
+  --information-100: var(--color-azure-100);
+  --information-200: var(--color-azure-200);
+  --information-300: var(--color-azure-300);
+  --information-400: var(--color-azure-400);
+  --information-500: var(--color-azure-500);
+  --information-600: var(--color-azure-600);
+  --information-700: var(--color-azure-700);
+  --information-800: var(--color-azure-800);
+  --information-900: var(--color-azure-900);
+
+  /* ========================================
+     SEMANTIC - Button Tokens
+     ======================================== */
+  
+  --button-border-radius: var(--rounded-full);
+  --button-stroke: 1px;
+  
+  /* Default size */
+  --button-horizontal-padding: var(--spacing-8);
+  --button-vertical-padding: var(--spacing-4);
+  --button-spacing: var(--spacing-4);
+  
+  /* Large size */
+  --button-lg-horizontal-padding: var(--spacing-12);
+  --button-lg-vertical-padding: var(--spacing-4);
+  --button-lg-spacing: var(--spacing-6);
+
+  /* Button Typography - Default */
+  --font-button-family: var(--font-family);
+  --font-button-size: var(--text-sm);
+  --font-button-weight: var(--font-medium);
+  --font-button-line-height: var(--leading-text-sm);
+  
+  /* Button Typography - Large */
+  --font-button-lg-size: var(--text-base);
+  --font-button-lg-line-height: var(--leading-text-base);
+
+  /* ========================================
+     UI ROLE - State: Loading
+     ======================================== */
+  
+  --state-loading-opacity: var(--opacity-50);
+  --state-loading-cursor: progress;
+  --state-loading-pointer-events: none;
+
+  /* ========================================
+     UI ROLE - Interactive Colors
+     ======================================== */
+  
+  /* Primary */
+  --interactive-primary-background: var(--accent-500);
+  --interactive-primary-text: var(--color-white);
+  --interactive-primary-background-hover: var(--accent-600);
+  --interactive-primary-background-disabled: var(--neutral-300);
+  --interactive-primary-text-disabled: var(--color-white);
+
+  /* Secondary */
+  --interactive-secondary-background: var(--neutral-100);
+  --interactive-secondary-text: var(--neutral-900);
+
+  /* Surface */
+  --interactive-surface-default: var(--neutral-50);
+  --interactive-surface-subtle: var(--neutral-100);
+
+  /* ========================================
+     UI ROLE - Text Colors
+     ======================================== */
+  
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-disabled: var(--neutral-400);
+
+  /* ========================================
+     UI ROLE - Spinner
+     ======================================== */
+  
+  --spinner-on-interactive: var(--interactive-primary-text);
+
+}
+
+/* Base reset for components */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: var(--interactive-surface-default);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
