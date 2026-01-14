@@ -336,6 +336,173 @@
   
   --spinner-on-interactive: var(--interactive-primary-text);
 
+  /* ========================================
+     UI ROLE - Tabs Item
+     ======================================== */
+  
+  /* Background */
+  --color-tabs-item-background-default: transparent;
+  --color-tabs-item-background-hover: var(--neutral-100);
+  --color-tabs-item-background-selected: var(--accent-100);
+  --color-tabs-item-background-disabled: transparent;
+  
+  /* Border */
+  --color-tabs-item-border-default: transparent;
+  --color-tabs-item-border-selected: var(--accent-500);
+  --color-tabs-item-border-disabled: transparent;
+  
+  /* Text */
+  --color-tabs-item-text-default: var(--text-secondary);
+  --color-tabs-item-text-hover: var(--text-primary);
+  --color-tabs-item-text-selected: var(--accent-700);
+  --color-tabs-item-text-disabled: var(--text-disabled);
+
+  /* ========================================
+     UI ROLE - Table Row
+     
+     Token naming: color.table.row.background.default (conceptual)
+     CSS variable: --color-table-row-background-default (hyphenated)
+     ======================================== */
+  
+  /* Background */
+  --color-table-row-background-default: var(--color-white);
+  --color-table-row-background-hover: var(--neutral-100);
+  --color-table-row-background-selected: var(--accent-100);
+  --color-table-row-background-disabled: var(--color-white);
+  
+  /* Border */
+  --color-table-row-border: var(--neutral-200);
+
+  /* ========================================
+     UI ROLE - Table Cell
+     
+     Token naming: color.table.cell.text.* (conceptual)
+     CSS variable: --color-table-cell-text-* (hyphenated)
+     ======================================== */
+  
+  --color-table-cell-text-primary: var(--text-primary);
+  --color-table-cell-text-secondary: var(--text-secondary);
+  --color-table-cell-text-muted: var(--neutral-400);
+  --color-table-cell-text-disabled: var(--text-disabled);
+
+  /* ========================================
+     UI ROLE - Table Header Cell
+     
+     Token naming: color.table.header.* (conceptual)
+     CSS variable: --color-table-header-* (hyphenated)
+     ======================================== */
+  
+  /* Text */
+  --color-table-header-text-default: var(--text-secondary);
+  --color-table-header-text-muted: var(--neutral-400);
+  --color-table-header-text-disabled: var(--text-disabled);
+  
+  /* Icons */
+  --color-table-header-icon: var(--neutral-400);
+  --color-table-header-icon-active: var(--accent-500);
+  --color-table-header-icon-disabled: var(--neutral-300);
+
+  /* ========================================
+     UI ROLE - Table (Layout Only)
+     
+     Token naming: layout.table.* (conceptual)
+     CSS variable: --table-* (hyphenated)
+     
+     NOTE: Table is a Tier 3 Composite Layout Component.
+     These tokens control container styling ONLY.
+     Row/cell/header styling is owned by child components.
+     ======================================== */
+  
+  /* Container surface */
+  --color-table-surface-background: var(--color-white);
+  --color-table-surface-border: var(--neutral-200);
+  
+  /* Layout */
+  --radius-table: var(--rounded-lg);
+
+  /* ========================================
+     UI ROLE - List Item
+     
+     Token naming: color.list.item.* (conceptual)
+     CSS variable: --color-list-item-* (hyphenated)
+     
+     NOTE: ListItem is a Tier 2 Interactive Single Component.
+     Owns background and interaction states only.
+     Text/icon styling is owned by child components.
+     ======================================== */
+  
+  /* Background */
+  --color-list-item-background-default: var(--color-white);
+  --color-list-item-background-hover: var(--neutral-100);
+  --color-list-item-background-selected: var(--accent-100);
+  --color-list-item-background-disabled: var(--color-white);
+  
+  /* Border (bottom divider only) */
+  --color-list-item-border: var(--neutral-200);
+
+  /* ========================================
+     UI ROLE - List Group (Layout Only)
+     
+     Token naming: color.list.surface.* (conceptual)
+     CSS variable: --color-list-surface-* (hyphenated)
+     
+     NOTE: ListGroup is a Tier 3 Composite Layout Component.
+     Owns container styling ONLY.
+     Item states are owned by ListItem.
+     ======================================== */
+  
+  /* Container surface */
+  --color-list-surface-background: var(--color-white);
+  --color-list-surface-border: var(--neutral-200);
+  
+  /* Layout */
+  --radius-list: var(--rounded-lg);
+
+  /* ========================================
+     UI ROLE - Global Nav (Layout Only)
+     
+     Token naming: color.nav.surface.* (conceptual)
+     CSS variable: --color-nav-* (hyphenated)
+     
+     NOTE: GlobalNav is a Tier 3 Composite Layout Component.
+     Owns container styling and selected item highlight ONLY.
+     Text/icon styling is owned by nav item components.
+     ======================================== */
+  
+  /* Container surface */
+  --color-nav-surface-background: var(--color-white);
+  --color-nav-surface-border: var(--neutral-200);
+  
+  /* Selected item highlight */
+  --color-nav-item-background-selected: var(--accent-100);
+  
+  /* Layout */
+  --radius-nav: var(--rounded-lg);
+  --spacing-nav-padding: var(--spacing-16);
+  --spacing-nav-section-gap: var(--spacing-24);
+  --spacing-nav-item-gap: var(--spacing-4);
+
+  /* ========================================
+     UI ROLE - App Shell (Layout Only)
+     
+     Token naming: layout.app-shell.* (conceptual)
+     CSS variable: --app-shell-* or --color-app-shell-* (hyphenated)
+     
+     NOTE: AppShell is a Tier 3 Composite Layout Component.
+     Owns page-level layout structure ONLY.
+     Child component styling is NOT owned by AppShell.
+     ======================================== */
+  
+  /* Container surface */
+  --color-app-shell-surface-background: var(--neutral-50);
+  --color-app-shell-surface-border: var(--neutral-200);
+  
+  /* Layout */
+  --radius-app-shell: var(--rounded-none);
+  --spacing-app-shell-padding: var(--spacing-0);
+  --spacing-app-shell-region-gap: var(--spacing-0);
+  --spacing-app-shell-nav-width: 240px;
+
 }
 
 /* Base reset for components */

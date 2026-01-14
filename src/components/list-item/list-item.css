@@ -1,0 +1,86 @@
+/**
+ * ListItem
+ * 
+ * Tier 2 — Interactive Single Component
+ * Represents a single row in a list.
+ * Owns row-level background and interaction states.
+ * 
+ * Token bindings (allowed):
+ * - color.list.item.background.*
+ * - color.list.item.border
+ * - spacing.*
+ * 
+ * NOT allowed:
+ * - text color tokens
+ * - typography tokens
+ * - icon tokens
+ */
+
+.lfx-list-item {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  
+  /* Spacing */
+  padding: var(--spacing-12) var(--spacing-16);
+  
+  /* Default background */
+  background-color: var(--color-list-item-background-default);
+  
+  /* Bottom border only */
+  border-bottom: 1px solid var(--color-list-item-border);
+  
+  /* Default cursor */
+  cursor: default;
+  
+  /* Smooth transitions */
+  transition: background-color 0.15s ease;
+}
+
+/* ========================================
+   Clickable State
+   Enables hover and pointer cursor
+   ======================================== */
+
+.lfx-list-item--clickable {
+  cursor: pointer;
+}
+
+.lfx-list-item--clickable:hover {
+  background-color: var(--color-list-item-background-hover);
+}
+
+/* ========================================
+   Selected State
+   Overrides hover
+   ======================================== */
+
+.lfx-list-item--selected {
+  background-color: var(--color-list-item-background-selected);
+}
+
+/* Selected + clickable: selected overrides hover */
+.lfx-list-item--selected.lfx-list-item--clickable:hover {
+  background-color: var(--color-list-item-background-selected);
+}
+
+/* ========================================
+   Disabled State
+   Overrides all other states
+   ======================================== */
+
+.lfx-list-item--disabled {
+  background-color: var(--color-list-item-background-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Disabled overrides hover */
+.lfx-list-item--disabled.lfx-list-item--clickable:hover {
+  background-color: var(--color-list-item-background-disabled);
+}
+
+/* Disabled overrides selected */
+.lfx-list-item--disabled.lfx-list-item--selected {
+  background-color: var(--color-list-item-background-disabled);
+}

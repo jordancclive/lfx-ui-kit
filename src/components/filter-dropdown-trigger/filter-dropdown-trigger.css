@@ -1,0 +1,99 @@
+/*
+ * LFX One UI Kit - FilterDropdownTrigger Component
+ * Uses UI Role tokens only - no palette references, no magic numbers
+ */
+
+.lfx-filter-dropdown-trigger {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  
+  /* Padding - same as SearchInput */
+  padding: var(--spacing-8) var(--spacing-12);
+  
+  /* Background */
+  background-color: var(--color-white);
+  
+  /* Border - same as SearchInput */
+  border: var(--button-stroke) solid var(--neutral-200);
+  border-radius: var(--rounded-lg);
+  
+  /* Typography - same as SearchInput */
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-text-sm);
+  
+  /* Text color */
+  color: var(--text-primary);
+  
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 150ms ease;
+  
+  /* Reset */
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ========================================
+   STATE: Focus / Open
+   Focus and open share the same visuals
+   ======================================== */
+
+.lfx-filter-dropdown-trigger:focus-visible:not(.lfx-filter-dropdown-trigger--disabled),
+.lfx-filter-dropdown-trigger--open:not(.lfx-filter-dropdown-trigger--disabled) {
+  border-color: var(--interactive-primary-background);
+}
+
+/* Chevron rotates 180° when open */
+.lfx-filter-dropdown-trigger--open .lfx-filter-dropdown-trigger__chevron {
+  transform: rotate(180deg);
+}
+
+/* ========================================
+   STATE: Disabled
+   ======================================== */
+
+.lfx-filter-dropdown-trigger--disabled {
+  border-color: var(--neutral-300);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+/* ========================================
+   INNER ELEMENTS
+   ======================================== */
+
+.lfx-filter-dropdown-trigger__label {
+  display: inline-flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ========================================
+   CHEVRON ICON
+   - Inherits text color
+   - Size derived from font-size (1em)
+   ======================================== */
+
+.lfx-filter-dropdown-trigger__chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+.lfx-filter-dropdown-trigger__chevron svg {
+  width: 100%;
+  height: 100%;
+}

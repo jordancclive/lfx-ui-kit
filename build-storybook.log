@@ -1,0 +1,41 @@
+
+> lfx-one-ui-kit@0.1.0 build-storybook
+> storybook build --output-dir=/var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H
+
+@storybook/core v8.6.15
+
+info => Cleaning outputDir: ../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H
+info => Loading presets
+info => Building manager..
+info => Manager built ([38;2;181;126;229m102 ms[39m)
+info => Building preview..
+vite v6.4.1 building for production...
+transforming...
+✓ 101 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/iframe.html                                  17.57 kB │ gzip:   4.99 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/button-BpITDnox.css                    2.38 kB │ gzip:   0.71 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-Chzgazui.css                   7.36 kB │ gzip:   1.81 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-CvbIS5ZJ.js                    0.18 kB │ gzip:   0.16 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-BzSI0ynF.js                    0.21 kB │ gzip:   0.17 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/index-BH9luX7V.js                      0.52 kB │ gzip:   0.33 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-DHQbi4pV.js                    0.61 kB │ gzip:   0.42 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-DGUiP6tS.js                    0.71 kB │ gzip:   0.49 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/index-DrFu-skq.js                      0.77 kB │ gzip:   0.47 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-DOIc1CVN.js                    0.79 kB │ gzip:   0.51 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/entry-preview-docs-BzLNa-xa.js         0.85 kB │ gzip:   0.52 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/entry-preview-DImpdu69.js              1.38 kB │ gzip:   0.82 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-DD_OYowb.js                    3.51 kB │ gzip:   1.69 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-B8lJiyuQ.js                    5.06 kB │ gzip:   1.89 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-BWzBA1C2.js                    7.62 kB │ gzip:   1.57 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/button.stories-KMNs56p8.js             7.69 kB │ gzip:   2.23 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-BBWR9nbA.js                    8.12 kB │ gzip:   3.08 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/Color-YHDXOIA2-BnS8wFVQ.js            29.22 kB │ gzip:  10.88 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/index-C__6K5js.js                     52.57 kB │ gzip:  14.92 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/iframe-DCL-CpwP.js                   211.87 kB │ gzip:  71.12 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/preview-VE445I9j.js                  660.73 kB │ gzip: 156.02 kB
+../../../../var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H/assets/DocsRenderer-CFRXHY34-Dej62N9l.js  1,090.47 kB │ gzip: 336.76 kB
+✓ built in 1.96s
+info => Preview built ([38;2;181;126;229m2.43 s[39m)
+info => Output directory: /var/folders/0_/td74fs_14nd0j4_fhz909zdr0000gn/T/chromatic--12789-A6juMCZ7Zn2H

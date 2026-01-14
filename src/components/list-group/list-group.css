@@ -1,0 +1,73 @@
+/**
+ * ListGroup
+ * 
+ * Tier 3 — Composite Layout Component
+ * Provides structural layout for vertical lists.
+ * Composes ListItem components.
+ * 
+ * Token bindings (allowed - LAYOUT ONLY):
+ * - --color-list-surface-background
+ * - --color-list-surface-border
+ * - --radius-list
+ * - spacing tokens
+ * 
+ * NOT allowed:
+ * - color.list.item.* (owned by ListItem)
+ * - hover/selected/disabled tokens
+ * - text/typography tokens
+ */
+
+.lfx-list-group {
+  /* Flexbox column layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* No gap by default - items touch via their bottom borders */
+  gap: var(--spacing-0);
+  
+  /* Remove last item's bottom border when in container */
+  overflow: hidden;
+}
+
+/* ========================================
+   Container Variants
+   ======================================== */
+
+.lfx-list-group--with-background {
+  background: var(--color-list-surface-background);
+  border-radius: var(--radius-list);
+  padding: var(--spacing-4);
+}
+
+.lfx-list-group--with-border {
+  border: 1px solid var(--color-list-surface-border);
+  border-radius: var(--radius-list);
+}
+
+/* Combined: background + border */
+.lfx-list-group--with-background.lfx-list-group--with-border {
+  /* Both styles apply naturally */
+}
+
+/* ========================================
+   Dense Variant
+   (Same gap since items touch anyway)
+   ======================================== */
+
+.lfx-list-group--dense {
+  /* Dense mode - no change to gap since items touch */
+}
+
+/* When dense + background, reduce padding */
+.lfx-list-group--dense.lfx-list-group--with-background {
+  padding: var(--spacing-2);
+}
+
+/* ========================================
+   Child item styling
+   Remove bottom border from last item
+   ======================================== */
+
+.lfx-list-group > *:last-child {
+  border-bottom: none;
+}

@@ -1,0 +1,72 @@
+/*
+ * LFX One UI Kit - TableRow Component
+ * Tier 2 — Interactive Single Component
+ * 
+ * Token ownership:
+ * - color.table.row.background.*
+ * - color.table.row.border
+ * - spacing.*
+ * - button-stroke
+ * 
+ * Does NOT own: cell tokens, text tokens, content-specific tokens
+ */
+
+.lfx-table-row {
+  /* Layout - horizontal, no fixed height */
+  display: flex;
+  align-items: center;
+  
+  /* Padding */
+  padding: var(--spacing-12) var(--spacing-16);
+  
+  /* Default state background */
+  background-color: var(--color-table-row-background-default);
+  
+  /* Bottom divider */
+  border-bottom: var(--button-stroke) solid var(--color-table-row-border);
+  
+  /* Transition */
+  transition: background-color 150ms ease;
+}
+
+/* ========================================
+   STATE: Hover
+   Only applies when not selected or disabled
+   ======================================== */
+
+.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) {
+  background-color: var(--color-table-row-background-hover);
+}
+
+/* ========================================
+   STATE: Selected
+   Selected overrides hover
+   ======================================== */
+
+.lfx-table-row--selected {
+  background-color: var(--color-table-row-background-selected);
+}
+
+/* ========================================
+   STATE: Disabled
+   Disabled overrides all states
+   ======================================== */
+
+.lfx-table-row--disabled {
+  background-color: var(--color-table-row-background-disabled);
+  cursor: not-allowed;
+}
+
+/* Ensure disabled overrides selected */
+.lfx-table-row--disabled.lfx-table-row--selected {
+  background-color: var(--color-table-row-background-disabled);
+}
+
+/* ========================================
+   CLICKABLE
+   Cursor pointer when clickable
+   ======================================== */
+
+.lfx-table-row--clickable:not(.lfx-table-row--disabled) {
+  cursor: pointer;
+}

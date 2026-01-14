@@ -1,0 +1,34 @@
+/*
+ * LFX One UI Kit - TabsGroup Component
+ * Layout and state coordinator only - NO visual styles for TabItem
+ */
+
+.lfx-tabs-group {
+  /* Layout */
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  
+  /* Role */
+  role: tablist;
+}
+
+/* ========================================
+   VARIANT: With Background (pill-style group)
+   Optional neutral surface background
+   ======================================== */
+
+.lfx-tabs-group--with-background {
+  background-color: var(--neutral-100);
+  padding: var(--spacing-4);
+  border-radius: var(--rounded-xl);
+}
+
+/* ========================================
+   LAYOUT: No Wrap
+   ======================================== */
+
+.lfx-tabs-group--no-wrap {
+  flex-wrap: nowrap;
+}

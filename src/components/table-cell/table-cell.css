@@ -1,0 +1,93 @@
+/**
+ * TableCell
+ * 
+ * Tier 2 — Structural Content Component
+ * Owns cell-level typography, alignment, and spacing only.
+ * 
+ * Token bindings (allowed):
+ * - color.table.cell.text.*
+ * - spacing.*
+ * - typography tokens
+ * 
+ * NOT allowed:
+ * - background tokens
+ * - border tokens
+ * - interactive tokens
+ * - color.table.row.*
+ */
+
+.lfx-table-cell {
+  /* Typography - reusing button typography tokens for consistency */
+  font-family: var(--font-button-family);
+  font-size: var(--font-button-size);
+  font-weight: var(--font-button-weight);
+  line-height: var(--font-button-line-height);
+  
+  /* Spacing */
+  padding: var(--spacing-sm) var(--spacing-md);
+  
+  /* Default alignment */
+  text-align: left;
+  
+  /* Default text color */
+  color: var(--color-table-cell-text-primary);
+  
+  /* Layout for content */
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* ========================================
+   Content Types
+   ======================================== */
+
+.lfx-table-cell--primary {
+  color: var(--color-table-cell-text-primary);
+}
+
+.lfx-table-cell--secondary {
+  color: var(--color-table-cell-text-secondary);
+}
+
+.lfx-table-cell--muted {
+  color: var(--color-table-cell-text-muted);
+}
+
+.lfx-table-cell--numeric {
+  color: var(--color-table-cell-text-primary);
+  text-align: right;
+  justify-content: flex-end;
+}
+
+/* ========================================
+   Alignment
+   ======================================== */
+
+.lfx-table-cell--align-left {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.lfx-table-cell--align-right {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+/* ========================================
+   Sizes
+   ======================================== */
+
+.lfx-table-cell--small {
+  font-size: calc(var(--font-button-size) * 0.875);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+/* ========================================
+   Disabled (inherited from parent row)
+   Text color only - no interactive changes
+   ======================================== */
+
+.lfx-table-cell--disabled {
+  color: var(--color-table-cell-text-disabled);
+}

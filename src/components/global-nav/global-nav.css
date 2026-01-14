@@ -1,0 +1,120 @@
+/**
+ * GlobalNav
+ * 
+ * Tier 3 — Composite Layout Component
+ * Provides structural layout for application navigation.
+ * Renders vertical navigation sections with selected item highlighting.
+ * 
+ * Token bindings (allowed - LAYOUT ONLY):
+ * - --color-nav-surface-background
+ * - --color-nav-surface-border
+ * - --color-nav-item-background-selected
+ * - --radius-nav
+ * - --spacing-nav-padding
+ * - --spacing-nav-section-gap
+ * - --spacing-nav-item-gap
+ * 
+ * NOT allowed:
+ * - text color tokens
+ * - typography tokens
+ * - icon tokens
+ * - hover state tokens
+ */
+
+.lfx-global-nav {
+  /* Vertical flex layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* Default gap between sections */
+  gap: var(--spacing-nav-section-gap);
+  
+  /* No container styling by default */
+  width: 100%;
+}
+
+/* ========================================
+   Container Variants
+   ======================================== */
+
+.lfx-global-nav--with-background {
+  background: var(--color-nav-surface-background);
+  padding: var(--spacing-nav-padding);
+  border-radius: var(--radius-nav);
+}
+
+.lfx-global-nav--with-border {
+  border: 1px solid var(--color-nav-surface-border);
+  border-radius: var(--radius-nav);
+}
+
+/* Combined: background + border */
+.lfx-global-nav--with-background.lfx-global-nav--with-border {
+  /* Both styles apply naturally */
+}
+
+/* ========================================
+   Dense Variant
+   Reduced spacing
+   ======================================== */
+
+.lfx-global-nav--dense {
+  gap: var(--spacing-12);
+}
+
+.lfx-global-nav--dense.lfx-global-nav--with-background {
+  padding: var(--spacing-12);
+}
+
+/* ========================================
+   Nav Section
+   Container for grouped nav items
+   ======================================== */
+
+.lfx-global-nav__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-nav-item-gap);
+}
+
+.lfx-global-nav--dense .lfx-global-nav__section {
+  gap: var(--spacing-2);
+}
+
+/* ========================================
+   Nav Item
+   Individual navigation link/button
+   ======================================== */
+
+.lfx-global-nav__item {
+  /* Flexbox for icon + text layout */
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  
+  /* Padding */
+  padding: var(--spacing-12) var(--spacing-16);
+  
+  /* Border radius */
+  border-radius: var(--rounded-md);
+  
+  /* Transition for smooth selected state */
+  transition: background-color 0.15s ease;
+  
+  /* Cursor - assuming clickable by default */
+  cursor: pointer;
+}
+
+/* Dense variant - reduced padding */
+.lfx-global-nav--dense .lfx-global-nav__item {
+  padding: var(--spacing-8) var(--spacing-12);
+}
+
+/* ========================================
+   Selected State
+   Applied via data-nav-item-id matching activeItemId
+   ======================================== */
+
+.lfx-global-nav__item--selected {
+  background-color: var(--color-nav-item-background-selected);
+}

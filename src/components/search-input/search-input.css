@@ -1,0 +1,108 @@
+/*
+ * LFX One UI Kit - SearchInput Component
+ * Uses UI Role tokens only - no palette references, no magic numbers
+ */
+
+.lfx-search-input {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  
+  /* Background */
+  background-color: var(--color-white);
+  
+  /* Border */
+  border: var(--button-stroke) solid var(--neutral-200);
+  border-radius: var(--rounded-lg);
+  
+  /* Padding */
+  padding: var(--spacing-8) var(--spacing-12);
+  
+  /* Typography - Explicit binding, no global inheritance */
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-text-sm);
+  
+  /* Text color */
+  color: var(--text-primary);
+  
+  /* Transition */
+  transition: border-color 150ms ease;
+}
+
+/* ========================================
+   STATE: Focus
+   ======================================== */
+
+.lfx-search-input:focus-within:not(.lfx-search-input--disabled) {
+  border-color: var(--interactive-primary-background);
+  outline: none;
+}
+
+/* ========================================
+   STATE: Disabled
+   ======================================== */
+
+.lfx-search-input--disabled {
+  border-color: var(--neutral-300);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.lfx-search-input--disabled .lfx-search-input__input {
+  cursor: not-allowed;
+}
+
+.lfx-search-input--disabled .lfx-search-input__input::placeholder {
+  color: var(--text-disabled);
+}
+
+.lfx-search-input--disabled .lfx-search-input__icon {
+  color: var(--text-disabled);
+}
+
+/* ========================================
+   INNER ELEMENTS
+   ======================================== */
+
+.lfx-search-input__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.lfx-search-input__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.lfx-search-input__input {
+  /* Reset */
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  
+  /* Typography - Explicit binding */
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  
+  /* Text color */
+  color: inherit;
+  
+  /* Fill available space */
+  flex: 1;
+  min-width: 0;
+}
+
+.lfx-search-input__input::placeholder {
+  color: var(--text-secondary);
+}
