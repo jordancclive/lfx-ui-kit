@@ -2,11 +2,47 @@
 
 **Component Tier:** Tier 3 — Composite Layout Component
 
+> **This component exists to provide structured layout for page titles, descriptions, and action slots, and nothing else.**
+
+---
+
 ## Purpose
 
 Defines the top-of-page header region for LFX One pages. Provides structured layout for page title, optional description, optional metadata (breadcrumbs, status pills), and optional actions area (buttons, filters, tabs, search).
 
 AppHeader owns spacing and layout only. It does NOT implement routing, state management, or styling of child components.
+
+---
+
+## If This Component Were Deleted
+
+If AppHeader were removed from the system:
+- No standardized page title presentation
+- No consistent title/description stacking
+- No standardized header layout (left content + right actions)
+- Dense spacing mode unavailable for headers
+- No consistent divider behavior for headers
+
+If you find yourself answering "buttons look wrong" or "tabs aren't styled" — the contract is leaking responsibility. AppHeader owns layout and spacing, not child styling.
+
+---
+
+## Composition Placement
+
+```
+AppShell
+└─ PageLayout
+   ├─ AppHeader   ← VALID: first child of PageLayout
+   ├─ PageSection
+   └─ PageSection
+```
+
+**Rules:**
+- AppHeader MUST appear inside PageLayout
+- AppHeader MUST NOT appear directly under AppShell
+- AppHeader SHOULD be the first child of PageLayout (before PageSections)
+- AppHeader MUST NOT be nested inside PageSection
+- AppHeader MUST NOT be used as a standalone container
 
 ---
 
@@ -218,3 +254,20 @@ Stories MUST include:
 - ResponsiveWrap
 
 Docs page MUST clearly state that AppHeader does NOT own child styling or interaction logic.
+
+---
+
+## Contract Lock
+
+**This contract is considered stable.** Visual changes must be achieved through tokens or child components, not by expanding this component's responsibilities.
+
+### Slot Boundaries (Locked)
+
+| Slot | Purpose | Must NOT |
+|------|---------|----------|
+| `meta` | Breadcrumbs, status pills | Style content, manage state |
+| `actions` | Buttons, tabs, filters | Style content, manage state |
+| `title` | Page heading text | Be interactive |
+| `description` | Supporting text | Be interactive |
+
+These slots are **positional only**. AppHeader renders them unchanged.
