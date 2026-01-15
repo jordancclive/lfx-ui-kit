@@ -1,0 +1,38 @@
+/*
+ * PageLayout Component
+ * Tier 3 - Composite Layout Component
+ * 
+ * Layout-only component for page content.
+ * Enforces max-width, padding, and vertical rhythm.
+ * NO color or typography tokens - layout only.
+ */
+
+.lfx-page-layout {
+  /* Center content with max-width */
+  width: 100%;
+  max-width: var(--spacing-page-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  
+  /* Horizontal padding */
+  padding-left: var(--spacing-page-padding-x);
+  padding-right: var(--spacing-page-padding-x);
+  
+  /* Vertical stacking with gap */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-page-section-gap);
+  
+  /* Allow natural scrolling */
+  min-height: 0;
+}
+
+/* Dense spacing variant */
+.lfx-page-layout--dense {
+  gap: var(--spacing-page-section-gap-dense);
+}
+
+/* Full width variant (no max-width constraint) */
+.lfx-page-layout--full-width {
+  max-width: none;
+}

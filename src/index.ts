@@ -19,3 +19,6 @@ export { createListItem, type ListItemProps } from './components/list-item/list-
 export { createListGroup, type ListGroupProps } from './components/list-group/list-group';
 export { createGlobalNav, createNavSection, createNavItem, type GlobalNavProps, type NavItemProps } from './components/global-nav/global-nav';
 export { createAppShell, type AppShellProps } from './components/app-shell/app-shell';
+export { createAppHeader, type AppHeaderProps } from './components/app-header/app-header';
+export { createPageLayout, type PageLayoutProps } from './components/page-layout/page-layout';
+export { createPageSection, type PageSectionProps } from './components/page-section/page-section';

@@ -503,6 +503,74 @@
   --spacing-app-shell-region-gap: var(--spacing-0);
   --spacing-app-shell-nav-width: 240px;
 
+  /* ========================================
+     UI ROLE - App Header (Layout Only)
+     
+     Token naming: layout.app-header.* (conceptual)
+     CSS variable: --spacing-app-header-* or --color-app-header-* (hyphenated)
+     
+     NOTE: AppHeader is a Tier 3 Composite Layout Component.
+     Owns page header layout structure ONLY.
+     Typography reuses existing role tokens.
+     Child component styling is NOT owned by AppHeader.
+     ======================================== */
+  
+  /* Container surface */
+  --color-app-header-surface-background: var(--color-white);
+  --color-app-header-surface-border: var(--neutral-200);
+  
+  /* Spacing - Default */
+  --spacing-app-header-padding-x: var(--spacing-16);
+  --spacing-app-header-padding-y: var(--spacing-16);
+  --spacing-app-header-gap: var(--spacing-8);
+  --spacing-app-header-title-gap: var(--spacing-4);
+  --spacing-app-header-meta-gap: var(--spacing-8);
+  --spacing-app-header-actions-gap: var(--spacing-8);
+  
+  /* Spacing - Dense */
+  --spacing-app-header-padding-y-dense: var(--spacing-12);
+  --spacing-app-header-gap-dense: var(--spacing-6);
+  --spacing-app-header-title-gap-dense: var(--spacing-2);
+
+  /* ========================================
+     UI ROLE — Page Layout (Layout Only)
+     
+     Token naming: layout.page.* (conceptual)
+     CSS variable: --spacing-page-* (hyphenated)
+     
+     NOTE: PageLayout is a Tier 3 Composite Layout Component.
+     Owns content width, padding, and vertical rhythm ONLY.
+     No color or typography tokens — layout only.
+     ======================================== */
+  
+  /* Content width */
+  --spacing-page-max-width: 1200px;
+  
+  /* Horizontal padding */
+  --spacing-page-padding-x: var(--spacing-24);
+  
+  /* Vertical section spacing */
+  --spacing-page-section-gap: var(--spacing-24);
+  --spacing-page-section-gap-dense: var(--spacing-16);
+
+  /* ========================================
+     UI ROLE — Page Section (Layout Only)
+     
+     Token naming: spacing.page.section.* (conceptual)
+     CSS variable: --spacing-page-section-* (hyphenated)
+     
+     NOTE: PageSection is a Tier 2 Structural Content Wrapper.
+     Owns vertical padding and optional divider ONLY.
+     No typography or background tokens.
+     ======================================== */
+  
+  /* Vertical padding */
+  --spacing-page-section-padding-y: var(--spacing-24);
+  --spacing-page-section-padding-y-dense: var(--spacing-16);
+  
+  /* Divider (only color token allowed) */
+  --color-page-section-divider: var(--neutral-200);
+
 }
 
 /* Base reset for components */

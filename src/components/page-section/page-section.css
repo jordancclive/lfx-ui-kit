@@ -1,0 +1,29 @@
+/*
+ * PageSection Component
+ * Tier 2 - Structural Content Wrapper
+ * 
+ * Provides vertical spacing and optional divider.
+ * Does NOT style children.
+ * NO typography or background tokens - layout only.
+ */
+
+.lfx-page-section {
+  /* Flex column for vertical stacking */
+  display: flex;
+  flex-direction: column;
+  
+  /* Vertical padding only */
+  padding-top: var(--spacing-page-section-padding-y);
+  padding-bottom: var(--spacing-page-section-padding-y);
+}
+
+/* Dense spacing variant */
+.lfx-page-section--dense {
+  padding-top: var(--spacing-page-section-padding-y-dense);
+  padding-bottom: var(--spacing-page-section-padding-y-dense);
+}
+
+/* Optional bottom divider */
+.lfx-page-section--with-divider {
+  border-bottom: 1px solid var(--color-page-section-divider);
+}
