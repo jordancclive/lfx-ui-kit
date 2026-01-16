@@ -780,6 +780,21 @@
   --ui-card-header-padding-bottom: var(--spacing-12);
   --ui-card-footer-padding-top: var(--spacing-12);
 
+  /* ========================================
+     UI ROLE — Metrics Row (Layout Only)
+     
+     Token naming: ui.metrics-row.* (conceptual)
+     CSS variable: --ui-metrics-row-* (hyphenated)
+     
+     NOTE: MetricsRow is a Tier 3 Layout Component.
+     Owns horizontal spacing between MetricCards ONLY.
+     Does NOT own surface, typography, or visual styling.
+     ======================================== */
+  
+  /* Gap between metric cards */
+  --ui-metrics-row-gap: var(--spacing-16);
+  --ui-metrics-row-gap-dense: var(--spacing-12);
+
 }
 
 /* Base reset for components */

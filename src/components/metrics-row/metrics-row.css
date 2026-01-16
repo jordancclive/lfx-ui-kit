@@ -1,0 +1,76 @@
+/**
+ * MetricsRow Component Styles
+ * 
+ * Tier 3 — Layout / Composition Component
+ * 
+ * Owns:
+ * - Horizontal spacing between MetricCards
+ * - Wrapping behavior at smaller widths
+ * - Alignment of cards within the row
+ * 
+ * Does NOT own:
+ * - Card surface (delegated to Card)
+ * - Metric layout or typography (delegated to MetricCard)
+ * - Color or trend semantics
+ * 
+ * Token Bindings:
+ * - Gap: --ui-metrics-row-gap
+ * - Gap (dense): --ui-metrics-row-gap-dense
+ * 
+ * NO surface tokens allowed.
+ * NO typography tokens allowed.
+ * Layout spacing ONLY.
+ */
+
+.lfx-metrics-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ui-metrics-row-gap);
+  
+  /* No padding, background, or borders */
+  /* Layout only */
+}
+
+/* ========================================
+   Alignment Variants
+   ======================================== */
+
+.lfx-metrics-row--align-start {
+  align-items: flex-start;
+}
+
+.lfx-metrics-row--align-center {
+  align-items: center;
+}
+
+.lfx-metrics-row--align-stretch {
+  align-items: stretch;
+}
+
+/* ========================================
+   Dense Variant
+   ======================================== */
+
+.lfx-metrics-row--dense {
+  gap: var(--ui-metrics-row-gap-dense);
+}
+
+/* ========================================
+   Child Sizing
+   
+   MetricsRow does NOT explicitly set child widths.
+   Children (MetricCards) determine their own sizing.
+   Use flex-basis on children for equal-width layouts.
+   ======================================== */
+
+.lfx-metrics-row > * {
+  /* Default: cards size to content */
+  flex-shrink: 0;
+}
+
+/* Optional: equal-width cards (apply via modifier) */
+.lfx-metrics-row--equal-width > * {
+  flex: 1 1 0;
+  min-width: 200px;
+}
