@@ -754,6 +754,32 @@
   /* Divider - bound to system surface divider */
   --color-page-section-divider: var(--ui-surface-divider);
 
+  /* ========================================
+     UI ROLE — Card Surface (System-Level)
+     
+     Token naming: ui.card.* (conceptual)
+     CSS variable: --ui-card-* (hyphenated)
+     
+     NOTE: Card is a Tier 2 Pattern / Surface Wrapper.
+     Owns surface styling ONLY (background, border, radius, padding).
+     Does NOT own typography or child layout.
+     
+     All surface tokens reference ui.surface.* tokens.
+     ======================================== */
+  
+  /* Surface - bound to system surface roles */
+  --ui-card-surface-background: var(--ui-surface-container);
+  --ui-card-surface-border: var(--ui-surface-divider);
+  
+  /* Layout */
+  --ui-card-radius: var(--rounded-lg);
+  --ui-card-padding: var(--spacing-16);
+  --ui-card-padding-dense: var(--spacing-12);
+  
+  /* Internal spacing */
+  --ui-card-header-padding-bottom: var(--spacing-12);
+  --ui-card-footer-padding-top: var(--spacing-12);
+
 }
 
 /* Base reset for components */

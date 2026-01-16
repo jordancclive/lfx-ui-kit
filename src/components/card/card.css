@@ -1,0 +1,81 @@
+/**
+ * Card Component Styles
+ * 
+ * Tier 2 — Pattern / Surface Wrapper
+ * 
+ * Owns:
+ * - Surface background
+ * - Border (optional)
+ * - Border radius
+ * - Internal padding
+ * - Header/footer slot layout (not styling)
+ * 
+ * Does NOT own:
+ * - Typography
+ * - Child content styling
+ * - Hover/selected states
+ * 
+ * Token Bindings:
+ * - Background: --ui-card-surface-background (→ ui.surface.container)
+ * - Border: --ui-card-surface-border (→ ui.surface.divider)
+ * - Radius: --ui-card-radius
+ * - Padding: --ui-card-padding / --ui-card-padding-dense
+ */
+
+.lfx-card {
+  background: var(--ui-card-surface-background);
+  border-radius: var(--ui-card-radius);
+  padding: var(--ui-card-padding);
+  
+  /* No border by default */
+  border: none;
+}
+
+/* ========================================
+   Variants
+   ======================================== */
+
+.lfx-card--with-border {
+  border: 1px solid var(--ui-card-surface-border);
+}
+
+.lfx-card--dense {
+  padding: var(--ui-card-padding-dense);
+}
+
+/* ========================================
+   Slots
+   ======================================== */
+
+.lfx-card__header {
+  padding-bottom: var(--ui-card-header-padding-bottom);
+  
+  /* Layout only — no typography styling */
+}
+
+.lfx-card__body {
+  /* Body is the main content area */
+  /* No additional styling — children own their own styles */
+}
+
+.lfx-card__footer {
+  padding-top: var(--ui-card-footer-padding-top);
+  
+  /* Layout only — no typography styling */
+}
+
+/* ========================================
+   Slot Dividers (optional visual separation)
+   ======================================== */
+
+.lfx-card__header--with-divider {
+  border-bottom: 1px solid var(--ui-card-surface-border);
+  margin-bottom: var(--ui-card-header-padding-bottom);
+  padding-bottom: var(--ui-card-header-padding-bottom);
+}
+
+.lfx-card__footer--with-divider {
+  border-top: 1px solid var(--ui-card-surface-border);
+  margin-top: var(--ui-card-footer-padding-top);
+  padding-top: var(--ui-card-footer-padding-top);
+}
