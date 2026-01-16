@@ -182,6 +182,19 @@
 
   /* ========================================
      SEMANTIC - Color Aliases
+     
+     Semantic color tokens encode MEANING, not component usage or state.
+     
+     | Role       | Meaning                          |
+     |------------|----------------------------------|
+     | neutral    | Base UI surfaces, text, dividers |
+     | accent     | Primary emphasis, selection      |
+     | success    | Positive status                  |
+     | warning    | Caution                          |
+     | danger     | Error / destructive              |
+     | discovery  | Informational / exploratory      |
+     
+     RULE: Components must NOT reference semantic tokens directly.
      ======================================== */
   
   /* Accent (Azure) */
@@ -436,9 +449,9 @@
   --interactive-secondary-background: var(--neutral-100);
   --interactive-secondary-text: var(--neutral-900);
 
-  /* Surface */
-  --interactive-surface-default: var(--neutral-50);
-  --interactive-surface-subtle: var(--neutral-100);
+  /* Surface - bound to system surface roles */
+  --interactive-surface-default: var(--ui-surface-page);
+  --interactive-surface-subtle: var(--ui-surface-subtle);
 
   /* ========================================
      UI ROLE - Text Colors
@@ -447,6 +460,40 @@
   --text-primary: var(--neutral-900);
   --text-secondary: var(--neutral-600);
   --text-disabled: var(--neutral-400);
+  --text-on-accent: var(--color-white);
+
+  /* ========================================
+     UI ROLE — Surface Roles (System-Level)
+     
+     These tokens define the UNIVERSAL SURFACE LANGUAGE for the entire system.
+     All component surface tokens must reference these, never semantic tokens.
+     
+     Dark mode is achieved by remapping semantic tokens only.
+     
+     Token naming: ui.surface.* (conceptual)
+     CSS variable: --ui-surface-* (hyphenated)
+     ======================================== */
+  
+  /* Page-level background (AppShell, body) */
+  --ui-surface-page: var(--neutral-50);
+  
+  /* Container surfaces (cards, panels, content areas) */
+  --ui-surface-container: var(--color-white);
+  
+  /* Subtle elevated surfaces */
+  --ui-surface-subtle: var(--neutral-100);
+  
+  /* Hover state for interactive surfaces */
+  --ui-surface-hover: var(--neutral-100);
+  
+  /* Selected state highlight */
+  --ui-surface-selected: var(--accent-100);
+  
+  /* Disabled state background */
+  --ui-surface-disabled: var(--color-white);
+  
+  /* Dividers and borders */
+  --ui-surface-divider: var(--neutral-200);
 
   /* ========================================
      UI ROLE - Spinner
@@ -456,12 +503,14 @@
 
   /* ========================================
      UI ROLE - Tabs Item
+     
+     REBINDING: Hover and selected now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Background */
+  /* Background - bound to system surface roles where applicable */
   --color-tabs-item-background-default: transparent;
-  --color-tabs-item-background-hover: var(--neutral-100);
-  --color-tabs-item-background-selected: var(--accent-100);
+  --color-tabs-item-background-hover: var(--ui-surface-hover);
+  --color-tabs-item-background-selected: var(--ui-surface-selected);
   --color-tabs-item-background-disabled: transparent;
   
   /* Border */
@@ -480,16 +529,18 @@
      
      Token naming: color.table.row.background.default (conceptual)
      CSS variable: --color-table-row-background-default (hyphenated)
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Background */
-  --color-table-row-background-default: var(--color-white);
-  --color-table-row-background-hover: var(--neutral-100);
-  --color-table-row-background-selected: var(--accent-100);
-  --color-table-row-background-disabled: var(--color-white);
+  /* Background - bound to system surface roles */
+  --color-table-row-background-default: var(--ui-surface-container);
+  --color-table-row-background-hover: var(--ui-surface-hover);
+  --color-table-row-background-selected: var(--ui-surface-selected);
+  --color-table-row-background-disabled: var(--ui-surface-disabled);
   
-  /* Border */
-  --color-table-row-border: var(--neutral-200);
+  /* Border - bound to system surface divider */
+  --color-table-row-border: var(--ui-surface-divider);
 
   /* ========================================
      UI ROLE - Table Cell
@@ -529,11 +580,13 @@
      NOTE: Table is a Tier 3 Composite Layout Component.
      These tokens control container styling ONLY.
      Row/cell/header styling is owned by child components.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Container surface */
-  --color-table-surface-background: var(--color-white);
-  --color-table-surface-border: var(--neutral-200);
+  /* Container surface - bound to system surface roles */
+  --color-table-surface-background: var(--ui-surface-container);
+  --color-table-surface-border: var(--ui-surface-divider);
   
   /* Layout */
   --radius-table: var(--rounded-lg);
@@ -547,16 +600,18 @@
      NOTE: ListItem is a Tier 2 Interactive Single Component.
      Owns background and interaction states only.
      Text/icon styling is owned by child components.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Background */
-  --color-list-item-background-default: var(--color-white);
-  --color-list-item-background-hover: var(--neutral-100);
-  --color-list-item-background-selected: var(--accent-100);
-  --color-list-item-background-disabled: var(--color-white);
+  /* Background - bound to system surface roles */
+  --color-list-item-background-default: var(--ui-surface-container);
+  --color-list-item-background-hover: var(--ui-surface-hover);
+  --color-list-item-background-selected: var(--ui-surface-selected);
+  --color-list-item-background-disabled: var(--ui-surface-disabled);
   
-  /* Border (bottom divider only) */
-  --color-list-item-border: var(--neutral-200);
+  /* Border (bottom divider only) - bound to system surface divider */
+  --color-list-item-border: var(--ui-surface-divider);
 
   /* ========================================
      UI ROLE - List Group (Layout Only)
@@ -567,11 +622,13 @@
      NOTE: ListGroup is a Tier 3 Composite Layout Component.
      Owns container styling ONLY.
      Item states are owned by ListItem.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Container surface */
-  --color-list-surface-background: var(--color-white);
-  --color-list-surface-border: var(--neutral-200);
+  /* Container surface - bound to system surface roles */
+  --color-list-surface-background: var(--ui-surface-container);
+  --color-list-surface-border: var(--ui-surface-divider);
   
   /* Layout */
   --radius-list: var(--rounded-lg);
@@ -585,14 +642,16 @@
      NOTE: GlobalNav is a Tier 3 Composite Layout Component.
      Owns container styling and selected item highlight ONLY.
      Text/icon styling is owned by nav item components.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Container surface */
-  --color-nav-surface-background: var(--color-white);
-  --color-nav-surface-border: var(--neutral-200);
+  /* Container surface - bound to system surface roles */
+  --color-nav-surface-background: var(--ui-surface-container);
+  --color-nav-surface-border: var(--ui-surface-divider);
   
-  /* Selected item highlight */
-  --color-nav-item-background-selected: var(--accent-100);
+  /* Selected item highlight - bound to system surface roles */
+  --color-nav-item-background-selected: var(--ui-surface-selected);
   
   /* Layout */
   --radius-nav: var(--rounded-lg);
@@ -609,11 +668,13 @@
      NOTE: AppShell is a Tier 3 Composite Layout Component.
      Owns page-level layout structure ONLY.
      Child component styling is NOT owned by AppShell.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Container surface */
-  --color-app-shell-surface-background: var(--neutral-50);
-  --color-app-shell-surface-border: var(--neutral-200);
+  /* Container surface - bound to system surface roles */
+  --color-app-shell-surface-background: var(--ui-surface-page);
+  --color-app-shell-surface-border: var(--ui-surface-divider);
   
   /* Layout */
   --radius-app-shell: var(--rounded-none);
@@ -631,11 +692,13 @@
      Owns page header layout structure ONLY.
      Typography reuses existing role tokens.
      Child component styling is NOT owned by AppHeader.
+     
+     REBINDING: All surfaces now reference ui.surface.* tokens.
      ======================================== */
   
-  /* Container surface */
-  --color-app-header-surface-background: var(--color-white);
-  --color-app-header-surface-border: var(--neutral-200);
+  /* Container surface - bound to system surface roles */
+  --color-app-header-surface-background: var(--ui-surface-container);
+  --color-app-header-surface-border: var(--ui-surface-divider);
   
   /* Spacing - Default */
   --spacing-app-header-padding-x: var(--spacing-16);
@@ -680,14 +743,16 @@
      NOTE: PageSection is a Tier 2 Structural Content Wrapper.
      Owns vertical padding and optional divider ONLY.
      No typography or background tokens.
+     
+     REBINDING: Divider now references ui.surface.divider.
      ======================================== */
   
   /* Vertical padding */
   --spacing-page-section-padding-y: var(--spacing-24);
   --spacing-page-section-padding-y-dense: var(--spacing-16);
   
-  /* Divider (only color token allowed) */
-  --color-page-section-divider: var(--neutral-200);
+  /* Divider - bound to system surface divider */
+  --color-page-section-divider: var(--ui-surface-divider);
 
 }
 
