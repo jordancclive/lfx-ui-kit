@@ -132,18 +132,22 @@ function createDemoListGroup() {
   });
 }
 
+function createTextNode(text: string): HTMLElement {
+  const span = document.createElement('span');
+  span.textContent = text;
+  return span;
+}
+
 function createDemoNav(activeItemId = 'dashboard') {
   return createGlobalNav({
     activeItemId,
     children: [
-      createNavSection({
-        children: [
-          createNavItem({ id: 'dashboard', label: 'Dashboard' }),
-          createNavItem({ id: 'projects', label: 'Projects' }),
-          createNavItem({ id: 'reports', label: 'Reports' }),
-          createNavItem({ id: 'settings', label: 'Settings' }),
-        ],
-      }),
+      createNavSection([
+        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
+        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
+        createNavItem({ id: 'reports', children: createTextNode('Reports') }),
+        createNavItem({ id: 'settings', children: createTextNode('Settings') }),
+      ]),
     ],
   });
 }
