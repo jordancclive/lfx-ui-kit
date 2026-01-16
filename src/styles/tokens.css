@@ -210,6 +210,7 @@
   --accent-900: var(--color-azure-900);
 
   /* Neutral (Slate) */
+  --neutral-0: var(--color-white);
   --neutral-50: var(--color-slate-50);
   --neutral-100: var(--color-slate-100);
   --neutral-200: var(--color-slate-200);
@@ -436,14 +437,16 @@
 
   /* ========================================
      UI ROLE - Interactive Colors
+     
+     RULE: All interactive tokens MUST reference semantic tokens, never primitives.
      ======================================== */
   
   /* Primary */
   --interactive-primary-background: var(--accent-500);
-  --interactive-primary-text: var(--color-white);
+  --interactive-primary-text: var(--neutral-0);
   --interactive-primary-background-hover: var(--accent-600);
   --interactive-primary-background-disabled: var(--neutral-300);
-  --interactive-primary-text-disabled: var(--color-white);
+  --interactive-primary-text-disabled: var(--neutral-0);
 
   /* Secondary */
   --interactive-secondary-background: var(--neutral-100);
@@ -455,12 +458,14 @@
 
   /* ========================================
      UI ROLE - Text Colors
+     
+     RULE: All text tokens MUST reference semantic tokens, never primitives.
      ======================================== */
   
   --text-primary: var(--neutral-900);
   --text-secondary: var(--neutral-600);
   --text-disabled: var(--neutral-400);
-  --text-on-accent: var(--color-white);
+  --text-on-accent: var(--neutral-0);
 
   /* ========================================
      UI ROLE — Surface Roles (System-Level)
@@ -472,13 +477,15 @@
      
      Token naming: ui.surface.* (conceptual)
      CSS variable: --ui-surface-* (hyphenated)
+     
+     RULE: All surface tokens MUST reference semantic tokens, never primitives.
      ======================================== */
   
   /* Page-level background (AppShell, body) */
   --ui-surface-page: var(--neutral-50);
   
   /* Container surfaces (cards, panels, content areas) */
-  --ui-surface-container: var(--color-white);
+  --ui-surface-container: var(--neutral-0);
   
   /* Subtle elevated surfaces */
   --ui-surface-subtle: var(--neutral-100);
@@ -490,10 +497,13 @@
   --ui-surface-selected: var(--accent-100);
   
   /* Disabled state background */
-  --ui-surface-disabled: var(--color-white);
+  --ui-surface-disabled: var(--neutral-0);
   
   /* Dividers and borders */
   --ui-surface-divider: var(--neutral-200);
+  
+  /* Disabled border (slightly darker than default divider) */
+  --ui-surface-divider-disabled: var(--neutral-300);
 
   /* ========================================
      UI ROLE - Spinner
@@ -794,6 +804,53 @@
   /* Gap between metric cards */
   --ui-metrics-row-gap: var(--spacing-16);
   --ui-metrics-row-gap-dense: var(--spacing-12);
+
+  /* ========================================
+     UI ROLE — Focus Ring (System-Level)
+     
+     Single system-wide focus ring color for accessibility consistency.
+     All components MUST use this token for focus states.
+     ======================================== */
+  
+  --ui-focus-ring-color: var(--accent-500);
+  --ui-focus-ring-offset: var(--ui-surface-page);
+
+  /* ========================================
+     UI ROLE — Input Surface (Component-Scoped)
+     
+     Tokens for form input components (SearchInput, FilterDropdownTrigger).
+     References system surface tokens only.
+     ======================================== */
+  
+  --ui-input-surface-background: var(--ui-surface-container);
+  --ui-input-surface-border-default: var(--ui-surface-divider);
+  --ui-input-surface-border-focus: var(--interactive-primary-background);
+  --ui-input-surface-border-disabled: var(--ui-surface-divider-disabled);
+
+  /* ========================================
+     UI ROLE — Pill Surface (Component-Scoped)
+     
+     Tokens for pill components (FilterPill).
+     References system surface tokens only.
+     ======================================== */
+  
+  --ui-pill-surface-default: var(--ui-surface-container);
+  --ui-pill-surface-hover: var(--accent-100);
+  --ui-pill-surface-selected: var(--accent-500);
+  --ui-pill-surface-selected-text: var(--neutral-0);
+  --ui-pill-surface-disabled: var(--ui-surface-container);
+  --ui-pill-surface-border-default: var(--ui-surface-divider);
+  --ui-pill-surface-border-selected: var(--accent-500);
+  --ui-pill-surface-border-disabled: var(--ui-surface-divider-disabled);
+
+  /* ========================================
+     UI ROLE — Tabs Group Surface (Component-Scoped)
+     
+     Tokens for TabsGroup container (pill-style background).
+     References system surface tokens only.
+     ======================================== */
+  
+  --ui-tabs-group-surface-background: var(--ui-surface-subtle);
 
 }
 

@@ -29,10 +29,14 @@ Coordinates layout and selection for multiple TabItem components.
 ### Allowed
 
 - `spacing.*`
-- `neutral.*` (surface only)
+- `ui.tabs-group.surface.*` (component-scoped UI role surface tokens)
+
+**Surface:** TabsGroup binds exclusively to component-scoped UI role surface tokens for its container background. It must not reference semantic color tokens or primitive color tokens directly.
 
 ### Forbidden
 
+- Semantic color tokens (`neutral-*`, `accent-*`)
+- Primitive color tokens (`color-white`, `color-*`)
 - `color.tabs.item.*`
 - Any TabItem visual tokens
 
@@ -50,3 +54,7 @@ Coordinates layout and selection for multiple TabItem components.
 - Disabled
 - WithIcons
 - Interactive selection demo
+
+---
+
+**Lock Statement:** This contract is considered stable. Visual changes must be achieved through tokens or child components, not by expanding this component's responsibilities.

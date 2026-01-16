@@ -36,16 +36,21 @@ Represents a navigational tab within a group.
 
 ### Allowed
 
-- `color.tabs.item.*`
+- `color.tabs.item.*` (UI role tab-specific tokens)
 - `ui.text.control.*` (system-level UI role typography)
+- `ui.focus-ring.*` (system-level focus ring)
+- `text.*` (UI role text colors)
 - `spacing.*`
 - `rounded-full`
 
 **Typography:** TabItem binds exclusively to system-level UI role control typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 
+**Surface:** TabItem binds exclusively to UI role tab tokens. It must not reference semantic color tokens or primitive color tokens directly.
+
 ### Forbidden
 
-- `color.interactive.primary.*` directly
+- Semantic color tokens (`neutral-*`, `accent-*`)
+- Primitive color tokens (`color-white`, `color-*`)
 - Container background tokens
 
 ## Size Variants
@@ -69,3 +74,7 @@ Size affects typography and spacing only.
 - Disabled
 - Small variants
 - WithIcon
+
+---
+
+**Lock Statement:** This contract is considered stable. Visual changes must be achieved through tokens or child components, not by expanding this component's responsibilities.

@@ -63,7 +63,7 @@
    ======================================== */
 
 .lfx-button--primary:focus-visible {
-  box-shadow: 0 0 0 2px var(--interactive-surface-default), 0 0 0 4px var(--accent-500);
+  box-shadow: 0 0 0 2px var(--ui-focus-ring-offset), 0 0 0 4px var(--ui-focus-ring-color);
 }
 
 /* ========================================

@@ -10,11 +10,11 @@
   align-items: center;
   gap: var(--spacing-8);
   
-  /* Background */
-  background-color: var(--color-white);
+  /* Background - uses UI role token */
+  background-color: var(--ui-input-surface-background);
   
-  /* Border */
-  border: var(--button-stroke) solid var(--neutral-200);
+  /* Border - uses UI role token */
+  border: var(--button-stroke) solid var(--ui-input-surface-border-default);
   border-radius: var(--rounded-lg);
   
   /* Padding */
@@ -38,7 +38,7 @@
    ======================================== */
 
 .lfx-search-input:focus-within:not(.lfx-search-input--disabled) {
-  border-color: var(--interactive-primary-background);
+  border-color: var(--ui-input-surface-border-focus);
   outline: none;
 }
 
@@ -47,7 +47,7 @@
    ======================================== */
 
 .lfx-search-input--disabled {
-  border-color: var(--neutral-300);
+  border-color: var(--ui-input-surface-border-disabled);
   color: var(--text-disabled);
   cursor: not-allowed;
 }

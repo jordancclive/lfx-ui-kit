@@ -20,7 +20,7 @@
    ======================================== */
 
 .lfx-tabs-group--with-background {
-  background-color: var(--neutral-100);
+  background-color: var(--ui-tabs-group-surface-background);
   padding: var(--spacing-4);
   border-radius: var(--rounded-xl);
 }

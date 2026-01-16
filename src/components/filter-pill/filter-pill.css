@@ -23,10 +23,10 @@
   
   /* Shape - pill / rounded-full */
   border-radius: var(--rounded-full);
-  border: var(--button-stroke) solid var(--neutral-200);
+  border: var(--button-stroke) solid var(--ui-pill-surface-border-default);
   
-  /* Default state */
-  background-color: var(--color-white);
+  /* Default state - uses UI role tokens */
+  background-color: var(--ui-pill-surface-default);
   color: var(--text-primary);
   
   /* Interaction */
@@ -45,8 +45,8 @@
    ======================================== */
 
 .lfx-filter-pill:hover:not(.lfx-filter-pill--selected):not(.lfx-filter-pill--disabled) {
-  background-color: var(--accent-100);
-  /* Border remains neutral-200 */
+  background-color: var(--ui-pill-surface-hover);
+  /* Border remains default */
 }
 
 /* ========================================
@@ -55,9 +55,9 @@
    ======================================== */
 
 .lfx-filter-pill--selected {
-  background-color: var(--accent-500);
-  color: var(--color-white);
-  border-color: var(--accent-500);
+  background-color: var(--ui-pill-surface-selected);
+  color: var(--ui-pill-surface-selected-text);
+  border-color: var(--ui-pill-surface-border-selected);
 }
 
 /* ========================================
@@ -66,16 +66,16 @@
    ======================================== */
 
 .lfx-filter-pill--disabled {
-  background-color: var(--color-white);
-  border-color: var(--neutral-300);
+  background-color: var(--ui-pill-surface-disabled);
+  border-color: var(--ui-pill-surface-border-disabled);
   color: var(--text-disabled);
   cursor: not-allowed;
 }
 
 /* Ensure disabled overrides selected */
 .lfx-filter-pill--disabled.lfx-filter-pill--selected {
-  background-color: var(--color-white);
-  border-color: var(--neutral-300);
+  background-color: var(--ui-pill-surface-disabled);
+  border-color: var(--ui-pill-surface-border-disabled);
   color: var(--text-disabled);
 }
 
@@ -84,7 +84,7 @@
    ======================================== */
 
 .lfx-filter-pill:focus-visible:not(.lfx-filter-pill--disabled) {
-  box-shadow: 0 0 0 2px var(--interactive-surface-default), 0 0 0 4px var(--accent-500);
+  box-shadow: 0 0 0 2px var(--ui-focus-ring-offset), 0 0 0 4px var(--ui-focus-ring-color);
 }
 
 /* ========================================

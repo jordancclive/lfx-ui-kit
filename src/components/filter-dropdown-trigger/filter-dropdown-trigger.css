@@ -15,11 +15,11 @@
   /* Padding - same as SearchInput */
   padding: var(--spacing-8) var(--spacing-12);
   
-  /* Background */
-  background-color: var(--color-white);
+  /* Background - uses UI role token */
+  background-color: var(--ui-input-surface-background);
   
-  /* Border - same as SearchInput */
-  border: var(--button-stroke) solid var(--neutral-200);
+  /* Border - uses UI role token */
+  border: var(--button-stroke) solid var(--ui-input-surface-border-default);
   border-radius: var(--rounded-lg);
   
   /* Typography - binds to system-level UI role control tokens */
@@ -49,7 +49,7 @@
 
 .lfx-filter-dropdown-trigger:focus-visible:not(.lfx-filter-dropdown-trigger--disabled),
 .lfx-filter-dropdown-trigger--open:not(.lfx-filter-dropdown-trigger--disabled) {
-  border-color: var(--interactive-primary-background);
+  border-color: var(--ui-input-surface-border-focus);
 }
 
 /* Chevron rotates 180° when open */
@@ -62,7 +62,7 @@
    ======================================== */
 
 .lfx-filter-dropdown-trigger--disabled {
-  border-color: var(--neutral-300);
+  border-color: var(--ui-input-surface-border-disabled);
   color: var(--text-disabled);
   cursor: not-allowed;
 }
