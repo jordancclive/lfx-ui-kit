@@ -28,6 +28,8 @@ Represents a single cell within a table row. Owns text presentation, alignment, 
 - `spacing.*`
 - Typography tokens (`font-family`, `font-size`, `font-weight`, `line-height`)
 
+**Typography:** TableCell binds exclusively to system-level UI role typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
+
 ### Forbidden
 
 - `color.table.row.*`

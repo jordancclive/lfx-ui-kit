@@ -7,21 +7,23 @@
  * Token bindings (allowed):
  * - color.table.cell.text.*
  * - spacing.*
- * - typography tokens
+ * - ui.text.data.* (system-level UI role typography)
  * 
  * NOT allowed:
  * - background tokens
  * - border tokens
  * - interactive tokens
  * - color.table.row.*
+ * - primitive typography tokens
+ * - semantic typography roles
  */
 
 .lfx-table-cell {
-  /* Typography - reusing button typography tokens for consistency */
-  font-family: var(--font-button-family);
-  font-size: var(--font-button-size);
-  font-weight: var(--font-button-weight);
-  line-height: var(--font-button-line-height);
+  /* Typography - binds to system-level UI role tokens */
+  font-family: var(--ui-text-data-font-family);
+  font-size: var(--ui-text-data-font-size);
+  font-weight: var(--ui-text-data-font-weight);
+  line-height: var(--ui-text-data-line-height);
   
   /* Spacing */
   padding: var(--spacing-sm) var(--spacing-md);
@@ -79,7 +81,7 @@
    ======================================== */
 
 .lfx-table-cell--small {
-  font-size: calc(var(--font-button-size) * 0.875);
+  font-size: calc(var(--ui-text-data-font-size) * 0.875);
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 
