@@ -320,6 +320,58 @@
   --font-role-data-line-height: var(--leading-text-sm);
 
   /* ========================================
+     UI ROLE — Typography (System-Level Only)
+     
+     Components MUST bind here.
+     
+     RULES:
+     - Agents may only reference UI role typography tokens marked as system-level
+     - Component-scoped UI role tokens require human approval
+     - Semantic typography roles must never be referenced directly by components
+     
+     These tokens reference semantic roles ONLY.
+     ❌ Do NOT reference primitives directly
+     ❌ Do NOT introduce new values
+     ✅ Only semantic → UI role bindings
+     ======================================== */
+  
+  /* Page Title - Primary page headings */
+  --ui-text-page-title-font-family: var(--font-role-page-title-family);
+  --ui-text-page-title-font-size: var(--font-role-page-title-size);
+  --ui-text-page-title-font-weight: var(--font-role-page-title-weight);
+  --ui-text-page-title-line-height: var(--font-role-page-title-line-height);
+  
+  /* Section Title - Section headings within pages */
+  --ui-text-section-title-font-family: var(--font-role-section-title-family);
+  --ui-text-section-title-font-size: var(--font-role-section-title-size);
+  --ui-text-section-title-font-weight: var(--font-role-section-title-weight);
+  --ui-text-section-title-line-height: var(--font-role-section-title-line-height);
+  
+  /* Body Primary - Main body text */
+  --ui-text-body-primary-font-family: var(--font-role-body-primary-family);
+  --ui-text-body-primary-font-size: var(--font-role-body-primary-size);
+  --ui-text-body-primary-font-weight: var(--font-role-body-primary-weight);
+  --ui-text-body-primary-line-height: var(--font-role-body-primary-line-height);
+  
+  /* Body Secondary - Supporting/secondary text */
+  --ui-text-body-secondary-font-family: var(--font-role-body-secondary-family);
+  --ui-text-body-secondary-font-size: var(--font-role-body-secondary-size);
+  --ui-text-body-secondary-font-weight: var(--font-role-body-secondary-weight);
+  --ui-text-body-secondary-line-height: var(--font-role-body-secondary-line-height);
+  
+  /* Label - Form labels, metadata labels */
+  --ui-text-label-font-family: var(--font-role-label-family);
+  --ui-text-label-font-size: var(--font-role-label-size);
+  --ui-text-label-font-weight: var(--font-role-label-weight);
+  --ui-text-label-line-height: var(--font-role-label-line-height);
+  
+  /* Data - Tabular data, metrics, values */
+  --ui-text-data-font-family: var(--font-role-data-family);
+  --ui-text-data-font-size: var(--font-role-data-size);
+  --ui-text-data-font-weight: var(--font-role-data-weight);
+  --ui-text-data-line-height: var(--font-role-data-line-height);
+
+  /* ========================================
      SEMANTIC - Button Tokens
      ======================================== */
   
