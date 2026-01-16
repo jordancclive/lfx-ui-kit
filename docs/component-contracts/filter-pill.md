@@ -39,9 +39,11 @@ Represents a selectable filter or toggle.
 - `color.text.*`
 - `color.interactive.primary.*`
 - `neutral.*`
-- `font.button.*`
+- `ui.text.label.*` (system-level UI role typography)
 - `spacing.*`
 - `rounded-full`
+
+**Typography:** FilterPill binds exclusively to system-level UI role typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 
 ## Responsibilities
 
