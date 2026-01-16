@@ -13,7 +13,9 @@
   align-items: flex-start;
   gap: var(--spacing-app-header-gap);
   
-  padding: var(--spacing-app-header-padding-y) var(--spacing-app-header-padding-x);
+  /* Vertical padding only — horizontal alignment is owned by PageLayout */
+  padding-top: var(--spacing-app-header-padding-y);
+  padding-bottom: var(--spacing-app-header-padding-y);
   
   /* AppHeader does NOT own surface — sits on page background */
   background-color: transparent;

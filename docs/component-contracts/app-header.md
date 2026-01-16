@@ -55,7 +55,8 @@ AppShell
 | Layout of meta slot (left-aligned, before title) | Routing or navigation logic |
 | Optional bottom divider (page-level token) | State management or data fetching |
 | Dense spacing mode | Hover, selected, or disabled states |
-| Padding (internal spacing only) | Surface/background (sits on page background) |
+| Vertical padding only | Surface/background (sits on page background) |
+| | Horizontal padding (owned by PageLayout) |
 | | Click handlers or interaction logic |
 
 ---
@@ -233,7 +234,7 @@ createAppHeader({
 |----------------|--------|
 | Background | `transparent` (no surface ownership) |
 | Bottom divider | `ui.surface.divider` |
-| Horizontal padding | `spacing.app-header.padding-x` |
+| Horizontal padding | None (delegated to PageLayout) |
 | Vertical padding | `spacing.app-header.padding-y` |
 | Vertical padding (dense) | `spacing.app-header.padding-y-dense` |
 | Gap between regions | `spacing.app-header.gap` |
@@ -242,6 +243,8 @@ createAppHeader({
 | Gap between title/description (dense) | `spacing.app-header.title-gap-dense` |
 | Gap between meta/title | `spacing.app-header.meta-gap` |
 | Gap between action children | `spacing.app-header.actions-gap` |
+
+**Note:** AppHeader does not apply horizontal padding. Horizontal alignment with MetricCards, Cards, and Tables is achieved by PageLayout, which owns the content column width and horizontal rhythm.
 
 ---
 
