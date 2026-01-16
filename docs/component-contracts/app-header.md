@@ -127,6 +127,8 @@ AppHeader may ONLY reference:
 
 Title and description MUST bind to existing typography role tokens. AppHeader does NOT introduce new typography tokens.
 
+**Typography:** AppHeader binds exclusively to system-level UI role typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
+
 ---
 
 ## Layout Strategy

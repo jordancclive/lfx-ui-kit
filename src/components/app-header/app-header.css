@@ -3,7 +3,7 @@
  * Tier 3 - Composite Layout Component
  * 
  * Layout-only component for page headers.
- * Binds to existing typography tokens for title/description.
+ * Binds to system-level UI role typography tokens for title/description.
  */
 
 .lfx-app-header {
@@ -59,28 +59,28 @@
 
 /* ==========================================
    Title Typography
-   Binds to existing primitive tokens
+   Binds to system-level UI role typography tokens
    ========================================== */
 
 .lfx-app-header__title {
-  font-family: var(--font-family);
-  font-size: var(--text-2xl);
-  font-weight: var(--font-semibold);
-  line-height: 1.3;
+  font-family: var(--ui-text-page-title-font-family);
+  font-size: var(--ui-text-page-title-font-size);
+  font-weight: var(--ui-text-page-title-font-weight);
+  line-height: var(--ui-text-page-title-line-height);
   color: var(--text-primary);
   margin: 0;
 }
 
 /* ==========================================
    Description Typography
-   Binds to existing primitive tokens
+   Binds to system-level UI role typography tokens
    ========================================== */
 
 .lfx-app-header__description {
-  font-family: var(--font-family);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  line-height: 1.5;
+  font-family: var(--ui-text-body-secondary-font-family);
+  font-size: var(--ui-text-body-secondary-font-size);
+  font-weight: var(--ui-text-body-secondary-font-weight);
+  line-height: var(--ui-text-body-secondary-line-height);
   color: var(--text-secondary);
   margin: 0;
 }
