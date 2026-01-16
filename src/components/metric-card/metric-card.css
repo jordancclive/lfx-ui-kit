@@ -1,0 +1,104 @@
+/**
+ * MetricCard Component Styles
+ * 
+ * Tier 2 — Pattern Component
+ * 
+ * Owns:
+ * - Internal layout of label, value, meta, footer
+ * - Typography role usage (via UI role tokens only)
+ * - Spacing between metric elements
+ * 
+ * Does NOT own:
+ * - Card surface styling (delegated to Card)
+ * - Data formatting logic
+ * - Color semantics of values
+ * 
+ * Token Bindings:
+ * - Label: ui.text.label.*
+ * - Value: ui.text.page-title.* (prominent, focal point)
+ * - Meta: ui.text.body-secondary.*
+ * 
+ * NO typography primitives allowed.
+ * NO semantic typography roles allowed.
+ * Only ui.text.* bindings.
+ */
+
+.lfx-metric-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* ========================================
+   Label - Uses ui.text.label.*
+   ======================================== */
+
+.lfx-metric-card__label {
+  font-family: var(--ui-text-label-font-family);
+  font-size: var(--ui-text-label-font-size);
+  font-weight: var(--ui-text-label-font-weight);
+  line-height: var(--ui-text-label-line-height);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   Value - Uses ui.text.page-title.*
+   
+   Rationale: Values are the focal point and 
+   require visual prominence similar to page titles.
+   ======================================== */
+
+.lfx-metric-card__value {
+  font-family: var(--ui-text-page-title-font-family);
+  font-size: var(--ui-text-page-title-font-size);
+  font-weight: var(--ui-text-page-title-font-weight);
+  line-height: var(--ui-text-page-title-line-height);
+  color: var(--text-primary);
+  margin: 0;
+  
+  /* Ensure numbers display well */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Large value variant for dashboard prominence */
+.lfx-metric-card__value--large {
+  font-size: calc(var(--ui-text-page-title-font-size) * 1.5);
+  line-height: 1.2;
+}
+
+/* ========================================
+   Meta - Uses ui.text.body-secondary.*
+   ======================================== */
+
+.lfx-metric-card__meta {
+  font-family: var(--ui-text-body-secondary-font-family);
+  font-size: var(--ui-text-body-secondary-font-size);
+  font-weight: var(--ui-text-body-secondary-font-weight);
+  line-height: var(--ui-text-body-secondary-line-height);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   Footer - Layout only, no typography
+   ======================================== */
+
+.lfx-metric-card__footer {
+  margin-top: var(--spacing-8);
+  padding-top: var(--spacing-8);
+  border-top: 1px solid var(--ui-surface-divider);
+}
+
+/* ========================================
+   Dense variant - reduced spacing
+   ======================================== */
+
+.lfx-metric-card__content--dense {
+  gap: var(--spacing-2);
+}
+
+.lfx-metric-card__content--dense .lfx-metric-card__footer {
+  margin-top: var(--spacing-6);
+  padding-top: var(--spacing-6);
+}
