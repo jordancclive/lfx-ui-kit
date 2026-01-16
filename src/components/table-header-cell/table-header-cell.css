@@ -8,7 +8,7 @@
  * - color.table.header.text.*
  * - color.table.header.icon.*
  * - spacing.*
- * - typography tokens
+ * - ui.text.label.* (system-level UI role typography)
  * 
  * NOT allowed:
  * - color.table.row.*
@@ -16,14 +16,16 @@
  * - background tokens
  * - border tokens
  * - interactive tokens
+ * - primitive typography tokens
+ * - semantic typography roles
  */
 
 .lfx-table-header-cell {
-  /* Typography - label style, bolder than body */
-  font-family: var(--font-button-family);
-  font-size: var(--text-xs);
-  font-weight: var(--font-semibold);
-  line-height: var(--leading-text-xs);
+  /* Typography - binds to system-level UI role tokens */
+  font-family: var(--ui-text-label-font-family);
+  font-size: var(--ui-text-label-font-size);
+  font-weight: var(--ui-text-label-font-weight);
+  line-height: var(--ui-text-label-line-height);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   

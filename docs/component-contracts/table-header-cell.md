@@ -30,6 +30,8 @@ Represents a single header cell in a table. Owns header text presentation and op
 - `spacing.*`
 - Typography tokens (`font-family`, `font-size`, `font-weight`, `line-height`)
 
+**Typography:** TableHeaderCell binds exclusively to system-level UI role typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
+
 ### Forbidden
 
 - `color.table.row.*`
