@@ -75,6 +75,10 @@ The following components MUST use `ui-text-control`:
 - FilterDropdownTrigger
 - SearchInput
 
+### Size Variants
+
+Size variants for interactive components must be expressed as relative scaling of `ui-text-control-font-size`, not as new typography roles.
+
 ### Why Controls Use Data Typography
 
 Controls share characteristics with data display:
