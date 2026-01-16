@@ -53,9 +53,10 @@ AppShell
 | Layout of title/description stack | Typography tokens (reuses existing) |
 | Layout of actions slot (right-aligned) | Styling or behavior of buttons, filters, tabs |
 | Layout of meta slot (left-aligned, before title) | Routing or navigation logic |
-| Optional bottom divider | State management or data fetching |
+| Optional bottom divider (page-level token) | State management or data fetching |
 | Dense spacing mode | Hover, selected, or disabled states |
-| Container background and padding | Click handlers or interaction logic |
+| Padding (internal spacing only) | Surface/background (sits on page background) |
+| | Click handlers or interaction logic |
 
 ---
 
@@ -119,9 +120,10 @@ All visual presentation is derived from props only. There are no hover, selected
 ### Layout Tokens (Owned)
 
 AppHeader may ONLY reference:
-- `color.app-header.surface.background`
-- `color.app-header.surface.border`
 - `spacing.app-header.*`
+- `ui.surface.divider` (for optional bottom divider only)
+
+**Surface:** AppHeader does NOT own surface. It renders transparently on the page background. The first Card or surface component below it should appear as the first contained surface.
 
 ### Typography Tokens (Referenced, Not Owned)
 
@@ -229,8 +231,8 @@ createAppHeader({
 
 | Visual Property | Token |
 |----------------|--------|
-| Background | `color.app-header.surface.background` |
-| Bottom divider | `color.app-header.surface.border` |
+| Background | `transparent` (no surface ownership) |
+| Bottom divider | `ui.surface.divider` |
 | Horizontal padding | `spacing.app-header.padding-x` |
 | Vertical padding | `spacing.app-header.padding-y` |
 | Vertical padding (dense) | `spacing.app-header.padding-y-dense` |

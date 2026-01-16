@@ -14,7 +14,9 @@
   gap: var(--spacing-app-header-gap);
   
   padding: var(--spacing-app-header-padding-y) var(--spacing-app-header-padding-x);
-  background: var(--color-app-header-surface-background);
+  
+  /* AppHeader does NOT own surface — sits on page background */
+  background-color: transparent;
   
   /* Allow wrapping on narrow viewports */
   flex-wrap: wrap;
@@ -27,9 +29,9 @@
   gap: var(--spacing-app-header-gap-dense);
 }
 
-/* Optional bottom divider */
+/* Optional bottom divider — uses page-level divider token */
 .lfx-app-header--with-divider {
-  border-bottom: 1px solid var(--color-app-header-surface-border);
+  border-bottom: 1px solid var(--ui-surface-divider);
 }
 
 /* ==========================================
