@@ -269,6 +269,57 @@
   --information-900: var(--color-azure-900);
 
   /* ========================================
+     SEMANTIC - Typography Roles
+     
+     These roles define hierarchy and intent, not final visual density.
+     Visual density adjustments (e.g., smaller body text) must be done
+     by modifying primitive tokens, not semantic roles.
+     
+     RULES:
+     - Semantic roles bind ONLY to primitive typography tokens
+     - Semantic roles must NOT reference other semantic tokens
+     - Semantic roles must NOT reference UI role tokens
+     - Components should NOT consume these tokens directly
+       (use UI role tokens instead)
+     ======================================== */
+  
+  /* Page Title - Primary page heading */
+  --font-role-page-title-family: var(--font-family);
+  --font-role-page-title-size: var(--text-lg);
+  --font-role-page-title-weight: var(--font-semibold);
+  --font-role-page-title-line-height: var(--leading-text-lg);
+  
+  /* Section Title - Secondary headings within pages */
+  --font-role-section-title-family: var(--font-family);
+  --font-role-section-title-size: var(--text-base);
+  --font-role-section-title-weight: var(--font-semibold);
+  --font-role-section-title-line-height: var(--leading-text-base);
+  
+  /* Body Primary - Main body text */
+  --font-role-body-primary-family: var(--font-family);
+  --font-role-body-primary-size: var(--text-base);
+  --font-role-body-primary-weight: var(--font-normal);
+  --font-role-body-primary-line-height: var(--leading-text-sm);
+  
+  /* Body Secondary - Supporting/secondary text */
+  --font-role-body-secondary-family: var(--font-family);
+  --font-role-body-secondary-size: var(--text-xs);
+  --font-role-body-secondary-weight: var(--font-normal);
+  --font-role-body-secondary-line-height: var(--leading-text-xs);
+  
+  /* Label - Form labels, metadata labels */
+  --font-role-label-family: var(--font-family);
+  --font-role-label-size: var(--text-sm);
+  --font-role-label-weight: var(--font-normal);
+  --font-role-label-line-height: var(--leading-text-sm);
+  
+  /* Data - Tabular data, metrics, values */
+  --font-role-data-family: var(--font-family);
+  --font-role-data-size: var(--text-sm);
+  --font-role-data-weight: var(--font-medium);
+  --font-role-data-line-height: var(--leading-text-sm);
+
+  /* ========================================
      SEMANTIC - Button Tokens
      ======================================== */
   
