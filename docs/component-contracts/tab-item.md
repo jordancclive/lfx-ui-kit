@@ -37,9 +37,11 @@ Represents a navigational tab within a group.
 ### Allowed
 
 - `color.tabs.item.*`
-- `font.button.*`
+- `ui.text.control.*` (system-level UI role typography)
 - `spacing.*`
 - `rounded-full`
+
+**Typography:** TabItem binds exclusively to system-level UI role control typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 
 ### Forbidden
 

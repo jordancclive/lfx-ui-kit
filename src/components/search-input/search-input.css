@@ -1,6 +1,8 @@
 /*
  * LFX One UI Kit - SearchInput Component
  * Uses UI Role tokens only - no palette references, no magic numbers
+ * 
+ * Typography: Binds to system-level UI role control tokens
  */
 
 .lfx-search-input {
@@ -18,11 +20,11 @@
   /* Padding */
   padding: var(--spacing-8) var(--spacing-12);
   
-  /* Typography - Explicit binding, no global inheritance */
-  font-family: var(--font-family);
-  font-size: var(--text-sm);
-  font-weight: var(--font-normal);
-  line-height: var(--leading-text-sm);
+  /* Typography - binds to system-level UI role control tokens */
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  font-weight: var(--ui-text-control-font-weight);
+  line-height: var(--ui-text-control-line-height);
   
   /* Text color */
   color: var(--text-primary);

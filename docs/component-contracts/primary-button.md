@@ -39,9 +39,11 @@ Represents a primary user action. Used wherever an explicit action is required.
 
 - `color.interactive.primary.*`
 - `color.spinner.*`
-- `font.button.*`
+- `ui.text.control.*` (system-level UI role typography)
 - `spacing.*`
 - `rounded-*`
+
+**Typography:** Button binds exclusively to system-level UI role control typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 - `button-stroke`
 
 ### Forbidden

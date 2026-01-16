@@ -1,6 +1,8 @@
 /*
  * LFX One UI Kit - Button Component
  * Uses UI Role tokens only - no palette references, no magic numbers
+ * 
+ * Typography: Binds to system-level UI role control tokens
  */
 
 .lfx-button {
@@ -14,11 +16,11 @@
   /* Sizing - Default */
   padding: var(--button-vertical-padding) var(--button-horizontal-padding);
   
-  /* Typography - Explicit binding, no global inheritance */
-  font-family: var(--font-button-family);
-  font-size: var(--font-button-size);
-  font-weight: var(--font-button-weight);
-  line-height: var(--font-button-line-height);
+  /* Typography - binds to system-level UI role control tokens */
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  font-weight: var(--ui-text-control-font-weight);
+  line-height: var(--ui-text-control-line-height);
   letter-spacing: var(--letter-spacing);
   text-decoration: none;
   white-space: nowrap;
@@ -98,8 +100,9 @@
 .lfx-button--large {
   padding: var(--button-lg-vertical-padding) var(--button-lg-horizontal-padding);
   gap: var(--button-lg-spacing);
-  font-size: var(--font-button-lg-size);
-  line-height: var(--font-button-lg-line-height);
+  /* Large size: ~1.14x control size (16px vs 14px) */
+  font-size: calc(var(--ui-text-control-font-size) * 1.143);
+  line-height: calc(var(--ui-text-control-line-height) * 1.2);
 }
 
 /* ========================================

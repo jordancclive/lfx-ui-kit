@@ -370,6 +370,21 @@
   --ui-text-data-font-size: var(--font-role-data-size);
   --ui-text-data-font-weight: var(--font-role-data-weight);
   --ui-text-data-line-height: var(--font-role-data-line-height);
+  
+  /* ========================================
+     UI ROLE — Control Typography (Interactive)
+     
+     All interactive controls (buttons, tabs, dropdowns, inputs)
+     MUST bind to these tokens, not label or body roles.
+     
+     References semantic role: data (text-sm, medium weight)
+     ======================================== */
+  
+  /* Control - Buttons, tabs, dropdown triggers, form inputs */
+  --ui-text-control-font-family: var(--font-role-data-family);
+  --ui-text-control-font-size: var(--font-role-data-size);
+  --ui-text-control-font-weight: var(--font-role-data-weight);
+  --ui-text-control-line-height: var(--font-role-data-line-height);
 
   /* ========================================
      SEMANTIC - Button Tokens

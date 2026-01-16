@@ -31,9 +31,11 @@ Provides a text input for search/filter operations.
 
 - `color.text.*`
 - `color.interactive.primary.*`
-- `font.button.*`
+- `ui.text.control.*` (system-level UI role typography)
 - `spacing.*`
 - `rounded-*`
+
+**Typography:** SearchInput binds exclusively to system-level UI role control typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 
 ### Forbidden
 

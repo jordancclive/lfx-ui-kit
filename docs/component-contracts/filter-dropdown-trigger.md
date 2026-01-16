@@ -32,8 +32,10 @@ Acts as the trigger for a dropdown or select menu.
 - `color.text.*`
 - `color.interactive.primary.*`
 - `neutral.*`
-- `font.button.*`
+- `ui.text.control.*` (system-level UI role typography)
 - `spacing.*`
+
+**Typography:** FilterDropdownTrigger binds exclusively to system-level UI role control typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
 - `rounded-*`
 
 ## Responsibilities

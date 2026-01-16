@@ -54,6 +54,35 @@ COMPONENTS
 | `ui-text-body-secondary` | `font-role-body-secondary` | Supporting/secondary text |
 | `ui-text-label` | `font-role-label` | Form labels, metadata labels |
 | `ui-text-data` | `font-role-data` | Tabular data, metrics, values |
+| `ui-text-control` | `font-role-data` | Buttons, tabs, dropdowns, inputs |
+
+---
+
+## Interactive Control Typography
+
+> **All interactive controls must bind to UI role control typography tokens, not label or body roles.**
+
+This rule ensures:
+- Consistent typography across all interactive elements
+- Clear semantic separation between content (label, body) and controls
+- Predictable behavior when adjusting control density
+
+### Control Components
+
+The following components MUST use `ui-text-control`:
+- Button
+- TabItem
+- FilterDropdownTrigger
+- SearchInput
+
+### Why Controls Use Data Typography
+
+Controls share characteristics with data display:
+- Compact sizing (text-sm)
+- Medium weight for visibility
+- Tight line-height for button/control sizing
+
+This is intentional — controls and data are both "dense UI chrome".
 
 Each UI role token provides four properties:
 - `--ui-text-{role}-font-family`

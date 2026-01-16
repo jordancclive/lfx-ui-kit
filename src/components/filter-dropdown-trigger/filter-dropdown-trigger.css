@@ -1,6 +1,8 @@
 /*
  * LFX One UI Kit - FilterDropdownTrigger Component
  * Uses UI Role tokens only - no palette references, no magic numbers
+ * 
+ * Typography: Binds to system-level UI role control tokens
  */
 
 .lfx-filter-dropdown-trigger {
@@ -20,11 +22,11 @@
   border: var(--button-stroke) solid var(--neutral-200);
   border-radius: var(--rounded-lg);
   
-  /* Typography - same as SearchInput */
-  font-family: var(--font-family);
-  font-size: var(--text-sm);
-  font-weight: var(--font-normal);
-  line-height: var(--leading-text-sm);
+  /* Typography - binds to system-level UI role control tokens */
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  font-weight: var(--ui-text-control-font-weight);
+  line-height: var(--ui-text-control-line-height);
   
   /* Text color */
   color: var(--text-primary);

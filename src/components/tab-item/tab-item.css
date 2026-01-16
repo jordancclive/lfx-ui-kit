@@ -1,6 +1,8 @@
 /*
  * LFX One UI Kit - TabItem Component
  * Uses UI Role tokens only - no palette references, no magic numbers
+ * 
+ * Typography: Binds to system-level UI role control tokens
  */
 
 .lfx-tab-item {
@@ -13,11 +15,11 @@
   /* Sizing - Default (reuses button padding) */
   padding: var(--button-vertical-padding) var(--button-horizontal-padding);
   
-  /* Typography - reuses font.button tokens */
-  font-family: var(--font-button-family);
-  font-size: var(--font-button-size);
-  font-weight: var(--font-button-weight);
-  line-height: var(--font-button-line-height);
+  /* Typography - binds to system-level UI role control tokens */
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  font-weight: var(--ui-text-control-font-weight);
+  line-height: var(--ui-text-control-line-height);
   
   /* Shape - rounded-full (pill) */
   border-radius: var(--rounded-full);
@@ -91,8 +93,9 @@
 
 .lfx-tab-item--small {
   padding: var(--spacing-2) var(--spacing-6);
-  font-size: var(--text-xs);
-  line-height: var(--leading-text-xs);
+  /* Small size: ~0.857x control size (12px vs 14px) */
+  font-size: calc(var(--ui-text-control-font-size) * 0.857);
+  line-height: calc(var(--ui-text-control-line-height) * 0.8);
 }
 
 /* ========================================
