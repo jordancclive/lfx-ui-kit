@@ -278,9 +278,6 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
   ];
 
   // My Groups section with filters grouped in same card
-  const myGroupsSection = document.createElement('div');
-  myGroupsSection.appendChild(createSectionTitle('My Groups'));
-  
   // Build card children array - filters + table grouped together
   const myGroupsCardChildren: HTMLElement[] = [];
   
@@ -290,34 +287,31 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
   
   myGroupsCardChildren.push(createGroupsTable(myGroups, dense));
   
-  myGroupsSection.appendChild(
-    createCard({
-      dense,
-      children: myGroupsCardChildren,
-    })
-  );
-
+  // Section title sits outside Card, both directly in PageSection
   pageChildren.push(
     createPageSection({
       dense: true,
-      children: myGroupsSection,
+      children: [
+        createSectionTitle('My Groups'),
+        createCard({
+          dense,
+          children: myGroupsCardChildren,
+        }),
+      ],
     })
   );
 
-  // Other Groups section
-  const otherGroupsSection = document.createElement('div');
-  otherGroupsSection.appendChild(createSectionTitle('Other Groups'));
-  otherGroupsSection.appendChild(
-    createCard({
-      dense,
-      children: createGroupsTable(otherGroups, dense),
-    })
-  );
-
+  // Other Groups section - title outside Card
   pageChildren.push(
     createPageSection({
       dense: true,
-      children: otherGroupsSection,
+      children: [
+        createSectionTitle('Other Groups'),
+        createCard({
+          dense,
+          children: createGroupsTable(otherGroups, dense),
+        }),
+      ],
     })
   );
 
