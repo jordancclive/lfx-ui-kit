@@ -5,7 +5,7 @@
  * 
  * Owns:
  * - Surface background
- * - Border (optional)
+ * - Surface elevation (shadow)
  * - Border radius
  * - Internal padding
  * - Header/footer slot layout (not styling)
@@ -14,10 +14,11 @@
  * - Typography
  * - Child content styling
  * - Hover/selected states
+ * - Borders as primary elevation signal
  * 
  * Token Bindings:
  * - Background: --ui-card-surface-background (→ ui.surface.container)
- * - Border: --ui-card-surface-border (→ ui.surface.divider)
+ * - Elevation: --ui-card-elevation-default
  * - Radius: --ui-card-radius
  * - Padding: --ui-card-padding / --ui-card-padding-dense
  */
@@ -27,7 +28,10 @@
   border-radius: var(--ui-card-radius);
   padding: var(--ui-card-padding);
   
-  /* No border by default */
+  /* Elevation via subtle shadow */
+  box-shadow: var(--ui-card-elevation-default);
+  
+  /* No border by default (shadow provides elevation) */
   border: none;
 }
 

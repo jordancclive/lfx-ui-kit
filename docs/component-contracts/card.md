@@ -12,7 +12,7 @@ This component exists to provide a consistent visual surface for grouping conten
 
 ## Purpose
 
-Card provides a consistent surface for grouping content. It standardizes background, border, radius, and internal padding. It is a visual container, not a layout system.
+Card provides an elevated container surface using subtle shadow. It standardizes background, elevation (shadow), radius, and internal padding. It is a visual container, not a layout system.
 
 ---
 
@@ -21,10 +21,11 @@ Card provides a consistent surface for grouping content. It standardizes backgro
 | Owns | Does NOT Own |
 |------|--------------|
 | Surface background | Typography |
-| Border (optional) | Tables, lists, charts, metrics |
+| Surface elevation (shadow) | Tables, lists, charts, metrics |
 | Border radius | Data fetching or logic |
 | Internal padding | Page layout or section spacing |
-| Optional header and footer slots (layout only) | Hover/selected state (unless explicitly added later) |
+| Optional header and footer slots (layout only) | Borders as primary elevation signal |
+| | Hover/selected state (unless explicitly added later) |
 
 ---
 
@@ -54,7 +55,7 @@ Card uses only UI role surface tokens:
 | Property | Token |
 |----------|-------|
 | Background | `--ui-card-surface-background` → `ui.surface.container` |
-| Border | `--ui-card-surface-border` → `ui.surface.divider` |
+| Elevation | `--ui-card-elevation-default` |
 | Radius | `--ui-card-radius` |
 | Padding | `--ui-card-padding` / `--ui-card-padding-dense` |
 

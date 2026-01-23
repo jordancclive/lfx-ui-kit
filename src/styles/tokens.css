@@ -781,6 +781,9 @@
   --ui-card-surface-background: var(--ui-surface-container);
   --ui-card-surface-border: var(--ui-surface-divider);
   
+  /* Elevation - subtle shadow for card lift */
+  --ui-card-elevation-default: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  
   /* Layout */
   --ui-card-radius: var(--rounded-lg);
   --ui-card-padding: var(--spacing-16);
