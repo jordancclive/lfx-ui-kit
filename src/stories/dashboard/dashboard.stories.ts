@@ -153,6 +153,21 @@ function createDemoNav(activeItemId = 'dashboard') {
 }
 
 // =============================================================================
+// STORY-ONLY PAGE WIDTH WRAPPER
+// This exists to make composition stories readable in Storybook.
+// Mirrors real LFX One laptop viewport usage (~1280px constraint).
+// This is NOT part of the production UI — it's a presentation aid only.
+// =============================================================================
+
+function wrapForStorybook(content: HTMLElement): HTMLElement {
+  const wrapper = document.createElement('div');
+  wrapper.style.maxWidth = '1280px';
+  wrapper.style.margin = '0 auto';
+  wrapper.appendChild(content);
+  return wrapper;
+}
+
+// =============================================================================
 // CANONICAL DASHBOARD COMPOSITION
 // This hierarchy must match the contract architecture exactly
 // =============================================================================
@@ -233,10 +248,13 @@ function createDashboard(args: DashboardArgs = {}) {
   });
 
   // Full AppShell with optional nav
-  return createAppShell({
+  const appShell = createAppShell({
     nav: showNav ? createDemoNav() : undefined,
     content: pageContent,
   });
+
+  // Wrap for Storybook presentation (story-only constraint)
+  return wrapForStorybook(appShell);
 }
 
 // =============================================================================
