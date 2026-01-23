@@ -6,6 +6,8 @@
 
 Represents a selectable, hoverable row used in tables and lists.
 
+TableRow provides a hover affordance for scannability and interactivity.
+
 ## Non-Goals
 
 - Does not render cell content
@@ -32,6 +34,12 @@ Represents a selectable, hoverable row used in tables and lists.
 2. `selected`
 3. `hover`
 4. `default`
+
+## State Behavior
+
+- Hover is supported for interactive rows
+- Hover is suppressed for disabled rows
+- Hover does not override selected state
 
 ## Token Ownership
 
@@ -67,3 +75,7 @@ Represents a selectable, hoverable row used in tables and lists.
 - Selected
 - Disabled
 - Clickable vs non-clickable
+
+## Lock Statement
+
+This contract is considered stable. Visual changes must be achieved through tokens, not by expanding component responsibilities.
