@@ -277,29 +277,29 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
     }),
   ];
 
-  // Filters section (conditional)
-  if (showFilters) {
-    pageChildren.push(
-      createPageSection({
-        dense,
-        children: createFiltersRow(),
-      })
-    );
-  }
-
-  // My Groups section
+  // My Groups section with filters grouped in same card
   const myGroupsSection = document.createElement('div');
   myGroupsSection.appendChild(createSectionTitle('My Groups'));
+  
+  // Build card children array - filters + table grouped together
+  const myGroupsCardChildren: HTMLElement[] = [];
+  
+  if (showFilters) {
+    myGroupsCardChildren.push(createFiltersRow());
+  }
+  
+  myGroupsCardChildren.push(createGroupsTable(myGroups, dense));
+  
   myGroupsSection.appendChild(
     createCard({
       dense,
-      children: createGroupsTable(myGroups, dense),
+      children: myGroupsCardChildren,
     })
   );
 
   pageChildren.push(
     createPageSection({
-      dense,
+      dense: true,
       children: myGroupsSection,
     })
   );
@@ -316,7 +316,7 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
 
   pageChildren.push(
     createPageSection({
-      dense,
+      dense: true,
       children: otherGroupsSection,
     })
   );
