@@ -482,13 +482,13 @@
      ======================================== */
   
   /* Page-level background (AppShell, body) */
-  --ui-surface-page: var(--neutral-50);
+  --ui-surface-page: var(--neutral-100);
   
   /* Container surfaces (cards, panels, content areas) */
   --ui-surface-container: var(--neutral-0);
   
-  /* Subtle elevated surfaces */
-  --ui-surface-subtle: var(--neutral-100);
+  /* Subtle elevated surfaces (internal to cards, lighter than page) */
+  --ui-surface-subtle: var(--neutral-50);
   
   /* Hover state for interactive surfaces */
   --ui-surface-hover: var(--neutral-100);
