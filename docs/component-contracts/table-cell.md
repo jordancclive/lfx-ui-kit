@@ -28,7 +28,16 @@ Represents a single cell within a table row. Owns text presentation, alignment, 
 - `spacing.*`
 - Typography tokens (`font-family`, `font-size`, `font-weight`, `line-height`)
 
-**Typography:** TableCell binds exclusively to system-level UI role typography tokens. It must not reference semantic typography roles or primitive typography tokens directly.
+**Typography:** TableCell binds exclusively to system-level UI role body typography tokens. It must not reference data or control typography roles.
+
+Allowed typography bindings:
+- `ui.text.body-primary.*`
+- `ui.text.body-secondary.*`
+
+NOT allowed:
+- `ui.text.data.*`
+- Primitive typography tokens
+- Semantic typography roles
 
 ### Forbidden
 

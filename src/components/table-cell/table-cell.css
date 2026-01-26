@@ -7,9 +7,10 @@
  * Token bindings (allowed):
  * - color.table.cell.text.*
  * - spacing.*
- * - ui.text.data.* (system-level UI role typography)
+ * - ui.text.body-secondary.* (system-level UI role typography)
  * 
  * NOT allowed:
+ * - ui.text.data.* (reserved for control typography)
  * - background tokens
  * - border tokens
  * - interactive tokens
@@ -19,14 +20,14 @@
  */
 
 .lfx-table-cell {
-  /* Typography - binds to system-level UI role tokens */
-  font-family: var(--ui-text-data-font-family);
-  font-size: var(--ui-text-data-font-size);
-  font-weight: var(--ui-text-data-font-weight);
-  line-height: var(--ui-text-data-line-height);
+  /* Typography - binds to body text roles per LFX One design */
+  font-family: var(--ui-text-body-secondary-font-family);
+  font-size: var(--ui-text-body-secondary-font-size);
+  font-weight: var(--ui-text-body-secondary-font-weight);
+  line-height: var(--ui-text-body-secondary-line-height);
   
-  /* Spacing */
-  padding: var(--spacing-sm) var(--spacing-md);
+  /* Spacing - compact for information density */
+  padding: var(--spacing-8) var(--spacing-12);
   
   /* Default alignment */
   text-align: left;
@@ -37,7 +38,7 @@
   /* Layout for content */
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-8);
 }
 
 /* ========================================
@@ -81,8 +82,17 @@
    ======================================== */
 
 .lfx-table-cell--small {
-  font-size: calc(var(--ui-text-data-font-size) * 0.875);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: calc(var(--ui-text-body-secondary-font-size) * 0.875);
+  padding: var(--spacing-4) var(--spacing-8);
+}
+
+/* ========================================
+   Dense variant - reduced vertical padding
+   ======================================== */
+
+.lfx-table--dense .lfx-table-cell,
+.lfx-table-cell--dense {
+  padding: var(--spacing-6) var(--spacing-12);
 }
 
 /* ========================================
