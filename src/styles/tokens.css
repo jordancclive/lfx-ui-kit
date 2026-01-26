@@ -305,9 +305,9 @@
   
   /* Section Title - Secondary headings within pages */
   --font-role-section-title-family: var(--font-family);
-  --font-role-section-title-size: var(--text-base);
+  --font-role-section-title-size: var(--text-sm);
   --font-role-section-title-weight: var(--font-semibold);
-  --font-role-section-title-line-height: var(--leading-text-base);
+  --font-role-section-title-line-height: var(--leading-text-sm);
   
   /* Body Primary - Main body text */
   --font-role-body-primary-family: var(--font-family);
