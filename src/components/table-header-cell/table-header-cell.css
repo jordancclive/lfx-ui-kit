@@ -27,8 +27,20 @@
   font-weight: var(--ui-text-label-font-weight);
   line-height: var(--ui-text-label-line-height);
   
-  /* Spacing - taller than data rows for visual anchoring */
-  padding: var(--spacing-12) var(--spacing-12);
+  /* 
+   * Spacing:
+   * - Vertical: spacing-12 (taller than data rows for visual anchoring)
+   * - Horizontal: spacing-16 (aligns with body cells and SearchInput above)
+   * 
+   * Alignment rationale:
+   * Header text must align precisely with:
+   * • SearchInput text above (uses 16px internal alignment)
+   * • Body cell text below (uses spacing-16 horizontal padding)
+   * 
+   * Consistent horizontal rhythm is critical for scanability.
+   * Misaligned headers create subtle visual jitter and feel unpolished.
+   */
+  padding: var(--spacing-12) var(--spacing-16);
   
   /* Default alignment */
   text-align: left;
@@ -121,5 +133,6 @@
 
 .lfx-table--dense .lfx-table-header-cell,
 .lfx-table-header-cell--dense {
-  padding: var(--spacing-8) var(--spacing-12);
+  /* Dense: reduced vertical padding, horizontal padding remains consistent */
+  padding: var(--spacing-8) var(--spacing-16);
 }
