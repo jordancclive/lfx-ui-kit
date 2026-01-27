@@ -299,7 +299,7 @@ function createProjectsTable(data: ProjectRow[], dense = false): HTMLElement {
   });
 }
 
-function createDemoNav(activeItemId = 'projects') {
+function createDemoNav(activeItemId?: string) {
   return createGlobalNav({
     activeItemId,
     children: [
@@ -307,6 +307,8 @@ function createDemoNav(activeItemId = 'projects') {
         createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
         createNavItem({ id: 'projects', children: createTextNode('Projects') }),
         createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
+        createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
         createNavItem({ id: 'members', children: createTextNode('Members') }),
         createNavItem({ id: 'settings', children: createTextNode('Settings') }),
       ]),
@@ -374,7 +376,14 @@ interface TablePageConfig {
   useDataTable?: boolean;
   
   // Navigation
-  nav?: HTMLElement;
+  /**
+   * Active navigation key for GlobalNav.
+   * Controls which nav item is highlighted.
+   * 
+   * GlobalNav is ALWAYS rendered as part of AppShell.
+   * This property only controls the active state.
+   */
+  navKey?: 'dashboard' | 'mailing-lists' | 'votes' | 'surveys' | 'drive' | 'projects' | 'groups' | 'members' | 'settings';
 }
 
 // Legacy interface for backward compatibility with existing stories
@@ -429,7 +438,7 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
     showFilters = false,
     showPagination = false,
     useDataTable = true, // DEFAULT: Use DataTable
-    nav = createDemoNav(),
+    navKey,
   } = config;
 
   const pageChildren: HTMLElement[] = [
@@ -524,6 +533,10 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
   
   pageContent.style.gap = 'var(--spacing-8)';
 
+  // GlobalNav is ALWAYS rendered as part of AppShell
+  // navKey controls which item is active
+  const nav = createDemoNav(navKey);
+
   // Full AppShell with nav
   const appShell = createAppShell({
     nav,
@@ -595,9 +608,12 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   // between the page title and the table data
   pageContent.style.gap = 'var(--spacing-8)'; // Tighter than default dense (16px → 8px)
 
+  // GlobalNav is ALWAYS rendered as part of AppShell
+  const nav = createDemoNav('projects');
+
   // Full AppShell with nav
   const appShell = createAppShell({
-    nav: createDemoNav(),
+    nav,
     content: pageContent,
   });
 

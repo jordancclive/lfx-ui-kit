@@ -174,7 +174,10 @@ function createDemoNav(activeItemId = 'dashboard') {
       createNavSection([
         createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
         createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'reports', children: createTextNode('Reports') }),
+        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
+        createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
+        createNavItem({ id: 'members', children: createTextNode('Members') }),
         createNavItem({ id: 'settings', children: createTextNode('Settings') }),
       ]),
     ],
@@ -203,7 +206,6 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 
 interface DashboardArgs {
   dense?: boolean;
-  showNav?: boolean;
   metricsCount?: number;
   tableColumns?: number;
 }
@@ -211,7 +213,6 @@ interface DashboardArgs {
 function createDashboard(args: DashboardArgs = {}) {
   const {
     dense = false,
-    showNav = true,
     metricsCount = 3,
     tableColumns = 3,
   } = args;
@@ -276,9 +277,13 @@ function createDashboard(args: DashboardArgs = {}) {
     ],
   });
 
-  // Full AppShell with optional nav
+  // GlobalNav is ALWAYS rendered as part of AppShell
+  // Dashboard pattern always highlights 'dashboard' in navigation
+  const nav = createDemoNav('dashboard');
+
+  // Full AppShell with nav
   const appShell = createAppShell({
-    nav: showNav ? createDemoNav() : undefined,
+    nav,
     content: pageContent,
   });
 
@@ -390,10 +395,6 @@ It is NOT:
       control: 'boolean',
       description: 'Apply dense spacing to all components',
     },
-    showNav: {
-      control: 'boolean',
-      description: 'Show navigation sidebar',
-    },
     metricsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
       description: 'Number of metric cards to display',
@@ -421,7 +422,6 @@ type Story = StoryObj<DashboardArgs>;
 export const Default: Story = {
   args: {
     dense: false,
-    showNav: true,
     metricsCount: 3,
     tableColumns: 3,
   },
@@ -434,21 +434,19 @@ export const Default: Story = {
 export const Dense: Story = {
   args: {
     dense: true,
-    showNav: true,
     metricsCount: 3,
     tableColumns: 3,
   },
 };
 
 /**
- * Dashboard without navigation sidebar.
- * Simulates content-focused view or narrower viewport context.
+ * Dashboard with single metric card.
+ * Tests composition at minimal metrics content.
  */
-export const WithoutNav: Story = {
+export const SingleMetric: Story = {
   args: {
     dense: false,
-    showNav: false,
-    metricsCount: 3,
+    metricsCount: 1,
     tableColumns: 3,
   },
 };
@@ -460,7 +458,6 @@ export const WithoutNav: Story = {
 export const ManyMetrics: Story = {
   args: {
     dense: false,
-    showNav: true,
     metricsCount: 6,
     tableColumns: 3,
   },
@@ -473,7 +470,6 @@ export const ManyMetrics: Story = {
 export const ExtendedTable: Story = {
   args: {
     dense: false,
-    showNav: true,
     metricsCount: 3,
     tableColumns: 5,
   },
@@ -486,20 +482,18 @@ export const ExtendedTable: Story = {
 export const DenseMaxContent: Story = {
   args: {
     dense: true,
-    showNav: true,
     metricsCount: 6,
     tableColumns: 5,
   },
 };
 
 /**
- * Minimal dashboard - single metric, minimal columns.
- * Tests composition at minimum viable content.
+ * Minimal dense dashboard with minimal content.
+ * Tests composition at minimum viable content with dense spacing.
  */
-export const Minimal: Story = {
+export const MinimalDense: Story = {
   args: {
-    dense: false,
-    showNav: false,
+    dense: true,
     metricsCount: 1,
     tableColumns: 3,
   },

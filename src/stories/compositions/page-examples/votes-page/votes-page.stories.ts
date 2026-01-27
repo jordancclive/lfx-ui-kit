@@ -68,7 +68,6 @@ import { createTableGrid, createTableHeader, createTableBody, type ColumnDefinit
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
@@ -341,25 +340,6 @@ function createVotesTable(votes: VoteRow[], dense = false): HTMLElement {
 }
 
 // =============================================================================
-// HELPER: Demo Navigation
-// =============================================================================
-
-function createDemoNav(activeItemId = 'votes') {
-  return createGlobalNav({
-    activeItemId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
-        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
-        createNavItem({ id: 'members', children: createTextNode('Members') }),
-      ]),
-    ],
-  });
-}
-
-// =============================================================================
 // MAIN COMPOSITION FUNCTION
 // Creates Votes Table Page (instance of canonical Table Page pattern)
 // =============================================================================
@@ -412,8 +392,8 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     showFilters,
     showPagination,
     
-    // Navigation
-    nav: createDemoNav(),
+    // Navigation (inherited from Table Page pattern)
+    navKey: 'votes',
   });
 }
 

@@ -68,7 +68,6 @@ import { createTableGrid, createTableHeader, createTableBody, type ColumnDefinit
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
@@ -449,8 +448,8 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     showFilters,
     showPagination,
     
-    // Navigation
-    nav: createDemoNav(),
+    // Navigation (inherited from Table Page pattern)
+    navKey: 'surveys',
   });
 }
 
