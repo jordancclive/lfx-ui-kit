@@ -7,7 +7,7 @@
  * Provides layout-only styling for table pagination controls.
  * 
  * Layout Strategy:
- * - Horizontal flex container (space-between)
+ * - Single-row horizontal layout with left/right clusters
  * - Internal padding for comfortable spacing
  * - Extra top padding to separate from table rows
  * - Visual subordination to table content
@@ -20,14 +20,8 @@
  */
 
 .lfx-table-pagination {
-  /* ENFORCE single-row horizontal layout */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  /* Container for pagination row */
   width: 100%;
-  
-  /* Prevent wrapping at all costs */
-  flex-wrap: nowrap;
   
   /* Internal padding */
   padding-top: var(--spacing-16); /* Extra vertical space above to distinguish from rows */
@@ -43,12 +37,29 @@
 }
 
 /**
- * Left Cluster: Page Navigation
+ * Pagination Row
+ * 
+ * Single horizontal row containing navigation (left) and page size selector (right).
+ * Uses space-between to create visual separation between clusters.
+ */
+.lfx-table-pagination__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  
+  /* Prevent wrapping at all costs */
+  flex-wrap: nowrap;
+  gap: var(--spacing-16);
+}
+
+/**
+ * Navigation Cluster (Left)
  * 
  * Contains Previous button (‹), numbered page buttons, and Next button (›).
  * Forms the primary pagination control cluster on the LEFT side.
  */
-.lfx-table-pagination__left {
+.lfx-table-pagination__navigation {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -57,12 +68,12 @@
 }
 
 /**
- * Right Cluster: Page Size Selector
+ * Page Size Cluster (Right)
  * 
  * Contains "Results per page:" label and page size option buttons.
  * Pinned to the RIGHT edge of the pagination row.
  */
-.lfx-table-pagination__right {
+.lfx-table-pagination__page-size {
   display: flex;
   align-items: center;
   gap: var(--spacing-6);

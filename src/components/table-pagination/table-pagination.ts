@@ -158,9 +158,13 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   // Calculate pagination values
   const totalPages = Math.ceil(totalItems / pageSize);
   
+  // Create single-row container
+  const row = document.createElement('div');
+  row.className = 'lfx-table-pagination__row';
+  
   // LEFT CLUSTER: Page navigation controls (Previous + Numbers + Next)
   const leftCluster = document.createElement('div');
-  leftCluster.className = 'lfx-table-pagination__left';
+  leftCluster.className = 'lfx-table-pagination__navigation';
   
   // Previous button
   const prevButton = document.createElement('button');
@@ -215,12 +219,12 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   }
   leftCluster.appendChild(nextButton);
   
-  // Append left cluster to pagination
-  pagination.appendChild(leftCluster);
+  // Append left cluster to row
+  row.appendChild(leftCluster);
   
   // RIGHT CLUSTER: Page size selector (optional)
   const rightCluster = document.createElement('div');
-  rightCluster.className = 'lfx-table-pagination__right';
+  rightCluster.className = 'lfx-table-pagination__page-size';
   
   const shouldRenderPageSizeSelector = 
     pageSizeOptions && 
@@ -260,10 +264,13 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
     rightCluster.appendChild(options);
   }
   
-  // Always append right cluster (even if empty - for layout consistency)
+  // Append right cluster to row if page size selector is rendered
   if (shouldRenderPageSizeSelector) {
-    pagination.appendChild(rightCluster);
+    row.appendChild(rightCluster);
   }
+  
+  // Append row to pagination container
+  pagination.appendChild(row);
   
   return pagination;
 }

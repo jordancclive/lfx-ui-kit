@@ -121,9 +121,15 @@ is conditionally unnecessary.
 
 ## Layout Behavior
 
-**DEFAULT: Single-Row Left/Right Layout**
+**SINGLE-ROW LAYOUT (Production Standard)**
 
-TablePagination renders as ONE horizontal row with two independent clusters:
+TablePagination renders as a **SINGLE unified horizontal row** with two visual clusters:
+
+```
+‹ 1 2 3 … 10 ›                         Results per page: 10 25 50 100
+
+Left cluster: page navigation          Right cluster: page size selector
+```
 
 **LEFT CLUSTER: Page Navigation**
 - Arrow buttons: ‹ (Previous) and › (Next)
@@ -142,21 +148,20 @@ TablePagination renders as ONE horizontal row with two independent clusters:
 - No dividers or borders between clusters
 
 **Structural Rules:**
+- ONE row, ONE baseline, calm confident spacing
 - Left and right clusters are siblings (NOT nested)
-- Parent uses \`justify-content: space-between\`
+- Uses \`justify-content: space-between\` to separate clusters
 - \`flex-wrap: nowrap\` prevents vertical stacking
 - \`white-space: nowrap\` prevents text wrapping
 - Everything aligns on one baseline
-- This is the ONLY layout mode (not a variant)
+- This is the ONLY layout mode (NOT a variant)
+- No multi-row or stacked layouts supported
 
 **Visual Design:**
 - Minimal visual weight (subordinate to table content)
 - Arrow symbols (‹ ›) for visual economy
 - Consistent 32px button heights across all controls
-
-**Visual Pattern:**
-\`‹ 1 2 3 … 10 ›\` (left side)
-\`Results per page: 10 25 50 100\` (right side, optional)
+- Matches standard LFX One pagination pattern
 
 **Page Windowing Examples:**
 - Page 1 of 5: \`‹ [1] 2 3 4 5 ›\`
