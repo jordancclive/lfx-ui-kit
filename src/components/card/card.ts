@@ -98,8 +98,24 @@ export function createCard(props: CardProps): HTMLElement {
   bodySlot.className = 'lfx-card__body';
   
   if (Array.isArray(children)) {
-    children.forEach(child => bodySlot.appendChild(child));
+    children.forEach((child, index) => {
+      if (!child || !(child instanceof Node)) {
+        throw new Error(
+          `Card: children[${index}] is not a valid Node. ` +
+          `Received: ${typeof child}. ` +
+          'All children must be HTMLElement instances.'
+        );
+      }
+      bodySlot.appendChild(child);
+    });
   } else {
+    if (!children || !(children instanceof Node)) {
+      throw new Error(
+        'Card: children prop is not a valid Node. ' +
+        `Received: ${typeof children}. ` +
+        'Children must be an HTMLElement or array of HTMLElements.'
+      );
+    }
     bodySlot.appendChild(children);
   }
   card.appendChild(bodySlot);

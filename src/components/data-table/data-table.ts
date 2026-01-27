@@ -94,6 +94,14 @@ export interface DataTableProps {
 export function createDataTable(props: DataTableProps): HTMLElement {
   const { toolbar, table, pagination } = props;
   
+  // Defensive validation: table is REQUIRED
+  if (!table || !(table instanceof HTMLElement)) {
+    throw new Error(
+      'DataTable: table prop is required and must be an HTMLElement. ' +
+      'Did you forget to pass a TableGrid component?'
+    );
+  }
+  
   const cardChildren: HTMLElement[] = [];
   
   // TableToolbar (optional - defensive rendering handled by TableToolbar)
