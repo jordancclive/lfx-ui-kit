@@ -260,30 +260,23 @@ function createVoteNameLink(name: string): HTMLElement {
 // =============================================================================
 
 /**
- * Creates a filter row for Votes table.
+ * Creates table controls (search + filters) for Votes.
  * 
- * Structure:
- * - SearchInput (toolbar variant, full-width, dominates)
- * - FilterDropdownTrigger: "All Groups" (intrinsic width)
- * - FilterDropdownTrigger: "All Statuses" (intrinsic width)
+ * OWNERSHIP: Passed to Table component via `controls` prop.
+ * Table handles layout, spacing, docking, and full-width search automatically.
  * 
- * Placement: Inside the Card, above the table.
- * 
- * This matches the canonical Table Page filter row pattern.
+ * Filter order matches table columns: Group → Status
+ * No margin, padding, or flex needed — Table owns the layout.
  */
-function createFiltersRow(): HTMLElement {
+function createVotesControls(): HTMLElement {
   const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-8)';
-  container.style.alignItems = 'center';
-
-  const searchInput = createSearchInput({ 
+  
+  container.appendChild(createSearchInput({ 
     placeholder: 'Search votes…',
     variant: 'toolbar',
-  });
-  searchInput.style.flex = '1'; // Full-width, dominates the row
+  }));
   
-  container.appendChild(searchInput);
+  // Filter order matches column semantics
   container.appendChild(createFilterDropdownTrigger({ label: 'All Groups' }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
@@ -363,7 +356,11 @@ function createPaginationPlaceholder(currentPage = 1, totalItems = 42): HTMLElem
  * - Row owns navigation, not columns
  * - Hover affordance appears only when clickable
  */
-function createVotesTable(votes: VoteRow[], dense = false): HTMLElement {
+function createVotesTable(
+  votes: VoteRow[], 
+  options: { dense?: boolean; controls?: HTMLElement } = {}
+): HTMLElement {
+  const { dense = false, controls } = options;
   // Semantic column definitions (REQUIRED by Table Page pattern)
   const columns: ColumnDefinition[] = [
     { key: 'name', semanticType: 'primary' },
@@ -442,6 +439,7 @@ function createVotesTable(votes: VoteRow[], dense = false): HTMLElement {
   return createTable({
     columns,
     dense,
+    controls, // Table owns controls layout and docking
     children: [
       createTableHeader(headerCells),
       createTableBody(rows),
@@ -498,16 +496,17 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     votes = votesData,
   } = args;
 
-  // Card children: optional filters + table + optional pagination
-  const cardChildren: HTMLElement[] = [];
-
-  // Optional: Filter row (inside Card, above table)
-  if (showFilters) {
-    cardChildren.push(createFiltersRow());
-  }
-
-  // Required: Table
-  cardChildren.push(createVotesTable(votes, false));
+  // Build table with optional controls
+  // Controls are passed to Table — Table owns layout, spacing, and docking
+  const tableControls = showFilters ? createVotesControls() : undefined;
+  
+  const table = createVotesTable(votes, { 
+    dense: false,
+    controls: tableControls,
+  });
+  
+  // Card children: table + optional pagination
+  const cardChildren: HTMLElement[] = [table];
 
   // Optional: Pagination row (inside Card, below table)
   if (showPagination) {

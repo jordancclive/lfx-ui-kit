@@ -316,33 +316,25 @@ function createSurveyNameLink(name: string): HTMLElement {
 // =============================================================================
 
 /**
- * Creates a filter row for Surveys table.
+ * Creates table controls (search + filters) for Surveys.
  * 
- * Structure:
- * - SearchInput (toolbar variant, full-width, dominates)
- * - FilterDropdownTrigger: "All Groups" (intrinsic width)
- * - FilterDropdownTrigger: "All Survey Types" (intrinsic width)
- * - FilterDropdownTrigger: "All Statuses" (intrinsic width)
+ * OWNERSHIP: Passed to Table component via `controls` prop.
+ * Table handles layout, spacing, docking, and full-width search automatically.
  * 
- * Placement: Inside the Card, above the table.
- * 
- * This matches the canonical Table Page filter row pattern.
+ * Filter order matches table columns: Survey Type → Group → Status
+ * No margin, padding, or flex needed — Table owns the layout.
  */
-function createFiltersRow(): HTMLElement {
+function createSurveysControls(): HTMLElement {
   const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-8)';
-  container.style.alignItems = 'center';
-
-  const searchInput = createSearchInput({ 
+  
+  container.appendChild(createSearchInput({ 
     placeholder: 'Search surveys…',
     variant: 'toolbar',
-  });
-  searchInput.style.flex = '1'; // Full-width, dominates the row
+  }));
   
-  container.appendChild(searchInput);
-  container.appendChild(createFilterDropdownTrigger({ label: 'All Groups' }));
+  // Filter order matches column semantics
   container.appendChild(createFilterDropdownTrigger({ label: 'All Survey Types' }));
+  container.appendChild(createFilterDropdownTrigger({ label: 'All Groups' }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
   return container;
@@ -422,7 +414,11 @@ function createPaginationPlaceholder(currentPage: number, totalItems: number): H
  * - Row owns navigation, not columns
  * - Hover affordance appears only when clickable
  */
-function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
+function createSurveysTable(
+  surveys: SurveyRow[],
+  options: { controls?: HTMLElement } = {}
+): HTMLElement {
+  const { controls } = options;
   // Semantic column definitions (REQUIRED by Table Page pattern)
   const columns: ColumnDefinition[] = [
     { key: 'name', semanticType: 'primary' },
@@ -507,6 +503,7 @@ function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
 
   return createTable({
     columns,
+    controls, // Table owns controls layout and docking
     children: [
       createTableHeader(headerCells),
       createTableBody(rows),
@@ -567,16 +564,16 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     surveys = surveysData,
   } = args;
 
-  // Card children: optional filters + table + optional pagination
-  const cardChildren: HTMLElement[] = [];
-
-  // Optional: Filter row (inside Card, above table)
-  if (showFilters) {
-    cardChildren.push(createFiltersRow());
-  }
-
-  // Required: Table
-  cardChildren.push(createSurveysTable(surveys));
+  // Build table with optional controls
+  // Controls are passed to Table — Table owns layout, spacing, and docking
+  const tableControls = showFilters ? createSurveysControls() : undefined;
+  
+  const table = createSurveysTable(surveys, { 
+    controls: tableControls,
+  });
+  
+  // Card children: table + optional pagination
+  const cardChildren: HTMLElement[] = [table];
 
   // Optional: Pagination row (inside Card, below table)
   if (showPagination) {

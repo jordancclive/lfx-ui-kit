@@ -162,42 +162,25 @@ function createTextNode(text: string): HTMLElement {
 }
 
 /**
- * Creates the search + filter control row.
+ * Creates table controls (search + filters).
  * 
- * DOCKED TO TABLE — This row is the visual "top edge" of the table.
+ * OWNERSHIP: Controls are passed to Table component via `controls` prop.
+ * Table handles layout, spacing, docking, and full-width search automatically.
  * 
- * DEFAULT BEHAVIOR (Table Page Pattern):
- * - SearchInput is FULL-WIDTH by default (flex: 1)
- * - Filters are intrinsic width (auto)
- * - Filter order MUST match column semantics (left → right)
- * - Internal padding provides breathing room
- * - NO bottom margin — docks directly to table header
+ * Filter order MUST match column semantics (left → right):
+ * - Category → Status (matches table column order)
  * 
- * Filter placement pattern:
- * - Filters apply to the entire table
- * - Filters are INSIDE the Card, ABOVE the table
- * - Filters read as the table's top edge, not a floating toolbar
+ * No margin, padding, or flex needed — Table owns the layout.
  */
-function createFiltersRow(): HTMLElement {
+function createTableControls(): HTMLElement {
   const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-8)';
-  container.style.alignItems = 'center';
   
-  // Internal padding for breathing room (no margin — docks to table)
-  container.style.paddingTop = 'var(--spacing-12)';
-  container.style.paddingBottom = 'var(--spacing-12)';
-  container.style.paddingLeft = 'var(--spacing-16)';
-  container.style.paddingRight = 'var(--spacing-16)';
-
-  const searchInput = createSearchInput({ 
+  container.appendChild(createSearchInput({ 
     placeholder: 'Search projects…',
     variant: 'toolbar',
-  });
-  searchInput.style.flex = '1'; // DEFAULT: Full-width search
+  }));
   
-  container.appendChild(searchInput);
-  // Filter order matches column semantics: Category → Status
+  // Filter order matches column semantics
   container.appendChild(createFilterDropdownTrigger({ label: 'All Categories' }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
@@ -280,7 +263,12 @@ function createPaginationRow(): HTMLElement {
  * - Maintainers: Numeric (intrinsic width, right-aligned)
  * - Last Activity: Meta (intrinsic width, date/time)
  */
-function createProjectsTable(data: ProjectRow[], dense = false): HTMLElement {
+function createProjectsTable(
+  data: ProjectRow[], 
+  options: { dense?: boolean; controls?: HTMLElement } = {}
+): HTMLElement {
+  const { dense = false, controls } = options;
+  
   // Define semantic column widths
   const columns: ColumnDefinition[] = [
     { key: 'name', semanticType: 'primary' },
@@ -324,6 +312,7 @@ function createProjectsTable(data: ProjectRow[], dense = false): HTMLElement {
   return createTable({
     columns,
     dense,
+    controls, // Table owns controls layout and docking
     children: [
       createTableHeader(headerCells),
       createTableBody(rows),
@@ -408,14 +397,17 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
     }),
   ];
 
-  // Build card children - filters (optional) + table + pagination (optional)
-  const cardChildren: HTMLElement[] = [];
+  // Build table with optional controls
+  // Controls are passed to Table — Table owns layout, spacing, and docking
+  const tableControls = showFilters ? createTableControls() : undefined;
   
-  if (showFilters) {
-    cardChildren.push(createFiltersRow());
-  }
+  const table = createProjectsTable(data, { 
+    dense, 
+    controls: tableControls,
+  });
   
-  cardChildren.push(createProjectsTable(data, dense));
+  // Card children: table + optional pagination
+  const cardChildren: HTMLElement[] = [table];
   
   if (showPagination) {
     cardChildren.push(createPaginationRow());

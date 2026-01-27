@@ -41,10 +41,41 @@ Provides structural layout for tabular data. Coordinates header rows and data ro
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | children | HTMLElement \| HTMLElement[] | — | Table content (header row, data rows) |
-| columns | number | — | Number of columns for grid layout |
+| columns | number \| ColumnDefinition[] | — | Column count or semantic column definitions |
+| controls | HTMLElement | — | Optional controls row (search + filters) above table header |
 | withBorder | boolean | false | Apply container border |
 | withBackground | boolean | false | Apply surface background |
 | dense | boolean | false | Reduced vertical spacing |
+
+### `controls` Prop (NEW)
+
+**Purpose:** Allows Table to own its top controls (search + filters).
+
+**Behavior:**
+- Renders INSIDE the table container
+- Renders IMMEDIATELY ABOVE the table header (no gap)
+- Internal padding for breathing room (12px top/bottom, 16px left/right)
+- Docks directly to table header (visually reads as table's "top edge")
+- SearchInput automatically receives `flex: 1` (full-width by default)
+
+**Usage:**
+```typescript
+const controls = document.createElement('div');
+controls.appendChild(createSearchInput({ placeholder: 'Search...', variant: 'toolbar' }));
+controls.appendChild(createFilterDropdownTrigger({ label: 'All Types' }));
+
+createTable({
+  controls,
+  children: [tableHeader, tableBody],
+  columns: columnDefinitions,
+});
+```
+
+**Rules:**
+- Table owns layout, spacing, and docking
+- Pages do NOT manage filter row spacing
+- No margin, padding, or flex overrides needed in parent
+- Filter order should match column semantics
 
 ## Layout Strategy
 

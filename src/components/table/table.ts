@@ -48,6 +48,24 @@ export interface TableProps {
    * OR number of columns for equal-width grid (legacy)
    */
   columns?: number | ColumnDefinition[];
+  /** 
+   * Optional controls row (search + filters) rendered above table header.
+   * 
+   * OWNERSHIP: Table component owns the layout, spacing, and docking behavior.
+   * 
+   * Behavior:
+   * - Renders INSIDE the table container
+   * - Renders IMMEDIATELY ABOVE the table header (no gap)
+   * - Internal padding for breathing room
+   * - Visually reads as the table's "top edge" (not floating toolbar)
+   * - SearchInput automatically receives flex: 1 (full-width)
+   * 
+   * Usage:
+   * - Pass a container with SearchInput + FilterDropdownTriggers
+   * - Table handles docking and spacing automatically
+   * - No need for margin, padding, or flex overrides in parent
+   */
+  controls?: HTMLElement;
   /** Apply container border */
   withBorder?: boolean;
   /** Apply surface background */
@@ -81,6 +99,7 @@ export function createTable(props: TableProps): HTMLElement {
   const {
     children,
     columns,
+    controls,
     withBorder = false,
     withBackground = false,
     dense = false,
@@ -116,7 +135,33 @@ export function createTable(props: TableProps): HTMLElement {
     table.classList.add('lfx-table--dense');
   }
 
-  // Append children without modification
+  // Optional controls row (search + filters) above table header
+  if (controls) {
+    const controlsWrapper = document.createElement('div');
+    controlsWrapper.className = 'lfx-table__controls';
+    
+    // Apply internal padding for breathing room (docks to table header with no gap)
+    controlsWrapper.style.paddingTop = 'var(--spacing-12)';
+    controlsWrapper.style.paddingBottom = 'var(--spacing-12)';
+    controlsWrapper.style.paddingLeft = 'var(--spacing-16)';
+    controlsWrapper.style.paddingRight = 'var(--spacing-16)';
+    
+    // Ensure controls are flex container for horizontal layout
+    controlsWrapper.style.display = 'flex';
+    controlsWrapper.style.gap = 'var(--spacing-8)';
+    controlsWrapper.style.alignItems = 'center';
+    
+    // Auto-detect and style SearchInput to be full-width
+    const searchInputs = controls.querySelectorAll('.lfx-search-input');
+    searchInputs.forEach((input) => {
+      (input as HTMLElement).style.flex = '1';
+    });
+    
+    controlsWrapper.appendChild(controls);
+    table.appendChild(controlsWrapper);
+  }
+
+  // Append table children (header and body)
   if (Array.isArray(children)) {
     children.forEach(child => table.appendChild(child));
   } else {
