@@ -413,6 +413,10 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     surveys = surveysData,
   } = args;
 
+  // Use demo totalItems > pageSize when pagination should be visible
+  // Real pages would use actual dataset count
+  const effectiveTotalItems = showPagination ? 120 : surveys.length;
+
   // Surveys is now a pure configuration object
   // All composition and layout owned by Table Page pattern
   return createTablePageFromConfig({
@@ -439,7 +443,7 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     // Pagination configuration
     page: 1,
     pageSize: 10,
-    totalItems: surveys.length,
+    totalItems: effectiveTotalItems,
     
     // Display options
     showFilters,

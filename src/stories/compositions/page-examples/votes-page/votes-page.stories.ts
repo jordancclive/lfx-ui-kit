@@ -377,6 +377,10 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     votes = votesData,
   } = args;
 
+  // Use demo totalItems > pageSize when pagination should be visible
+  // Real pages would use actual dataset count
+  const effectiveTotalItems = showPagination ? 42 : votes.length;
+
   // Votes is now a pure configuration object
   // All composition and layout owned by Table Page pattern
   return createTablePageFromConfig({
@@ -402,7 +406,7 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     // Pagination configuration
     page: 1,
     pageSize: 10,
-    totalItems: votes.length,
+    totalItems: effectiveTotalItems,
     
     // Display options
     showFilters,

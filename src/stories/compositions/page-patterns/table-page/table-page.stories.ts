@@ -566,7 +566,9 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   cardChildren.push(createProjectsTable(data, dense));
   
   if (showPagination) {
-    cardChildren.push(createPagination(data.length));
+    // Use demo totalItems > pageSize to ensure pagination is visible
+    // Real pages would use actual dataset count
+    cardChildren.push(createPagination(42));
   }
 
   // Single PageSection with Card containing table
@@ -1010,7 +1012,7 @@ export const DefaultWithDataTable: Story = {
       table: createProjectsTable(projectsData, false),
       page: 1,
       pageSize: 10,
-      totalItems: projectsData.length,
+      totalItems: 42, // Demo value > pageSize to show pagination
       pageSizeOptions: [10, 20, 50],
       showFilters: true,
       showPagination: true,
@@ -1054,7 +1056,7 @@ export const AdvancedComposition: Story = {
       table: createProjectsTable(projectsData, false),
       page: 1,
       pageSize: 10,
-      totalItems: projectsData.length,
+      totalItems: 42, // Demo value > pageSize to show pagination
       pageSizeOptions: [10, 20, 50],
       showFilters: true,
       showPagination: true,
