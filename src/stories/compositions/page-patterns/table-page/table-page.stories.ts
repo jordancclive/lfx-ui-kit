@@ -79,6 +79,7 @@ import { createSearchInput } from '../../../../components/search-input/search-in
 import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
 import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
 import { createTablePagination } from '../../../../components/table-pagination/table-pagination';
+import { createDataTable } from '../../../../components/data-table/data-table';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
 
@@ -349,11 +350,28 @@ interface TablePageConfig {
   page?: number;
   pageSize?: number;
   totalItems?: number;
+  pageSizeOptions?: number[];
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (size: number) => void;
   
   // Display options
   dense?: boolean;
   showFilters?: boolean;
   showPagination?: boolean;
+  
+  // Composition mode
+  /**
+   * Use DataTable as the default table surface.
+   * 
+   * When true (default): TablePage uses DataTable internally.
+   * When false: TablePage manually composes TableToolbar + TableGrid + TablePagination.
+   * 
+   * Set to false for:
+   * - Advanced layouts
+   * - Segmented table pages
+   * - Custom composition requirements
+   */
+  useDataTable?: boolean;
   
   // Navigation
   nav?: HTMLElement;
@@ -370,11 +388,19 @@ interface TablePageArgs {
 /**
  * Creates a canonical Table Page composition (configurable version).
  * 
+ * DEFAULT MODE (useDataTable = true):
+ * - Uses DataTable internally
+ * - Bundles TableToolbar + TableGrid + TablePagination automatically
+ * - Preferred for single-table workflows
+ * 
+ * ESCAPE HATCH (useDataTable = false):
+ * - Manually composes TableToolbar + TableGrid + TablePagination
+ * - Required for advanced layouts, segmented pages, or custom composition
+ * 
  * Structure:
  * - AppHeader with page title (== table title)
  * - TIGHT vertical handoff (workflow-optimized)
- * - PageSection (dense) containing Card
- * - Card contains optional filters + table + optional pagination
+ * - PageSection (dense) containing DataTable OR Card with manual composition
  * - Filters DOCK to table (no gap)
  * 
  * NO section titles inside the page.
@@ -396,9 +422,13 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
     page = 1,
     pageSize = 10,
     totalItems = 0,
+    pageSizeOptions,
+    onPageChange,
+    onPageSizeChange,
     dense = false,
     showFilters = false,
     showPagination = false,
+    useDataTable = true, // DEFAULT: Use DataTable
     nav = createDemoNav(),
   } = config;
 
@@ -412,48 +442,79 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
     }),
   ];
 
-  // Build Card children: optional toolbar + table + optional pagination
-  const cardChildren: HTMLElement[] = [];
-  
-  if (showFilters && searchPlaceholder) {
-    // Build toolbar from configuration
-    const searchInput = createSearchInput({ 
-      placeholder: searchPlaceholder,
-      variant: 'toolbar',
-    });
-    
-    const filterElements = filters.map(f => 
-      createFilterDropdownTrigger({ label: f.label })
-    );
-    
-    cardChildren.push(createTableToolbar({
-      search: searchInput,
-      filters: filterElements,
-    }));
-  }
-  
-  cardChildren.push(table);
-  
-  if (showPagination && totalItems > 0) {
-    cardChildren.push(createTablePagination({
-      page,
-      pageSize,
-      totalItems,
-    }));
-  }
-
-  // Single PageSection with Card containing table
-  pageChildren.push(
-    createPageSection({
-      dense: true,
-      children: [
-        createCard({
-          dense,
-          children: cardChildren,
+  // MODE A (DEFAULT): Use DataTable
+  if (useDataTable) {
+    const dataTable = createDataTable({
+      toolbar: showFilters && searchPlaceholder ? {
+        search: createSearchInput({ 
+          placeholder: searchPlaceholder,
+          variant: 'toolbar',
         }),
-      ],
-    })
-  );
+        filters: filters.map(f => createFilterDropdownTrigger({ label: f.label })),
+      } : undefined,
+      table,
+      pagination: showPagination ? {
+        page,
+        pageSize,
+        totalItems,
+        pageSizeOptions,
+        onPageChange,
+        onPageSizeChange,
+      } : undefined,
+    });
+
+    pageChildren.push(
+      createPageSection({
+        dense: true,
+        children: [dataTable],
+      })
+    );
+  } 
+  // MODE B (ESCAPE HATCH): Manual composition
+  else {
+    const cardChildren: HTMLElement[] = [];
+    
+    if (showFilters && searchPlaceholder) {
+      const searchInput = createSearchInput({ 
+        placeholder: searchPlaceholder,
+        variant: 'toolbar',
+      });
+      
+      const filterElements = filters.map(f => 
+        createFilterDropdownTrigger({ label: f.label })
+      );
+      
+      cardChildren.push(createTableToolbar({
+        search: searchInput,
+        filters: filterElements,
+      }));
+    }
+    
+    cardChildren.push(table);
+    
+    if (showPagination && totalItems > 0) {
+      cardChildren.push(createTablePagination({
+        page,
+        pageSize,
+        totalItems,
+        pageSizeOptions,
+        onPageChange,
+        onPageSizeChange,
+      }));
+    }
+
+    pageChildren.push(
+      createPageSection({
+        dense: true,
+        children: [
+          createCard({
+            dense,
+            children: cardChildren,
+          }),
+        ],
+      })
+    );
+  }
 
   // Build the page content with tighter vertical rhythm
   const pageContent = createPageLayout({
@@ -638,6 +699,59 @@ If something feels off visually:
 ✓ Filters feel attached, not floating  
 ✓ No section titles clutter the page  
 ✓ Scanability is optimal
+
+---
+
+## TablePage × DataTable Relationship
+
+**TablePage uses DataTable by default** for single-table workflows.
+
+### Default Behavior (useDataTable = true)
+
+TablePage renders DataTable internally, which bundles:
+- TableToolbar (search + filters)
+- TableGrid (data grid)
+- TablePagination (page navigation)
+
+This is the preferred approach for:
+- One dataset
+- One toolbar
+- One pagination row
+- Standard list workflows (Votes, Surveys, Projects, Drive, Mailing Lists)
+
+**Mental model:** "I want the standard LFX One table workflow with minimal configuration."
+
+### Manual Composition (useDataTable = false)
+
+TablePage can opt out of DataTable for advanced layouts by setting \`useDataTable: false\`.
+
+In this mode, TablePage manually composes:
+- Card → TableToolbar → TableGrid → TablePagination
+
+Use manual composition for:
+- Multiple tables on one page
+- SegmentedTablePage
+- Partial filter scoping
+- Custom layout requirements
+
+**Mental model:** "I need full control over component placement."
+
+### Decision Table
+
+| Situation | Configuration |
+|---------|-----|
+| One dataset, standard workflow | \`useDataTable: true\` (default) |
+| Multiple tables | \`useDataTable: false\` |
+| SegmentedTablePage | \`useDataTable: false\` |
+| Partial filter scoping | \`useDataTable: false\` |
+| Custom composition | \`useDataTable: false\` |
+
+### Important Notes
+
+- DataTable is OPTIONAL inside TablePage, but used by default
+- Setting \`useDataTable: false\` does NOT change visual output
+- Both modes produce identical page layouts
+- The choice affects composition strategy, not appearance
 
 ---
 
@@ -856,6 +970,92 @@ export const Minimal: Story = {
     dense: false,
     showFilters: false,
     projectsData: minimalProjectsData,
+  },
+};
+
+/**
+ * DEFAULT MODE: Uses DataTable Internally
+ * 
+ * Demonstrates TablePage's default behavior:
+ * - useDataTable = true (default, not shown)
+ * - DataTable bundles TableToolbar + TableGrid + TablePagination automatically
+ * - Preferred for single-table workflows
+ * - Most common configuration
+ * 
+ * This is the CANONICAL single-table workflow.
+ * Use this mode for:
+ * - Votes, Surveys, Projects, Drive, Mailing Lists
+ * - Any page with one dataset, one toolbar, one pagination row
+ * 
+ * DataTable provides:
+ * - ✅ Automatic composition of table surface components
+ * - ✅ Defensive rendering (empty states handled)
+ * - ✅ Convention over configuration
+ * - ✅ Reduced boilerplate
+ */
+export const DefaultWithDataTable: Story = {
+  render: () => {
+    return createTablePageFromConfig({
+      title: 'Projects',
+      description: 'Active projects and initiatives across the organization.',
+      searchPlaceholder: 'Search projects…',
+      filters: [
+        { label: 'All Categories' },
+        { label: 'All Statuses' },
+      ],
+      table: createProjectsTable(projectsData, false),
+      page: 1,
+      pageSize: 10,
+      totalItems: projectsData.length,
+      pageSizeOptions: [10, 20, 50],
+      showFilters: true,
+      showPagination: true,
+      useDataTable: true, // EXPLICIT: Use DataTable (this is the default)
+    });
+  },
+};
+
+/**
+ * ESCAPE HATCH: Manual Composition Without DataTable
+ * 
+ * Demonstrates TablePage's manual composition mode:
+ * - useDataTable = false
+ * - Manually composes TableToolbar + TableGrid + TablePagination
+ * - Required for advanced layouts
+ * 
+ * Use this mode ONLY when:
+ * - Building segmented table pages (multiple tables)
+ * - Custom composition requirements
+ * - Advanced layout scenarios
+ * 
+ * For standard single-table workflows, use DEFAULT MODE instead.
+ * 
+ * Manual composition provides:
+ * - ✅ Full control over component placement
+ * - ✅ Support for multiple tables
+ * - ✅ Custom layout patterns
+ * - ⚠️ More boilerplate required
+ * - ⚠️ Must manage defensive rendering manually
+ */
+export const AdvancedComposition: Story = {
+  render: () => {
+    return createTablePageFromConfig({
+      title: 'Projects',
+      description: 'Active projects and initiatives across the organization.',
+      searchPlaceholder: 'Search projects…',
+      filters: [
+        { label: 'All Categories' },
+        { label: 'All Statuses' },
+      ],
+      table: createProjectsTable(projectsData, false),
+      page: 1,
+      pageSize: 10,
+      totalItems: projectsData.length,
+      pageSizeOptions: [10, 20, 50],
+      showFilters: true,
+      showPagination: true,
+      useDataTable: false, // EXPLICIT: Manual composition (escape hatch)
+    });
   },
 };
 

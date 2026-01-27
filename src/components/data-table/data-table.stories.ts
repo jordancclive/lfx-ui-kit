@@ -36,6 +36,9 @@ It exists to:
 - Encode correct defaults by convention
 - Prevent misuse through clear architectural boundaries
 
+> **DataTable is the default table surface used by TablePage** unless explicitly disabled.
+> It is not required for advanced or segmented layouts.
+
 ---
 
 ## When to Use
