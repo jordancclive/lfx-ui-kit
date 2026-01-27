@@ -177,7 +177,6 @@ function createDemoNav(activeItemId = 'dashboard') {
         createNavItem({ id: 'groups', children: createTextNode('Groups') }),
         createNavItem({ id: 'votes', children: createTextNode('Votes') }),
         createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
-        createNavItem({ id: 'members', children: createTextNode('Members') }),
         createNavItem({ id: 'settings', children: createTextNode('Settings') }),
       ]),
     ],
