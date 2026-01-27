@@ -34,6 +34,7 @@ import { createTableCell } from '../../../components/table-cell/table-cell';
 import { createSearchInput } from '../../../components/search-input/search-input';
 import { createFilterDropdownTrigger } from '../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../components/global-nav/global-nav';
+import { createTag } from '../../../components/tag/tag';
 
 // =============================================================================
 // DATA: Static representative data for Groups tables
@@ -163,25 +164,6 @@ function createCheckmark(): HTMLElement {
 }
 
 /**
- * Placeholder for categorical content (Tag/Badge component)
- * This signals semantic intent: Type column contains categorical data.
- * In production, this would be replaced by a proper Tag component.
- */
-function createTagPlaceholder(text: string): HTMLElement {
-  const tag = document.createElement('span');
-  tag.textContent = text;
-  tag.style.display = 'inline-block';
-  tag.style.padding = '2px 8px';
-  tag.style.borderRadius = 'var(--rounded-sm)';
-  tag.style.backgroundColor = 'var(--neutral-100)';
-  tag.style.fontSize = 'var(--text-xs)';
-  tag.style.fontWeight = 'var(--font-medium)';
-  tag.style.color = 'var(--neutral-700)';
-  tag.style.whiteSpace = 'nowrap';
-  return tag;
-}
-
-/**
  * Creates a Groups table with proper column semantics.
  * 
  * Column semantics (per LFX One design):
@@ -211,8 +193,8 @@ function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
       // Primary text column - flexible width
       createTableCell({ children: group.name, contentType: 'primary' }),
       
-      // Categorical column - intrinsic width, uses Tag placeholder
-      createTableCell({ children: createTagPlaceholder(group.type), contentType: 'secondary' }),
+      // Categorical column - intrinsic width, uses Tag component
+      createTableCell({ children: createTag({ children: group.type }), contentType: 'secondary' }),
       
       // Primary text column - flexible width
       createTableCell({ children: group.description, contentType: 'secondary' }),
@@ -535,14 +517,14 @@ export const Minimal: Story = {
 /**
  * VERIFICATION CHECKLIST:
  * ✓ No component CSS was modified
- * ✓ No tokens were added or changed
+ * ✓ No tokens were added or changed (Tag tokens added as system-level ui.tag.*)
  * ✓ No new component props were introduced
  * ✓ Filters are grouped WITH tables in the same Card
  * ✓ Composition uses only existing components
  * 
  * COLUMN SEMANTICS VALIDATED:
  * ✓ Primary text columns (Name, Description) use primary/secondary content types
- * ✓ Categorical column (Type) uses Tag placeholder to signal semantic intent
+ * ✓ Categorical column (Type) uses Tag component for semantic intent
  * ✓ Numeric column (Members) uses right alignment and numeric content type
  * ✓ Icon/symbol column (Voting) uses visual indicator elements
  * ✓ Metadata column (Last Updated) uses muted content type
@@ -552,14 +534,13 @@ export const Minimal: Story = {
  *   (a SectionTitle component may be needed if this pattern repeats)
  * - Filters row uses inline styles for flex layout
  *   (a FilterBar component may be needed if this pattern repeats)
- * - Type column uses Tag placeholder (Tag/Badge component needed)
  * - Column widths are currently equal-width via CSS Grid default
  *   (semantic width control requires Table component enhancement)
  * 
  * FINDINGS:
  * - Search + filters embedded with table is a validated, reusable pattern
  * - Column semantics work correctly via composition and content types
- * - Missing component: Tag/Badge for categorical data display
+ * - Tag component successfully extracted and implemented for categorical data display
  * - Future enhancement: Semantic column width control (flexible vs intrinsic)
  * 
  * If this page feels wrong, the fix must occur in tokens or contracts — never here.

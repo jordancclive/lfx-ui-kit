@@ -1,0 +1,63 @@
+/**
+ * Tag Component
+ * 
+ * Tier 2 — Pattern / Inline Visual Component
+ * 
+ * Purpose:
+ * Tag displays categorical information in a compact, non-interactive visual form.
+ * 
+ * Ownership:
+ * - Inline layout (padding, border-radius)
+ * - Typography role usage (via UI role tokens only)
+ * - Surface/background for categorical grouping
+ * 
+ * Does NOT Own:
+ * - Click behavior
+ * - Filtering logic
+ * - Selection state
+ * - Status semantics (success/warning/error)
+ * - Data meaning
+ * - Table layout or column width
+ */
+
+.lfx-tag {
+  /* Layout - intrinsic width, inline */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Spacing */
+  padding: var(--ui-tag-padding-y) var(--ui-tag-padding-x);
+  
+  /* Surface */
+  background-color: var(--ui-tag-surface-background);
+  border: 1px solid var(--ui-tag-surface-border);
+  border-radius: var(--ui-tag-radius);
+  
+  /* Typography - binds to system label role */
+  font-family: var(--ui-tag-text-font-family);
+  font-size: var(--ui-tag-text-font-size);
+  font-weight: var(--ui-tag-text-font-weight);
+  line-height: var(--ui-tag-text-line-height);
+  color: var(--ui-tag-text-color);
+  
+  /* Prevent stretching */
+  flex-shrink: 0;
+  width: fit-content;
+  
+  /* Text rendering */
+  white-space: nowrap;
+  text-align: center;
+  
+  /* No interaction affordances */
+  cursor: default;
+  user-select: none;
+}
+
+/**
+ * State Constraints:
+ * - No hover styles (Tag is non-interactive)
+ * - No focus styles (Tag is not focusable)
+ * - No disabled styles (Tag has no state)
+ * - No transitions (Tag is stateless)
+ */

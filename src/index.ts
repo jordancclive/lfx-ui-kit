@@ -11,6 +11,7 @@ export { createFilterPill, type FilterPillProps } from './components/filter-pill
 export { createFilterDropdownTrigger, type FilterDropdownTriggerProps } from './components/filter-dropdown-trigger/filter-dropdown-trigger';
 export { createTabItem, type TabItemProps } from './components/tab-item/tab-item';
 export { createTabsGroup, type TabsGroupProps, type TabsGroupTab } from './components/tabs-group/tabs-group';
+export { createTag, type TagProps } from './components/tag/tag';
 export { createTableRow, type TableRowProps } from './components/table-row/table-row';
 export { createTableCell, type TableCellProps } from './components/table-cell/table-cell';
 export { createTableHeaderCell, type TableHeaderCellProps } from './components/table-header-cell/table-header-cell';

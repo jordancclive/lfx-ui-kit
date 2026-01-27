@@ -602,6 +602,35 @@
   --radius-table: var(--rounded-lg);
 
   /* ========================================
+     UI ROLE - Tag (Categorical Visual Component)
+     
+     Token naming: ui.tag.* (conceptual)
+     CSS variable: --ui-tag-* (hyphenated)
+     
+     NOTE: Tag is a Tier 2 Pattern / Inline Visual Component.
+     Used for displaying categorical data (Type, Status, Category) in a compact form.
+     Tag is non-interactive and stateless.
+     
+     RULE: All Tag tokens MUST reference system-level UI role tokens, never primitives.
+     ======================================== */
+  
+  /* Surface - bound to system surface roles */
+  --ui-tag-surface-background: var(--ui-surface-subtle);
+  --ui-tag-surface-border: var(--ui-surface-divider);
+  
+  /* Typography - bound to system label typography */
+  --ui-tag-text-font-family: var(--ui-text-label-font-family);
+  --ui-tag-text-font-size: var(--ui-text-label-font-size);
+  --ui-tag-text-font-weight: var(--ui-text-label-font-weight);
+  --ui-tag-text-line-height: var(--ui-text-label-line-height);
+  --ui-tag-text-color: var(--text-primary);
+  
+  /* Layout */
+  --ui-tag-radius: var(--rounded-sm);
+  --ui-tag-padding-y: var(--spacing-2);
+  --ui-tag-padding-x: var(--spacing-6);
+
+  /* ========================================
      UI ROLE - List Item
      
      Token naming: color.list.item.* (conceptual)

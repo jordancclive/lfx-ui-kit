@@ -84,3 +84,13 @@
 .lfx-list-item--disabled.lfx-list-item--selected {
   background-color: var(--color-list-item-background-disabled);
 }
+
+/* ========================================
+   Dense Variant
+   Reduced vertical padding for compact lists
+   ======================================== */
+
+.lfx-list-group--dense .lfx-list-item,
+.lfx-list-item--dense {
+  padding: var(--spacing-8) var(--spacing-16);
+}
