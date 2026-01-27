@@ -34,7 +34,6 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          '0. README',
           '1. Components',
           [
             '1. Level 1',
