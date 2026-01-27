@@ -399,6 +399,7 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     // Page configuration
     title: 'Votes',
     description: 'Make decisions with your project groups.',
+    useDataTable: true,
     actions: createButton({
       children: 'Create Vote',
       variant: 'primary',

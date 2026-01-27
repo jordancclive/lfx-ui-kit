@@ -462,6 +462,7 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     // Page configuration
     title: 'Surveys',
     description: 'Collect feedback from your project groups.',
+    useDataTable: true,
     actions: createButton({
       children: 'Create Survey',
       variant: 'primary',
