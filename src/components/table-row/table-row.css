@@ -32,17 +32,33 @@
 /* ========================================
    STATE: Hover
    Only applies when not selected or disabled
-   Provides clear affordance via:
-   - Background surface change
-   - Subtle left-edge accent indicator
+   
+   Row Cohesion Strategy:
+   - Full-width background surface change (visual binding across columns)
+   - Left-edge accent indicator (immediate interactivity signal)
+   - Strengthened primary cell text (reinforces actionability)
+   - Cursor pointer (standard interaction affordance)
+   
+   Goal: User can instantly tell row is interactive and track
+   horizontally across wide column gaps while scanning.
    ======================================== */
 
 .lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) {
+  /* Full-width background change for horizontal row binding */
   background-color: var(--color-table-row-background-hover);
   
-  /* Subtle left-edge indicator for clickable affordance */
-  border-left: 3px solid var(--accent-500);
-  padding-left: calc(var(--spacing-16) - 3px); /* Compensate for border to prevent content shift */
+  /* Left-edge accent indicator - immediate interactivity signal */
+  /* Strengthened from 3px to 4px and accent-500 to accent-600 for clarity */
+  border-left: 4px solid var(--accent-600);
+  padding-left: calc(var(--spacing-16) - 4px); /* Compensate for border to prevent content shift */
+}
+
+/* Primary cell text strengthening on row hover */
+/* Reinforces that entire row is actionable, not individual cells */
+/* Visual only - click handling remains at row level */
+.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) .lfx-table-cell--primary {
+  color: var(--neutral-900);
+  font-weight: var(--font-medium);
 }
 
 /* ========================================
