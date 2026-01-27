@@ -80,19 +80,12 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createAppShell } from '../../../../components/app-shell/app-shell';
-import { createPageLayout } from '../../../../components/page-layout/page-layout';
-import { createAppHeader } from '../../../../components/app-header/app-header';
-import { createPageSection } from '../../../../components/page-section/page-section';
-import { createCard } from '../../../../components/card/card';
 import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../../components/table/table';
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
-import { createSearchInput } from '../../../../components/search-input/search-input';
-import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
-import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 
@@ -256,97 +249,6 @@ function createVoteNameLink(name: string): HTMLElement {
   return link;
 }
 
-// =============================================================================
-// HELPER: Toolbar with Search + Filters (uses TableToolbar)
-// =============================================================================
-
-/**
- * Creates the toolbar (search + filters) for Votes.
- * 
- * ARCHITECTURAL LAYERING:
- * - TableToolbar (Level 2) owns layout, spacing, and flex behavior
- * - Votes page defines WHICH controls and their ORDER
- * 
- * Filter order matches table columns: Group → Status
- * 
- * NO MANUAL LAYOUT:
- * - No flex styling (TableToolbar owns it)
- * - No padding (TableToolbar owns it)
- * - No gap (TableToolbar owns it)
- * - No SearchInput flex: 1 (TableToolbar applies automatically)
- */
-function createToolbar(): HTMLElement {
-  // Define search input
-  const searchInput = createSearchInput({ 
-    placeholder: 'Search votes…',
-    variant: 'toolbar',
-  });
-  
-  // Define filters (order matches column semantics: Group → Status)
-  const filters = [
-    createFilterDropdownTrigger({ label: 'All Groups' }),
-    createFilterDropdownTrigger({ label: 'All Statuses' }),
-  ];
-  
-  // TableToolbar owns HOW they're laid out
-  return createTableToolbar({
-    search: searchInput,
-    filters,
-  });
-}
-
-// =============================================================================
-// HELPER: Pagination Placeholder (inside Card, below table)
-// =============================================================================
-
-/**
- * Creates a minimal pagination row placeholder.
- * 
- * PLACEHOLDER ONLY - This is a story-only helper demonstrating where
- * pagination controls would sit. This will be replaced by a proper
- * Pagination component in the future.
- * 
- * No inline spacing hacks. No visual styling beyond basic structure.
- * Sits directly below the table when enabled.
- */
-function createPaginationPlaceholder(currentPage = 1, totalItems = 42): HTMLElement {
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.justifyContent = 'space-between';
-  container.style.alignItems = 'center';
-  
-  // Info text
-  const info = document.createElement('span');
-  info.textContent = `Rows ${(currentPage - 1) * 10 + 1}–${Math.min(currentPage * 10, totalItems)} of ${totalItems}`;
-  info.style.fontFamily = 'var(--ui-text-body-secondary-font-family)';
-  info.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
-  info.style.color = 'var(--text-secondary)';
-  
-  // Controls
-  const controls = document.createElement('div');
-  controls.style.display = 'flex';
-  controls.style.gap = 'var(--spacing-8)';
-  
-  const prevButton = document.createElement('button');
-  prevButton.textContent = 'Previous';
-  prevButton.disabled = currentPage === 1;
-  prevButton.style.fontFamily = 'var(--ui-text-control-font-family)';
-  prevButton.style.fontSize = 'var(--ui-text-control-font-size)';
-  
-  const nextButton = document.createElement('button');
-  nextButton.textContent = 'Next';
-  nextButton.disabled = currentPage * 10 >= totalItems;
-  nextButton.style.fontFamily = 'var(--ui-text-control-font-family)';
-  nextButton.style.fontSize = 'var(--ui-text-control-font-size)';
-  
-  controls.appendChild(prevButton);
-  controls.appendChild(nextButton);
-  
-  container.appendChild(info);
-  container.appendChild(controls);
-  
-  return container;
-}
 
 // =============================================================================
 // HELPER: Votes Table with semantic columns
@@ -474,18 +376,6 @@ function createDemoNav(activeItemId = 'votes') {
 }
 
 // =============================================================================
-// HELPER: Story-only page width wrapper
-// =============================================================================
-
-function wrapForStorybook(content: HTMLElement): HTMLElement {
-  const wrapper = document.createElement('div');
-  wrapper.style.maxWidth = '1280px';
-  wrapper.style.margin = '0 auto';
-  wrapper.appendChild(content);
-  return wrapper;
-}
-
-// =============================================================================
 // MAIN COMPOSITION FUNCTION
 // Creates Votes Table Page (instance of canonical Table Page pattern)
 // =============================================================================
@@ -503,53 +393,39 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     votes = votesData,
   } = args;
 
-  // Build Card children: optional toolbar + table + optional pagination
-  // TableToolbar component owns layout — Votes page defines WHICH controls
-  const cardChildren: HTMLElement[] = [];
-  
-  if (showFilters) {
-    cardChildren.push(createToolbar());
-  }
-  
-  cardChildren.push(createVotesTable(votes, false));
-
-  // Optional: Pagination row (inside Card, below table)
-  if (showPagination) {
-    cardChildren.push(createPaginationPlaceholder(1, votes.length));
-  }
-
-  // Page structure (MUST MATCH Table Page pattern)
-  const pageChildren: HTMLElement[] = [
-    // AppHeader with primary action (tighter spacing for workflow pages)
-    createAppHeader({
-      title: 'Votes',
-      description: 'Make decisions with your project groups.',
-      actions: createButton({
-        children: 'Create Vote',
-        variant: 'primary',
-      }),
-      dense: true, // Tighter header spacing for workflow pages
+  // Votes is now a pure configuration object
+  // All composition and layout owned by Table Page pattern
+  return createTablePageFromConfig({
+    // Page configuration
+    title: 'Votes',
+    description: 'Make decisions with your project groups.',
+    actions: createButton({
+      children: 'Create Vote',
+      variant: 'primary',
     }),
-
-    // PageSection (dense) → Card → [Filters, Table, Pagination]
-    createPageSection({
-      dense: true,
-      children: createCard({
-        children: cardChildren,
-      }),
-    }),
-  ];
-
-  const pageContent = createPageLayout({
-    children: pageChildren,
-  });
-
-  const appShell = createAppShell({
+    
+    // Toolbar configuration
+    searchPlaceholder: 'Search votes…',
+    filters: [
+      { label: 'All Groups' },
+      { label: 'All Statuses' },
+    ],
+    
+    // Table configuration
+    table: createVotesTable(votes, false),
+    
+    // Pagination configuration
+    page: 1,
+    pageSize: 10,
+    totalItems: votes.length,
+    
+    // Display options
+    showFilters,
+    showPagination,
+    
+    // Navigation
     nav: createDemoNav(),
-    content: pageContent,
   });
-
-  return wrapForStorybook(appShell);
 }
 
 // =============================================================================

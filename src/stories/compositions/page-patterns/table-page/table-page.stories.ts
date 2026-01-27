@@ -332,6 +332,34 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 // MAIN COMPOSITION FUNCTION
 // =============================================================================
 
+interface TablePageConfig {
+  // Page configuration
+  title: string;
+  description?: string;
+  actions?: HTMLElement;
+  
+  // Toolbar configuration
+  searchPlaceholder?: string;
+  filters?: Array<{ label: string }>;
+  
+  // Table configuration
+  table: HTMLElement;
+  
+  // Pagination configuration
+  page?: number;
+  pageSize?: number;
+  totalItems?: number;
+  
+  // Display options
+  dense?: boolean;
+  showFilters?: boolean;
+  showPagination?: boolean;
+  
+  // Navigation
+  nav?: HTMLElement;
+}
+
+// Legacy interface for backward compatibility with existing stories
 interface TablePageArgs {
   dense?: boolean;
   showFilters?: boolean;
@@ -340,7 +368,7 @@ interface TablePageArgs {
 }
 
 /**
- * Creates a canonical Table Page composition.
+ * Creates a canonical Table Page composition (configurable version).
  * 
  * Structure:
  * - AppHeader with page title (== table title)
@@ -356,6 +384,96 @@ interface TablePageArgs {
  * - Header hands off directly into table
  * - Filters read as table's top edge (not floating toolbar)
  * - Page reads as ONE workflow, not separate regions
+ */
+function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
+  const {
+    title,
+    description,
+    actions,
+    searchPlaceholder,
+    filters = [],
+    table,
+    page = 1,
+    pageSize = 10,
+    totalItems = 0,
+    dense = false,
+    showFilters = false,
+    showPagination = false,
+    nav = createDemoNav(),
+  } = config;
+
+  const pageChildren: HTMLElement[] = [
+    // AppHeader must be first child
+    createAppHeader({
+      title,
+      description,
+      actions,
+      dense: true, // DEFAULT: Dense header for workflow pages
+    }),
+  ];
+
+  // Build Card children: optional toolbar + table + optional pagination
+  const cardChildren: HTMLElement[] = [];
+  
+  if (showFilters && searchPlaceholder) {
+    // Build toolbar from configuration
+    const searchInput = createSearchInput({ 
+      placeholder: searchPlaceholder,
+      variant: 'toolbar',
+    });
+    
+    const filterElements = filters.map(f => 
+      createFilterDropdownTrigger({ label: f.label })
+    );
+    
+    cardChildren.push(createTableToolbar({
+      search: searchInput,
+      filters: filterElements,
+    }));
+  }
+  
+  cardChildren.push(table);
+  
+  if (showPagination && totalItems > 0) {
+    cardChildren.push(createTablePagination({
+      page,
+      pageSize,
+      totalItems,
+    }));
+  }
+
+  // Single PageSection with Card containing table
+  pageChildren.push(
+    createPageSection({
+      dense: true,
+      children: [
+        createCard({
+          dense,
+          children: cardChildren,
+        }),
+      ],
+    })
+  );
+
+  // Build the page content with tighter vertical rhythm
+  const pageContent = createPageLayout({
+    dense: true,
+    children: pageChildren,
+  });
+  
+  pageContent.style.gap = 'var(--spacing-8)';
+
+  // Full AppShell with nav
+  const appShell = createAppShell({
+    nav,
+    content: pageContent,
+  });
+
+  return wrapForStorybook(appShell);
+}
+
+/**
+ * Creates a canonical Table Page composition (legacy version for existing stories).
  */
 function createTablePage(args: TablePageArgs = {}): HTMLElement {
   const {
@@ -639,3 +757,9 @@ export const Minimal: Story = {
  * 
  * If this page feels wrong, fix in components or tokens — not here.
  */
+
+// =============================================================================
+// EXPORTS: For page examples to use
+// =============================================================================
+
+export { createTablePageFromConfig, type TablePageConfig };
