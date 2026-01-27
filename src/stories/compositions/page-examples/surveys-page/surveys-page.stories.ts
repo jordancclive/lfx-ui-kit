@@ -59,7 +59,7 @@
  *          │  ├─ FilterDropdownTrigger: "All Groups"
  *          │  ├─ FilterDropdownTrigger: "All Survey Types"
  *          │  └─ FilterDropdownTrigger: "All Statuses"
- *          ├─ Table (semantic columns, default rows for comfort)
+ *          ├─ TableGrid (semantic columns, default rows for comfort)
  *          └─ Pagination Row (optional)
  * 
  * STRUCTURAL RULES (from pattern):

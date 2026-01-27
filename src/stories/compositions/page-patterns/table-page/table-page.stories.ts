@@ -45,7 +45,7 @@
  *          ├─ TableToolbar (DOCKED — no margin, internal padding)
  *          │  ├─ SearchInput (flex: 1 — FULL-WIDTH by default)
  *          │  └─ Filters (order matches columns)
- *          ├─ Table (semantic columns)
+ *          ├─ TableGrid (semantic columns)
  *          └─ TablePagination (optional — Level 2 component)
  * 
  * VISUAL GOALS:
@@ -54,7 +54,7 @@
  * - Page reads as ONE workflow top → bottom
  * 
  * ARCHITECTURAL LAYERING:
- * - Table component: Pure grid layout (no filter/pagination knowledge)
+ * - TableGrid component: Pure grid layout (no filter/pagination knowledge)
  * - TableToolbar component: Search + filter layout (Level 2)
  * - TablePagination component: Pagination controls (Level 2)
  * - Table Page pattern: Composition authority (WHERE components go)
@@ -656,7 +656,7 @@ AppShell
    └─ PageSection (dense: true)
       └─ Card
          ├─ Search + Filter row (optional)
-         └─ Table (semantic columns)
+         └─ TableGrid (semantic columns)
 \`\`\`
 
 ### Toolbar Placement Pattern

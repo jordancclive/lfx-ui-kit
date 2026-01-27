@@ -100,9 +100,9 @@ Card
 
 ## Component Boundaries
 
-**TableToolbar vs Table:**
+**TableToolbar vs TableGrid:**
 - TableToolbar: Search + filter layout
-- Table: Grid layout for data rows
+- TableGrid: Grid layout for data rows
 
 **TableToolbar vs Card:**
 - TableToolbar: Control layout
@@ -134,19 +134,19 @@ toolbars are conditionally empty.
 
 **TableToolbar MUST NOT:**
 - ❌ Render inside the TableGrid component
-- ❌ Be passed to Table as a prop
-- ❌ Be rendered by Table in any way
+- ❌ Be passed to TableGrid as a prop
+- ❌ Be rendered by TableGrid in any way
 - ❌ Assume pagination ownership
 - ❌ Assume page-level vertical rhythm
 - ❌ Own filter data logic or semantics
 
 **Correct Placement:**
 - ✅ TableToolbar is ALWAYS placed by a Page Pattern (e.g. Table Page)
-- ✅ TableToolbar sits inside Card, above Table (sibling, not child)
-- ✅ Table remains layout-agnostic for data rows only
+- ✅ TableToolbar sits inside Card, above TableGrid (sibling, not child)
+- ✅ TableGrid remains layout-agnostic for data rows only
 
 **Why this boundary exists:**
-- Table is a pure grid layout component (Level 2)
+- TableGrid is a pure grid layout component (Level 2)
 - TableToolbar is a search + filter layout component (Level 2)
 - They are siblings at the same architectural level
 - Neither should own or render the other
@@ -227,7 +227,7 @@ Consult the Design System Orientation before proceeding.
 - Filter ORDER (matches column semantics)
 - Vertical rhythm between header, toolbar, and table
 
-**Table Component owns (LOCKED):**
+**TableGrid Component owns (LOCKED):**
 - Grid layout for data rows
 - Row rendering
 - Cell rendering

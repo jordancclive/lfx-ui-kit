@@ -176,15 +176,15 @@ TablePagination renders as ONE horizontal row with two independent clusters:
 // In Table Page pattern:
 Card
 ├─ TableToolbar (search + filters)
-├─ Table (data grid)
+├─ TableGrid (data grid)
 └─ TablePagination (page navigation)
 \`\`\`
 
 ## Component Boundaries
 
-**TablePagination vs Table:**
+**TablePagination vs TableGrid:**
 - TablePagination: Pagination controls
-- Table: Grid layout for data rows
+- TableGrid: Grid layout for data rows
 
 **TablePagination vs TableToolbar:**
 - TablePagination: Page navigation (bottom)
@@ -202,8 +202,8 @@ Card
 
 **TablePagination MUST NOT:**
 - ❌ Render inside the TableGrid component
-- ❌ Be passed to Table as a prop
-- ❌ Be rendered by Table in any way
+- ❌ Be passed to TableGrid as a prop
+- ❌ Be rendered by TableGrid in any way
 - ❌ Assume data fetching ownership
 - ❌ Assume sorting ownership
 - ❌ Assume filtering ownership
@@ -211,11 +211,11 @@ Card
 
 **Correct Placement:**
 - ✅ TablePagination is ALWAYS placed by a Page Pattern (e.g. Table Page)
-- ✅ TablePagination sits inside Card, below Table (sibling, not child)
-- ✅ Table remains layout-agnostic for data rows only
+- ✅ TablePagination sits inside Card, below TableGrid (sibling, not child)
+- ✅ TableGrid remains layout-agnostic for data rows only
 
 **Why this boundary exists:**
-- Table is a pure grid layout component (Level 2)
+- TableGrid is a pure grid layout component (Level 2)
 - TablePagination is a pagination control component (Level 2)
 - They are siblings at the same architectural level
 - Neither should own or render the other

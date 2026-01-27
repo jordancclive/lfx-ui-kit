@@ -24,7 +24,7 @@
  * Each table block can independently declare:
  * - Section title (required)
  * - Filter row (optional)
- * - Table (required)
+ * - TableGrid (required)
  * - Pagination row (optional)
  * 
  * No assumptions are made about which tables are filterable or paginated.
@@ -38,13 +38,13 @@
  *    │  ├─ Section Title
  *    │  ├─ Card
  *    │  │  ├─ (optional) Filter Row
- *    │  │  ├─ Table
+ *    │  │  ├─ TableGrid
  *    │  │  └─ (optional) Pagination Row
  *    └─ Table Block 2 (e.g. "Other Groups")
  *       ├─ Section Title
  *       └─ Card
  *          ├─ (optional) Filter Row
- *          ├─ Table
+ *          ├─ TableGrid
  *          └─ (optional) Pagination Row
  * 
  * KEY DIFFERENCES FROM TABLE PAGE PATTERN:
@@ -236,7 +236,7 @@ function createCheckmark(): HTMLElement {
  * 
  * Note: Equal-width columns are a CSS Grid default. In production,
  * column widths should be semantic (flexible vs intrinsic) but this
- * requires grid-template-columns tuning at the Table component level.
+ * requires grid-template-columns tuning at the TableGrid component level.
  */
 function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
   const headerCells = [
@@ -446,7 +446,7 @@ function createSegmentedTablePage(args: SegmentedTablePageArgs = {}): HTMLElemen
   // Each table block is self-contained and independently declares:
   // - Section title (required)
   // - Filter row (optional)
-  // - Table (required)
+  // - TableGrid (required)
   // - Pagination row (optional)
   // 
   // No assumptions about which blocks have filters or pagination.
@@ -793,7 +793,7 @@ export const Minimal: Story = {
  * ✓ Each block independently declares:
  *   - Section title (required)
  *   - Filter row (optional per block)
- *   - Table (required)
+ *   - TableGrid (required)
  *   - Pagination row (optional per block)
  * ✓ No assumptions based on block position or name
  * ✓ Filters sit directly above table (no wrappers)
