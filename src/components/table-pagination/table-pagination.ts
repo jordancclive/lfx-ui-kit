@@ -43,6 +43,23 @@ export interface TablePaginationProps {
    * Optional callback when page changes.
    */
   onPageChange?: (page: number) => void;
+  
+  /**
+   * Optional array of page size options for "Results per page" selector.
+   * 
+   * If undefined or empty, no page size selector is rendered.
+   * If only one option is provided, no selector is rendered (no choice to make).
+   * 
+   * Example: [10, 20, 50]
+   */
+  pageSizeOptions?: number[];
+  
+  /**
+   * Optional callback when page size changes.
+   * 
+   * Called when user selects a different page size.
+   */
+  onPageSizeChange?: (pageSize: number) => void;
 }
 
 /**
@@ -121,7 +138,7 @@ function getVisiblePages(currentPage: number, totalPages: number): PageMarker[] 
  * @returns HTMLElement representing the pagination controls (or empty container if not needed)
  */
 export function createTablePagination(props: TablePaginationProps): HTMLElement {
-  const { page, pageSize, totalItems, onPageChange } = props;
+  const { page, pageSize, totalItems, onPageChange, pageSizeOptions, onPageSizeChange } = props;
   
   const pagination = document.createElement('div');
   
@@ -151,6 +168,57 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   // Right side: Pagination controls
   const controls = document.createElement('div');
   controls.className = 'lfx-table-pagination__controls';
+  
+  // Optional: Page size selector (if enabled and has multiple options)
+  const shouldRenderPageSizeSelector = 
+    pageSizeOptions && 
+    pageSizeOptions.length > 1;
+  
+  if (shouldRenderPageSizeSelector) {
+    const pageSizeSelector = document.createElement('div');
+    pageSizeSelector.className = 'lfx-table-pagination__page-size';
+    
+    // Label
+    const label = document.createElement('span');
+    label.className = 'lfx-table-pagination__page-size-label';
+    label.textContent = 'Results per page:';
+    pageSizeSelector.appendChild(label);
+    
+    // Options container
+    const options = document.createElement('div');
+    options.className = 'lfx-table-pagination__page-size-options';
+    
+    pageSizeOptions.forEach((size, index) => {
+      // Option button
+      const option = document.createElement('button');
+      option.className = 'lfx-table-pagination__page-size-option';
+      option.textContent = String(size);
+      
+      // Mark current page size as active
+      if (size === pageSize) {
+        option.classList.add('lfx-table-pagination__page-size-option--active');
+        option.setAttribute('aria-current', 'true');
+      }
+      
+      // Add click handler
+      if (onPageSizeChange && size !== pageSize) {
+        option.addEventListener('click', () => onPageSizeChange(size));
+      }
+      
+      options.appendChild(option);
+      
+      // Add separator between options (but not after last)
+      if (index < pageSizeOptions.length - 1) {
+        const separator = document.createElement('span');
+        separator.className = 'lfx-table-pagination__page-size-separator';
+        separator.textContent = '/';
+        options.appendChild(separator);
+      }
+    });
+    
+    pageSizeSelector.appendChild(options);
+    controls.appendChild(pageSizeSelector);
+  }
   
   // Previous button
   const prevButton = document.createElement('button');

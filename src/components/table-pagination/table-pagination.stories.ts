@@ -19,6 +19,7 @@ TablePagination exists to:
 - Display current page range and total items
 - Render numbered page navigation with intelligent windowing
 - Render Previous/Next navigation controls
+- Optionally render "Results per page" selector
 - Create visual subordination to table content
 - Eliminate pagination layout drift across table page examples
 
@@ -27,9 +28,10 @@ TablePagination exists to:
 **Level:** Level 2 — Molecule
 
 **Owns:**
-- Pagination control layout (info + numbered pages + prev/next buttons)
+- Pagination control layout (info + optional page size + numbered pages + prev/next buttons)
 - Page number display and formatting
 - Page windowing with ellipsis for large datasets
+- Optional "Results per page" selector
 - Internal spacing and alignment
 - Visual subordination to table rows
 - Defensive rendering (no pagination when not needed)
@@ -57,6 +59,43 @@ Do NOT use TablePagination when:
 - Building a form (use form navigation)
 - Creating a wizard (use wizard navigation)
 
+## Page Size Selection (Optional)
+
+**When to Enable:**
+
+The "Results per page" selector is OPTIONAL and should only be enabled when:
+- Users would benefit from adjusting page density
+- Multiple page size options make semantic sense (e.g., 10, 20, 50)
+- The dataset size varies significantly
+
+**When NOT to Enable:**
+
+Do NOT enable page size selection when:
+- Default page size is sufficient for all use cases
+- Dataset is always small
+- Adding complexity without user benefit
+
+**How to Enable:**
+
+Pass \`pageSizeOptions\` prop with array of page sizes:
+
+\`\`\`typescript
+createTablePagination({
+  page: 1,
+  pageSize: 10,
+  totalItems: 120,
+  pageSizeOptions: [10, 20, 50],
+  onPageSizeChange: (newSize) => {
+    // Handle page size change
+  },
+})
+\`\`\`
+
+**Defensive Behavior:**
+- If \`pageSizeOptions\` is undefined → no selector rendered
+- If \`pageSizeOptions\` has ≤1 option → no selector rendered
+- No layout shift when enabled/disabled
+
 ## Defensive Behavior
 
 **Automatic Hiding:**
@@ -83,6 +122,10 @@ is conditionally unnecessary.
 - Visually subordinate to table content
 
 **Controls (right side):**
+- Optional "Results per page" selector (when enabled)
+  - Format: "Results per page: 10 / 20"
+  - Appears first with divider
+  - Active option highlighted
 - Previous button (disabled at first page)
 - Numbered page buttons (1, 2, 3, …)
   - Current page highlighted with border and background
@@ -163,6 +206,7 @@ Card
 - Page number display and formatting
 - Numbered page button rendering
 - Page windowing with ellipsis
+- Optional page size selector rendering
 - Prev/Next button rendering
 - Internal spacing (padding, gap)
 - Visual subordination styling
@@ -224,6 +268,10 @@ architectural level (Level 2 — Molecule).
     totalItems: {
       control: 'number',
       description: 'Total number of items across all pages',
+    },
+    pageSizeOptions: {
+      control: 'object',
+      description: 'Optional array of page size options (e.g., [10, 20, 50]). If undefined or has ≤1 option, no selector is rendered.',
     },
   },
 };
@@ -381,6 +429,51 @@ Demonstrates pagination with no items.
 - NO visible footprint
 
 This prevents phantom spacing when table has no data.
+        `,
+      },
+    },
+  },
+};
+
+/**
+ * With page size selector (optional feature).
+ */
+export const WithPageSizeSelector: Story = {
+  args: {
+    page: 2,
+    pageSize: 10,
+    totalItems: 120,
+    pageSizeOptions: [10, 20, 50],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Page Size Selector (Optional Feature)**
+
+Demonstrates optional "Results per page" selector.
+
+- Current page: 2 (highlighted)
+- Current page size: 10 (highlighted)
+- Showing items 11–20 of 120
+- Total pages: 12
+- Page size options: 10 / 20 / 50
+- Page display: \`1 [2] 3 4 … 12\`
+
+**How to Enable:**
+- Pass \`pageSizeOptions: [10, 20, 50]\` prop
+- Provide \`onPageSizeChange\` callback
+
+**Defensive Behavior:**
+- If \`pageSizeOptions\` is undefined → no selector rendered
+- If only 1 option → no selector rendered (no choice)
+- Existing pagination remains unchanged
+
+**Visual Design:**
+- Selector appears at start of controls with divider
+- Active page size highlighted with background
+- Visually subordinate to page numbers
+- No elevation or container
         `,
       },
     },

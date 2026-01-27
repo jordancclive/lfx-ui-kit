@@ -143,6 +143,98 @@
 }
 
 /**
+ * Page Size Selector (Optional)
+ * 
+ * Inline control for selecting "Results per page".
+ * Only rendered when pageSizeOptions prop is provided with multiple options.
+ * 
+ * Layout:
+ * - Appears at the start of pagination controls (right side)
+ * - Horizontal layout: "Results per page: 10 / 20"
+ * - Visually subordinate to page numbers
+ */
+.lfx-table-pagination__page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  padding-right: var(--spacing-12);
+  border-right: 1px solid var(--ui-surface-divider);
+  margin-right: var(--spacing-8);
+}
+
+/**
+ * Page Size Label
+ * 
+ * "Results per page:" label text.
+ * Uses secondary text styling to remain subordinate.
+ */
+.lfx-table-pagination__page-size-label {
+  font-family: var(--ui-text-body-secondary-font-family);
+  font-size: var(--ui-text-body-secondary-font-size);
+  color: var(--color-table-cell-text-secondary);
+  white-space: nowrap;
+}
+
+/**
+ * Page Size Options Container
+ * 
+ * Contains the selectable page size options (e.g., "10 / 20").
+ */
+.lfx-table-pagination__page-size-options {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+/**
+ * Page Size Option Button
+ * 
+ * Individual page size option (e.g., "10", "20").
+ * Lightweight button styling to remain subordinate.
+ */
+.lfx-table-pagination__page-size-option {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  color: var(--accent-600);
+  border: none;
+  border-radius: var(--rounded-sm);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.lfx-table-pagination__page-size-option:hover:not(.lfx-table-pagination__page-size-option--active) {
+  background-color: var(--ui-surface-hover);
+}
+
+/**
+ * Active Page Size Option
+ * 
+ * Highlights the currently selected page size.
+ * Uses subtle background and medium weight.
+ */
+.lfx-table-pagination__page-size-option--active {
+  font-weight: 500;
+  color: var(--accent-600);
+  background-color: var(--accent-50);
+  cursor: default;
+}
+
+/**
+ * Page Size Separator
+ * 
+ * Separator between page size options (e.g., "/").
+ * Uses secondary text color.
+ */
+.lfx-table-pagination__page-size-separator {
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  color: var(--color-table-cell-text-secondary);
+  user-select: none;
+}
+
+/**
  * Layout Notes:
  * 
  * - Info and controls use space-between for clean separation
@@ -152,5 +244,7 @@
  * - Numbered pages are compact and lightweight
  * - Active page is clearly indicated with border and background
  * - Ellipsis marks skipped pages without adding visual weight
+ * - Page size selector (optional) appears at start of controls with divider
+ * - Page size options use lightweight button styling (subordinate)
  * - No background ensures pagination inherits Card surface
  */
