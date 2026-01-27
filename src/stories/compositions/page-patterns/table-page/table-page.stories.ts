@@ -305,10 +305,12 @@ function createDemoNav(activeItemId?: string) {
     children: [
       createNavSection([
         createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'mailing-lists', children: createTextNode('Mailing Lists') }),
         createNavItem({ id: 'votes', children: createTextNode('Votes') }),
         createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
+        createNavItem({ id: 'drive', children: createTextNode('Drive') }),
+        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
         createNavItem({ id: 'settings', children: createTextNode('Settings') }),
       ]),
     ],
@@ -382,7 +384,7 @@ interface TablePageConfig {
    * GlobalNav is ALWAYS rendered as part of AppShell.
    * This property only controls the active state.
    */
-  navKey?: 'dashboard' | 'mailing-lists' | 'votes' | 'surveys' | 'drive' | 'projects' | 'groups' | 'members' | 'settings';
+  navKey?: 'dashboard' | 'mailing-lists' | 'votes' | 'surveys' | 'drive' | 'groups' | 'projects' | 'settings';
 }
 
 // Legacy interface for backward compatibility with existing stories

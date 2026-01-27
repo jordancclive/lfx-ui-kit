@@ -380,10 +380,12 @@ function createDemoNav(activeItemId = 'groups') {
     children: [
       createNavSection([
         createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'mailing-lists', children: createTextNode('Mailing Lists') }),
         createNavItem({ id: 'votes', children: createTextNode('Votes') }),
         createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
+        createNavItem({ id: 'drive', children: createTextNode('Drive') }),
+        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
         createNavItem({ id: 'settings', children: createTextNode('Settings') }),
       ]),
     ],
