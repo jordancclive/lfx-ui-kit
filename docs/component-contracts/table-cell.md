@@ -84,6 +84,7 @@ NOT allowed:
 - Apply text alignment based on align
 - Apply spacing tokens for padding
 - Render children without modification
+- Provide interior horizontal spacing for scan comfort
 
 ## Not Responsible For
 
@@ -91,6 +92,37 @@ NOT allowed:
 - Background changes
 - Border rendering
 - Column width management
+- Row height or vertical padding
+- Column width behavior (owned by Table)
+
+---
+
+## Interior Spacing & Scanability
+
+**TableCell owns interior horizontal spacing only.**
+
+### Core Principle
+
+TableCell must provide comfortable scan spacing for all content types without affecting row height or density:
+
+- **Categorical content** (Tags) — Must not feel cramped
+- **Numeric values** — Need breathing room from grid edges
+- **Meta text** (dates) — Require calm spacing
+- **Action text** — Need sufficient padding
+
+### Spacing Strategy
+
+- **Horizontal padding** — Adjusted to prevent visual compression in intrinsic-width columns
+- **Vertical padding** — Fixed per density variant (default vs dense)
+- **Proportional scaling** — Dense variant maintains relative relationships
+
+### Lock Note
+
+> Interior spacing exists to prevent visual compression in intrinsic-width columns
+> while preserving dense row height. TableCell must not affect row-level interaction,
+> column width behavior, or typography scale.
+
+---
 
 ## Storybook Coverage
 

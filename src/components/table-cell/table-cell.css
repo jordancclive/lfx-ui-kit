@@ -27,9 +27,10 @@
   line-height: var(--ui-text-body-secondary-line-height);
   
   /* Spacing - optimized for scanability
-     32px total row height (8px + 16px line + 8px)
-     8px shorter than headers for clear visual anchoring */
-  padding: var(--spacing-8) var(--spacing-12);
+     Vertical: 8px (preserves row height)
+     Horizontal: 16px (interior breathing room for intrinsic columns)
+     Total row height: 32px (8px + 16px line + 8px) */
+  padding: var(--spacing-8) var(--spacing-16);
   
   /* Default alignment */
   text-align: left;
@@ -85,16 +86,19 @@
 
 .lfx-table-cell--small {
   font-size: calc(var(--ui-text-body-secondary-font-size) * 0.875);
-  padding: var(--spacing-4) var(--spacing-8);
+  /* Vertical: 4px, Horizontal: 12px (proportionally scaled) */
+  padding: var(--spacing-4) var(--spacing-12);
 }
 
 /* ========================================
-   Dense variant - reduced vertical padding
+   Dense variant - reduced vertical padding, preserved horizontal breathing room
+   Vertical: 6px (compact row height)
+   Horizontal: 16px (same as default for consistent scan comfort)
    ======================================== */
 
 .lfx-table--dense .lfx-table-cell,
 .lfx-table-cell--dense {
-  padding: var(--spacing-6) var(--spacing-12);
+  padding: var(--spacing-6) var(--spacing-16);
 }
 
 /* ========================================
