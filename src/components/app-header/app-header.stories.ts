@@ -16,7 +16,30 @@ const meta: Meta<AppHeaderProps> = {
 
 **Tier 3 — Composite Layout Component**
 
-AppHeader defines the top-of-page header region for LFX One pages. It provides structured layout for page title, optional description, optional metadata (breadcrumbs, status pills), and optional actions area (buttons, filters, tabs, search).
+AppHeader defines the top-of-page header region for LFX One pages. It provides workflow-optimized layout for page title, optional description, optional metadata, and optional actions area.
+
+### Visual Intent
+
+**AppHeader is optimized for workflow pages, not marketing pages:**
+
+- ✅ **Optical alignment** — Title and action align at top edge
+- ✅ **Workflow handoff** — Minimal vertical padding for clean content flow
+- ✅ **Production default** — Dense mode is the primary mode for app pages
+- ✅ **Not a banner** — Header feels part of page flow, not decorative
+
+**Result:** Headers read as part of the workflow, not decorative elements floating above content.
+
+### Spacing Strategy
+
+**Default Mode:**
+- Top padding: \`12px\` (reduced from 16px for workflow feel)
+- Bottom padding: \`8px\` (minimal for clean handoff)
+
+**Dense Mode (PRODUCTION DEFAULT):**
+- Top padding: \`8px\` (tight handoff for immediate content)
+- Bottom padding: \`6px\` (minimal separation)
+
+Dense mode is optimized for Table Page, Votes, Surveys, and similar workflow pages where the header hands off directly into DataTable or content.
 
 ### ⚠️ Important
 
@@ -34,74 +57,38 @@ Those responsibilities belong to:
 
 | Owns | Does NOT Own |
 |------|--------------|
-| Layout of title/description stack | Typography tokens (reuses existing) |
-| Layout of actions slot (right-aligned) | Styling or behavior of buttons, filters, tabs |
-| Layout of meta slot (left-aligned) | Routing or navigation logic |
-| Optional bottom divider | State management or data fetching |
-| Dense spacing mode | Hover, selected, or disabled states |
+| Workflow-optimized vertical padding | Typography tokens (reuses existing) |
+| Optical alignment of title + action | Styling or behavior of buttons, filters, tabs |
+| Layout of title/description stack | Routing or navigation logic |
+| Layout of actions slot (right-aligned) | State management or data fetching |
+| Layout of meta slot (left-aligned) | Hover, selected, or disabled states |
 
-### NOT Responsible For
+### Production Usage
 
-- Does NOT implement breadcrumb navigation
-- Does NOT manage page state or URL routing
-- Does NOT style buttons, pills, tabs, or dropdowns
-- Does NOT implement responsive breakpoints beyond layout wrapping
-- Does NOT manage focus or keyboard navigation
-- Does NOT implement animations or transitions
+**For workflow pages (Table Page, Votes, Surveys):**
+\`\`\`typescript
+createAppHeader({
+  title: "Votes",
+  description: "Make decisions with your project groups.",
+  actions: createButton({ children: "Create Vote", variant: "primary" }),
+  dense: true // RECOMMENDED for workflow pages
+})
+\`\`\`
 
-### Token Bindings (Layout Only)
-
-| Property | Token |
-|----------|-------|
-| Background | \`--color-app-header-surface-background\` |
-| Bottom divider | \`--color-app-header-surface-border\` |
-| Horizontal padding | \`--spacing-app-header-padding-x\` |
-| Vertical padding | \`--spacing-app-header-padding-y\` |
-| Vertical padding (dense) | \`--spacing-app-header-padding-y-dense\` |
-| Gap between regions | \`--spacing-app-header-gap\` |
-| Gap between regions (dense) | \`--spacing-app-header-gap-dense\` |
-| Gap between title/description | \`--spacing-app-header-title-gap\` |
-| Gap between title/description (dense) | \`--spacing-app-header-title-gap-dense\` |
-| Gap between meta/title | \`--spacing-app-header-meta-gap\` |
-| Gap between action children | \`--spacing-app-header-actions-gap\` |
+**For overview pages (Dashboard):**
+\`\`\`typescript
+createAppHeader({
+  title: "Dashboard",
+  description: "Overview of your project activity",
+  dense: false // Standard spacing for overview content
+})
+\`\`\`
 
 ### Typography Bindings
 
 AppHeader reuses existing typography tokens:
-- **Title:** \`--text-2xl\`, \`--font-semibold\`, \`--text-primary\`
-- **Description:** \`--text-sm\`, \`--font-medium\`, \`--text-secondary\`
-
-### Composition Examples
-
-#### Title Only
-\`\`\`typescript
-createAppHeader({ title: "Projects" })
-\`\`\`
-
-#### Title + Description
-\`\`\`typescript
-createAppHeader({
-  title: "Projects",
-  description: "Manage your open source projects and contributors"
-})
-\`\`\`
-
-#### Title + Actions
-\`\`\`typescript
-createAppHeader({
-  title: "Projects",
-  actions: createButton({ label: "New Project", variant: "primary" })
-})
-\`\`\`
-
-#### Meta + Title + Actions
-\`\`\`typescript
-createAppHeader({
-  meta: createFilterPill({ label: "Active", selected: true }),
-  title: "Project Settings",
-  actions: createButton({ label: "Save", variant: "primary" })
-})
-\`\`\`
+- **Title:** \`--ui-text-page-title-*\` (24px, semibold, primary color)
+- **Description:** \`--ui-text-body-secondary-*\` (14px, medium, secondary color)
         `,
       },
     },
@@ -117,11 +104,11 @@ createAppHeader({
     },
     withDivider: {
       control: 'boolean',
-      description: 'Show bottom divider border',
+      description: 'Show bottom divider border (rarely used)',
     },
     dense: {
       control: 'boolean',
-      description: 'Dense spacing mode',
+      description: 'Dense spacing mode (RECOMMENDED for workflow pages like Table Page, Votes, Surveys)',
     },
   },
   render: (args) => {
@@ -133,43 +120,60 @@ export default meta;
 type Story = StoryObj<AppHeaderProps>;
 
 /**
- * Basic header with title only
+ * PRODUCTION DEFAULT — Workflow page header
+ * 
+ * Dense mode with title, description, and primary action.
+ * This is the recommended configuration for Table Page, Votes, Surveys,
+ * and similar workflow pages.
  */
-export const TitleOnly: Story = {
+export const WorkflowPage: Story = {
   args: {
-    title: 'Projects',
+    title: 'Votes',
+    description: 'Make decisions with your project groups.',
+    dense: true, // RECOMMENDED for workflow pages
+    actions: createButton({
+      children: 'Create Vote',
+      variant: 'primary',
+    }),
   },
 };
 
 /**
- * Header with title and description text
+ * Overview page header (Dashboard, Settings)
+ * 
+ * Standard spacing for overview pages that don't hand off
+ * immediately into tables or dense content.
  */
-export const TitleAndDescription: Story = {
+export const OverviewPage: Story = {
   args: {
-    title: 'Team Members',
-    description: 'Invite and manage team member access and permissions',
+    title: 'Dashboard',
+    description: 'Overview of your project activity and metrics',
+    dense: false,
   },
 };
 
 /**
- * Header with action button on the right
+ * Workflow page with multiple actions
+ * 
+ * Primary and secondary actions aligned optically with title.
  */
-export const WithActions: Story = {
+export const MultipleActions: Story = {
   args: {
     title: 'Projects',
     description: 'Manage your open source projects and contributors',
+    dense: true,
     actions: (() => {
       const container = document.createElement('div');
       container.style.display = 'flex';
       container.style.gap = '8px';
       
       const secondaryButton = createButton({
-        label: 'Export',
+        children: 'Export',
         variant: 'secondary',
       });
       
       const primaryButton = createButton({
-        label: 'New Project',
+        children: 'New Project',
         variant: 'primary',
       });
       
@@ -181,75 +185,13 @@ export const WithActions: Story = {
 };
 
 /**
- * Dense spacing mode (reduced vertical padding and gaps)
+ * Title only (minimal configuration)
+ * 
+ * For simple pages without description or actions.
  */
-export const Dense: Story = {
+export const TitleOnly: Story = {
   args: {
-    title: 'Projects',
-    description: 'Manage your open source projects',
+    title: 'Settings',
     dense: true,
-    actions: createButton({
-      label: 'New Project',
-      variant: 'primary',
-    }),
-  },
-};
-
-/**
- * Responsive wrapping behavior (narrow container)
- */
-export const ResponsiveWrap: Story = {
-  args: {
-    title: 'Very Long Project Title That Might Wrap',
-    description: 'This demonstrates how the header handles narrow viewports and wrapping behavior',
-    actions: (() => {
-      const container = document.createElement('div');
-      container.style.display = 'flex';
-      container.style.gap = '8px';
-      
-      container.appendChild(createButton({
-        label: 'Cancel',
-        variant: 'secondary',
-      }));
-      
-      container.appendChild(createButton({
-        label: 'Save',
-        variant: 'primary',
-      }));
-      
-      return container;
-    })(),
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  },
-};
-
-/**
- * Header with tabs as actions
- */
-export const WithTabs: Story = {
-  args: {
-    title: 'Projects',
-    description: 'View and manage all your projects',
-    actions: (() => {
-      const container = document.createElement('div');
-      container.style.display = 'flex';
-      container.style.gap = '4px';
-      
-      const tabsGroup = createTabsGroup({
-        tabs: [
-          { id: 'all', label: 'All' },
-          { id: 'active', label: 'Active' },
-          { id: 'archived', label: 'Archived' },
-        ],
-        selectedId: 'all',
-      });
-      
-      container.appendChild(tabsGroup);
-      return container;
-    })(),
   },
 };

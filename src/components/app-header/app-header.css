@@ -2,6 +2,12 @@
  * AppHeader Component
  * Tier 3 - Composite Layout Component
  * 
+ * VISUAL INTENT:
+ * - Header feels part of workflow, not a decorative banner
+ * - Title and action optically align at top edge
+ * - Clean handoff to page content below
+ * - Dense mode is the production default for app pages
+ * 
  * Layout-only component for page headers.
  * Binds to system-level UI role typography tokens for title/description.
  */
@@ -10,12 +16,23 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-start; /* Align children to top edge for optical balance */
   gap: var(--spacing-app-header-gap);
   
-  /* Vertical padding — reduced bottom to visually connect to content */
-  padding-top: var(--spacing-app-header-padding-y);
-  padding-bottom: var(--spacing-12); /* Reduced from spacing-16 for better visual handoff */
+  /*
+   * Vertical Padding (WORKFLOW-OPTIMIZED)
+   * 
+   * Top: Reduced from 16px to 12px for tighter workflow feel
+   * Bottom: Minimal (8px) for clean handoff to page content
+   * 
+   * RATIONALE:
+   * - Header should not feel like a hero banner
+   * - Content should flow immediately after title
+   * - 12px top provides hierarchy without excess weight
+   * - 8px bottom creates breathing room without separation
+   */
+  padding-top: var(--spacing-12);
+  padding-bottom: var(--spacing-8);
   
   /* AppHeader does NOT own surface — sits on page background */
   background-color: transparent;
@@ -24,10 +41,23 @@
   flex-wrap: wrap;
 }
 
-/* Dense spacing variant */
+/*
+ * Dense Spacing Variant (PRODUCTION DEFAULT for workflow pages)
+ * 
+ * Dense mode feels intentional, not cramped.
+ * This is the primary mode for app pages with immediate content handoff.
+ */
 .lfx-app-header--dense {
-  padding-top: var(--spacing-app-header-padding-y-dense);
-  padding-bottom: var(--spacing-app-header-padding-y-dense);
+  /*
+   * Dense vertical padding:
+   * - Top: 8px (reduced from 12px for tighter handoff)
+   * - Bottom: 6px (minimal for immediate workflow connection)
+   * 
+   * Dense mode is optimized for Table Page, Votes, Surveys, etc.
+   * where header hands off directly into DataTable.
+   */
+  padding-top: var(--spacing-8);
+  padding-bottom: var(--spacing-6);
   gap: var(--spacing-app-header-gap-dense);
 }
 
@@ -101,12 +131,26 @@
 
 /* ==========================================
    Actions Slot (Buttons, Tabs, Filters)
+   
+   OPTICAL ALIGNMENT:
+   Actions align to the top edge of the title text.
+   Buttons have internal padding, so flex-start alignment
+   creates visual balance between title and action.
    ========================================== */
 
 .lfx-app-header__actions {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* Align with title text top edge */
+  align-items: flex-start; /* Aligns top edge of action elements with title text top */
   gap: var(--spacing-app-header-actions-gap);
   flex-shrink: 0;
+  
+  /*
+   * Subtle negative margin to optically align button with title.
+   * Buttons have internal padding (10px vertical in default size),
+   * which can make them appear to float higher than the title text.
+   * 
+   * This pulls the action down by 2px to create optical alignment.
+   */
+  margin-top: 2px;
 }

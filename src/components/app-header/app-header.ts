@@ -2,6 +2,12 @@
  * AppHeader Component
  * Tier 3 — Composite Layout Component
  * 
+ * VISUAL INTENT:
+ * - Header feels part of workflow, not a decorative banner
+ * - Title and action optically align at top edge
+ * - Clean handoff to page content below
+ * - Dense mode is the production default for app pages
+ * 
  * Purpose:
  * Defines the top-of-page header region for LFX One pages.
  * Provides structured layout for page title, optional description,
@@ -9,10 +15,11 @@
  * 
  * Ownership:
  * - Layout of title/description stack
- * - Layout of actions slot (right-aligned)
+ * - Layout of actions slot (right-aligned, optically aligned with title)
  * - Layout of meta slot (left-aligned, before title)
+ * - Workflow-optimized vertical padding
  * - Optional bottom divider
- * - Dense spacing mode
+ * - Dense spacing mode (production default)
  * 
  * Does NOT own:
  * - Typography tokens (reuses existing)
