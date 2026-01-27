@@ -25,6 +25,12 @@
  * - Semantic column widths (flexible vs intrinsic)
  * - Row-level navigation
  * 
+ * VOTES-SPECIFIC BEHAVIOR:
+ * - Default sorting: Status (Open → Pending Review → Closed), then Due Date (ascending)
+ * - Filters: "All Groups", "All Statuses" (example labels, non-functional)
+ * - Status Tags use semantic variants (success=Open, warning=Pending, default=Closed)
+ * - Action column shows "Review" or "View" based on status (text only, non-interactive)
+ * 
  * PAGE STRUCTURE (from Table Page pattern):
  * 
  * AppShell
@@ -39,7 +45,7 @@
  *          │  ├─ SearchInput (variant="toolbar")
  *          │  ├─ FilterDropdownTrigger: "All Groups"
  *          │  └─ FilterDropdownTrigger: "All Statuses"
- *          ├─ Table (semantic columns)
+ *          ├─ Table (semantic columns, default sorted)
  *          └─ Pagination Row (optional)
  * 
  * STRUCTURAL RULES (from pattern):
@@ -47,6 +53,17 @@
  * - NO section titles
  * - Filters and pagination INSIDE the Card
  * - No additional wrappers
+ * 
+ * INSTANCE-LEVEL POLISH NOTES:
+ * - Default sorting implemented (Votes-specific, not generalized)
+ * - Row interaction feels confident (clickable rows, strong hover)
+ * - Column widths balanced via semantic types
+ * - Filter row feels attached to table
+ * - Dense mode preserves scanability
+ * 
+ * DEFERRED ISSUES (requiring component/token changes):
+ * - None identified at instance level
+ * - All visual concerns resolved via existing component contracts
  * 
  * If something feels off visually:
  * - Identify which component owns the issue
@@ -83,7 +100,7 @@ interface VoteRow {
   action: string;
 }
 
-const votesData: VoteRow[] = [
+const votesDataRaw: VoteRow[] = [
   {
     name: 'Budget Allocation Q1 2026',
     group: 'Board of Directors',
@@ -149,6 +166,51 @@ const votesData: VoteRow[] = [
     action: 'View',
   },
 ];
+
+// =============================================================================
+// DEFAULT SORTING (VOTES-SPECIFIC BEHAVIOR)
+// =============================================================================
+
+/**
+ * Sorts votes by status priority, then by due date.
+ * 
+ * VOTES-SPECIFIC SORTING LOGIC:
+ * This sorting logic is specific to the Votes product page and reflects
+ * real-world priority rules for voting workflows.
+ * 
+ * Sorting rules:
+ * 1. Status order (highest to lowest priority):
+ *    - Open (requires immediate attention)
+ *    - Pending Review (awaiting action)
+ *    - Closed (archived)
+ * 
+ * 2. Within each status group:
+ *    - Sort by Due Date (ascending - soonest first)
+ * 
+ * This is example-specific logic and should NOT be extracted to shared utilities
+ * unless other pages require identical behavior.
+ */
+function sortVotesByPriority(votes: VoteRow[]): VoteRow[] {
+  const statusOrder: Record<VoteRow['status'], number> = {
+    'Open': 1,
+    'Pending Review': 2,
+    'Closed': 3,
+  };
+
+  return [...votes].sort((a, b) => {
+    // First: Sort by status priority
+    const statusDiff = statusOrder[a.status] - statusOrder[b.status];
+    if (statusDiff !== 0) return statusDiff;
+
+    // Second: Sort by due date (ascending)
+    const dateA = new Date(a.dueDate).getTime();
+    const dateB = new Date(b.dueDate).getTime();
+    return dateA - dateB;
+  });
+}
+
+// Apply default sorting to votes data
+const votesData: VoteRow[] = sortVotesByPriority(votesDataRaw);
 
 const minimalVotesData: VoteRow[] = votesData.slice(0, 3);
 
