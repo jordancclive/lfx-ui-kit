@@ -505,18 +505,17 @@ function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
 // HELPER: Demo Navigation (reused across examples)
 // =============================================================================
 
-function createDemoNav(): HTMLElement {
+function createDemoNav(activeItemId = 'surveys') {
   return createGlobalNav({
+    activeItemId,
     children: [
-      createNavSection({
-        title: 'Product',
-        children: [
-          createNavItem({ label: 'Dashboard', active: false }),
-          createNavItem({ label: 'Projects', active: false }),
-          createNavItem({ label: 'Votes', active: false }),
-          createNavItem({ label: 'Surveys', active: true }),
-        ],
-      }),
+      createNavSection([
+        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
+        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
+        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
+        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
+        createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
+      ]),
     ],
   });
 }
