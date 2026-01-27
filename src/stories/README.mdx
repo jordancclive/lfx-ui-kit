@@ -1,0 +1,227 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="0. README / Design System Orientation" />
+
+# LFX One UI Kit — Storybook Orientation
+
+> **If you are looking for what to reuse, how to build a page, or why a decision was made — start here.**
+
+---
+
+## Purpose of This Storybook
+
+**This Storybook is NOT a component gallery.**
+
+It is a **living reference for a production UI system** that encodes architectural intent, enforces consistency, and supports both human contributors and AI-assisted workflows.
+
+### It exists to:
+
+- Make architectural intent explicit
+- Prevent drift and one-off decisions
+- Support both human contributors and AI-assisted workflows
+
+### It is optimized for:
+
+- Engineers building new features
+- Designers validating implementation
+- Product managers understanding constraints
+- Technical leadership reviewing architecture
+- AI agents working via Cursor / MCP
+
+---
+
+## Architectural Layers
+
+### 1. Components
+
+Reusable building blocks, organized by **composition complexity**:
+
+#### Level 1 — Atoms
+
+Indivisible UI elements that cannot be broken down further.
+
+**Examples:** `Button`, `Tag`, `FilterPill`, `SearchInput`
+
+#### Level 2 — Molecules
+
+Structured patterns built from atoms or adding styled structure.
+
+**Examples:** `Card`, `TableRow`, `TableCell`, `MetricCard`
+
+#### Level 3 — Organisms
+
+Coordinated assemblies that manage multiple Level 1/2 components.
+
+**Examples:** `Table`, `AppHeader`, `AppShell`, `PageLayout`, `MetricsRow`
+
+> **Important:** Levels describe composition complexity, not importance. All levels are production-critical.
+
+---
+
+### 2. Page Patterns
+
+Reusable structural blueprints that define:
+
+- What appears on a page
+- Where it appears
+- What is allowed vs forbidden
+
+**Examples:** `Table Page` (canonical), `Segmented Table Page` (specialized)
+
+> ✅ **Page Patterns ARE reusable and ARE meant to be copied.**
+
+---
+
+### 3. Page Examples
+
+Concrete product pages showing real usage with product-specific data and logic.
+
+**Examples:** `Dashboard`, `Votes`, `Groups` (via Segmented Table Page)
+
+> ⚠️ **Page Examples are illustrative only and must NOT be copied directly.**  
+> Always reference the Page Pattern, not the Example.
+
+---
+
+## How to Read the Storybook Sidebar
+
+The sidebar is **intentionally ordered** to reflect the architectural flow:
+
+1. **1. Components**  
+   → Level 1 → Level 2 → Level 3  
+   _(Simple → Complex)_
+
+2. **2. Page Patterns**  
+   → Reusable blueprints  
+   _(What to copy)_
+
+3. **3. Page Examples**  
+   → Concrete implementations  
+   _(What NOT to copy)_
+
+### Why numeric prefixes exist:
+
+- Storybook sorts alphabetically and by insertion order
+- Numeric prefixes enforce architectural intent
+- Ordering is intentional and must not be removed
+
+---
+
+## Design System Philosophy
+
+This UI Kit is built on five core principles:
+
+### Structure before styling
+Define what things are before deciding how they look.
+
+### Semantics before visuals
+Name things by their meaning, not their appearance.
+
+### Explicitness over inference
+Say what you mean. Don't make agents guess.
+
+### Reuse via patterns, not copy-paste
+Copy the pattern, not the implementation.
+
+### Strong constraints enable speed
+Clear rules reduce decisions and prevent drift.
+
+> _This system is intentionally more explicit than most traditional design systems to support agentic workflows safely._
+
+---
+
+## The Seven-Step Process Used to Build This UI Kit
+
+This design system was constructed iteratively using a seven-step process:
+
+### 1. Establish token and semantic foundations
+
+Define primitive values (colors, spacing, typography) and semantic aliases that separate intent from implementation.
+
+### 2. Lock component contracts and responsibilities
+
+Document what each component owns, what it does NOT own, and how it binds to tokens.
+
+### 3. Build components bottom-up (Level 1 → 3)
+
+Start with atoms, compose molecules, coordinate organisms. Each level builds on the previous.
+
+### 4. Define reusable page patterns
+
+Extract structural blueprints from real pages. Patterns define WHAT and WHERE, not HOW or WHY.
+
+### 5. Validate patterns using real product examples
+
+Build concrete pages (Dashboard, Votes) to stress-test patterns and identify gaps.
+
+### 6. Encode rules and boundaries as documentation
+
+Write component contracts, pattern docs, and boundary definitions. Documentation is part of the system, not an afterthought.
+
+### 7. Enforce consistency via tooling and automation
+
+Use Storybook ordering, linters, type safety, and agentic workflows to prevent regressions.
+
+> **Important:** These steps are iterative. Changes must respect earlier steps unless explicitly revisited with intention.
+
+---
+
+## Tooling & Agentic Workflow
+
+This UI Kit was built using a hybrid human-agent workflow:
+
+### Figma
+Source of visual intent and design decisions.
+
+### Tokens
+Single source of visual truth. All styling flows through tokens.
+
+### Cursor
+Implementation and refactoring environment with AI-assisted coding.
+
+### ChatGPT
+Reasoning, architecture planning, and documentation generation.
+
+### Figma MCP
+Extracting structure and intent from design files.
+
+### Playwright MCP
+Automated verification and visual regression testing.
+
+### Chrome MCP
+Real-world validation in production-like environments.
+
+### GitHub
+Versioned source of truth with commit-level documentation.
+
+---
+
+> **Humans make decisions.**  
+> **Agents execute within constraints.**  
+> **This Storybook encodes those constraints.**
+
+---
+
+## How This UI Kit Is Maintained
+
+Maintenance follows strict architectural rules:
+
+### New components must declare their level
+Is it an atom, molecule, or organism? If unclear, it may not belong.
+
+### New pages must choose a Page Pattern
+If no pattern fits, create a new pattern — don't create a one-off page.
+
+### Deviations require explicit justification
+Breaking a rule is allowed if documented and intentional.
+
+### Documentation is not optional — it is part of the system
+Undocumented components are incomplete. Contracts are requirements, not nice-to-haves.
+
+---
+
+> **If something feels unclear, that is a signal to improve the system — not to work around it.**
+
+---
+
+_LFX One UI Kit — Built with intention, maintained with discipline._
