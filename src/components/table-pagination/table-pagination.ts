@@ -7,8 +7,9 @@
  * Owns layout, spacing, and hierarchy for table pagination controls.
  * 
  * Responsibilities:
- * - Pagination control layout (info + prev/next buttons)
+ * - Pagination control layout (info + numbered pages + prev/next buttons)
  * - Page number display and formatting
+ * - Page windowing (ellipsis for large datasets)
  * - Internal spacing and alignment
  * - Visual subordination to table rows
  * - Defensive rendering (no pagination when not needed)
@@ -40,9 +41,72 @@ export interface TablePaginationProps {
   
   /**
    * Optional callback when page changes.
-   * Not implemented in this version (structure only).
    */
   onPageChange?: (page: number) => void;
+}
+
+/**
+ * Page marker types for pagination windowing.
+ * - number: A clickable page number
+ * - 'ellipsis': A non-clickable ellipsis marker (…)
+ */
+type PageMarker = number | 'ellipsis';
+
+/**
+ * Calculates which page numbers to display with ellipsis for large datasets.
+ * 
+ * Strategy:
+ * - Always show first and last page
+ * - Show current page and 2 pages on each side
+ * - Insert ellipsis when pages are skipped
+ * - Maximum 7 visible page numbers in the window
+ * 
+ * Examples:
+ * - Page 1 of 5: [1] 2 3 4 5
+ * - Page 3 of 10: 1 2 [3] 4 5 … 10
+ * - Page 10 of 42: 1 … 8 9 [10] 11 12 … 42
+ * - Page 40 of 42: 1 … 38 39 [40] 41 42
+ * 
+ * @param currentPage - Current page (1-based)
+ * @param totalPages - Total number of pages
+ * @returns Array of page numbers and ellipsis markers
+ */
+function getVisiblePages(currentPage: number, totalPages: number): PageMarker[] {
+  // If 7 or fewer pages, show all pages
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  
+  const markers: PageMarker[] = [];
+  
+  // Always include first page
+  markers.push(1);
+  
+  // Calculate window around current page
+  const windowStart = Math.max(2, currentPage - 1);
+  const windowEnd = Math.min(totalPages - 1, currentPage + 1);
+  
+  // Add ellipsis if there's a gap after first page
+  if (windowStart > 2) {
+    markers.push('ellipsis');
+  }
+  
+  // Add pages in the window around current page
+  for (let i = windowStart; i <= windowEnd; i++) {
+    markers.push(i);
+  }
+  
+  // Add ellipsis if there's a gap before last page
+  if (windowEnd < totalPages - 1) {
+    markers.push('ellipsis');
+  }
+  
+  // Always include last page (if not already included)
+  if (totalPages > 1) {
+    markers.push(totalPages);
+  }
+  
+  return markers;
 }
 
 /**
@@ -96,6 +160,38 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   if (onPageChange) {
     prevButton.addEventListener('click', () => onPageChange(page - 1));
   }
+  controls.appendChild(prevButton);
+  
+  // Numbered page buttons
+  const visiblePages = getVisiblePages(page, totalPages);
+  
+  visiblePages.forEach((marker) => {
+    if (marker === 'ellipsis') {
+      // Render ellipsis (non-clickable)
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'lfx-table-pagination__ellipsis';
+      ellipsis.textContent = '…';
+      controls.appendChild(ellipsis);
+    } else {
+      // Render page number button
+      const pageButton = document.createElement('button');
+      pageButton.className = 'lfx-table-pagination__page';
+      pageButton.textContent = String(marker);
+      
+      // Highlight current page
+      if (marker === page) {
+        pageButton.classList.add('lfx-table-pagination__page--active');
+        pageButton.setAttribute('aria-current', 'page');
+      }
+      
+      // Add click handler
+      if (onPageChange && marker !== page) {
+        pageButton.addEventListener('click', () => onPageChange(marker));
+      }
+      
+      controls.appendChild(pageButton);
+    }
+  });
   
   // Next button
   const nextButton = document.createElement('button');
@@ -105,8 +201,6 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   if (onPageChange) {
     nextButton.addEventListener('click', () => onPageChange(page + 1));
   }
-  
-  controls.appendChild(prevButton);
   controls.appendChild(nextButton);
   
   pagination.appendChild(info);

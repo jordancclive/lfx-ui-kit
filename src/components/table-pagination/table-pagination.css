@@ -53,12 +53,13 @@
 /**
  * Pagination Controls (right side)
  * 
- * Contains Previous/Next buttons.
- * Uses flex gap for consistent spacing between buttons.
+ * Contains Previous button, numbered pages, and Next button.
+ * Uses flex gap for consistent spacing between all controls.
  */
 .lfx-table-pagination__controls {
   display: flex;
-  gap: var(--spacing-8);
+  align-items: center;
+  gap: var(--spacing-4);
 }
 
 /**
@@ -90,11 +91,66 @@
 }
 
 /**
+ * Numbered Page Buttons
+ * 
+ * Lightweight page number buttons that maintain visual subordination.
+ * Smaller and more compact than Previous/Next to keep focus on table data.
+ */
+.lfx-table-pagination__page {
+  min-width: 32px;
+  height: 32px;
+  padding: var(--spacing-4) var(--spacing-6);
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  color: var(--accent-600);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-md);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.lfx-table-pagination__page:hover:not(.lfx-table-pagination__page--active) {
+  background-color: var(--ui-surface-hover);
+}
+
+/**
+ * Active Page Button
+ * 
+ * Highlights the current page with a subtle border and background.
+ * Uses accent color to clearly indicate active state.
+ */
+.lfx-table-pagination__page--active {
+  color: var(--accent-600);
+  border-color: var(--accent-600);
+  background-color: var(--accent-50);
+  font-weight: 500;
+  cursor: default;
+}
+
+/**
+ * Ellipsis Marker
+ * 
+ * Non-clickable text marker indicating skipped pages.
+ * Uses secondary text color to remain subordinate.
+ */
+.lfx-table-pagination__ellipsis {
+  padding: var(--spacing-4) var(--spacing-6);
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  color: var(--color-table-cell-text-secondary);
+  user-select: none;
+}
+
+/**
  * Layout Notes:
  * 
  * - Info and controls use space-between for clean separation
  * - Extra top padding creates visual breathing room after table rows
  * - Minimal bottom padding keeps pagination subordinate to table
  * - Button styling is intentionally minimal (not primary actions)
+ * - Numbered pages are compact and lightweight
+ * - Active page is clearly indicated with border and background
+ * - Ellipsis marks skipped pages without adding visual weight
  * - No background ensures pagination inherits Card surface
  */

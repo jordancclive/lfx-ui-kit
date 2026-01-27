@@ -17,6 +17,7 @@ and hierarchy for table pagination controls.
 TablePagination exists to:
 - Provide consistent pagination layout for table pages
 - Display current page range and total items
+- Render numbered page navigation with intelligent windowing
 - Render Previous/Next navigation controls
 - Create visual subordination to table content
 - Eliminate pagination layout drift across table page examples
@@ -26,8 +27,9 @@ TablePagination exists to:
 **Level:** Level 2 — Molecule
 
 **Owns:**
-- Pagination control layout (info + prev/next buttons)
+- Pagination control layout (info + numbered pages + prev/next buttons)
 - Page number display and formatting
+- Page windowing with ellipsis for large datasets
 - Internal spacing and alignment
 - Visual subordination to table rows
 - Defensive rendering (no pagination when not needed)
@@ -81,9 +83,20 @@ is conditionally unnecessary.
 - Visually subordinate to table content
 
 **Controls (right side):**
-- Previous/Next buttons
-- Disabled states when at first/last page
+- Previous button (disabled at first page)
+- Numbered page buttons (1, 2, 3, …)
+  - Current page highlighted with border and background
+  - Ellipsis (…) for skipped pages in large datasets
+  - Maximum 7 visible page numbers in window
+  - Always shows first and last page
+- Next button (disabled at last page)
 - Minimal visual weight (not primary actions)
+
+**Page Windowing Examples:**
+- Page 1 of 5: \`[1] 2 3 4 5\`
+- Page 3 of 10: \`1 2 [3] 4 5 … 10\`
+- Page 10 of 42: \`1 … 8 9 [10] 11 12 … 42\`
+- Page 40 of 42: \`1 … 38 39 [40] 41 42\`
 
 **Spacing:**
 - Top padding: \`spacing-16\` (extra space above to distinguish from rows)
@@ -148,6 +161,8 @@ Card
 **TablePagination owns (LOCKED):**
 - Pagination control layout
 - Page number display and formatting
+- Numbered page button rendering
+- Page windowing with ellipsis
 - Prev/Next button rendering
 - Internal spacing (padding, gap)
 - Visual subordination styling
@@ -217,7 +232,7 @@ export default meta;
 type Story = StoryObj<TablePaginationProps>;
 
 /**
- * Default pagination state (middle page).
+ * Default pagination state (middle page with numbered navigation).
  */
 export const Default: Story = {
   args: {
@@ -231,10 +246,12 @@ export const Default: Story = {
         story: `
 **Default Pagination**
 
-Demonstrates pagination in a typical middle page state.
+Demonstrates pagination in a typical middle page state with numbered page buttons.
 
-- Current page: 2
+- Current page: 2 (highlighted)
 - Showing items 11–20 of 42
+- Total pages: 5
+- All pages visible: 1 [2] 3 4 5
 - Both Previous and Next are enabled
         `,
       },
@@ -243,7 +260,7 @@ Demonstrates pagination in a typical middle page state.
 };
 
 /**
- * First page state.
+ * First page state with numbered navigation.
  */
 export const FirstPage: Story = {
   args: {
@@ -257,10 +274,12 @@ export const FirstPage: Story = {
         story: `
 **First Page**
 
-Demonstrates pagination at the first page.
+Demonstrates pagination at the first page with numbered navigation.
 
-- Current page: 1
+- Current page: 1 (highlighted)
 - Showing items 1–10 of 42
+- Total pages: 5
+- Page display: [1] 2 3 4 5
 - Previous button is disabled
 - Next button is enabled
         `,
@@ -270,7 +289,7 @@ Demonstrates pagination at the first page.
 };
 
 /**
- * Last page state.
+ * Last page state with numbered navigation.
  */
 export const LastPage: Story = {
   args: {
@@ -284,10 +303,12 @@ export const LastPage: Story = {
         story: `
 **Last Page**
 
-Demonstrates pagination at the last page.
+Demonstrates pagination at the last page with numbered navigation.
 
-- Current page: 5
+- Current page: 5 (highlighted)
 - Showing items 41–42 of 42
+- Total pages: 5
+- Page display: 1 2 3 4 [5]
 - Previous button is enabled
 - Next button is disabled
         `,
@@ -367,7 +388,40 @@ This prevents phantom spacing when table has no data.
 };
 
 /**
- * Large dataset (many pages).
+ * Medium dataset showing ellipsis on right side.
+ */
+export const MediumDataset: Story = {
+  args: {
+    page: 3,
+    pageSize: 10,
+    totalItems: 120,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Medium Dataset (Ellipsis on Right)**
+
+Demonstrates pagination windowing when near the beginning of many pages.
+
+- Current page: 3 (highlighted)
+- Showing items 21–30 of 120
+- Total pages: 12
+- Page display: \`1 2 [3] 4 … 12\`
+- Both Previous and Next are enabled
+
+**Windowing Strategy:**
+- Show pages 1-4 (window around page 3)
+- Skip pages 5-11 (ellipsis)
+- Always show last page (12)
+        `,
+      },
+    },
+  },
+};
+
+/**
+ * Large dataset with ellipsis on both sides.
  */
 export const LargeDataset: Story = {
   args: {
@@ -379,16 +433,24 @@ export const LargeDataset: Story = {
     docs: {
       description: {
         story: `
-**Large Dataset**
+**Large Dataset (Ellipsis on Both Sides)**
 
-Demonstrates pagination with a large number of pages.
+Demonstrates pagination windowing in the middle of many pages.
 
-- Current page: 15
+- Current page: 15 (highlighted)
 - Showing items 141–150 of 342
 - Total pages: 35
+- Page display: \`1 … 14 [15] 16 … 35\`
 - Both Previous and Next are enabled
 
-This story validates that pagination handles large numbers cleanly.
+**Windowing Strategy:**
+- Always show first page (1)
+- Skip pages 2-13 (ellipsis)
+- Show pages 14-16 (window around page 15)
+- Skip pages 17-34 (ellipsis)
+- Always show last page (35)
+
+**Maximum 7 visible page numbers prevents UI clutter.**
         `,
       },
     },
