@@ -131,7 +131,7 @@ export const WithIcon: Story = {
  * Toolbar variant for use in filter bars and table headers.
  * 
  * Visual traits:
- * - Fully rounded (pill shape)
+ * - Rounded corners (rounded-lg) matching other toolbar controls
  * - Slightly reduced height for compact toolbar contexts
  * - Lighter visual weight
  * 
@@ -154,7 +154,7 @@ Use the toolbar variant in table filter bars and list headers where a compact,
 lightweight search control is needed.
 
 This variant:
-- Uses pill shape (fully rounded borders)
+- Uses rounded corners (rounded-lg) to visually match FilterDropdownTrigger and other toolbar controls
 - Has reduced height compared to form variant
 - Provides lighter visual weight for toolbar contexts
 

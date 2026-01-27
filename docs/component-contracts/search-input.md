@@ -63,7 +63,7 @@ SearchInput supports two visual variants that control shape and density:
 
 - **Purpose:** Search/filter control in toolbars and filter bars
 - **Visual traits:**
-  - Fully rounded (pill shape)
+  - Rounded corners (rounded-lg) matching other toolbar controls
   - Slightly reduced height
   - Lighter visual weight
   - Compact for toolbar contexts
