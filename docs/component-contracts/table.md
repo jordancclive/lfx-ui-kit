@@ -53,6 +53,43 @@ Table uses **CSS Grid** for column alignment:
 - Column widths can be controlled via `columns` prop or auto-fit
 - Rows span full grid width
 
+## Column Semantics
+
+Tables MUST NOT assume equal-width columns. Column width behavior is semantic, not visual.
+
+The table component does NOT decide content rendering — cells do.
+
+### Column Types
+
+**Primary Text Column**
+- Flexible width (expands to fill available space)
+- Left aligned
+- Truncates last when space is constrained
+- Example: Group name, project name
+
+**Categorical Column**
+- Intrinsic width (sized to content)
+- Uses Tag/Badge content for visual grouping
+- Example: Type, status, category
+
+**Numeric Column**
+- Intrinsic width (sized to content)
+- Right aligned for scannability
+- Example: Counts, metrics, percentages
+
+**Action Column**
+- Fixed or intrinsic width
+- Contains interactive controls only (buttons, menus)
+- Example: Row actions, overflow menus
+
+### Column Width Rules
+
+- Table provides grid structure only
+- Cells declare their semantic width intent
+- Flexible columns share remaining space
+- Intrinsic columns size to content
+- Fixed columns enforce explicit dimensions
+
 ## Responsibilities
 
 - Render TableHeaderCell and TableRow children
