@@ -44,11 +44,27 @@ AppHeader
 
 ## Filter Row Rules
 
-- SearchInput is flexible width and dominates the row
+- SearchInput is flexible width (full-width) and dominates the row by default
 - All other controls are intrinsic width
 - Multiple filter controls are allowed
 - Filter rows are optional
 - Filter rows apply to the **entire table**
+- Filter row MUST be positioned inside the Card, directly above the table
+- SearchInput MUST use variant="toolbar" for visual consistency
+
+---
+
+## Pagination Rules
+
+- Pagination is optional
+- Pagination MUST be positioned inside the Card, directly below the table
+- Pagination row MUST align with table row padding (left + right)
+- Pagination MUST include extra vertical padding above to distinguish from table rows
+- Pagination controls SHOULD use existing Button components
+- Pagination display format: "Rows X–Y of Z" + Previous/Next controls
+- Pagination MUST feel subordinate to table content
+
+**Note:** Pagination implementation details are story-level placeholders until a formal Pagination component exists.
 
 ---
 
@@ -76,9 +92,11 @@ This is the expected interaction model for Table Page patterns.
 
 Rules:
 - Row-level navigation is the primary interaction model
-- The primary column MAY be visually styled as a link to reinforce row-level navigation
+- The primary column IS styled as a brand-blue link by default (automatic)
 - Visual link styling does NOT imply cell-level click ownership
 - Navigation is owned by the row, not by individual cells or columns
+- Row hover background is visible and uses brand blue tint
+- Default row height is optimized for action-oriented scanning (~36px)
 
 > **This behavior is the DEFAULT for Table Page patterns.**
 > 
@@ -86,15 +104,27 @@ Rules:
 
 This is not a stylistic preference. This is the expected interaction model for table pages like Votes, Projects, Drive, Mailing Lists, and similar LFX One views.
 
+Visual affordances applied automatically:
+- Primary column text: accent-600 (brand blue)
+- Row hover background: accent-100 (light brand blue)
+- Row hover left-edge indicator: accent-600 (4px)
+- No typography changes on hover (stable, no jitter)
+
 **If navigation exists, it should be implemented at the row level, not via individual columns.**
 
 ---
 
 ## Density Rules
 
-- Default density is compact and scan-friendly
-- Dense mode may be used for high-volume datasets
+- **Default density is optimized for action-oriented scanning** (~36px row height)
+- Default mode prioritizes comfort and clickability over maximum information density
+- Dense mode may be used for high-volume datasets requiring more rows visible
+- AppHeader SHOULD use dense spacing (dense: true) on workflow pages
+- PageSection SHOULD use dense spacing (dense: true) to reduce page-level gaps
+- Table rows use default comfortable height unless explicitly set to dense
 - Scanability is achieved through spacing and rhythm, not typography escalation
+
+**Note:** Dense mode is an override for specific high-density needs, not the baseline.
 
 ---
 

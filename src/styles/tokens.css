@@ -493,7 +493,7 @@
   /* Hover state for interactive surfaces */
   /* Strengthened from neutral-100 to be distinct from page surface */
   /* Intermediate value between neutral-100 (#f1f5f9) and neutral-200 (#e2e8f0) */
-  --ui-surface-hover: #eaeff5;
+  --ui-surface-hover: var(--accent-100); /* Brand blue for visible interaction affordance */
   
   /* Selected state highlight */
   --ui-surface-selected: var(--accent-100);

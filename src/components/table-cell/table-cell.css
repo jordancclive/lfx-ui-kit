@@ -26,11 +26,11 @@
   font-weight: var(--ui-text-body-secondary-font-weight);
   line-height: var(--ui-text-body-secondary-line-height);
   
-  /* Spacing - optimized for scanability
-     Vertical: 8px (preserves row height)
+  /* Spacing - optimized for action-oriented scanning
+     Vertical: 10px (comfortable row height for clickable tables)
      Horizontal: 16px (interior breathing room for intrinsic columns)
-     Total row height: 32px (8px + 16px line + 8px) */
-  padding: var(--spacing-8) var(--spacing-16);
+     Default row height: ~36px for action-oriented table pages */
+  padding: var(--spacing-10) var(--spacing-16);
   
   /* Default alignment */
   text-align: left;
@@ -50,6 +50,11 @@
 
 .lfx-table-cell--primary {
   color: var(--color-table-cell-text-primary);
+}
+
+/* Primary column in clickable rows - styled as link by default */
+.lfx-table-row--clickable .lfx-table-cell--primary {
+  color: var(--accent-600); /* Brand blue for link affordance */
 }
 
 .lfx-table-cell--secondary {
@@ -92,13 +97,14 @@
 
 /* ========================================
    Dense variant - reduced vertical padding, preserved horizontal breathing room
-   Vertical: 6px (compact row height)
+   Vertical: 8px (compact but readable)
    Horizontal: 16px (same as default for consistent scan comfort)
+   Maintains proportional relationship with default (10px → 8px)
    ======================================== */
 
 .lfx-table--dense .lfx-table-cell,
 .lfx-table-cell--dense {
-  padding: var(--spacing-6) var(--spacing-16);
+  padding: var(--spacing-8) var(--spacing-16);
 }
 
 /* ========================================

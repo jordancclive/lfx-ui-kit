@@ -50,10 +50,13 @@ NOT allowed:
 
 ### contentType
 
-- `primary` — Default text color
+- `primary` — Default text color (automatically styled as brand-blue link in clickable rows)
 - `secondary` — Subdued text color
 - `muted` — Lowest contrast text
 - `numeric` — Right-aligned, same typography as primary
+
+**Note on Primary Column Affordance:**
+When a TableCell with `contentType="primary"` appears in a clickable row (TableRow with `clickable: true`), it is automatically styled with brand blue (accent-600) to visually reinforce row-level navigation. This is a DEFAULT behavior, not an instance-level override.
 
 ### align
 
@@ -112,9 +115,10 @@ TableCell must provide comfortable scan spacing for all content types without af
 
 ### Spacing Strategy
 
-- **Horizontal padding** — Adjusted to prevent visual compression in intrinsic-width columns
-- **Vertical padding** — Fixed per density variant (default vs dense)
+- **Horizontal padding** — 16px (prevents visual compression in intrinsic-width columns)
+- **Vertical padding** — 10px default, 8px dense (optimized for action-oriented scanning)
 - **Proportional scaling** — Dense variant maintains relative relationships
+- **Default row height** — ~36px (comfortable for clickable action-oriented tables)
 
 ### Lock Note
 
