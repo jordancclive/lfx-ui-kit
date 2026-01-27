@@ -157,9 +157,10 @@ function createTextNode(text: string): HTMLElement {
  * 
  * This row sits inside the Card, directly above the table.
  * 
- * Layout:
- * - SearchInput (toolbar variant): dominates, full-width behavior
- * - FilterDropdownTrigger: secondary control, intrinsic width
+ * DEFAULT BEHAVIOR (Table Page Pattern):
+ * - SearchInput is FULL-WIDTH by default (flex: 1)
+ * - Filters are intrinsic width (auto)
+ * - Filter order follows column semantics
  * - Tight gap (spacing-8) for unified toolbar feel
  * 
  * Filter placement pattern:
@@ -172,13 +173,84 @@ function createFiltersRow(): HTMLElement {
   container.style.display = 'flex';
   container.style.gap = 'var(--spacing-8)';
   container.style.alignItems = 'center';
+  container.style.marginBottom = 'var(--spacing-12)'; // Separate filters from table
 
-  container.appendChild(createSearchInput({ 
+  const searchInput = createSearchInput({ 
     placeholder: 'Search projects…',
     variant: 'toolbar',
-  }));
+  });
+  searchInput.style.flex = '1'; // DEFAULT: Full-width search
+  
+  container.appendChild(searchInput);
   container.appendChild(createFilterDropdownTrigger({ label: 'All Categories' }));
+  container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
+  return container;
+}
+
+/**
+ * Creates the pagination row.
+ * 
+ * CANONICAL STRUCTURE (Table Page Pattern):
+ * - Positioned inside Card, directly below table
+ * - Aligns with table row padding (left + right)
+ * - Extra vertical padding above to distinguish from rows
+ * - Feels subordinate to table content
+ * - Uses existing Button components (no ad-hoc controls)
+ * 
+ * Format: "Rows 1–10 of 42" + Previous/Next controls
+ * 
+ * NOTE: This is a structural placeholder until a formal Pagination component exists.
+ */
+function createPaginationRow(): HTMLElement {
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.justifyContent = 'space-between';
+  container.style.alignItems = 'center';
+  container.style.paddingTop = 'var(--spacing-16)'; // Extra vertical padding
+  container.style.paddingLeft = 'var(--spacing-16)'; // Align with table content
+  container.style.paddingRight = 'var(--spacing-16)';
+  container.style.paddingBottom = 'var(--spacing-4)'; // Minimal bottom padding
+  
+  // Pagination info (left side)
+  const info = document.createElement('span');
+  info.textContent = 'Rows 1–10 of 42';
+  info.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+  info.style.color = 'var(--color-table-cell-text-secondary)';
+  
+  // Pagination controls (right side)
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.gap = 'var(--spacing-8)';
+  
+  const prevButton = document.createElement('button');
+  prevButton.textContent = 'Previous';
+  prevButton.style.padding = 'var(--spacing-6) var(--spacing-12)';
+  prevButton.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+  prevButton.style.color = 'var(--color-table-cell-text-secondary)';
+  prevButton.style.border = '1px solid var(--ui-surface-divider)';
+  prevButton.style.borderRadius = 'var(--rounded-md)';
+  prevButton.style.background = 'transparent';
+  prevButton.style.cursor = 'pointer';
+  prevButton.disabled = true;
+  prevButton.style.opacity = '0.5';
+  
+  const nextButton = document.createElement('button');
+  nextButton.textContent = 'Next';
+  nextButton.style.padding = 'var(--spacing-6) var(--spacing-12)';
+  nextButton.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+  nextButton.style.color = 'var(--accent-600)';
+  nextButton.style.border = '1px solid var(--ui-surface-divider)';
+  nextButton.style.borderRadius = 'var(--rounded-md)';
+  nextButton.style.background = 'transparent';
+  nextButton.style.cursor = 'pointer';
+  
+  controls.appendChild(prevButton);
+  controls.appendChild(nextButton);
+  
+  container.appendChild(info);
+  container.appendChild(controls);
+  
   return container;
 }
 
@@ -280,6 +352,7 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 interface TablePageArgs {
   dense?: boolean;
   showFilters?: boolean;
+  showPagination?: boolean;
   projectsData?: ProjectRow[];
 }
 
@@ -289,7 +362,7 @@ interface TablePageArgs {
  * Structure:
  * - AppHeader with page title (== table title)
  * - PageSection (dense) containing Card
- * - Card contains optional filters + table
+ * - Card contains optional filters + table + optional pagination
  * 
  * NO section titles inside the page.
  * Page title == Table title.
@@ -298,6 +371,7 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   const {
     dense = false,
     showFilters = false,
+    showPagination = false,
     projectsData: data = projectsData,
   } = args;
 
@@ -307,11 +381,11 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
     createAppHeader({
       title: 'Projects',
       description: 'Active projects and initiatives across the organization.',
-      dense,
+      dense: true, // DEFAULT: Dense header for workflow pages
     }),
   ];
 
-  // Build card children - filters (optional) + table
+  // Build card children - filters (optional) + table + pagination (optional)
   const cardChildren: HTMLElement[] = [];
   
   if (showFilters) {
@@ -319,6 +393,10 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   }
   
   cardChildren.push(createProjectsTable(data, dense));
+  
+  if (showPagination) {
+    cardChildren.push(createPaginationRow());
+  }
 
   // Single PageSection with Card containing table
   pageChildren.push(
@@ -457,6 +535,10 @@ If something feels off visually:
       control: 'boolean',
       description: 'Show search and filter controls',
     },
+    showPagination: {
+      control: 'boolean',
+      description: 'Show pagination row below table',
+    },
   },
   render: (args) => createTablePage(args),
 };
@@ -486,18 +568,19 @@ export const Default: Story = {
 };
 
 /**
- * Table Page with search + filter controls.
+ * Table Page with search + filter controls + pagination.
  * 
- * Demonstrates canonical filter placement:
+ * Demonstrates canonical pattern with all standard elements:
  * - Filters inside Card, above table
- * - SearchInput uses toolbar variant
- * - Filters apply to entire table
- * - No floating or detached controls
+ * - SearchInput full-width by default
+ * - Pagination below table, aligned with content
+ * - Complete workflow page structure
  */
 export const WithFilters: Story = {
   args: {
     dense: false,
     showFilters: true,
+    showPagination: true,
   },
 };
 

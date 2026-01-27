@@ -27,10 +27,10 @@
   line-height: var(--ui-text-body-secondary-line-height);
   
   /* Spacing - optimized for action-oriented scanning
-     Vertical: 10px (comfortable row height for clickable tables)
+     Vertical: 12px (comfortable row height for clickable tables - perceptibly taller)
      Horizontal: 16px (interior breathing room for intrinsic columns)
-     Default row height: ~36px for action-oriented table pages */
-  padding: var(--spacing-10) var(--spacing-16);
+     Default row height: ~40px for action-oriented table pages */
+  padding: var(--spacing-12) var(--spacing-16);
   
   /* Default alignment */
   text-align: left;

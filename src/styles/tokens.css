@@ -490,10 +490,20 @@
   /* Subtle elevated surfaces (internal to cards, lighter than page) */
   --ui-surface-subtle: var(--neutral-50);
   
-  /* Hover state for interactive surfaces */
-  /* Strengthened from neutral-100 to be distinct from page surface */
-  /* Intermediate value between neutral-100 (#f1f5f9) and neutral-200 (#e2e8f0) */
-  --ui-surface-hover: var(--accent-100); /* Brand blue for visible interaction affordance */
+  /* Hover state for interactive surfaces
+     
+     CHOICE: accent-100 (#ecf4ff) - Brand blue
+     
+     Justification:
+     - Must be clearly visible in peripheral vision (not subtle)
+     - Brand blue reinforces interactive affordance (not passive neutral)
+     - Flat color maintains calm hierarchy (no shadow, no elevation)
+     - accent-100 (vs accent-50) provides sufficient contrast for scanability
+     - Consistent with selected state (same token)
+     
+     Considered: neutral-50 (#f8fafc) - Too subtle, no brand signal
+  */
+  --ui-surface-hover: var(--accent-100);
   
   /* Selected state highlight */
   --ui-surface-selected: var(--accent-100);
@@ -780,8 +790,8 @@
   --spacing-app-header-meta-gap: var(--spacing-8);
   --spacing-app-header-actions-gap: var(--spacing-8);
   
-  /* Spacing - Dense */
-  --spacing-app-header-padding-y-dense: var(--spacing-12);
+  /* Spacing - Dense (optimized for workflow pages with immediate table handoff) */
+  --spacing-app-header-padding-y-dense: var(--spacing-8);
   --spacing-app-header-gap-dense: var(--spacing-6);
   --spacing-app-header-title-gap-dense: var(--spacing-2);
 
