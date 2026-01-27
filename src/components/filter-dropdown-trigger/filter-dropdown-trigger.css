@@ -12,8 +12,8 @@
   justify-content: space-between;
   gap: var(--spacing-8);
   
-  /* Padding - same as SearchInput */
-  padding: var(--spacing-8) var(--spacing-12);
+  /* Padding - matches SearchInput toolbar variant for visual cohesion */
+  padding: var(--spacing-6) var(--spacing-12);
   
   /* Background - uses UI role token */
   background-color: var(--ui-input-surface-background);
