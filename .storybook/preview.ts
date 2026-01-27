@@ -31,6 +31,20 @@ const preview: Preview = {
       viewports: customViewports,
       defaultViewport: 'macbookAir',
     },
+    options: {
+      storySort: {
+        order: [
+          '1. Components',
+          [
+            '1. Level 1',
+            '2. Level 2',
+            '3. Level 3',
+          ],
+          '2. Page Patterns',
+          '3. Page Examples',
+        ],
+      },
+    },
   },
 };
 

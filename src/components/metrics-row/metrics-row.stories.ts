@@ -42,7 +42,7 @@ import { createAppHeader } from '../app-header/app-header';
  * - **No visual semantics live here**
  */
 const meta: Meta<MetricsRowProps> = {
-  title: '1. Components / Level 3 / MetricsRow',
+  title: '1. Components / 3. Level 3 / MetricsRow',
   tags: ['autodocs'],
   argTypes: {
     dense: {

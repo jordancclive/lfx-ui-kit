@@ -40,7 +40,7 @@ import { createPageSection } from '../page-section/page-section';
  * - **Card owns surface** — MetricCard delegates surface styling to Card
  */
 const meta: Meta<MetricCardProps> = {
-  title: '1. Components / Level 2 / MetricCard',
+  title: '1. Components / 2. Level 2 / MetricCard',
   tags: ['autodocs'],
   argTypes: {
     label: {

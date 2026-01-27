@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createSearchInput, type SearchInputProps } from './search-input';
 
 const meta: Meta<SearchInputProps> = {
-  title: '1. Components / Level 1 / SearchInput',
+  title: '1. Components / 1. Level 1 / SearchInput',
   tags: ['autodocs'],
   render: (args) => createSearchInput(args),
   argTypes: {

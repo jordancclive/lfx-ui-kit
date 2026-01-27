@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createTableHeaderCell, TableHeaderCellProps } from './table-header-cell';
 
 const meta: Meta<TableHeaderCellProps> = {
-  title: '1. Components / Level 2 / TableHeaderCell',
+  title: '1. Components / 2. Level 2 / TableHeaderCell',
   tags: ['autodocs'],
   render: (args) => createTableHeaderCell(args),
   parameters: {

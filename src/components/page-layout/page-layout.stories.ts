@@ -7,7 +7,7 @@ import { createListGroup } from '../list-group/list-group';
 import { createListItem } from '../list-item/list-item';
 
 const meta: Meta<PageLayoutProps> = {
-  title: '1. Components / Level 3 / PageLayout',
+  title: '1. Components / 3. Level 3 / PageLayout',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

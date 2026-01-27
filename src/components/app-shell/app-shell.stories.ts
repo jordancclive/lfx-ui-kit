@@ -3,7 +3,7 @@ import { createAppShell, AppShellProps } from './app-shell';
 import { createGlobalNav, createNavSection, createNavItem } from '../global-nav/global-nav';
 
 const meta: Meta<AppShellProps> = {
-  title: '1. Components / Level 3 / AppShell',
+  title: '1. Components / 3. Level 3 / AppShell',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
