@@ -78,7 +78,7 @@ Do NOT enable page size selection when:
 **Visual Pattern:**
 
 Single-row layout with page size selector on right:
-\`‹ 1 2 3 … 10 ›   Results per page: 10 25 50 100\`
+\`< 1 2 3 ... 10 >   Results per page: 10 25 50 100\`
 
 **How to Enable:**
 
@@ -125,17 +125,17 @@ is conditionally unnecessary.
 
 TablePagination renders as a **SINGLE unified horizontal row** with two visual clusters:
 
-```
-‹ 1 2 3 … 10 ›                         Results per page: 10 25 50 100
+\`\`\`
+< 1 2 3 ... 10 >                       Results per page: 10 25 50 100
 
 Left cluster: page navigation          Right cluster: page size selector
-```
+\`\`\`
 
 **LEFT CLUSTER: Page Navigation**
-- Arrow buttons: ‹ (Previous) and › (Next)
-- Numbered page buttons: 1, 2, 3, …
+- Arrow buttons: < (Previous) and > (Next)
+- Numbered page buttons: 1, 2, 3, ...
 - Current page highlighted with border and background
-- Ellipsis (…) for skipped pages in large datasets
+- Ellipsis (...) for skipped pages in large datasets
 - Maximum 7 visible page numbers in window
 - Always shows first and last page
 - Previous disabled at first page, Next disabled at last page
@@ -159,15 +159,15 @@ Left cluster: page navigation          Right cluster: page size selector
 
 **Visual Design:**
 - Minimal visual weight (subordinate to table content)
-- Arrow symbols (‹ ›) for visual economy
+- Arrow symbols (< >) for visual economy
 - Consistent 32px button heights across all controls
 - Matches standard LFX One pagination pattern
 
 **Page Windowing Examples:**
-- Page 1 of 5: \`‹ [1] 2 3 4 5 ›\`
-- Page 3 of 10: \`‹ 1 2 [3] 4 5 … 10 ›\`
-- Page 10 of 42: \`‹ 1 … 8 9 [10] 11 12 … 42 ›\`
-- Page 40 of 42: \`‹ 1 … 38 39 [40] 41 42 ›\`
+- Page 1 of 5: \`< [1] 2 3 4 5 >\`
+- Page 3 of 10: \`< 1 2 [3] 4 5 ... 10 >\`
+- Page 10 of 42: \`< 1 ... 8 9 [10] 11 12 ... 42 >\`
+- Page 40 of 42: \`< 1 ... 38 39 [40] 41 42 >\`
 
 **Spacing:**
 - Top padding: \`spacing-16\` (extra space above to distinguish from rows)
@@ -385,8 +385,8 @@ Demonstrates pagination in a typical middle page state with numbered page button
 
 - Current page: 2 (highlighted)
 - Total pages: 5
-- Display: \`‹ 1 [2] 3 4 5 ›\`
-- Both Previous (‹) and Next (›) are enabled
+- Display: \`< 1 [2] 3 4 5 >\`
+- Both Previous (<) and Next (>) are enabled
         `,
       },
     },
@@ -412,9 +412,9 @@ Demonstrates pagination at the first page with numbered navigation.
 
 - Current page: 1 (highlighted)
 - Total pages: 5
-- Display: \`‹ [1] 2 3 4 5 ›\`
-- Previous button (‹) is disabled
-- Next button (›) is enabled
+- Display: \`< [1] 2 3 4 5 >\`
+- Previous button (<) is disabled
+- Next button (>) is enabled
         `,
       },
     },
@@ -440,9 +440,9 @@ Demonstrates pagination at the last page with numbered navigation.
 
 - Current page: 5 (highlighted)
 - Total pages: 5
-- Display: \`‹ 1 2 3 4 [5] ›\`
-- Previous button (‹) is enabled
-- Next button (›) is disabled
+- Display: \`< 1 2 3 4 [5] >\`
+- Previous button (<) is enabled
+- Next button (>) is disabled
         `,
       },
     },
@@ -540,7 +540,7 @@ Demonstrates optional "Results per page" selector on right side.
 - Current page: 2 (highlighted)
 - Current page size: 10 (highlighted)
 - Total pages: 12
-- Left side: \`‹ 1 [2] 3 4 … 12 ›\`
+- Left side: \`< 1 [2] 3 4 ... 12 >\`
 - Right side: \`Results per page: [10] 20 50\`
 
 **How to Enable:**
@@ -590,8 +590,8 @@ Demonstrates pagination windowing when near the beginning of many pages.
 
 - Current page: 3 (highlighted)
 - Total pages: 12
-- Display: \`‹ 1 2 [3] 4 … 12 ›\`
-- Both Previous (‹) and Next (›) are enabled
+- Display: \`< 1 2 [3] 4 ... 12 >\`
+- Both Previous (<) and Next (>) are enabled
 
 **Windowing Strategy:**
 - Show pages 1-4 (window around page 3)
@@ -622,8 +622,8 @@ Demonstrates pagination windowing in the middle of many pages.
 
 - Current page: 15 (highlighted)
 - Total pages: 35
-- Display: \`‹ 1 … 14 [15] 16 … 35 ›\`
-- Both Previous (‹) and Next (›) are enabled
+- Display: \`< 1 ... 14 [15] 16 ... 35 >\`
+- Both Previous (<) and Next (>) are enabled
 
 **Windowing Strategy:**
 - Always show first page (1)
