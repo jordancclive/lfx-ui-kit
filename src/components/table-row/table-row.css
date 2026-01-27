@@ -39,6 +39,17 @@
   transition: background-color 150ms ease;
 }
 
+/* Subtle border radius for polished row appearance */
+.lfx-table__body > .lfx-table-row > .lfx-table-cell:first-child {
+  border-top-left-radius: var(--rounded-sm);
+  border-bottom-left-radius: var(--rounded-sm);
+}
+
+.lfx-table__body > .lfx-table-row > .lfx-table-cell:last-child {
+  border-top-right-radius: var(--rounded-sm);
+  border-bottom-right-radius: var(--rounded-sm);
+}
+
 /* ========================================
    STATE: Hover
    Only applies when not selected or disabled
@@ -49,27 +60,18 @@
    
    Row Cohesion Strategy:
    - Full-width background surface change (visual binding across columns)
-   - Left-edge accent indicator (immediate interactivity signal)
+   - Subtle border radius (polished, intentional hover state)
    - Cursor pointer (standard interaction affordance)
    
    Goal: User can instantly tell row is interactive and track
    horizontally across wide column gaps while scanning.
+   The visible hover background + rounded corners create clear affordance.
    ======================================== */
 
 .lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) > .lfx-table-cell {
   /* Full-width background change for horizontal row binding */
   background-color: var(--color-table-row-background-hover);
 }
-
-/* Left-edge accent indicator on first cell only */
-.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) > .lfx-table-cell:first-child {
-  /* Left-edge accent indicator - immediate interactivity signal */
-  border-left: 4px solid var(--accent-600);
-  padding-left: calc(var(--spacing-16) - 4px); /* Compensate for border to prevent content shift */
-}
-
-/* Primary cell text strengthening removed - row affordance is sufficient */
-/* Row hover + left-edge indicator carry interaction signal without typography mutation */
 
 /* ========================================
    STATE: Selected
