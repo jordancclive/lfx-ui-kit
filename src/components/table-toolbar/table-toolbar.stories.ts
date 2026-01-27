@@ -20,7 +20,7 @@ TableToolbar exists to:
 - Provide consistent layout for search and filter controls
 - Enforce search input full-width behavior by default
 - Create visual docking between controls and table header
-- Remove layout responsibility from Table component
+- Remove layout responsibility from TableGrid component
 - Eliminate layout drift across table page examples
 
 ## Architectural Role
@@ -34,7 +34,7 @@ TableToolbar exists to:
 - Filter intrinsic width behavior
 
 **Does NOT Own:**
-- Table component rendering or logic
+- TableGrid component rendering or logic
 - Filter semantics or data logic
 - Filter ordering (determined by caller)
 - Pagination (separate concern)
@@ -118,7 +118,7 @@ toolbars are conditionally empty.
 ## NON-GOALS (Forbidden Usage)
 
 **TableToolbar MUST NOT:**
-- ❌ Render inside the Table component
+- ❌ Render inside the TableGrid component
 - ❌ Be passed to Table as a prop
 - ❌ Be rendered by Table in any way
 - ❌ Assume pagination ownership

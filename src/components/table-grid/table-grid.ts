@@ -1,23 +1,29 @@
 /**
- * Table
+ * TableGrid
  * 
- * Tier 3 — Composite Layout Component
- * Provides structural layout for tabular data.
- * Coordinates header rows and data rows.
+ * Level 2 — Molecule (Grid Layout Component)
+ * Provides grid layout for tabular data ONLY.
+ * Coordinates header rows and data rows using CSS Grid.
  * 
- * IMPORTANT: Table does NOT manage sorting, selection, or interaction logic.
+ * IMPORTANT: TableGrid does NOT manage sorting, selection, or interaction logic.
  * Those responsibilities belong to:
  * - TableRow: hover, selected, disabled backgrounds
  * - TableCell: text color, alignment, typography
  * - TableHeaderCell: header text, sort indicators
  * - Parent controller: sorting logic, selection state
  * 
+ * ARCHITECTURAL SCOPE (LOCKED):
+ * - TableGrid = Grid layout for rows/cells ONLY
+ * - TableGrid does NOT own search, filters, or pagination
+ * - TableToolbar = Search + filters (sibling, above)
+ * - TablePagination = Pagination controls (sibling, below)
+ * 
  * LAYOUT STRATEGY: CSS Grid
  * - Uses display: contents on rows to allow cells to participate in grid
  * - Column count controlled via `columns` prop
  */
 
-import './table.css';
+import './table-grid.css';
 
 /**
  * Column semantic type for width behavior
@@ -40,8 +46,8 @@ export interface ColumnDefinition {
   semanticType: ColumnSemanticType;
 }
 
-export interface TableProps {
-  /** Table content - header row and body rows */
+export interface TableGridProps {
+  /** TableGrid content - header row and body rows */
   children: HTMLElement | HTMLElement[];
   /** 
    * Column definitions with semantic types (preferred)
@@ -77,7 +83,7 @@ function generateSemanticGridTemplate(columns: ColumnDefinition[]): string {
   }).join(' ');
 }
 
-export function createTable(props: TableProps): HTMLElement {
+export function createTableGrid(props: TableGridProps): HTMLElement {
   const {
     children,
     columns,
@@ -127,7 +133,7 @@ export function createTable(props: TableProps): HTMLElement {
 }
 
 /**
- * Creates a table header section wrapper
+ * Creates a table header section wrapper for TableGrid
  * Use this to wrap TableHeaderCell components
  */
 export function createTableHeader(children: HTMLElement | HTMLElement[]): HTMLElement {
@@ -150,7 +156,7 @@ export function createTableHeader(children: HTMLElement | HTMLElement[]): HTMLEl
 }
 
 /**
- * Creates a table body section wrapper
+ * Creates a table body section wrapper for TableGrid
  * Use this to wrap TableRow components
  */
 export function createTableBody(children: HTMLElement | HTMLElement[]): HTMLElement {

@@ -15,9 +15,16 @@ export { createTag, type TagProps } from './components/tag/tag';
 export { createTableRow, type TableRowProps } from './components/table-row/table-row';
 export { createTableCell, type TableCellProps } from './components/table-cell/table-cell';
 export { createTableHeaderCell, type TableHeaderCellProps } from './components/table-header-cell/table-header-cell';
-export { createTable, createTableHeader, createTableBody, type TableProps, type ColumnDefinition, type ColumnSemanticType } from './components/table/table';
+export { createTableGrid, createTableHeader, createTableBody, type TableGridProps, type ColumnDefinition, type ColumnSemanticType } from './components/table-grid/table-grid';
 export { createTableToolbar, type TableToolbarProps } from './components/table-toolbar/table-toolbar';
 export { createTablePagination, type TablePaginationProps } from './components/table-pagination/table-pagination';
+
+// DEPRECATED: Backward compatibility aliases
+// TODO: Remove in next major version
+/** @deprecated Use createTableGrid instead */
+export { createTableGrid as createTable } from './components/table-grid/table-grid';
+/** @deprecated Use TableGridProps instead */
+export type { TableGridProps as TableProps } from './components/table-grid/table-grid';
 export { createListItem, type ListItemProps } from './components/list-item/list-item';
 export { createListGroup, type ListGroupProps } from './components/list-group/list-group';
 export { createGlobalNav, createNavSection, createNavItem, type GlobalNavProps, type NavItemProps } from './components/global-nav/global-nav';

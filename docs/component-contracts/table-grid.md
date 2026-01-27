@@ -1,10 +1,31 @@
-# Table
+# TableGrid
 
-**Component Tier:** Tier 3 — Composite Layout Component
+**Component Level:** Level 2 — Molecule (Grid Layout Component)
 
 ## Purpose
 
-Provides structural layout for tabular data. Coordinates header rows and data rows. Establishes column alignment and spacing.
+> **TableGrid provides grid layout for tabular data ONLY.**
+> It does NOT include search, filters, pagination, or data logic.
+
+Provides grid layout for tabular data. Coordinates header rows and data rows. Establishes column alignment and spacing using CSS Grid.
+
+## Architectural Boundaries (LOCKED)
+
+**TableGrid = Grid layout for rows/cells ONLY**
+
+TableGrid does NOT own:
+- ❌ Search or filtering controls (owned by **TableToolbar**)
+- ❌ Pagination controls (owned by **TablePagination**)
+- ❌ Sorting logic (owned by parent controller)
+- ❌ Selection logic (owned by parent controller)
+
+Composition structure:
+```
+Card
+├─ TableToolbar (search + filters)
+├─ TableGrid (grid layout ONLY)
+└─ TablePagination (page controls)
+```
 
 ## Non-Goals
 
@@ -40,7 +61,7 @@ Provides structural layout for tabular data. Coordinates header rows and data ro
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| children | HTMLElement \| HTMLElement[] | — | Table content (header row, data rows) |
+| children | HTMLElement \| HTMLElement[] | — | TableGrid content (header row, data rows) |
 | columns | number \| ColumnDefinition[] | — | Column count or semantic column definitions |
 | withBorder | boolean | false | Apply container border |
 | withBackground | boolean | false | Apply surface background |
@@ -48,7 +69,7 @@ Provides structural layout for tabular data. Coordinates header rows and data ro
 
 ## Layout Strategy
 
-Table uses **CSS Grid** for column alignment:
+TableGrid uses **CSS Grid** for column alignment:
 - Header cells and body cells align via shared grid column definitions
 - Column widths can be controlled via `columns` prop or auto-fit
 - Rows span full grid width

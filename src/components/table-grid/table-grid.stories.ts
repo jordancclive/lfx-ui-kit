@@ -1,48 +1,68 @@
 import type { Meta, StoryObj } from '@storybook/html';
-import { createTable, createTableHeader, createTableBody, type TableProps, type ColumnDefinition } from './table';
+import { createTableGrid, createTableHeader, createTableBody, type TableGridProps, type ColumnDefinition } from './table-grid';
 import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
 import { createTableRow } from '../table-row/table-row';
 import { createTableCell } from '../table-cell/table-cell';
 import { createTag } from '../tag/tag';
 
-const meta: Meta<TableProps> = {
-  title: '1. Components / 3. Level 3 / Table',
+const meta: Meta<TableGridProps> = {
+  title: '1. Components / 2. Level 2 / TableGrid',
   tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
         component: `
-## Table
+## TableGrid — Grid Layout Component
 
-**Tier 3 — Composite Layout Component**
+**Level 2 — Molecule (Grid Layout ONLY)**
 
-Table provides structural layout for tabular data. It coordinates header rows and data rows, establishing column alignment and spacing.
+> **TableGrid provides grid layout for tabular data ONLY.**
+> It does NOT include search, filters, pagination, or data logic.
 
-### ⚠️ Important
+TableGrid is a pure grid layout component that coordinates header rows and data rows using CSS Grid.
 
-**Table does NOT manage sorting, selection, or interaction logic.**
+### ⚠️ Critical: What TableGrid Is NOT
 
-Those responsibilities belong to:
-- **TableRow:** hover, selected, disabled backgrounds
-- **TableCell:** text color, alignment, typography
-- **TableHeaderCell:** header text, sort indicators
-- **Parent controller:** sorting logic, selection state
+**TableGrid is NOT a full table solution.**
 
-### Non-Goals
+TableGrid does NOT own:
+- ❌ Search or filtering controls (owned by **TableToolbar**)
+- ❌ Pagination controls (owned by **TablePagination**)
+- ❌ Sorting logic (owned by parent controller)
+- ❌ Selection logic (owned by parent controller)
+- ❌ Row hover or interaction states (owned by **TableRow**)
+- ❌ Cell styling or typography (owned by **TableCell**)
+- ❌ Data fetching or management
 
-- Does NOT implement sorting logic
-- Does NOT implement selection logic
-- Does NOT manage hover or disabled states
-- Does NOT own row or cell visual styles
-- Does NOT fetch or manage data
-- Does NOT implement pagination or virtualization
+### Architectural Boundaries (LOCKED)
+
+\`\`\`
+Card
+├─ TableToolbar (search + filters)
+├─ TableGrid (grid layout ONLY)
+└─ TablePagination (page controls)
+\`\`\`
+
+**TableGrid = Grid layout for rows/cells**
+**TableToolbar = Search + filters (sibling, above)**
+**TablePagination = Pagination controls (sibling, below)**
+
+These are separate Level 2 components with clear boundaries.
+
+### What TableGrid DOES Own
+
+TableGrid owns:
+- ✅ CSS Grid layout for tabular data
+- ✅ Column alignment (header ↔ body)
+- ✅ Semantic column width behavior
+- ✅ Grid spacing and structure
 
 ### Layout Strategy
 
-Table uses **CSS Grid** for column alignment:
+TableGrid uses **CSS Grid** for column alignment:
 - Header cells and body cells align via shared grid column definitions
 - Uses \`display: contents\` on rows to allow cells to participate in grid
-- Column count controlled via \`columns\` prop
+- Column count and semantics controlled via \`columns\` prop
 
 ### Token Bindings (Layout Only)
 
@@ -54,7 +74,7 @@ Table uses **CSS Grid** for column alignment:
 
 ### Composition
 
-Table expects these children:
+TableGrid expects these children:
 - **Header:** \`createTableHeader()\` wrapping \`TableHeaderCell\` components
 - **Body:** \`createTableBody()\` wrapping \`TableRow\` components with \`TableCell\` children
         `,
@@ -82,7 +102,7 @@ Table expects these children:
 };
 
 export default meta;
-type Story = StoryObj<TableProps>;
+type Story = StoryObj<TableGridProps>;
 
 // ========================================
 // Helper to create sample data
@@ -145,7 +165,7 @@ function createSampleTable(options: {
     });
   });
 
-  return createTable({
+  return createTableGrid({
     columns,
     withBorder,
     withBackground,
@@ -279,7 +299,7 @@ export const SemanticColumnWidths: Story = {
       return createTableRow({ children: cells, clickable: true });
     });
 
-    return createTable({
+    return createTableGrid({
       columns,
       withBorder: true,
       withBackground: true,
@@ -400,7 +420,7 @@ export const InContext: Story = {
       });
     });
 
-    const table = createTable({
+    const table = createTableGrid({
       columns: 4,
       withBorder: true,
       withBackground: true,
@@ -456,7 +476,7 @@ export const EmptyState: Story = {
 
     const body = createTableBody(emptyRow);
 
-    return createTable({
+    return createTableGrid({
       columns: 4,
       withBorder: true,
       withBackground: true,
@@ -499,7 +519,7 @@ export const ThreeColumns: Story = {
       ],
     }));
 
-    return createTable({
+    return createTableGrid({
       columns: 3,
       withBorder: true,
       children: [
@@ -543,7 +563,7 @@ export const SixColumns: Story = {
       ],
     }));
 
-    return createTable({
+    return createTableGrid({
       columns: 6,
       withBorder: true,
       children: [

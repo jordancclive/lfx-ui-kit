@@ -178,7 +178,7 @@ Card
 ## NON-GOALS (Forbidden Usage)
 
 **TablePagination MUST NOT:**
-- ❌ Render inside the Table component
+- ❌ Render inside the TableGrid component
 - ❌ Be passed to Table as a prop
 - ❌ Be rendered by Table in any way
 - ❌ Assume data fetching ownership

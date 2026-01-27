@@ -107,7 +107,7 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../../components/table/table';
+import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../../components/table-grid/table-grid';
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
@@ -410,7 +410,7 @@ function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
     });
   });
 
-  return createTable({
+  return createTableGrid({
     columns,
     children: [
       createTableHeader(headerCells),

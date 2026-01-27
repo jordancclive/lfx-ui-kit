@@ -70,10 +70,10 @@ AppHeader
 
 ## Table Rules
 
-- Table MUST use semantic column definitions (flexible vs intrinsic)
+- TableGrid MUST use semantic column definitions (flexible vs intrinsic)
 - Primary text columns expand
 - Categorical, numeric, meta, and action columns are intrinsic
-- Table headers are left-aligned, regardless of cell alignment
+- TableGrid headers are left-aligned, regardless of cell alignment
 - Data rows are clickable by default; hover applies to clickable rows
 
 ---
@@ -121,7 +121,7 @@ Visual affordances applied automatically:
 - Dense mode may be used for high-volume datasets requiring more rows visible
 - AppHeader SHOULD use dense spacing (dense: true) on workflow pages
 - PageSection SHOULD use dense spacing (dense: true) to reduce page-level gaps
-- Table rows use default comfortable height unless explicitly set to dense
+- TableGrid rows use default comfortable height unless explicitly set to dense
 - Scanability is achieved through spacing and rhythm, not typography escalation
 
 **Note:** Dense mode is an override for specific high-density needs, not the baseline.

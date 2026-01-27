@@ -1,9 +1,15 @@
 /**
- * Table
+ * TableGrid
  * 
- * Tier 3 — Composite Layout Component
- * Provides structural layout for tabular data.
+ * Level 2 — Molecule (Grid Layout Component)
+ * Provides grid layout for tabular data ONLY.
  * Coordinates header rows and data rows.
+ * 
+ * ARCHITECTURAL SCOPE (LOCKED):
+ * - TableGrid = Grid layout for rows/cells ONLY
+ * - TableGrid does NOT own search, filters, or pagination
+ * - TableToolbar = Search + filters (sibling, above)
+ * - TablePagination = Pagination controls (sibling, below)
  * 
  * LAYOUT STRATEGY: CSS Grid
  * - Header cells and body cells align via shared grid column definitions
@@ -32,7 +38,7 @@
    Column Layout
    
    SEMANTIC COLUMN WIDTHS (Preferred):
-   - Table with lfx-table--semantic uses inline grid-template-columns
+   - TableGrid with lfx-table--semantic uses inline grid-template-columns
    - Columns are sized based on semantic type (primary, categorical, numeric, meta, action)
    - Primary columns: flexible (minmax with flex basis)
    - Other columns: intrinsic (auto, sized to content)

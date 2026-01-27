@@ -28,7 +28,7 @@ import { createPageSection } from '../../components/page-section/page-section';
 import { createMetricsRow } from '../../components/metrics-row/metrics-row';
 import { createMetricCard } from '../../components/metric-card/metric-card';
 import { createCard } from '../../components/card/card';
-import { createTable, createTableHeader, createTableBody } from '../../components/table/table';
+import { createTable, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
 import { createTableHeaderCell } from '../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../components/table-row/table-row';
 import { createTableCell } from '../../components/table-cell/table-cell';
@@ -105,7 +105,7 @@ function createDemoTable(columns = 3) {
     return createTableRow({ children: cells });
   });
 
-  return createTable({
+  return createTableGrid({
     columns,
     children: [
       createTableHeader(headerCells),
