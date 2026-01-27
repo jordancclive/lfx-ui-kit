@@ -68,6 +68,37 @@ TableRow provides a hover affordance for scannability and interactivity.
 - Text color changes
 - Sorting logic
 
+---
+
+## Row Interaction Semantics
+
+**Row is the primary interactive unit, not individual cells.**
+
+### Normative Rules
+
+- Rows MAY be clickable when explicitly enabled via props (e.g. `clickable: true`)
+- Row clickability MUST be explicit — no inferred interaction
+- Hover affordance MAY appear only when the row is clickable
+- Disabled rows MUST NOT respond to hover or click
+- Row click behavior MUST NOT be implemented at the column or cell level
+
+### Explicit Prohibitions
+
+- ❌ Columns MUST NOT own navigation or click behavior
+- ❌ Cells MUST NOT register click handlers for navigation
+- ❌ Visual link styling inside cells does not imply click ownership
+
+### Clarification
+
+Primary column text MAY be styled to look like a link when the row is clickable, but **navigation is still owned by the row**.
+
+This means:
+- The row handles the click event
+- The row determines navigation behavior
+- Cell styling is visual only, not functional
+
+---
+
 ## Storybook Coverage
 
 - Default
@@ -78,4 +109,4 @@ TableRow provides a hover affordance for scannability and interactivity.
 
 ## Lock Statement
 
-This contract is considered stable. Visual changes must be achieved through tokens, not by expanding component responsibilities.
+This contract is considered stable. Row-level interaction semantics must not be altered without explicit design system approval. Visual changes must be achieved through tokens, not by expanding component responsibilities.

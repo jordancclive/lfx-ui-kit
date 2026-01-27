@@ -68,6 +68,15 @@ AppHeader
 - Inline navigation (e.g. Name links) must be explicit links
 - Do not combine implicit row click and inline links unless intentionally designed
 
+### Row-Level Interaction
+
+- Table Page patterns permit row-level navigation
+- Page patterns do not restrict row clickability
+- Interaction behavior is governed by component contracts, not page structure
+- Agents MUST NOT disable row hover or click unless forbidden by TableRow contract
+
+**If navigation exists, it should be implemented at the row level, not via individual columns.**
+
 ---
 
 ## Density Rules
@@ -127,11 +136,16 @@ Agents must treat this pattern as a hard constraint.
 - Respect component contracts for interaction
 - Look to component APIs for behavior
 - Ask when interaction intent is unclear
+- Preserve row click behavior when explicitly enabled
+- Look to TableRow contract for row interaction rules
 
 ### Agents MUST NOT:
 - Infer interaction rules from page patterns
 - Disable hover, click, or links unless forbidden by component contract
 - Assume filters or pagination behave identically across pages
 - Remove semantic affordances to "simplify" the UI
+- Infer column-level navigation instead of row-level
+- Replace row clicks with links or buttons
+- Remove hover affordances "for consistency"
 
 **Critical:** Page patterns describe WHAT is on the page, not HOW users interact with each element.
