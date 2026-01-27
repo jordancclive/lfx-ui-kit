@@ -1,0 +1,1 @@
+.lfx-tabs-group{display:inline-flex;flex-wrap:wrap;align-items:center;gap:var(--spacing-4);role:tablist}.lfx-tabs-group--with-background{background-color:var(--ui-tabs-group-surface-background);padding:var(--spacing-4);border-radius:var(--rounded-xl)}.lfx-tabs-group--no-wrap{flex-wrap:nowrap}

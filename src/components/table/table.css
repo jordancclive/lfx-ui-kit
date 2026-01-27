@@ -87,20 +87,6 @@
 }
 
 /* ========================================
-   Controls Section (Search + Filters)
-   
-   Optional controls row above table header.
-   Docks directly to table header (no gap).
-   SearchInput receives flex: 1 automatically.
-   ======================================== */
-
-.lfx-table__controls {
-  /* Display as block, NOT part of grid */
-  display: flex;
-  /* Spacing and layout handled via inline styles in JS */
-}
-
-/* ========================================
    Header Section
    ======================================== */
 

@@ -1,0 +1,1 @@
+function n(s){const{children:i,dense:a=!1,withDivider:t=!1}=s,e=document.createElement("div");return e.className="lfx-page-section",a&&e.classList.add("lfx-page-section--dense"),t&&e.classList.add("lfx-page-section--with-divider"),Array.isArray(i)?i.forEach(c=>{e.appendChild(c)}):e.appendChild(i),e}export{n as c};

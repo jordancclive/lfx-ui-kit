@@ -1,0 +1,1 @@
+function c(s){const{children:e,variant:a="default"}=s,t=document.createElement("span"),n=["lfx-tag"];return a&&n.push(`lfx-tag--variant-${a}`),t.className=n.join(" "),typeof e=="string"?t.textContent=e:t.appendChild(e),t}export{c};

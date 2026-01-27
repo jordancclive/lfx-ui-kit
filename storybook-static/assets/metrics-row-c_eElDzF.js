@@ -1,0 +1,1 @@
+function l(a){const{children:s,dense:r=!1,align:i="stretch",equalWidth:t=!1}=a,e=document.createElement("div");return e.className="lfx-metrics-row",e.classList.add(`lfx-metrics-row--align-${i}`),r&&e.classList.add("lfx-metrics-row--dense"),t&&e.classList.add("lfx-metrics-row--equal-width"),Array.isArray(s)?s.forEach(c=>e.appendChild(c)):e.appendChild(s),e}export{l as c};

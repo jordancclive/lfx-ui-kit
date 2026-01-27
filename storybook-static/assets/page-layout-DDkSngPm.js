@@ -1,0 +1,1 @@
+function i(l){const{children:e,dense:t=!1,fullWidth:s=!1}=l,a=document.createElement("div");return a.className="lfx-page-layout",t&&a.classList.add("lfx-page-layout--dense"),s&&a.classList.add("lfx-page-layout--full-width"),Array.isArray(e)?e.forEach(d=>{a.appendChild(d)}):a.appendChild(e),a}export{i as c};
