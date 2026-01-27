@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { createCard, CardProps } from './card';
-import { createTable, createTableHeader, createTableBody } from '../table/table';
+import { createTableGrid, createTableHeader, createTableBody } from '../table-grid/table-grid';
 import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
 import { createTableRow } from '../table-row/table-row';
 import { createTableCell } from '../table-cell/table-cell';
@@ -293,7 +293,7 @@ export const WithTable: Story = {
       }),
     ];
     
-    const table = createTable({
+    const table = createTableGrid({
       columns: 3,
       children: [
         createTableHeader([headerRow]),
@@ -443,7 +443,7 @@ export const InContextWithPageLayout: Story = {
       }),
     ];
     
-    const table = createTable({
+    const table = createTableGrid({
       columns: 4,
       children: [
         createTableHeader([headerRow]),
