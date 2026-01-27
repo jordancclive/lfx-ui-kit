@@ -20,10 +20,14 @@
  */
 
 .lfx-table-pagination {
-  /* Single-row horizontal layout */
+  /* ENFORCE single-row horizontal layout */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  
+  /* Prevent wrapping at all costs */
+  flex-wrap: nowrap;
   
   /* Internal padding */
   padding-top: var(--spacing-16); /* Extra vertical space above to distinguish from rows */
@@ -39,15 +43,31 @@
 }
 
 /**
- * Page Navigation (left side)
+ * Left Cluster: Page Navigation
  * 
- * Contains Previous button, numbered pages, and Next button.
- * Forms the primary pagination control cluster.
+ * Contains Previous button (‹), numbered page buttons, and Next button (›).
+ * Forms the primary pagination control cluster on the LEFT side.
  */
-.lfx-table-pagination__navigation {
+.lfx-table-pagination__left {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/**
+ * Right Cluster: Page Size Selector
+ * 
+ * Contains "Results per page:" label and page size option buttons.
+ * Pinned to the RIGHT edge of the pagination row.
+ */
+.lfx-table-pagination__right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /**
@@ -134,22 +154,6 @@
   user-select: none;
 }
 
-/**
- * Page Size Selector (Optional)
- * 
- * Inline control for selecting "Results per page".
- * Only rendered when pageSizeOptions prop is provided with multiple options.
- * 
- * Layout:
- * - Appears on right side of pagination row
- * - Horizontal layout: "Results per page: 10 25 50 100"
- * - Visually subordinate to page navigation
- */
-.lfx-table-pagination__page-size {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
-}
 
 /**
  * Page Size Label
@@ -216,16 +220,30 @@
 /**
  * Layout Notes:
  * 
- * - Single-row layout with page navigation on left, page size selector on right
- * - Everything aligns on one baseline (no wrapping)
- * - Extra top padding creates visual breathing room after table rows
- * - Minimal bottom padding keeps pagination subordinate to table
+ * SINGLE-ROW LEFT/RIGHT LAYOUT (ENFORCED):
+ * - Parent uses flex with justify-content: space-between
+ * - Left cluster: ‹ 1 2 3 … 10 ›
+ * - Right cluster: Results per page: 10 25 50 100
+ * - Both clusters are siblings (NOT nested)
+ * - flex-wrap: nowrap prevents vertical stacking
+ * - white-space: nowrap on clusters prevents text wrapping
+ * - flex-shrink: 0 prevents clusters from collapsing
+ * 
+ * VISUAL HIERARCHY:
  * - Arrow buttons (‹ ›) use symbols for visual economy
  * - Numbered pages are compact and lightweight
- * - Active page is clearly indicated with border and background
- * - Ellipsis marks skipped pages without adding visual weight
- * - Page size selector (optional) appears on right side inline
- * - Page size options match page number button height for consistency
+ * - Active page clearly indicated with border and background
+ * - Ellipsis marks skipped pages without visual weight
+ * - Page size options match page button height (32px)
+ * - Everything aligns on one baseline
+ * 
+ * SPACING:
+ * - Extra top padding creates breathing room after table rows
+ * - Minimal bottom padding keeps pagination subordinate
  * - No background ensures pagination inherits Card surface
- * - Pagination reads as ONE unified control strip
+ * 
+ * DEFAULT BEHAVIOR:
+ * - This is the ONLY layout mode
+ * - Right cluster only renders when pageSizeOptions provided
+ * - Layout remains single-row regardless of content
  */

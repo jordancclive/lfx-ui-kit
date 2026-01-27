@@ -121,11 +121,11 @@ is conditionally unnecessary.
 
 ## Layout Behavior
 
-**Single-Row Unified Control:**
+**DEFAULT: Single-Row Left/Right Layout**
 
-TablePagination renders as ONE horizontal row with two clusters:
+TablePagination renders as ONE horizontal row with two independent clusters:
 
-**LEFT SIDE: Page Navigation**
+**LEFT CLUSTER: Page Navigation**
 - Arrow buttons: ‹ (Previous) and › (Next)
 - Numbered page buttons: 1, 2, 3, …
 - Current page highlighted with border and background
@@ -134,18 +134,25 @@ TablePagination renders as ONE horizontal row with two clusters:
 - Always shows first and last page
 - Previous disabled at first page, Next disabled at last page
 
-**RIGHT SIDE: Page Size Selector (optional)**
+**RIGHT CLUSTER: Page Size Selector (optional)**
 - Format: "Results per page: 10 25 50 100"
 - Only rendered when \`pageSizeOptions\` prop provided with multiple options
 - Active option highlighted with background
+- Pinned to right edge of pagination row
 - No dividers or borders between clusters
 
-**Visual Design:**
+**Structural Rules:**
+- Left and right clusters are siblings (NOT nested)
+- Parent uses \`justify-content: space-between\`
+- \`flex-wrap: nowrap\` prevents vertical stacking
+- \`white-space: nowrap\` prevents text wrapping
 - Everything aligns on one baseline
-- No wrapping to multiple rows
+- This is the ONLY layout mode (not a variant)
+
+**Visual Design:**
 - Minimal visual weight (subordinate to table content)
 - Arrow symbols (‹ ›) for visual economy
-- Consistent button heights across all controls
+- Consistent 32px button heights across all controls
 
 **Visual Pattern:**
 \`‹ 1 2 3 … 10 ›\` (left side)
@@ -482,11 +489,18 @@ Demonstrates optional "Results per page" selector on right side.
 - Existing pagination remains unchanged
 
 **Visual Design:**
-- Selector appears on right side inline
+- Selector appears in right cluster (sibling to left cluster)
+- Pinned to right edge via \`justify-content: space-between\`
 - Active page size highlighted with background
 - Visually subordinate to page navigation
 - No dividers or separators between clusters
 - Everything aligns on one baseline
+
+**Structural Implementation:**
+- Right cluster always uses \`.lfx-table-pagination__right\` wrapper
+- Left cluster always uses \`.lfx-table-pagination__left\` wrapper
+- Both are direct children of \`.lfx-table-pagination\`
+- This ensures true left/right alignment without nesting
         `,
       },
     },
