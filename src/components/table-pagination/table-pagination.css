@@ -1,0 +1,100 @@
+/**
+ * TablePagination Component Styles
+ * 
+ * Level 2 — Molecule
+ * 
+ * Purpose:
+ * Provides layout-only styling for table pagination controls.
+ * 
+ * Layout Strategy:
+ * - Horizontal flex container (space-between)
+ * - Internal padding for comfortable spacing
+ * - Extra top padding to separate from table rows
+ * - Visual subordination to table content
+ * - No background (inherits from Card)
+ * 
+ * Ownership:
+ * - Controls ONLY layout, spacing, and visual hierarchy
+ * - Does NOT control data logic or navigation
+ * - Does NOT introduce visual hierarchy beyond spacing
+ */
+
+.lfx-table-pagination {
+  /* Horizontal layout with space-between */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* Internal padding */
+  padding-top: var(--spacing-16); /* Extra vertical space above to distinguish from rows */
+  padding-bottom: var(--spacing-4); /* Minimal bottom padding */
+  padding-left: var(--spacing-16); /* Align with table content */
+  padding-right: var(--spacing-16);
+  
+  /* No external margins — placement controlled by parent */
+  margin: 0;
+  
+  /* No background — inherits from Card */
+  background: none;
+}
+
+/**
+ * Pagination Info (left side)
+ * 
+ * Displays current page range and total items.
+ * Uses secondary text styling to subordinate to table content.
+ */
+.lfx-table-pagination__info {
+  font-family: var(--ui-text-body-secondary-font-family);
+  font-size: var(--ui-text-body-secondary-font-size);
+  color: var(--color-table-cell-text-secondary);
+}
+
+/**
+ * Pagination Controls (right side)
+ * 
+ * Contains Previous/Next buttons.
+ * Uses flex gap for consistent spacing between buttons.
+ */
+.lfx-table-pagination__controls {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+/**
+ * Pagination Buttons
+ * 
+ * Minimal button styling to keep visual weight subordinate to table content.
+ * Uses subtle border and transparent background.
+ */
+.lfx-table-pagination__button {
+  padding: var(--spacing-6) var(--spacing-12);
+  font-family: var(--ui-text-control-font-family);
+  font-size: var(--ui-text-control-font-size);
+  color: var(--accent-600);
+  border: 1px solid var(--ui-surface-divider);
+  border-radius: var(--rounded-md);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.lfx-table-pagination__button:hover:not(:disabled) {
+  background-color: var(--ui-surface-hover);
+}
+
+.lfx-table-pagination__button:disabled {
+  color: var(--color-table-cell-text-secondary);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/**
+ * Layout Notes:
+ * 
+ * - Info and controls use space-between for clean separation
+ * - Extra top padding creates visual breathing room after table rows
+ * - Minimal bottom padding keeps pagination subordinate to table
+ * - Button styling is intentionally minimal (not primary actions)
+ * - No background ensures pagination inherits Card surface
+ */

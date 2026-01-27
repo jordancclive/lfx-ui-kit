@@ -46,7 +46,7 @@
  *          │  ├─ SearchInput (flex: 1 — FULL-WIDTH by default)
  *          │  └─ Filters (order matches columns)
  *          ├─ Table (semantic columns)
- *          └─ Pagination (optional)
+ *          └─ TablePagination (optional — Level 2 component)
  * 
  * VISUAL GOALS:
  * - Header hands off directly into table (no buffer feeling)
@@ -54,9 +54,10 @@
  * - Page reads as ONE workflow top → bottom
  * 
  * ARCHITECTURAL LAYERING:
- * - Table component: Pure grid layout (no filter knowledge)
+ * - Table component: Pure grid layout (no filter/pagination knowledge)
  * - TableToolbar component: Search + filter layout (Level 2)
- * - Table Page pattern: Composition authority (WHERE toolbar goes)
+ * - TablePagination component: Pagination controls (Level 2)
+ * - Table Page pattern: Composition authority (WHERE components go)
  * 
  * If something feels off visually:
  * - Identify which component owns the issue
@@ -77,6 +78,7 @@ import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createSearchInput } from '../../../../components/search-input/search-input';
 import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
 import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
+import { createTablePagination } from '../../../../components/table-pagination/table-pagination';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
 
@@ -209,69 +211,29 @@ function createToolbar(): HTMLElement {
 }
 
 /**
- * Creates the pagination row.
+ * Creates the pagination controls.
  * 
- * CANONICAL STRUCTURE (Table Page Pattern):
+ * ARCHITECTURAL LAYERING:
+ * - TablePagination (Level 2) owns pagination layout, spacing, and hierarchy
+ * - Table Page pattern defines WHICH page to display and total items
+ * 
+ * Structure:
  * - Positioned inside Card, directly below table
- * - Aligns with table row padding (left + right)
- * - Extra vertical padding above to distinguish from rows
- * - Feels subordinate to table content
- * - Uses existing Button components (no ad-hoc controls)
+ * - TablePagination owns layout (padding, alignment, button styling)
+ * - Pattern provides data only (page, pageSize, totalItems)
  * 
- * Format: "Rows 1–10 of 42" + Previous/Next controls
- * 
- * NOTE: This is a structural placeholder until a formal Pagination component exists.
+ * NO MANUAL LAYOUT:
+ * - No manual padding (TablePagination owns it)
+ * - No manual button styling (TablePagination owns it)
+ * - No manual alignment (TablePagination owns it)
  */
-function createPaginationRow(): HTMLElement {
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.justifyContent = 'space-between';
-  container.style.alignItems = 'center';
-  container.style.paddingTop = 'var(--spacing-16)'; // Extra vertical padding
-  container.style.paddingLeft = 'var(--spacing-16)'; // Align with table content
-  container.style.paddingRight = 'var(--spacing-16)';
-  container.style.paddingBottom = 'var(--spacing-4)'; // Minimal bottom padding
-  
-  // Pagination info (left side)
-  const info = document.createElement('span');
-  info.textContent = 'Rows 1–10 of 42';
-  info.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
-  info.style.color = 'var(--color-table-cell-text-secondary)';
-  
-  // Pagination controls (right side)
-  const controls = document.createElement('div');
-  controls.style.display = 'flex';
-  controls.style.gap = 'var(--spacing-8)';
-  
-  const prevButton = document.createElement('button');
-  prevButton.textContent = 'Previous';
-  prevButton.style.padding = 'var(--spacing-6) var(--spacing-12)';
-  prevButton.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
-  prevButton.style.color = 'var(--color-table-cell-text-secondary)';
-  prevButton.style.border = '1px solid var(--ui-surface-divider)';
-  prevButton.style.borderRadius = 'var(--rounded-md)';
-  prevButton.style.background = 'transparent';
-  prevButton.style.cursor = 'pointer';
-  prevButton.disabled = true;
-  prevButton.style.opacity = '0.5';
-  
-  const nextButton = document.createElement('button');
-  nextButton.textContent = 'Next';
-  nextButton.style.padding = 'var(--spacing-6) var(--spacing-12)';
-  nextButton.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
-  nextButton.style.color = 'var(--accent-600)';
-  nextButton.style.border = '1px solid var(--ui-surface-divider)';
-  nextButton.style.borderRadius = 'var(--rounded-md)';
-  nextButton.style.background = 'transparent';
-  nextButton.style.cursor = 'pointer';
-  
-  controls.appendChild(prevButton);
-  controls.appendChild(nextButton);
-  
-  container.appendChild(info);
-  container.appendChild(controls);
-  
-  return container;
+function createPagination(totalItems: number): HTMLElement {
+  // Pattern provides data — TablePagination owns HOW it's displayed
+  return createTablePagination({
+    page: 1,
+    pageSize: 10,
+    totalItems,
+  });
 }
 
 /**
@@ -414,8 +376,8 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   ];
 
   // Build Card children: optional toolbar + table + optional pagination
-  // Pattern defines WHERE toolbar is placed
-  // TableToolbar component defines HOW it's laid out
+  // Pattern defines WHERE components are placed
+  // Components (TableToolbar, TablePagination) define HOW they're laid out
   const cardChildren: HTMLElement[] = [];
   
   if (showFilters) {
@@ -425,7 +387,7 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
   cardChildren.push(createProjectsTable(data, dense));
   
   if (showPagination) {
-    cardChildren.push(createPaginationRow());
+    cardChildren.push(createPagination(data.length));
   }
 
   // Single PageSection with Card containing table
