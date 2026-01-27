@@ -75,6 +75,11 @@ Do NOT enable page size selection when:
 - Dataset is always small
 - Adding complexity without user benefit
 
+**Visual Pattern:**
+
+Single-row layout with page size selector on right:
+\`‹ 1 2 3 … 10 ›   Results per page: 10 25 50 100\`
+
 **How to Enable:**
 
 Pass \`pageSizeOptions\` prop with array of page sizes:
@@ -116,30 +121,41 @@ is conditionally unnecessary.
 
 ## Layout Behavior
 
-**Info Display (left side):**
-- Format: "Rows 1–10 of 42"
-- Uses secondary text styling
-- Visually subordinate to table content
+**Single-Row Unified Control:**
 
-**Controls (right side):**
-- Optional "Results per page" selector (when enabled)
-  - Format: "Results per page: 10 / 20"
-  - Appears first with divider
-  - Active option highlighted
-- Previous button (disabled at first page)
-- Numbered page buttons (1, 2, 3, …)
-  - Current page highlighted with border and background
-  - Ellipsis (…) for skipped pages in large datasets
-  - Maximum 7 visible page numbers in window
-  - Always shows first and last page
-- Next button (disabled at last page)
-- Minimal visual weight (not primary actions)
+TablePagination renders as ONE horizontal row with two clusters:
+
+**LEFT SIDE: Page Navigation**
+- Arrow buttons: ‹ (Previous) and › (Next)
+- Numbered page buttons: 1, 2, 3, …
+- Current page highlighted with border and background
+- Ellipsis (…) for skipped pages in large datasets
+- Maximum 7 visible page numbers in window
+- Always shows first and last page
+- Previous disabled at first page, Next disabled at last page
+
+**RIGHT SIDE: Page Size Selector (optional)**
+- Format: "Results per page: 10 25 50 100"
+- Only rendered when \`pageSizeOptions\` prop provided with multiple options
+- Active option highlighted with background
+- No dividers or borders between clusters
+
+**Visual Design:**
+- Everything aligns on one baseline
+- No wrapping to multiple rows
+- Minimal visual weight (subordinate to table content)
+- Arrow symbols (‹ ›) for visual economy
+- Consistent button heights across all controls
+
+**Visual Pattern:**
+\`‹ 1 2 3 … 10 ›\` (left side)
+\`Results per page: 10 25 50 100\` (right side, optional)
 
 **Page Windowing Examples:**
-- Page 1 of 5: \`[1] 2 3 4 5\`
-- Page 3 of 10: \`1 2 [3] 4 5 … 10\`
-- Page 10 of 42: \`1 … 8 9 [10] 11 12 … 42\`
-- Page 40 of 42: \`1 … 38 39 [40] 41 42\`
+- Page 1 of 5: \`‹ [1] 2 3 4 5 ›\`
+- Page 3 of 10: \`‹ 1 2 [3] 4 5 … 10 ›\`
+- Page 10 of 42: \`‹ 1 … 8 9 [10] 11 12 … 42 ›\`
+- Page 40 of 42: \`‹ 1 … 38 39 [40] 41 42 ›\`
 
 **Spacing:**
 - Top padding: \`spacing-16\` (extra space above to distinguish from rows)
@@ -297,10 +313,9 @@ export const Default: Story = {
 Demonstrates pagination in a typical middle page state with numbered page buttons.
 
 - Current page: 2 (highlighted)
-- Showing items 11–20 of 42
 - Total pages: 5
-- All pages visible: 1 [2] 3 4 5
-- Both Previous and Next are enabled
+- Display: \`‹ 1 [2] 3 4 5 ›\`
+- Both Previous (‹) and Next (›) are enabled
         `,
       },
     },
@@ -325,11 +340,10 @@ export const FirstPage: Story = {
 Demonstrates pagination at the first page with numbered navigation.
 
 - Current page: 1 (highlighted)
-- Showing items 1–10 of 42
 - Total pages: 5
-- Page display: [1] 2 3 4 5
-- Previous button is disabled
-- Next button is enabled
+- Display: \`‹ [1] 2 3 4 5 ›\`
+- Previous button (‹) is disabled
+- Next button (›) is enabled
         `,
       },
     },
@@ -354,11 +368,10 @@ export const LastPage: Story = {
 Demonstrates pagination at the last page with numbered navigation.
 
 - Current page: 5 (highlighted)
-- Showing items 41–42 of 42
 - Total pages: 5
-- Page display: 1 2 3 4 [5]
-- Previous button is enabled
-- Next button is disabled
+- Display: \`‹ 1 2 3 4 [5] ›\`
+- Previous button (‹) is enabled
+- Next button (›) is disabled
         `,
       },
     },
@@ -451,14 +464,13 @@ export const WithPageSizeSelector: Story = {
         story: `
 **Page Size Selector (Optional Feature)**
 
-Demonstrates optional "Results per page" selector.
+Demonstrates optional "Results per page" selector on right side.
 
 - Current page: 2 (highlighted)
 - Current page size: 10 (highlighted)
-- Showing items 11–20 of 120
 - Total pages: 12
-- Page size options: 10 / 20 / 50
-- Page display: \`1 [2] 3 4 … 12\`
+- Left side: \`‹ 1 [2] 3 4 … 12 ›\`
+- Right side: \`Results per page: [10] 20 50\`
 
 **How to Enable:**
 - Pass \`pageSizeOptions: [10, 20, 50]\` prop
@@ -470,10 +482,11 @@ Demonstrates optional "Results per page" selector.
 - Existing pagination remains unchanged
 
 **Visual Design:**
-- Selector appears at start of controls with divider
+- Selector appears on right side inline
 - Active page size highlighted with background
-- Visually subordinate to page numbers
-- No elevation or container
+- Visually subordinate to page navigation
+- No dividers or separators between clusters
+- Everything aligns on one baseline
         `,
       },
     },
@@ -498,10 +511,9 @@ export const MediumDataset: Story = {
 Demonstrates pagination windowing when near the beginning of many pages.
 
 - Current page: 3 (highlighted)
-- Showing items 21–30 of 120
 - Total pages: 12
-- Page display: \`1 2 [3] 4 … 12\`
-- Both Previous and Next are enabled
+- Display: \`‹ 1 2 [3] 4 … 12 ›\`
+- Both Previous (‹) and Next (›) are enabled
 
 **Windowing Strategy:**
 - Show pages 1-4 (window around page 3)
@@ -531,10 +543,9 @@ export const LargeDataset: Story = {
 Demonstrates pagination windowing in the middle of many pages.
 
 - Current page: 15 (highlighted)
-- Showing items 141–150 of 342
 - Total pages: 35
-- Page display: \`1 … 14 [15] 16 … 35\`
-- Both Previous and Next are enabled
+- Display: \`‹ 1 … 14 [15] 16 … 35 ›\`
+- Both Previous (‹) and Next (›) are enabled
 
 **Windowing Strategy:**
 - Always show first page (1)

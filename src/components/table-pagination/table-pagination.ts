@@ -157,19 +157,68 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
   
   // Calculate pagination values
   const totalPages = Math.ceil(totalItems / pageSize);
-  const startItem = (page - 1) * pageSize + 1;
-  const endItem = Math.min(page * pageSize, totalItems);
   
-  // Left side: Pagination info
-  const info = document.createElement('span');
-  info.className = 'lfx-table-pagination__info';
-  info.textContent = `Rows ${startItem}–${endItem} of ${totalItems}`;
+  // LEFT SIDE: Page navigation controls (Previous + Numbers + Next)
+  const navigation = document.createElement('div');
+  navigation.className = 'lfx-table-pagination__navigation';
   
-  // Right side: Pagination controls
-  const controls = document.createElement('div');
-  controls.className = 'lfx-table-pagination__controls';
+  // Previous button
+  const prevButton = document.createElement('button');
+  prevButton.className = 'lfx-table-pagination__button';
+  prevButton.textContent = '‹';
+  prevButton.setAttribute('aria-label', 'Previous page');
+  prevButton.disabled = page === 1;
+  if (onPageChange) {
+    prevButton.addEventListener('click', () => onPageChange(page - 1));
+  }
+  navigation.appendChild(prevButton);
   
-  // Optional: Page size selector (if enabled and has multiple options)
+  // Numbered page buttons
+  const visiblePages = getVisiblePages(page, totalPages);
+  
+  visiblePages.forEach((marker) => {
+    if (marker === 'ellipsis') {
+      // Render ellipsis (non-clickable)
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'lfx-table-pagination__ellipsis';
+      ellipsis.textContent = '…';
+      navigation.appendChild(ellipsis);
+    } else {
+      // Render page number button
+      const pageButton = document.createElement('button');
+      pageButton.className = 'lfx-table-pagination__page';
+      pageButton.textContent = String(marker);
+      
+      // Highlight current page
+      if (marker === page) {
+        pageButton.classList.add('lfx-table-pagination__page--active');
+        pageButton.setAttribute('aria-current', 'page');
+      }
+      
+      // Add click handler
+      if (onPageChange && marker !== page) {
+        pageButton.addEventListener('click', () => onPageChange(marker));
+      }
+      
+      navigation.appendChild(pageButton);
+    }
+  });
+  
+  // Next button
+  const nextButton = document.createElement('button');
+  nextButton.className = 'lfx-table-pagination__button';
+  nextButton.textContent = '›';
+  nextButton.setAttribute('aria-label', 'Next page');
+  nextButton.disabled = page >= totalPages;
+  if (onPageChange) {
+    nextButton.addEventListener('click', () => onPageChange(page + 1));
+  }
+  navigation.appendChild(nextButton);
+  
+  // Append navigation to pagination
+  pagination.appendChild(navigation);
+  
+  // RIGHT SIDE: Page size selector (optional)
   const shouldRenderPageSizeSelector = 
     pageSizeOptions && 
     pageSizeOptions.length > 1;
@@ -207,72 +256,12 @@ export function createTablePagination(props: TablePaginationProps): HTMLElement 
       
       options.appendChild(option);
       
-      // Add separator between options (but not after last)
-      if (index < pageSizeOptions.length - 1) {
-        const separator = document.createElement('span');
-        separator.className = 'lfx-table-pagination__page-size-separator';
-        separator.textContent = '/';
-        options.appendChild(separator);
-      }
+      // No separators - just space between options
     });
     
     pageSizeSelector.appendChild(options);
-    controls.appendChild(pageSizeSelector);
+    pagination.appendChild(pageSizeSelector);
   }
-  
-  // Previous button
-  const prevButton = document.createElement('button');
-  prevButton.className = 'lfx-table-pagination__button';
-  prevButton.textContent = 'Previous';
-  prevButton.disabled = page === 1;
-  if (onPageChange) {
-    prevButton.addEventListener('click', () => onPageChange(page - 1));
-  }
-  controls.appendChild(prevButton);
-  
-  // Numbered page buttons
-  const visiblePages = getVisiblePages(page, totalPages);
-  
-  visiblePages.forEach((marker) => {
-    if (marker === 'ellipsis') {
-      // Render ellipsis (non-clickable)
-      const ellipsis = document.createElement('span');
-      ellipsis.className = 'lfx-table-pagination__ellipsis';
-      ellipsis.textContent = '…';
-      controls.appendChild(ellipsis);
-    } else {
-      // Render page number button
-      const pageButton = document.createElement('button');
-      pageButton.className = 'lfx-table-pagination__page';
-      pageButton.textContent = String(marker);
-      
-      // Highlight current page
-      if (marker === page) {
-        pageButton.classList.add('lfx-table-pagination__page--active');
-        pageButton.setAttribute('aria-current', 'page');
-      }
-      
-      // Add click handler
-      if (onPageChange && marker !== page) {
-        pageButton.addEventListener('click', () => onPageChange(marker));
-      }
-      
-      controls.appendChild(pageButton);
-    }
-  });
-  
-  // Next button
-  const nextButton = document.createElement('button');
-  nextButton.className = 'lfx-table-pagination__button';
-  nextButton.textContent = 'Next';
-  nextButton.disabled = page >= totalPages;
-  if (onPageChange) {
-    nextButton.addEventListener('click', () => onPageChange(page + 1));
-  }
-  controls.appendChild(nextButton);
-  
-  pagination.appendChild(info);
-  pagination.appendChild(controls);
   
   return pagination;
 }

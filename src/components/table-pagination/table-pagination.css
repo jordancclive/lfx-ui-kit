@@ -20,7 +20,7 @@
  */
 
 .lfx-table-pagination {
-  /* Horizontal layout with space-between */
+  /* Single-row horizontal layout */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -39,49 +39,41 @@
 }
 
 /**
- * Pagination Info (left side)
- * 
- * Displays current page range and total items.
- * Uses secondary text styling to subordinate to table content.
- */
-.lfx-table-pagination__info {
-  font-family: var(--ui-text-body-secondary-font-family);
-  font-size: var(--ui-text-body-secondary-font-size);
-  color: var(--color-table-cell-text-secondary);
-}
-
-/**
- * Pagination Controls (right side)
+ * Page Navigation (left side)
  * 
  * Contains Previous button, numbered pages, and Next button.
- * Uses flex gap for consistent spacing between all controls.
+ * Forms the primary pagination control cluster.
  */
-.lfx-table-pagination__controls {
+.lfx-table-pagination__navigation {
   display: flex;
   align-items: center;
-  gap: var(--spacing-4);
+  gap: var(--spacing-2);
 }
 
 /**
- * Pagination Buttons
+ * Pagination Buttons (Previous / Next)
  * 
- * Minimal button styling to keep visual weight subordinate to table content.
- * Uses subtle border and transparent background.
+ * Arrow buttons for page navigation (‹ and ›).
+ * Minimal styling to keep visual weight subordinate to page numbers.
  */
 .lfx-table-pagination__button {
-  padding: var(--spacing-6) var(--spacing-12);
+  min-width: 32px;
+  height: 32px;
+  padding: var(--spacing-4) var(--spacing-6);
   font-family: var(--ui-text-control-font-family);
-  font-size: var(--ui-text-control-font-size);
+  font-size: 18px; /* Slightly larger for arrow symbols */
+  line-height: 1;
   color: var(--accent-600);
-  border: 1px solid var(--ui-surface-divider);
+  border: 1px solid transparent;
   border-radius: var(--rounded-md);
   background: transparent;
   cursor: pointer;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .lfx-table-pagination__button:hover:not(:disabled) {
   background-color: var(--ui-surface-hover);
+  border-color: var(--ui-surface-divider);
 }
 
 .lfx-table-pagination__button:disabled {
@@ -149,17 +141,14 @@
  * Only rendered when pageSizeOptions prop is provided with multiple options.
  * 
  * Layout:
- * - Appears at the start of pagination controls (right side)
- * - Horizontal layout: "Results per page: 10 / 20"
- * - Visually subordinate to page numbers
+ * - Appears on right side of pagination row
+ * - Horizontal layout: "Results per page: 10 25 50 100"
+ * - Visually subordinate to page navigation
  */
 .lfx-table-pagination__page-size {
   display: flex;
   align-items: center;
   gap: var(--spacing-6);
-  padding-right: var(--spacing-12);
-  border-right: 1px solid var(--ui-surface-divider);
-  margin-right: var(--spacing-8);
 }
 
 /**
@@ -178,30 +167,32 @@
 /**
  * Page Size Options Container
  * 
- * Contains the selectable page size options (e.g., "10 / 20").
+ * Contains the selectable page size options (e.g., "10 25 50 100").
  */
 .lfx-table-pagination__page-size-options {
   display: flex;
   align-items: center;
-  gap: var(--spacing-4);
+  gap: var(--spacing-2);
 }
 
 /**
  * Page Size Option Button
  * 
- * Individual page size option (e.g., "10", "20").
- * Lightweight button styling to remain subordinate.
+ * Individual page size option (e.g., "10", "25", "50").
+ * Matches page number button height for visual consistency.
  */
 .lfx-table-pagination__page-size-option {
-  padding: var(--spacing-2) var(--spacing-4);
+  min-width: 32px;
+  height: 32px;
+  padding: var(--spacing-4) var(--spacing-6);
   font-family: var(--ui-text-control-font-family);
   font-size: var(--ui-text-control-font-size);
   color: var(--accent-600);
-  border: none;
-  border-radius: var(--rounded-sm);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-md);
   background: transparent;
   cursor: pointer;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .lfx-table-pagination__page-size-option:hover:not(.lfx-table-pagination__page-size-option--active) {
@@ -221,30 +212,20 @@
   cursor: default;
 }
 
-/**
- * Page Size Separator
- * 
- * Separator between page size options (e.g., "/").
- * Uses secondary text color.
- */
-.lfx-table-pagination__page-size-separator {
-  font-family: var(--ui-text-control-font-family);
-  font-size: var(--ui-text-control-font-size);
-  color: var(--color-table-cell-text-secondary);
-  user-select: none;
-}
 
 /**
  * Layout Notes:
  * 
- * - Info and controls use space-between for clean separation
+ * - Single-row layout with page navigation on left, page size selector on right
+ * - Everything aligns on one baseline (no wrapping)
  * - Extra top padding creates visual breathing room after table rows
  * - Minimal bottom padding keeps pagination subordinate to table
- * - Button styling is intentionally minimal (not primary actions)
+ * - Arrow buttons (‹ ›) use symbols for visual economy
  * - Numbered pages are compact and lightweight
  * - Active page is clearly indicated with border and background
  * - Ellipsis marks skipped pages without adding visual weight
- * - Page size selector (optional) appears at start of controls with divider
- * - Page size options use lightweight button styling (subordinate)
+ * - Page size selector (optional) appears on right side inline
+ * - Page size options match page number button height for consistency
  * - No background ensures pagination inherits Card surface
+ * - Pagination reads as ONE unified control strip
  */
