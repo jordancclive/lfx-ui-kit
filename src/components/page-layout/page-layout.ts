@@ -54,7 +54,7 @@ export interface PageLayoutProps {
  * createPageLayout({
  *   children: [
  *     createAppHeader({ title: 'Dashboard' }),
- *     createTable({ ... }),
+ *     createTableGrid({ ... }),
  *   ]
  * })
  * 

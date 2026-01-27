@@ -52,7 +52,7 @@ export interface PageSectionProps {
  * ```typescript
  * // Basic usage
  * createPageSection({
- *   children: createTable({ ... })
+ *   children: createTableGrid({ ... })
  * })
  * 
  * // With divider

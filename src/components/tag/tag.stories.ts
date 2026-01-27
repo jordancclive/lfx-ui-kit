@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { createTag, type TagProps } from './tag';
 import { createTableCell } from '../table-cell/table-cell';
-import { createTable, createTableHeader, createTableBody } from '../table/table';
+import { createTableGrid, createTableHeader, createTableBody } from '../table-grid/table-grid';
 import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
 import { createTableRow } from '../table-row/table-row';
 import { createCard } from '../card/card';
@@ -188,7 +188,7 @@ export const InsideTableCell: Story = {
     ];
 
     return createCard({
-      children: createTable({
+      children: createTableGrid({
         columns: 3,
         children: [
           createTableHeader(headerCells),
@@ -258,7 +258,7 @@ export const InGroupsContext: Story = {
     );
 
     return createCard({
-      children: createTable({
+      children: createTableGrid({
         columns: 3,
         children: [
           createTableHeader(headerCells),

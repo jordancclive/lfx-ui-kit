@@ -81,7 +81,7 @@ createAppShell({
   content: createPageLayout({
     children: [
       createAppHeader({ title: 'Projects', description: '...' }),
-      createTable({ ... }),
+      createTableGrid({ ... }),
       createListGroup({ ... }),
     ]
   })

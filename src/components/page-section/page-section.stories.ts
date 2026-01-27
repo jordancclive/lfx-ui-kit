@@ -4,7 +4,7 @@ import { createPageLayout } from '../page-layout/page-layout';
 import { createAppHeader } from '../app-header/app-header';
 import { createListGroup } from '../list-group/list-group';
 import { createListItem } from '../list-item/list-item';
-import { createTable, createTableHeader, createTableBody } from '../table/table';
+import { createTableGrid, createTableHeader, createTableBody } from '../table-grid/table-grid';
 import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
 import { createTableRow } from '../table-row/table-row';
 import { createTableCell } from '../table-cell/table-cell';
@@ -219,7 +219,7 @@ export const WithRealContent: Story = {
     
     // Section with Table
     const tableSection = createPageSection({
-      children: createTable({
+      children: createTableGrid({
         columns: 3,
         children: [
           createTableHeader([
