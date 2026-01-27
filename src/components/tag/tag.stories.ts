@@ -24,8 +24,8 @@ Tag displays categorical information in a compact, non-interactive visual form.
 - **Visual only** — Tag has no click behavior or interaction
 - **Stateless** — No hover, focus, selected, or disabled states
 - **Intrinsic width** — Tag sizes to its content, never stretches
-- **Non-semantic** — Tag does not imply status (success/warning/error)
 - **Categorical** — Used for Type, Category, or similar grouping labels
+- **Semantic variants** — Visual variants for categorical meaning (info, success, warning, danger, discovery)
 
 ## Usage
 
@@ -42,11 +42,24 @@ Tag is used for categorical clarity in:
 - **Do NOT use for selection** — Tag is not selectable
 - **Do NOT use for actions** — Tag is not clickable
 
+## Variants
+
+Tag supports semantic visual variants:
+- \`default\` — Neutral categorical display
+- \`info\` — Informational categorical data
+- \`success\` — Positive categorical data
+- \`warning\` — Cautionary categorical data
+- \`danger\` — Critical categorical data
+- \`discovery\` — New or highlighted categorical data
+
+**Important:** Variants communicate semantic meaning only. They do NOT imply interaction or status.
+
 ## Token Bindings
 
 - Surface: \`ui.tag.surface.background\` → \`ui.surface.subtle\`
 - Border: \`ui.tag.surface.border\` → \`ui.surface.divider\`
 - Typography: \`ui.tag.text.*\` → \`ui.text.label.*\`
+- Variants: \`ui.tag.variant.*\` → Semantic color scales
 - Radius: \`ui.tag.radius\` → \`rounded-sm\`
 - Padding: \`ui.tag.padding-y/x\` → \`spacing-2\` / \`spacing-6\`
 
@@ -59,6 +72,11 @@ All tokens reference system-level UI roles, never primitives.
     children: {
       control: 'text',
       description: 'Tag content (typically categorical text)',
+    },
+    variant: {
+      control: 'select',
+      options: ['default', 'info', 'success', 'warning', 'danger', 'discovery'],
+      description: 'Semantic visual variant (visual only, no interaction)',
     },
   },
   render: (args) => createTag(args),
@@ -78,37 +96,93 @@ export const Default: Story = {
 };
 
 /**
- * Tag inside a table cell, as used in the Groups page Type column.
- * Demonstrates Tag's primary use case for categorical data in tables.
+ * Info variant — Informational categorical data.
+ * Visual only, no interaction or status semantics.
+ */
+export const Info: Story = {
+  args: {
+    children: 'Information',
+    variant: 'info',
+  },
+};
+
+/**
+ * Success variant — Positive categorical data.
+ * Visual only, no interaction or status semantics.
+ */
+export const Success: Story = {
+  args: {
+    children: 'Completed',
+    variant: 'success',
+  },
+};
+
+/**
+ * Warning variant — Cautionary categorical data.
+ * Visual only, no interaction or status semantics.
+ */
+export const Warning: Story = {
+  args: {
+    children: 'Review Required',
+    variant: 'warning',
+  },
+};
+
+/**
+ * Danger variant — Critical categorical data.
+ * Visual only, no interaction or status semantics.
+ */
+export const Danger: Story = {
+  args: {
+    children: 'Deprecated',
+    variant: 'danger',
+  },
+};
+
+/**
+ * Discovery variant — New or highlighted categorical data.
+ * Visual only, no interaction or status semantics.
+ */
+export const Discovery: Story = {
+  args: {
+    children: 'New Feature',
+    variant: 'discovery',
+  },
+};
+
+/**
+ * Tag inside a table cell with variants.
+ * Demonstrates Tag's primary use case for categorical data in tables,
+ * showing multiple semantic variants in a tabular context.
  */
 export const InsideTableCell: Story = {
   render: () => {
     const headerCells = [
       createTableHeaderCell({ children: 'Name' }),
-      createTableHeaderCell({ children: 'Type' }),
-      createTableHeaderCell({ children: 'Members', align: 'right' }),
+      createTableHeaderCell({ children: 'Status' }),
+      createTableHeaderCell({ children: 'Priority' }),
     ];
 
     const rows = [
       createTableRow({
         children: [
-          createTableCell({ children: 'Security Working Group', contentType: 'primary' }),
-          createTableCell({ children: createTag({ children: 'Working Group' }), contentType: 'secondary' }),
-          createTableCell({ children: '8', contentType: 'numeric', align: 'right' }),
+          createTableCell({ children: 'Security Audit', contentType: 'primary' }),
+          createTableCell({ children: createTag({ children: 'Completed', variant: 'success' }), contentType: 'secondary' }),
+          createTableCell({ children: createTag({ children: 'Critical', variant: 'danger' }), contentType: 'secondary' }),
         ],
       }),
       createTableRow({
         children: [
-          createTableCell({ children: 'Technical Advisory Group', contentType: 'primary' }),
-          createTableCell({ children: createTag({ children: 'TAG' }), contentType: 'secondary' }),
-          createTableCell({ children: '6', contentType: 'numeric', align: 'right' }),
+          createTableCell({ children: 'UI Kit Update', contentType: 'primary' }),
+          createTableCell({ children: createTag({ children: 'In Progress', variant: 'info' }), contentType: 'secondary' }),
+          createTableCell({ children: createTag({ children: 'High', variant: 'warning' }), contentType: 'secondary' }),
         ],
       }),
       createTableRow({
         children: [
-          createTableCell({ children: 'Board of Directors', contentType: 'primary' }),
-          createTableCell({ children: createTag({ children: 'Other' }), contentType: 'secondary' }),
-          createTableCell({ children: '8', contentType: 'numeric', align: 'right' }),
+          createTableCell({ children: 'New Feature Launch', contentType: 'primary' }),
+          createTableCell({ children: createTag({ children: 'Beta', variant: 'discovery' }), contentType: 'secondary' }),
+          createTableCell({ children: createTag({ children: 'Medium', variant: 'default' }), contentType: 'secondary' }),
         ],
       }),
     ];
@@ -126,7 +200,8 @@ export const InsideTableCell: Story = {
 };
 
 /**
- * Multiple Tags in a row.
+ * Multiple Tags with mixed variants.
+ * Demonstrates semantic variants used together.
  * Parent container controls spacing via flex gap.
  */
 export const MultipleTags: Story = {
@@ -137,9 +212,15 @@ export const MultipleTags: Story = {
     container.style.alignItems = 'center';
     container.style.padding = 'var(--spacing-16)';
 
-    const tags = ['Open Source', 'Security', 'Cloud Native', 'Community'];
-    tags.forEach(label => {
-      container.appendChild(createTag({ children: label }));
+    const tags = [
+      { label: 'Open Source', variant: 'default' as const },
+      { label: 'Active', variant: 'success' as const },
+      { label: 'Beta', variant: 'discovery' as const },
+      { label: 'Review Required', variant: 'warning' as const },
+    ];
+    
+    tags.forEach(({ label, variant }) => {
+      container.appendChild(createTag({ children: label, variant }));
     });
 
     return container;

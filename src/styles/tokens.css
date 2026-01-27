@@ -630,6 +630,37 @@
   --ui-tag-padding-y: var(--spacing-2);
   --ui-tag-padding-x: var(--spacing-6);
 
+  /* Semantic Variants - visual only, no interaction */
+  /* default variant (neutral) */
+  --ui-tag-variant-default-background: var(--ui-surface-subtle);
+  --ui-tag-variant-default-border: var(--ui-surface-divider);
+  --ui-tag-variant-default-text: var(--text-primary);
+
+  /* info variant (informational) */
+  --ui-tag-variant-info-background: var(--information-50);
+  --ui-tag-variant-info-border: var(--information-200);
+  --ui-tag-variant-info-text: var(--information-700);
+
+  /* success variant (positive) */
+  --ui-tag-variant-success-background: var(--success-50);
+  --ui-tag-variant-success-border: var(--success-200);
+  --ui-tag-variant-success-text: var(--success-700);
+
+  /* warning variant (cautionary) */
+  --ui-tag-variant-warning-background: var(--warning-50);
+  --ui-tag-variant-warning-border: var(--warning-200);
+  --ui-tag-variant-warning-text: var(--warning-700);
+
+  /* danger variant (critical) */
+  --ui-tag-variant-danger-background: var(--danger-50);
+  --ui-tag-variant-danger-border: var(--danger-200);
+  --ui-tag-variant-danger-text: var(--danger-700);
+
+  /* discovery variant (new/highlighted) */
+  --ui-tag-variant-discovery-background: var(--discovery-50);
+  --ui-tag-variant-discovery-border: var(--discovery-200);
+  --ui-tag-variant-discovery-text: var(--discovery-700);
+
   /* ========================================
      UI ROLE - List Item
      

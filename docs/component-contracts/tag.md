@@ -11,7 +11,6 @@ Tag displays categorical information in a compact, non-interactive visual form.
 - Does NOT implement click behavior or interaction
 - Does NOT implement filtering logic
 - Does NOT manage selection state
-- Does NOT express status semantics (success/warning/error)
 - Does NOT interpret or validate data meaning
 - Does NOT control table layout or column width
 - Does NOT stretch to fill containers
@@ -27,22 +26,55 @@ Tag displays categorical information in a compact, non-interactive visual form.
 ### Allowed
 
 - `ui.tag.surface.*` (background, border)
+- `ui.tag.variant.*` (semantic variant colors)
 - `ui.tag.text.*` (typography bindings)
 - `spacing.*` (padding)
 - `radius.*` (border radius)
 
 ### Forbidden
 
-- Semantic color tokens (e.g., `success.*`, `warning.*`, `error.*`)
 - Primitive color tokens (e.g., `--color-blue-500`)
 - `ui.text.control.*` (Tag is not interactive)
-- Interaction tokens (hover, focus, disabled)
+- Interaction tokens (hover, focus, disabled, active)
+
+## Variants
+
+Tag supports **semantic visual variants** for categorical meaning:
+- `default` — Neutral categorical display (default)
+- `info` — Informational categorical data
+- `success` — Positive categorical data
+- `warning` — Cautionary categorical data
+- `danger` — Critical categorical data
+- `discovery` — New or highlighted categorical data
+
+### Variant Rules
+
+Variants:
+- Affect **visual appearance only**
+- Do NOT change behavior, interaction, or accessibility
+- Do NOT imply status logic or system state
+- Do NOT add hover, focus, or click states
+- Are purely semantic visual cues for categorical data
+
+Tag remains:
+- **Stateless** — No internal state management
+- **Non-interactive** — No click, hover, or focus behavior
+- **Intrinsic width only** — Sizes to content
+
+### Explicit Prohibition
+
+**Tag variants must not introduce interaction, selection, or state semantics.**
+
+If interaction is required, a FilterPill or Button must be used instead.
+
+---
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | children | string \| HTMLElement | — | Tag content (typically categorical text) |
+| variant | 'default' \| 'info' \| 'success' \| 'warning' \| 'danger' \| 'discovery' | 'default' | Semantic visual variant |
 
 ## State Rules
 
@@ -120,6 +152,8 @@ createCard({
 
 ## Lock Statement
 
-This contract is considered stable. Visual changes must be achieved through tokens, not expanded responsibilities.
+This contract is considered stable. Variants may adjust visual semantics only. Behavior and interaction are locked.
+
+Visual changes must be achieved through tokens, not expanded responsibilities.
 
 Tag remains a stateless, non-interactive visual component for categorical data display. It does not interpret meaning, handle interaction, or control layout beyond its own intrinsic width.

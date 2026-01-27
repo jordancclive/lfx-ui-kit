@@ -55,9 +55,64 @@
 }
 
 /**
+ * Semantic Variants
+ * 
+ * Variants provide visual semantic meaning only.
+ * They do NOT introduce interaction, state, or behavior.
+ * All variants use semantic color tokens only.
+ */
+
+/* default variant (neutral) */
+.lfx-tag--variant-default {
+  background-color: var(--ui-tag-variant-default-background);
+  border-color: var(--ui-tag-variant-default-border);
+  color: var(--ui-tag-variant-default-text);
+}
+
+/* info variant (informational) */
+.lfx-tag--variant-info {
+  background-color: var(--ui-tag-variant-info-background);
+  border-color: var(--ui-tag-variant-info-border);
+  color: var(--ui-tag-variant-info-text);
+}
+
+/* success variant (positive) */
+.lfx-tag--variant-success {
+  background-color: var(--ui-tag-variant-success-background);
+  border-color: var(--ui-tag-variant-success-border);
+  color: var(--ui-tag-variant-success-text);
+}
+
+/* warning variant (cautionary) */
+.lfx-tag--variant-warning {
+  background-color: var(--ui-tag-variant-warning-background);
+  border-color: var(--ui-tag-variant-warning-border);
+  color: var(--ui-tag-variant-warning-text);
+}
+
+/* danger variant (critical) */
+.lfx-tag--variant-danger {
+  background-color: var(--ui-tag-variant-danger-background);
+  border-color: var(--ui-tag-variant-danger-border);
+  color: var(--ui-tag-variant-danger-text);
+}
+
+/* discovery variant (new/highlighted) */
+.lfx-tag--variant-discovery {
+  background-color: var(--ui-tag-variant-discovery-background);
+  border-color: var(--ui-tag-variant-discovery-border);
+  color: var(--ui-tag-variant-discovery-text);
+}
+
+/**
  * State Constraints:
  * - No hover styles (Tag is non-interactive)
  * - No focus styles (Tag is not focusable)
  * - No disabled styles (Tag has no state)
  * - No transitions (Tag is stateless)
+ * 
+ * Variant Constraints:
+ * - Variants override color only (background, border, text)
+ * - Variants do NOT add hover, focus, or interaction states
+ * - Variants do NOT change layout, spacing, or typography
  */

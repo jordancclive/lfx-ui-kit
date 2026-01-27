@@ -10,6 +10,12 @@ export interface TagProps {
    * Tag content (typically categorical text like "Working Group", "Active", "Open Source")
    */
   children: string | HTMLElement;
+  
+  /**
+   * Semantic visual variant (visual only, no interaction)
+   * @default 'default'
+   */
+  variant?: 'default' | 'info' | 'success' | 'warning' | 'danger' | 'discovery';
 }
 
 /**
@@ -36,10 +42,16 @@ export interface TagProps {
  * );
  */
 export function createTag(props: TagProps): HTMLElement {
-  const { children } = props;
+  const { children, variant = 'default' } = props;
 
   const tag = document.createElement('span');
-  tag.className = 'lfx-tag';
+  
+  // Base class + variant modifier
+  const classes = ['lfx-tag'];
+  if (variant) {
+    classes.push(`lfx-tag--variant-${variant}`);
+  }
+  tag.className = classes.join(' ');
 
   if (typeof children === 'string') {
     tag.textContent = children;
