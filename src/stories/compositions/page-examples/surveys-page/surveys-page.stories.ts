@@ -68,24 +68,37 @@
  * - Filters and pagination INSIDE the Card
  * - No additional wrappers
  * 
- * INSTANCE-LEVEL NOTES:
+ * INSTANCE-LEVEL POLISH NOTES:
  * - Default sorting implemented (Surveys-specific, not generalized)
  * - Survey Name styled as link (blue, visual dominance)
- * - Row interaction uses default clickable model
+ * - Row interaction uses default clickable model (clickable: true)
  * - Rows use default (comfortable) height for action-oriented table
- * - Column widths balanced via semantic types
- * - Filter row attached to table (SearchInput full-width)
+ * - Column widths balanced via semantic types (7 columns including long tags)
+ * - Filter row attached to table (SearchInput full-width, dominates)
+ * - Three filter controls feel grouped and balanced
  * - AppHeader uses dense spacing for workflow pages (tight vertical rhythm)
  * - Primary action (Create Survey) visible and aligned with title
  * - Header → table rhythm feels intentional and connected
+ * - Long categorical tags (Survey Type) remain calm and readable
+ * - High numeric variance (0 → 342) displays cleanly
+ * - Draft rows (0 responses) feel distinct but not broken
+ * - Row hover supports left→right scanning across wide table
+ * - No typography jitter on hover
+ * - No layout shifts or visual hacks
  * 
- * VALIDATION GOALS:
- * This example tests whether Table Page pattern handles:
+ * VALIDATION GOALS (Pattern Resilience):
+ * This example confirms Table Page pattern handles:
  * ✓ Longer categorical labels (tag width pressure)
- * ✓ Higher numeric variance (single-digit to 300+)
+ * ✓ Higher numeric variance (0 to 342 responses)
  * ✓ Different default sorting logic (instance-specific)
- * ✓ Additional filter controls (3 vs 2)
- * ✓ Different action semantics (contextual actions)
+ * ✓ Additional filter controls (3 vs 2, no crowding)
+ * ✓ Different action semantics (View Results vs Edit)
+ * ✓ Empty metadata fields (drafts with no due date)
+ * 
+ * DEFERRED ISSUES (requiring component/token changes):
+ * - None identified at instance level
+ * - All visual concerns resolved via existing component contracts
+ * - Pattern validation complete
  * 
  * If something feels off visually:
  * - Identify which component owns the issue
