@@ -12,71 +12,55 @@
  * 
  * VOTES PAGE
  * 
- * The Votes product page for LFX One.
+ * Concrete instance of the canonical Table Page pattern using DataTable.
  * 
- * This page implements the Table Page pattern defined in
- * docs/page-patterns/table-page.md
+ * This page demonstrates a configuration-only usage of the standard
+ * single-table workflow surface. All layout, spacing, and interaction
+ * behavior are inherited from the Table Page pattern and DataTable component.
  * 
- * Votes is NOT a new pattern — it is a concrete implementation:
- * - Page title == Table title ("Votes")
- * - One table per page
- * - Optional filters inside the Card, above the table
- * - Optional pagination inside the Card, below the table
- * - Semantic column widths (flexible vs intrinsic)
- * - Row-level navigation
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 
- * VOTES-SPECIFIC BEHAVIOR:
- * - Default sorting: Status (Open → Pending Review → Closed), then Due Date (ascending)
- * - Filters: "All Groups", "All Statuses" (example labels, non-functional)
- * - Status Tags use semantic variants (success=Open, warning=Pending, default=Closed)
- * - Action column shows "Review" or "View" based on status (text only, non-interactive)
- * - Vote Name styled as link (blue color) to signal primary entry point
- * - SearchInput spans full width in filter row (dominates visually)
- * - No dense variant (one confident default presentation)
+ * CANONICAL STRUCTURE
  * 
- * PAGE STRUCTURE (from Table Page pattern):
+ * This page uses the standard Table Page + DataTable workflow:
  * 
  * AppShell
  * └─ PageLayout
- *    ├─ AppHeader (dense: true for workflow pages)
- *    │  ├─ title: "Votes"
- *    │  ├─ description: "Make decisions with your project groups."
- *    │  └─ actions: "Create Vote" button (primary variant)
- *    └─ PageSection (dense: true)
- *       └─ Card
- *          ├─ Filter Row (optional)
- *          │  ├─ SearchInput (variant="toolbar", full-width)
- *          │  ├─ FilterDropdownTrigger: "All Groups"
- *          │  └─ FilterDropdownTrigger: "All Statuses"
- *          ├─ TableGrid (semantic columns, default rows for comfort)
- *          └─ Pagination Row (optional)
+ *    ├─ AppHeader (page-level actions)
+ *    └─ PageSection (dense)
+ *       └─ DataTable
+ *          ├─ TableToolbar
+ *          ├─ TableGrid
+ *          └─ TablePagination
  * 
- * STRUCTURAL RULES (from pattern):
- * - Exactly ONE table
- * - NO section titles
- * - Filters and pagination INSIDE the Card
- * - No additional wrappers
+ * - Exactly ONE DataTable per page
+ * - DataTable bundles:
+ *   - TableToolbar (search + filters)
+ *   - TableGrid (rows + columns only)
+ *   - TablePagination (page navigation)
+ * - Page-level actions live in AppHeader
+ * - Page examples provide configuration only (labels, filters, data)
  * 
- * INSTANCE-LEVEL POLISH NOTES:
- * - Default sorting implemented (Votes-specific, not generalized)
- * - Vote Name styled as link (blue, visual dominance)
- * - Row interaction feels confident (clickable rows, strong hover, no typography jitter)
- * - Rows use default (comfortable) height for action-oriented table
- * - Column widths balanced via semantic types
- * - Filter row attached to table (SearchInput full-width)
- * - AppHeader uses dense spacing for workflow pages (tight vertical rhythm)
- * - Primary action (Create Vote) visible and aligned with title
- * - Dense variant removed (one confident default presentation)
- * - Header → table rhythm feels intentional and connected
+ * For full architectural rules, see:
+ * - Table Page documentation
+ * - DataTable documentation
  * 
- * DEFERRED ISSUES (requiring component/token changes):
- * - None identified at instance level
- * - All visual concerns resolved via existing component contracts
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 
- * If something feels off visually:
- * - Identify which component owns the issue
- * - Fix in components or tokens, NOT here
- * - Document as follow-up if unclear
+ * WHAT'S DIFFERENT IN THIS EXAMPLE
+ * 
+ * - 2 filters instead of 3
+ * - Action column uses Review / View semantics
+ * - Sorting prioritizes Open → Pending → Closed
+ * - Status Tags use semantic variants (success=Open, warning=Pending, default=Closed)
+ * - Vote Name styled as link (blue color) to signal primary entry point
+ * 
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 
+ * COLUMN SEMANTICS
+ * 
+ * Column semantics are defined at the TableGrid level and configured
+ * by this page example.
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
@@ -443,27 +427,53 @@ const meta: Meta<VotesTablePageArgs> = {
         component: `
 ## Votes Table Page Composition
 
-**Concrete instance of canonical Table Page pattern**
+**Concrete instance of the canonical Table Page pattern using DataTable.**
 
-This composition demonstrates the canonical Table Page pattern (defined in
-\`docs/page-patterns/table-page.md\`) using Votes as a concrete example.
+This page demonstrates a configuration-only usage of the standard
+single-table workflow surface. All layout, spacing, and interaction
+behavior are inherited from the Table Page pattern and DataTable component.
 
-### Pattern Characteristics
+## Canonical Structure
 
-- **Page title == Table title** — "Votes" (no section titles)
-- **One table per page** — Single votes table
-- **Filters inside Card** — SearchInput + FilterDropdownTriggers above table
-- **Pagination inside Card** — Optional pagination below table
-- **Semantic columns** — Primary, categorical, numeric, meta, action
-- **Row-level navigation** — Rows are clickable, hover affordance enabled
+This page uses the standard **Table Page + DataTable** workflow:
 
-### Page-Level Action
+- Exactly ONE DataTable per page
+- DataTable bundles:
+  - TableToolbar (search + filters)
+  - TableGrid (rows + columns only)
+  - TablePagination (page navigation)
+- Page-level actions live in AppHeader
+- Page examples provide configuration only (labels, filters, data)
 
-AppHeader includes a primary action button: "Create Vote"
+For full architectural rules, see:
+- Table Page documentation
+- DataTable documentation
 
-This is a page-level action, not a table-level action.
+### Structure Diagram
 
-### Column Semantics
+\`\`\`
+AppShell
+└─ PageLayout
+   ├─ AppHeader (page-level actions)
+   └─ PageSection (dense)
+      └─ DataTable
+         ├─ TableToolbar
+         ├─ TableGrid
+         └─ TablePagination
+\`\`\`
+
+## What's Different in This Example
+
+- 2 filters instead of 3
+- Action column uses Review / View semantics
+- Sorting prioritizes Open → Pending → Closed
+- Status Tags use semantic variants (success=Open, warning=Pending, default=Closed)
+- Vote Name styled as link (blue color) to signal primary entry point
+
+## Column Semantics
+
+Column semantics are defined at the TableGrid level and configured
+by this page example.
 
 | Column | Semantic Type | Characteristics |
 |--------|---------------|-----------------|
@@ -474,35 +484,15 @@ This is a page-level action, not a table-level action.
 | Due Date | meta | Intrinsic width, muted text |
 | Actions | action | Intrinsic width, text actions |
 
-### Row Interaction
+---
 
-- Rows are clickable via \`TableRow\` props
-- Row owns navigation (not columns or cells)
-- Hover affordance appears only when row is clickable
-- Primary column text may be styled visually like a link, but row handles navigation
-
-### Structure (from pattern)
-
-\`\`\`
-AppShell
-└─ PageLayout
-   ├─ AppHeader (with primary action)
-   └─ PageSection (dense: true)
-      └─ Card
-         ├─ (optional) Filter Row
-         ├─ Table
-         └─ (optional) Pagination
-\`\`\`
-
-### Structural Rules
-
-- ✅ Exactly ONE table
-- ✅ NO section titles
-- ✅ Filters and pagination INSIDE Card
-- ✅ Semantic column definitions (ColumnDefinition[])
-- ✅ Row-level navigation
-
-If something feels off visually, fix in components or tokens, not here.
+> This page example does NOT own layout, spacing, or interaction behavior.
+> If something feels visually incorrect, it must be fixed in:
+> - DataTable
+> - TableToolbar
+> - TableGrid
+> - TablePagination
+> or the Table Page pattern — not here.
         `,
       },
     },

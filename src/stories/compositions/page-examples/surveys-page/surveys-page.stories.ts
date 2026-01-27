@@ -12,98 +12,55 @@
  * 
  * SURVEYS PAGE
  * 
- * The Surveys product page for LFX One.
+ * Concrete instance of the canonical Table Page pattern using DataTable.
  * 
- * This page implements the Table Page pattern defined in
- * docs/page-patterns/table-page.md
- * 
- * PURPOSE:
- * This is a SECOND Page Example created to validate the Table Page pattern
- * against different data characteristics. Surveys intentionally differs from
- * Votes in several ways:
- * 
- * - LONGER CATEGORICAL LABELS (e.g. "Annual Board Effectiveness")
- * - HIGHER NUMERIC VARIANCE (responses: 0 → 300+)
- * - DIFFERENT SORTING LOGIC (Open → Draft → Closed, then by Due Date)
- * - MORE FILTER CONTROLS (3 instead of 2)
- * - DIFFERENT ACTION SEMANTICS (View Results vs Edit+Delete)
- * 
- * If visual or interaction issues are discovered here, they must be fixed
- * in components or patterns, NOT patched in this story.
+ * This page demonstrates a configuration-only usage of the standard
+ * single-table workflow surface. All layout, spacing, and interaction
+ * behavior are inherited from the Table Page pattern and DataTable component.
  * 
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 
- * SURVEYS-SPECIFIC BEHAVIOR:
- * - Default sorting: Status (Open → Draft → Closed), then Due Date (ascending)
- * - Drafts with no due date sort last within their status group
- * - Filters: "All Groups", "All Survey Types", "All Statuses" (example labels, non-functional)
- * - Status Tags use semantic variants (success=Open, default for Draft/Closed)
- * - Action column shows:
- *   - "View Results" (Open / Closed)
- *   - "Edit" (Draft)
- * - Survey Name styled as link (blue color) to signal primary entry point
- * - SearchInput spans full width in filter row (dominates visually)
+ * CANONICAL STRUCTURE
  * 
- * PAGE STRUCTURE (from Table Page pattern):
+ * This page uses the standard Table Page + DataTable workflow:
  * 
  * AppShell
  * └─ PageLayout
- *    ├─ AppHeader (dense: true for workflow pages)
- *    │  ├─ title: "Surveys"
- *    │  ├─ description: "Collect feedback from your project groups."
- *    │  └─ actions: "Create Survey" button (primary variant)
- *    └─ PageSection (dense: true)
- *       └─ Card
- *          ├─ Filter Row (optional)
- *          │  ├─ SearchInput (variant="toolbar", full-width)
- *          │  ├─ FilterDropdownTrigger: "All Groups"
- *          │  ├─ FilterDropdownTrigger: "All Survey Types"
- *          │  └─ FilterDropdownTrigger: "All Statuses"
- *          ├─ TableGrid (semantic columns, default rows for comfort)
- *          └─ Pagination Row (optional)
+ *    ├─ AppHeader (page-level actions)
+ *    └─ PageSection (dense)
+ *       └─ DataTable
+ *          ├─ TableToolbar
+ *          ├─ TableGrid
+ *          └─ TablePagination
  * 
- * STRUCTURAL RULES (from pattern):
- * - Exactly ONE table
- * - NO section titles
- * - Filters and pagination INSIDE the Card
- * - No additional wrappers
+ * - Exactly ONE DataTable per page
+ * - DataTable bundles:
+ *   - TableToolbar (search + filters)
+ *   - TableGrid (rows + columns only)
+ *   - TablePagination (page navigation)
+ * - Page-level actions live in AppHeader
+ * - Page examples provide configuration only (labels, filters, data)
  * 
- * INSTANCE-LEVEL POLISH NOTES:
- * - Default sorting implemented (Surveys-specific, not generalized)
- * - Survey Name styled as link (blue, visual dominance)
- * - Row interaction uses default clickable model (clickable: true)
- * - Rows use default (comfortable) height for action-oriented table
- * - Column widths balanced via semantic types (7 columns including long tags)
- * - Filter row attached to table (SearchInput full-width, dominates)
- * - Three filter controls feel grouped and balanced
- * - AppHeader uses dense spacing for workflow pages (tight vertical rhythm)
- * - Primary action (Create Survey) visible and aligned with title
- * - Header → table rhythm feels intentional and connected
- * - Long categorical tags (Survey Type) remain calm and readable
- * - High numeric variance (0 → 342) displays cleanly
- * - Draft rows (0 responses) feel distinct but not broken
- * - Row hover supports left→right scanning across wide table
- * - No typography jitter on hover
- * - No layout shifts or visual hacks
+ * For full architectural rules, see:
+ * - Table Page documentation
+ * - DataTable documentation
  * 
- * VALIDATION GOALS (Pattern Resilience):
- * This example confirms Table Page pattern handles:
- * ✓ Longer categorical labels (tag width pressure)
- * ✓ Higher numeric variance (0 to 342 responses)
- * ✓ Different default sorting logic (instance-specific)
- * ✓ Additional filter controls (3 vs 2, no crowding)
- * ✓ Different action semantics (View Results vs Edit)
- * ✓ Empty metadata fields (drafts with no due date)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 
- * DEFERRED ISSUES (requiring component/token changes):
- * - None identified at instance level
- * - All visual concerns resolved via existing component contracts
- * - Pattern validation complete
+ * WHAT'S DIFFERENT IN THIS EXAMPLE
  * 
- * If something feels off visually:
- * - Identify which component owns the issue
- * - Fix in components or tokens, NOT here
- * - Document as follow-up if unclear
+ * - 3 filters instead of 2
+ * - Longer categorical labels (tag width pressure)
+ * - Higher numeric variance (0 → 300+)
+ * - Different action semantics (View Results vs Edit)
+ * - Different default sorting logic
+ * 
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 
+ * COLUMN SEMANTICS
+ * 
+ * Column semantics are defined at the TableGrid level and configured
+ * by this page example.
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
@@ -505,45 +462,73 @@ const meta: Meta<SurveysTablePageArgs> = {
     docs: {
       description: {
         component: `
-## Surveys Table Page Composition
+**Concrete instance of the canonical Table Page pattern using DataTable.**
 
-**Concrete instance of canonical Table Page pattern**
+This page demonstrates a configuration-only usage of the standard
+single-table workflow surface. All layout, spacing, and interaction
+behavior are inherited from the Table Page pattern and DataTable component.
 
-This composition demonstrates the canonical Table Page pattern (defined in
-\`docs/page-patterns/table-page.md\`) using Surveys as a concrete example.
+## Canonical Structure
 
-### Purpose
+This page uses the standard **Table Page + DataTable** workflow:
 
-This is a SECOND Page Example created to validate the Table Page pattern
-against different data characteristics. Surveys intentionally differs from
-Votes to test pattern resilience:
+- Exactly ONE DataTable per page
+- DataTable bundles:
+  - TableToolbar (search + filters)
+  - TableGrid (rows + columns only)
+  - TablePagination (page navigation)
+- Page-level actions live in AppHeader
+- Page examples provide configuration only (labels, filters, data)
 
-- **Longer categorical labels** (e.g. "Annual Board Effectiveness Survey")
-- **Higher numeric variance** (responses: 0 → 300+)
-- **Different sorting logic** (Open → Draft → Closed, then by Due Date)
-- **More filter controls** (3 instead of 2)
-- **Different action semantics** (View Results vs Edit)
+For full architectural rules, see:
+- Table Page documentation
+- DataTable documentation
 
-### Pattern Characteristics
+### Structure Diagram
 
-- **Page title == Table title** — "Surveys" (no section titles)
-- **One table per page** — canonical constraint
-- **Filters inside Card** — above the table
-- **Pagination inside Card** — below the table (optional)
-- **Semantic column widths** — flexible vs intrinsic
-- **Row-level navigation** — clickable by default
+\`\`\`
+AppShell
+└─ PageLayout
+   ├─ AppHeader (page-level actions)
+   └─ PageSection (dense)
+      └─ DataTable
+         ├─ TableToolbar
+         ├─ TableGrid
+         └─ TablePagination
+\`\`\`
 
-### Validation Goals
+## What's Different in This Example
 
-This example tests whether Table Page handles:
-- ✓ Longer categorical labels (tag width pressure)
-- ✓ Higher numeric variance (0 → 300+)
-- ✓ Different default sorting logic (instance-specific)
-- ✓ Additional filter controls (3 vs 2)
-- ✓ Different action column semantics
+- 3 filters instead of 2
+- Longer categorical labels (tag width pressure)
+- Higher numeric variance (0 → 300+)
+- Different action semantics (View Results vs Edit)
+- Different default sorting logic
 
-If visual or interaction issues are discovered here, they must be fixed
-in components or patterns, NOT patched in this story.
+## Column Semantics
+
+Column semantics are defined at the TableGrid level and configured
+by this page example.
+
+| Column | Semantic Type | Characteristics |
+|--------|---------------|-----------------|
+| Survey Name | primary | Flexible width, visually dominant |
+| Survey Type | categorical | Intrinsic width, uses Tag |
+| Group | categorical | Intrinsic width, uses Tag |
+| Status | categorical | Intrinsic width, uses Tag with variants |
+| Responses | numeric | Intrinsic width, right-aligned |
+| Due Date | meta | Intrinsic width, muted text |
+| Actions | action | Intrinsic width, text actions |
+
+---
+
+> This page example does NOT own layout, spacing, or interaction behavior.
+> If something feels visually incorrect, it must be fixed in:
+> - DataTable
+> - TableToolbar
+> - TableGrid
+> - TablePagination
+> or the Table Page pattern — not here.
         `,
       },
     },
