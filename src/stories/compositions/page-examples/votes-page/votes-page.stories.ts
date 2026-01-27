@@ -1,12 +1,23 @@
 /**
- * Votes Table Page Composition
+ * PAGE EXAMPLE — NOT A PATTERN
  * 
- * CONCRETE INSTANCE OF CANONICAL TABLE PAGE PATTERN
+ * This file is a concrete product page.
+ * It demonstrates usage of a page pattern, but does NOT define one.
  * 
- * This composition is a concrete implementation of the canonical Table Page pattern
- * defined in docs/page-patterns/table-page.md.
+ * Pattern used: Table Page
  * 
- * Votes is NOT a new pattern — it is a textbook use case for Table Page:
+ * Agents must NOT treat this file as reusable structure.
+ * 
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 
+ * VOTES PAGE
+ * 
+ * The Votes product page for LFX One.
+ * 
+ * This page implements the Table Page pattern defined in
+ * docs/page-patterns/table-page.md
+ * 
+ * Votes is NOT a new pattern — it is a concrete implementation:
  * - Page title == Table title ("Votes")
  * - One table per page
  * - Optional filters inside the Card, above the table
@@ -14,7 +25,7 @@
  * - Semantic column widths (flexible vs intrinsic)
  * - Row-level navigation
  * 
- * COMPOSITION STRUCTURE (from pattern):
+ * PAGE STRUCTURE (from Table Page pattern):
  * 
  * AppShell
  * └─ PageLayout
@@ -31,7 +42,7 @@
  *          ├─ Table (semantic columns)
  *          └─ Pagination Row (optional)
  * 
- * STRUCTURAL RULES (enforced by pattern):
+ * STRUCTURAL RULES (from pattern):
  * - Exactly ONE table
  * - NO section titles
  * - Filters and pagination INSIDE the Card
@@ -44,20 +55,20 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createAppShell } from '../../../components/app-shell/app-shell';
-import { createPageLayout } from '../../../components/page-layout/page-layout';
-import { createAppHeader } from '../../../components/app-header/app-header';
-import { createPageSection } from '../../../components/page-section/page-section';
-import { createCard } from '../../../components/card/card';
-import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../components/table/table';
-import { createTableHeaderCell } from '../../../components/table-header-cell/table-header-cell';
-import { createTableRow } from '../../../components/table-row/table-row';
-import { createTableCell } from '../../../components/table-cell/table-cell';
-import { createSearchInput } from '../../../components/search-input/search-input';
-import { createFilterDropdownTrigger } from '../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../components/global-nav/global-nav';
-import { createTag } from '../../../components/tag/tag';
-import { createButton } from '../../../components/button/button';
+import { createAppShell } from '../../../../components/app-shell/app-shell';
+import { createPageLayout } from '../../../../components/page-layout/page-layout';
+import { createAppHeader } from '../../../../components/app-header/app-header';
+import { createPageSection } from '../../../../components/page-section/page-section';
+import { createCard } from '../../../../components/card/card';
+import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../../components/table/table';
+import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
+import { createTableRow } from '../../../../components/table-row/table-row';
+import { createTableCell } from '../../../../components/table-cell/table-cell';
+import { createSearchInput } from '../../../../components/search-input/search-input';
+import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
+import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createTag } from '../../../../components/tag/tag';
+import { createButton } from '../../../../components/button/button';
 
 // =============================================================================
 // DATA: Representative vote data
@@ -448,7 +459,7 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<VotesTablePageArgs> = {
-  title: 'Compositions/Votes Table Page',
+  title: 'Page Examples/Votes',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

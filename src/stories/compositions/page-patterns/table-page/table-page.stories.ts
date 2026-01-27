@@ -1,10 +1,18 @@
 /**
- * Table Page Composition
+ * PAGE PATTERN — NORMATIVE
  * 
- * CANONICAL TABLE PAGE PATTERN
+ * This file defines a reusable page-level pattern.
+ * It is a structural blueprint, not a product page.
  * 
- * This composition represents the default table-driven page pattern used across
- * LFX One for single-table views.
+ * Agents may copy this pattern when creating new pages.
+ * 
+ * Rules are locked by docs/page-patterns/table-page.md
+ * 
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 
+ * TABLE PAGE PATTERN
+ * 
+ * The canonical single-table page pattern for LFX One.
  * 
  * Used by:
  * - Votes
@@ -14,7 +22,7 @@
  * - Mailing Lists
  * 
  * NOT used by:
- * - Groups (Groups is a segmented variant with multiple tables and section titles)
+ * - Groups (uses Segmented Table Page pattern)
  * 
  * Key characteristics:
  * - Page title == Table title (no section titles)
@@ -24,7 +32,7 @@
  * - Clean vertical rhythm
  * - Compact, scan-friendly density
  * 
- * COMPOSITION STRUCTURE:
+ * CANONICAL STRUCTURE:
  * 
  * AppShell
  * └─ PageLayout
@@ -39,23 +47,23 @@
  * If something feels off visually:
  * - Identify which component owns the issue
  * - Fix in components or tokens
- * - Do NOT patch in this composition
+ * - Do NOT patch in this pattern
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createAppShell } from '../../../components/app-shell/app-shell';
-import { createPageLayout } from '../../../components/page-layout/page-layout';
-import { createAppHeader } from '../../../components/app-header/app-header';
-import { createPageSection } from '../../../components/page-section/page-section';
-import { createCard } from '../../../components/card/card';
-import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../components/table/table';
-import { createTableHeaderCell } from '../../../components/table-header-cell/table-header-cell';
-import { createTableRow } from '../../../components/table-row/table-row';
-import { createTableCell } from '../../../components/table-cell/table-cell';
-import { createSearchInput } from '../../../components/search-input/search-input';
-import { createFilterDropdownTrigger } from '../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../components/global-nav/global-nav';
-import { createTag } from '../../../components/tag/tag';
+import { createAppShell } from '../../../../components/app-shell/app-shell';
+import { createPageLayout } from '../../../../components/page-layout/page-layout';
+import { createAppHeader } from '../../../../components/app-header/app-header';
+import { createPageSection } from '../../../../components/page-section/page-section';
+import { createCard } from '../../../../components/card/card';
+import { createTable, createTableHeader, createTableBody, type ColumnDefinition } from '../../../../components/table/table';
+import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
+import { createTableRow } from '../../../../components/table-row/table-row';
+import { createTableCell } from '../../../../components/table-cell/table-cell';
+import { createSearchInput } from '../../../../components/search-input/search-input';
+import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
+import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createTag } from '../../../../components/tag/tag';
 
 // =============================================================================
 // DATA: Representative table data for canonical table pages
@@ -346,7 +354,7 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<TablePageArgs> = {
-  title: 'Compositions/Table Page',
+  title: 'Page Patterns/Table Page',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

@@ -1,12 +1,25 @@
 /**
- * Segmented Table Page Composition
+ * PAGE PATTERN — NORMATIVE
  * 
- * PATTERN: SEGMENTED TABLE PAGE
+ * This file defines a reusable page-level pattern.
+ * It is a structural blueprint, not a product page.
  * 
- * This composition demonstrates the Segmented Table Page pattern using Groups
- * as a concrete example. Groups (My Groups, Other Groups) is an instance of
- * this pattern, not the pattern itself.
+ * Agents may copy this pattern when creating new pages.
  * 
+ * Rules are locked by docs/page-patterns/segmented-table-page.md
+ * 
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 
+ * SEGMENTED TABLE PAGE PATTERN
+ * 
+ * A specialized page pattern for displaying multiple related datasets
+ * simultaneously, each in its own table block.
+ * 
+ * This pattern demonstrates the structure using Groups (My Groups, Other Groups)
+ * as example data. Groups is a concrete instance of this pattern, not the
+ * pattern itself.
+ * 
+ * PATTERN DEFINITION:
  * A segmented table page is composed of multiple independent table blocks.
  * Each table block can independently declare:
  * - Section title (required)
@@ -17,7 +30,7 @@
  * No assumptions are made about which tables are filterable or paginated.
  * Each table block is self-contained and explicit.
  * 
- * STRUCTURE:
+ * CANONICAL STRUCTURE:
  * 
  * AppHeader (page title)
  * └─ PageSection (dense: true)
@@ -34,7 +47,7 @@
  *          ├─ Table
  *          └─ (optional) Pagination Row
  * 
- * KEY DIFFERENCES FROM CANONICAL TABLE PAGE:
+ * KEY DIFFERENCES FROM TABLE PAGE PATTERN:
  * - Multiple tables (segmented by section)
  * - Section titles present (required per table block)
  * - Page title != Section titles
@@ -45,14 +58,14 @@
  * - Future: Projects page (My Projects, All Projects)
  * - Future: Any page with multiple related table views
  * 
- * COMPOSITION RULES:
+ * PATTERN RULES:
  * - No styling overrides allowed
  * - No new tokens or props may be introduced
  * - If something looks wrong, fix in:
  *   - tokens
  *   - component contracts
  *   - or missing pattern components
- * - Never in this story
+ * - Never in this pattern
  * 
  * WHAT THIS VALIDATES:
  * - Multiple independent table blocks compose cleanly
@@ -64,19 +77,19 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createAppShell } from '../../../components/app-shell/app-shell';
-import { createPageLayout } from '../../../components/page-layout/page-layout';
-import { createAppHeader } from '../../../components/app-header/app-header';
-import { createPageSection } from '../../../components/page-section/page-section';
-import { createCard } from '../../../components/card/card';
-import { createTable, createTableHeader, createTableBody } from '../../../components/table/table';
-import { createTableHeaderCell } from '../../../components/table-header-cell/table-header-cell';
-import { createTableRow } from '../../../components/table-row/table-row';
-import { createTableCell } from '../../../components/table-cell/table-cell';
-import { createSearchInput } from '../../../components/search-input/search-input';
-import { createFilterDropdownTrigger } from '../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../components/global-nav/global-nav';
-import { createTag } from '../../../components/tag/tag';
+import { createAppShell } from '../../../../components/app-shell/app-shell';
+import { createPageLayout } from '../../../../components/page-layout/page-layout';
+import { createAppHeader } from '../../../../components/app-header/app-header';
+import { createPageSection } from '../../../../components/page-section/page-section';
+import { createCard } from '../../../../components/card/card';
+import { createTable, createTableHeader, createTableBody } from '../../../../components/table/table';
+import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
+import { createTableRow } from '../../../../components/table-row/table-row';
+import { createTableCell } from '../../../../components/table-cell/table-cell';
+import { createSearchInput } from '../../../../components/search-input/search-input';
+import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
+import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createTag } from '../../../../components/tag/tag';
 
 // =============================================================================
 // DATA: Static representative data for Groups tables
@@ -519,7 +532,7 @@ function createSegmentedTablePage(args: SegmentedTablePageArgs = {}): HTMLElemen
 // =============================================================================
 
 const meta: Meta<SegmentedTablePageArgs> = {
-  title: 'Compositions/Segmented Table Page',
+  title: 'Page Patterns/Segmented Table Page',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
