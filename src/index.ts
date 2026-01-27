@@ -16,6 +16,7 @@ export { createTableRow, type TableRowProps } from './components/table-row/table
 export { createTableCell, type TableCellProps } from './components/table-cell/table-cell';
 export { createTableHeaderCell, type TableHeaderCellProps } from './components/table-header-cell/table-header-cell';
 export { createTable, createTableHeader, createTableBody, type TableProps, type ColumnDefinition, type ColumnSemanticType } from './components/table/table';
+export { createTableToolbar, type TableToolbarProps } from './components/table-toolbar/table-toolbar';
 export { createListItem, type ListItemProps } from './components/list-item/list-item';
 export { createListGroup, type ListGroupProps } from './components/list-group/list-group';
 export { createGlobalNav, createNavSection, createNavItem, type GlobalNavProps, type NavItemProps } from './components/global-nav/global-nav';

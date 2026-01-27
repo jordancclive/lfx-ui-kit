@@ -42,7 +42,7 @@
  *    │  └─ description (optional)
  *    └─ PageSection (dense: true)
  *       └─ Card
- *          ├─ Filter row (DOCKED — no margin, internal padding only)
+ *          ├─ TableToolbar (DOCKED — no margin, internal padding)
  *          │  ├─ SearchInput (flex: 1 — FULL-WIDTH by default)
  *          │  └─ Filters (order matches columns)
  *          ├─ Table (semantic columns)
@@ -50,8 +50,13 @@
  * 
  * VISUAL GOALS:
  * - Header hands off directly into table (no buffer feeling)
- * - Filters feel like table's top edge (not floating controls)
+ * - Toolbar feels like table's top edge (not floating controls)
  * - Page reads as ONE workflow top → bottom
+ * 
+ * ARCHITECTURAL LAYERING:
+ * - Table component: Pure grid layout (no filter knowledge)
+ * - TableToolbar component: Search + filter layout (Level 2)
+ * - Table Page pattern: Composition authority (WHERE toolbar goes)
  * 
  * If something feels off visually:
  * - Identify which component owns the issue
@@ -71,6 +76,7 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createSearchInput } from '../../../../components/search-input/search-input';
 import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
+import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
 
@@ -162,47 +168,44 @@ function createTextNode(text: string): HTMLElement {
 }
 
 /**
- * Creates the filter row (search + filters).
+ * Creates the toolbar with search and filters.
  * 
- * OWNERSHIP: Table Page pattern owns filter layout, spacing, and docking.
+ * OWNERSHIP: TableToolbar component owns layout, spacing, and flex behavior.
+ * 
+ * Pattern responsibility:
+ * - Define WHICH controls appear (search, which filters)
+ * - Define filter ORDER (matches column semantics)
+ * - Place toolbar inside Card, immediately above table
+ * 
+ * TableToolbar responsibility:
+ * - HOW controls are laid out (flex, gap, padding)
+ * - SearchInput full-width behavior (flex: 1)
+ * - Docking to table (internal padding, no margin)
  * 
  * Structure:
  * - Renders inside Card, immediately above table
- * - Docks to table header (no gap between filter row and table)
- * - Internal padding for breathing room
- * - SearchInput spans full width by default (flex: 1)
+ * - Docks to table header (no gap)
+ * - SearchInput spans full width automatically
  * - Filter order matches column semantics
- * 
- * Placement:
- * - Inside Card
- * - Above table
- * - Visually reads as table's "top edge" (not floating toolbar)
  */
-function createFiltersRow(): HTMLElement {
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-8)';
-  container.style.alignItems = 'center';
-  
-  // Internal padding for breathing room (docks to table with no margin)
-  container.style.paddingTop = 'var(--spacing-12)';
-  container.style.paddingBottom = 'var(--spacing-12)';
-  container.style.paddingLeft = 'var(--spacing-16)';
-  container.style.paddingRight = 'var(--spacing-16)';
-
+function createToolbar(): HTMLElement {
+  // Pattern defines WHICH controls and their ORDER
   const searchInput = createSearchInput({ 
     placeholder: 'Search projects…',
     variant: 'toolbar',
   });
-  searchInput.style.flex = '1'; // PATTERN-LEVEL: Full-width search by default
-  
-  container.appendChild(searchInput);
   
   // Filter order matches column semantics: Category → Status
-  container.appendChild(createFilterDropdownTrigger({ label: 'All Categories' }));
-  container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
-
-  return container;
+  const filters = [
+    createFilterDropdownTrigger({ label: 'All Categories' }),
+    createFilterDropdownTrigger({ label: 'All Statuses' }),
+  ];
+  
+  // TableToolbar owns HOW they're laid out
+  return createTableToolbar({
+    search: searchInput,
+    filters,
+  });
 }
 
 /**
@@ -410,12 +413,13 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
     }),
   ];
 
-  // Build Card children: optional filters + table + optional pagination
-  // PATTERN OWNS filter row placement and layout
+  // Build Card children: optional toolbar + table + optional pagination
+  // Pattern defines WHERE toolbar is placed
+  // TableToolbar component defines HOW it's laid out
   const cardChildren: HTMLElement[] = [];
   
   if (showFilters) {
-    cardChildren.push(createFiltersRow());
+    cardChildren.push(createToolbar());
   }
   
   cardChildren.push(createProjectsTable(data, dense));
@@ -510,13 +514,14 @@ AppShell
          └─ Table (semantic columns)
 \`\`\`
 
-### Filter Placement Pattern
+### Toolbar Placement Pattern
 
 When filters are present:
-- Search + filter controls sit inside the Card
-- Positioned directly above the table
-- Use SearchInput with \`variant='toolbar'\`
-- Filters apply to the entire table
+- Use **TableToolbar** component (Level 2) to contain search + filters
+- TableToolbar sits inside the Card, directly above the table
+- TableToolbar owns layout, spacing, and flex behavior
+- SearchInput automatically receives \`flex: 1\` (full-width)
+- Pattern defines WHICH controls and their ORDER
 - No section titles or intermediate wrappers
 
 ### Column Semantics

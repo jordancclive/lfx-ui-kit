@@ -91,6 +91,7 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createSearchInput } from '../../../../components/search-input/search-input';
 import { createFilterDropdownTrigger } from '../../../../components/filter-dropdown-trigger/filter-dropdown-trigger';
+import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
@@ -256,42 +257,42 @@ function createVoteNameLink(name: string): HTMLElement {
 }
 
 // =============================================================================
-// HELPER: Filter Row (canonical placement inside Card)
+// HELPER: Toolbar with Search + Filters (uses TableToolbar)
 // =============================================================================
 
 /**
- * Creates the filter row (search + filters) for Votes.
+ * Creates the toolbar (search + filters) for Votes.
  * 
- * INSTANCE-SPECIFIC: Uses Table Page pattern layout.
- * Pattern owns filter layout, spacing, and docking.
+ * ARCHITECTURAL LAYERING:
+ * - TableToolbar (Level 2) owns layout, spacing, and flex behavior
+ * - Votes page defines WHICH controls and their ORDER
  * 
  * Filter order matches table columns: Group → Status
+ * 
+ * NO MANUAL LAYOUT:
+ * - No flex styling (TableToolbar owns it)
+ * - No padding (TableToolbar owns it)
+ * - No gap (TableToolbar owns it)
+ * - No SearchInput flex: 1 (TableToolbar applies automatically)
  */
-function createFiltersRow(): HTMLElement {
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-8)';
-  container.style.alignItems = 'center';
-  
-  // Internal padding for breathing room (docks to table with no margin)
-  container.style.paddingTop = 'var(--spacing-12)';
-  container.style.paddingBottom = 'var(--spacing-12)';
-  container.style.paddingLeft = 'var(--spacing-16)';
-  container.style.paddingRight = 'var(--spacing-16)';
-
+function createToolbar(): HTMLElement {
+  // Define search input
   const searchInput = createSearchInput({ 
     placeholder: 'Search votes…',
     variant: 'toolbar',
   });
-  searchInput.style.flex = '1'; // Full-width search by default
   
-  container.appendChild(searchInput);
+  // Define filters (order matches column semantics: Group → Status)
+  const filters = [
+    createFilterDropdownTrigger({ label: 'All Groups' }),
+    createFilterDropdownTrigger({ label: 'All Statuses' }),
+  ];
   
-  // Filter order matches column semantics: Group → Status
-  container.appendChild(createFilterDropdownTrigger({ label: 'All Groups' }));
-  container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
-
-  return container;
+  // TableToolbar owns HOW they're laid out
+  return createTableToolbar({
+    search: searchInput,
+    filters,
+  });
 }
 
 // =============================================================================
@@ -502,12 +503,12 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     votes = votesData,
   } = args;
 
-  // Build Card children: optional filters + table + optional pagination
-  // Pattern owns filter row placement and layout
+  // Build Card children: optional toolbar + table + optional pagination
+  // TableToolbar component owns layout — Votes page defines WHICH controls
   const cardChildren: HTMLElement[] = [];
   
   if (showFilters) {
-    cardChildren.push(createFiltersRow());
+    cardChildren.push(createToolbar());
   }
   
   cardChildren.push(createVotesTable(votes, false));
