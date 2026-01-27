@@ -88,6 +88,29 @@ Each block is **independent**.
 
 ---
 
+## Interaction Flexibility (Non-Structural)
+
+**Page patterns lock STRUCTURE only.**
+
+Interaction affordances are governed by:
+- Component contracts
+- Token rules
+- Explicit props
+
+The following are **ALLOWED variations** within the pattern and must NOT be inferred away by agents:
+
+- Table rows MAY be hoverable or not
+- Individual columns MAY be clickable
+- Primary column text MAY be rendered as a link
+- Tags MAY have semantic color variants (info, success, warning, etc.)
+- Column header alignment MAY differ from cell alignment
+- Search inputs MAY be full-width or intrinsic
+- Multiple filter controls MAY appear in the filter row
+
+**Note:** These variations are intentional and context-dependent. They do not violate the page pattern.
+
+---
+
 ## Relationship to Table Page
 
 | Aspect | Table Page | Segmented Table Page |
@@ -115,3 +138,21 @@ Each block is **independent**.
 This pattern is considered **normative**.
 Agents must not infer behavior across blocks.
 All behavior must be explicit.
+
+---
+
+## Agent Safety Appendix
+
+### Agents MUST:
+- Enforce page structure exactly as defined
+- Respect component contracts for interaction
+- Look to component APIs for behavior
+- Ask when interaction intent is unclear
+
+### Agents MUST NOT:
+- Infer interaction rules from page patterns
+- Disable hover, click, or links unless forbidden by component contract
+- Assume filters or pagination behave identically across pages
+- Remove semantic affordances to "simplify" the UI
+
+**Critical:** Page patterns describe WHAT is on the page, not HOW users interact with each element.
