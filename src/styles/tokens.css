@@ -299,19 +299,19 @@
   
   /* Page Title - Primary page heading */
   --font-role-page-title-family: var(--font-family);
-  --font-role-page-title-size: var(--text-lg);
+  --font-role-page-title-size: var(--text-xl);
   --font-role-page-title-weight: var(--font-semibold);
-  --font-role-page-title-line-height: var(--leading-text-lg);
+  --font-role-page-title-line-height: var(--leading-text-xl);
   
   /* Section Title - Secondary headings within pages */
   --font-role-section-title-family: var(--font-family);
-  --font-role-section-title-size: var(--text-sm);
+  --font-role-section-title-size: var(--text-lg);
   --font-role-section-title-weight: var(--font-semibold);
-  --font-role-section-title-line-height: var(--leading-text-sm);
+  --font-role-section-title-line-height: var(--leading-text-lg);
   
   /* Body Primary - Main body text */
   --font-role-body-primary-family: var(--font-family);
-  --font-role-body-primary-size: var(--text-base);
+  --font-role-body-primary-size: var(--text-sm);
   --font-role-body-primary-weight: var(--font-normal);
   --font-role-body-primary-line-height: var(--leading-text-sm);
   
@@ -323,15 +323,15 @@
   
   /* Label - Form labels, metadata labels */
   --font-role-label-family: var(--font-family);
-  --font-role-label-size: var(--text-sm);
+  --font-role-label-size: var(--text-xs);
   --font-role-label-weight: var(--font-normal);
-  --font-role-label-line-height: var(--leading-text-sm);
+  --font-role-label-line-height: var(--leading-text-xs);
   
   /* Data - Tabular data, metrics, values */
   --font-role-data-family: var(--font-family);
-  --font-role-data-size: var(--text-sm);
+  --font-role-data-size: var(--text-xs);
   --font-role-data-weight: var(--font-medium);
-  --font-role-data-line-height: var(--leading-text-sm);
+  --font-role-data-line-height: var(--leading-text-xs);
 
   /* ========================================
      UI ROLE — Typography (System-Level Only)
