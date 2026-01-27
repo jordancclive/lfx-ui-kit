@@ -449,7 +449,8 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
     title,
     description,
     primaryAction,
-    actions,
+    // NOTE: `actions` prop is deprecated and ignored.
+    // All page-level actions MUST use primaryAction.
     searchPlaceholder,
     filters = [],
     table,
@@ -467,9 +468,10 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
   } = config;
 
   // Normalize primary action into AppHeader actions
-  let headerActions: HTMLElement | undefined = actions;
+  // primaryAction is the ONLY source of page-level actions.
+  let headerActions: HTMLElement | undefined;
   
-  if (primaryAction && !actions) {
+  if (primaryAction) {
     // Create primary button from semantic page intent
     headerActions = createButton({
       children: primaryAction.label,
