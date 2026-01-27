@@ -96,6 +96,75 @@ Card
 **TableToolbar vs Page Pattern:**
 - TableToolbar: HOW controls are laid out
 - Pattern: WHERE toolbar is placed
+
+## Defensive Behavior
+
+**Empty State:**
+
+If no controls are provided (\`search\` is undefined AND \`filters\` is empty):
+- TableToolbar renders with \`display: none\`
+- NO padding applied
+- NO height generated
+- NO visible footprint in layout
+
+This defensive behavior prevents phantom spacing and layout drift when
+toolbars are conditionally empty.
+
+**Why this matters:**
+- Page patterns can safely render TableToolbar even when filters are disabled
+- No layout shifts when controls are removed
+- No need for conditional rendering at pattern level
+
+## NON-GOALS (Forbidden Usage)
+
+**TableToolbar MUST NOT:**
+- ❌ Render inside the Table component
+- ❌ Be passed to Table as a prop
+- ❌ Be rendered by Table in any way
+- ❌ Assume pagination ownership
+- ❌ Assume page-level vertical rhythm
+- ❌ Own filter data logic or semantics
+
+**Correct Placement:**
+- ✅ TableToolbar is ALWAYS placed by a Page Pattern (e.g. Table Page)
+- ✅ TableToolbar sits inside Card, above Table (sibling, not child)
+- ✅ Table remains layout-agnostic for data rows only
+
+**Why this boundary exists:**
+- Table is a pure grid layout component (Level 2)
+- TableToolbar is a search + filter layout component (Level 2)
+- They are siblings at the same architectural level
+- Neither should own or render the other
+
+## Ownership Lock
+
+**This section defines permanent architectural boundaries.**
+
+**TableToolbar owns (LOCKED):**
+- Search + filter horizontal layout
+- Internal spacing (padding, gap)
+- SearchInput \`flex: 1\` behavior
+- Filter intrinsic width behavior
+- Empty state defensive rendering
+
+**Table Page Pattern owns (LOCKED):**
+- WHERE toolbar appears (inside Card, above Table)
+- WHICH controls to render (search, filters)
+- Filter ORDER (matches column semantics)
+- Vertical rhythm between header, toolbar, and table
+
+**Table Component owns (LOCKED):**
+- Grid layout for data rows
+- Row rendering
+- Cell rendering
+- Column semantic width behavior
+
+**No other component may assume these responsibilities.**
+
+If you are modifying this component and feel it should own additional
+responsibilities, you are likely introducing architectural drift.
+
+STOP and consult the design system architecture documentation.
         `,
       },
     },
@@ -217,7 +286,7 @@ Filters render at intrinsic width with consistent gap.
 };
 
 /**
- * Empty toolbar (edge case).
+ * Empty toolbar — demonstrates defensive behavior.
  */
 export const Empty: Story = {
   args: {},
@@ -225,11 +294,22 @@ export const Empty: Story = {
     docs: {
       description: {
         story: `
-**Empty Toolbar**
+**Empty Toolbar (Defensive Behavior)**
 
-Edge case where no controls are provided.
+Demonstrates what happens when no controls are provided.
 
-The toolbar renders but is effectively invisible (no content, no background).
+**Behavior:**
+- Renders with \`display: none\`
+- NO padding applied
+- NO height generated
+- NO visible footprint
+
+**Why this matters:**
+- Page patterns can safely render TableToolbar even when filters are disabled
+- No phantom spacing introduced
+- No layout shifts when controls are conditionally removed
+
+This is defensive behavior built into the component itself, not a story-only rule.
         `,
       },
     },

@@ -38,13 +38,30 @@ export interface TableToolbarProps {
 /**
  * Creates a TableToolbar component.
  * 
+ * DEFENSIVE BEHAVIOR:
+ * If no controls are provided (no search, no filters), this function returns
+ * an empty container with NO padding, NO height, and NO visible footprint.
+ * This prevents phantom spacing and layout drift.
+ * 
  * @param props - TableToolbar properties
- * @returns HTMLElement representing the toolbar
+ * @returns HTMLElement representing the toolbar (or empty container if no controls)
  */
 export function createTableToolbar(props: TableToolbarProps = {}): HTMLElement {
   const { search, filters = [] } = props;
   
   const toolbar = document.createElement('div');
+  
+  // DEFENSIVE: If no controls provided, render invisible container
+  // This prevents phantom spacing when toolbar is conditionally empty
+  const hasControls = search || filters.length > 0;
+  
+  if (!hasControls) {
+    // Render nothing visible — no class, no padding, no height
+    toolbar.style.display = 'none';
+    return toolbar;
+  }
+  
+  // Normal rendering: Apply class for layout styling
   toolbar.className = 'lfx-table-toolbar';
   
   // Render search input if provided
