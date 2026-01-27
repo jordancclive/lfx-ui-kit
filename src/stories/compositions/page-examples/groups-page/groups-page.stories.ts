@@ -72,7 +72,6 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
-import { createButton } from '../../../../components/button/button';
 
 // =============================================================================
 // DATA: Representative group data
@@ -180,144 +179,91 @@ const groupsData = [...groupsDataRaw].sort((a, b) => {
 /**
  * Column semantics for Groups table
  * 
- * | Column | Width | Alignment | Type | Purpose |
- * |--------|-------|-----------|------|---------|
- * | Name | flex (2x) | left | text (link) | Primary identifier |
- * | Type | intrinsic | left | categorical (tag) | Group classification |
- * | Description | flex (3x) | left | text | Context and purpose |
- * | Members | intrinsic | right | numeric | Member count |
- * | Voting | intrinsic | center | boolean (tag) | Voting capability |
- * | Last Updated | intrinsic | left | date | Recency signal |
- * | Actions | intrinsic | right | action | Entry point |
+ * Columns (semantic types):
+ * 1. Group Name (primary) — flexible, visually dominant
+ * 2. Type (categorical) — intrinsic, uses Tag
+ * 3. Description (secondary) — flexible, provides context
+ * 4. Members (numeric) — intrinsic, right-aligned
+ * 5. Voting (categorical) — intrinsic, uses Tag with variants
+ * 6. Last Updated (meta) — intrinsic, muted
+ * 7. Actions (action) — intrinsic, text actions
  */
 const columns: ColumnDefinition[] = [
-  { 
-    key: 'name', 
-    label: 'Group Name', 
-    width: 'flex',
-    align: 'left',
-  },
-  { 
-    key: 'type', 
-    label: 'Type', 
-    width: 'intrinsic',
-    align: 'left',
-  },
-  { 
-    key: 'description', 
-    label: 'Description', 
-    width: 'flex',
-    align: 'left',
-  },
-  { 
-    key: 'members', 
-    label: 'Members', 
-    width: 'intrinsic',
-    align: 'right',
-  },
-  { 
-    key: 'voting', 
-    label: 'Voting', 
-    width: 'intrinsic',
-    align: 'center',
-  },
-  { 
-    key: 'lastUpdated', 
-    label: 'Last Updated', 
-    width: 'intrinsic',
-    align: 'left',
-  },
-  { 
-    key: 'action', 
-    label: '', 
-    width: 'intrinsic',
-    align: 'right',
-  },
+  { key: 'name', semanticType: 'primary' },
+  { key: 'type', semanticType: 'categorical' },
+  { key: 'description', semanticType: 'secondary' },
+  { key: 'members', semanticType: 'numeric' },
+  { key: 'voting', semanticType: 'categorical' },
+  { key: 'lastUpdated', semanticType: 'meta' },
+  { key: 'actions', semanticType: 'action' },
 ];
-
-function createTextNode(text: string): HTMLElement {
-  const span = document.createElement('span');
-  span.textContent = text;
-  return span;
-}
 
 function createGroupsTable(groups: GroupRow[], dense: boolean = false): HTMLElement {
   // Create header
-  const headerCells = columns.map(col => 
-    createTableHeaderCell({ 
-      children: createTextNode(col.label),
-      align: col.align,
-    })
-  );
+  const headerCells = [
+    createTableHeaderCell({ children: 'Group Name' }),
+    createTableHeaderCell({ children: 'Type' }),
+    createTableHeaderCell({ children: 'Description' }),
+    createTableHeaderCell({ children: 'Members', align: 'right' }),
+    createTableHeaderCell({ children: 'Voting' }),
+    createTableHeaderCell({ children: 'Last Updated' }),
+    createTableHeaderCell({ children: '' }), // Actions column (no header label)
+  ];
 
   // Create rows
   const rows = groups.map(group => {
-    // Name cell (styled as link)
-    const nameCell = createTableCell({
-      children: createTextNode(group.name),
-      align: 'left',
-    });
-    nameCell.style.color = 'var(--interactive-primary-text)';
-    nameCell.style.fontWeight = 'var(--font-medium)';
-
-    // Type cell (tag)
-    const typeTag = createTag({ 
-      label: group.type,
-      variant: 'default',
-    });
-    const typeCell = createTableCell({
-      children: typeTag,
-      align: 'left',
-    });
-
-    // Description cell
-    const descriptionCell = createTableCell({
-      children: createTextNode(group.description),
-      align: 'left',
-    });
-    descriptionCell.style.color = 'var(--text-secondary)';
-
-    // Members cell (numeric)
-    const membersCell = createTableCell({
-      children: createTextNode(group.members.toString()),
-      align: 'right',
-    });
-
-    // Voting cell (boolean tag)
-    const votingTag = createTag({
-      label: group.voting ? 'Voting' : 'Non-voting',
-      variant: group.voting ? 'success' : 'default',
-    });
-    const votingCell = createTableCell({
-      children: votingTag,
-      align: 'center',
-    });
-
-    // Last Updated cell
-    const lastUpdatedCell = createTableCell({
-      children: createTextNode(group.lastUpdated),
-      align: 'left',
-    });
-
-    // Action cell
-    const actionButton = createButton({
-      label: group.action,
-      variant: 'primary',
-    });
-    const actionCell = createTableCell({
-      children: actionButton,
-      align: 'right',
-    });
-
     return createTableRow({
+      clickable: true,
+      dense,
       children: [
-        nameCell,
-        typeCell,
-        descriptionCell,
-        membersCell,
-        votingCell,
-        lastUpdatedCell,
-        actionCell,
+        // Group Name — primary column (link-styled)
+        createTableCell({ 
+          children: group.name,
+          contentType: 'primary',
+        }),
+        
+        // Type — categorical (Tag)
+        createTableCell({ 
+          children: createTag({ 
+            children: group.type,
+            variant: 'default',
+          }),
+          contentType: 'secondary',
+        }),
+        
+        // Description — secondary text
+        createTableCell({ 
+          children: group.description,
+          contentType: 'secondary',
+        }),
+        
+        // Members — numeric
+        createTableCell({ 
+          children: group.members.toString(),
+          contentType: 'numeric',
+          align: 'right',
+        }),
+        
+        // Voting — categorical (Tag with variant)
+        createTableCell({ 
+          children: createTag({ 
+            children: group.voting ? 'Voting' : 'Non-voting',
+            variant: group.voting ? 'success' : 'default',
+          }),
+          contentType: 'secondary',
+        }),
+        
+        // Last Updated — meta
+        createTableCell({ 
+          children: group.lastUpdated,
+          contentType: 'secondary',
+        }),
+        
+        // Actions — action column (text only, no click ownership)
+        createTableCell({ 
+          children: group.action,
+          contentType: 'secondary',
+        }),
       ],
     });
   });
