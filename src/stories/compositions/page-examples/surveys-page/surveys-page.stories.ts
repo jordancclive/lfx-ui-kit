@@ -495,8 +495,8 @@ function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
   return createTable({
     columns,
     children: [
-      createTableHeader({ children: headerCells }),
-      createTableBody({ children: rows }),
+      createTableHeader(headerCells),
+      createTableBody(rows),
     ],
   });
 }
