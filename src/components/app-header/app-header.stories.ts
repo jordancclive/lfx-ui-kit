@@ -5,7 +5,7 @@ import { createFilterPill } from '../filter-pill/filter-pill';
 import { createTabsGroup } from '../tabs-group/tabs-group';
 
 const meta: Meta<AppHeaderProps> = {
-  title: '1. Components / 3. Level 3 / AppHeader',
+  title: '1. Components / 3. Organisms / AppHeader',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

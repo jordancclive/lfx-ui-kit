@@ -7,7 +7,7 @@ import { createTableRow } from '../table-row/table-row';
 import { createCard } from '../card/card';
 
 const meta: Meta<TagProps> = {
-  title: '1. Components / 1. Level 1 / Tag',
+  title: '1. Components / 1. Atoms / Tag',
   tags: ['autodocs'],
   parameters: {
     docs: {

@@ -51,7 +51,7 @@ import { createPageSection } from '../page-section/page-section';
  * - Card is NOT a page or section container
  */
 const meta: Meta<CardProps> = {
-  title: '1. Components / 2. Level 2 / Card',
+  title: '1. Components / 2. Molecules / Card',
   tags: ['autodocs'],
   argTypes: {
     withBorder: {

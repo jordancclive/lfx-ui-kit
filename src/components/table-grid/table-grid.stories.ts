@@ -6,7 +6,7 @@ import { createTableCell } from '../table-cell/table-cell';
 import { createTag } from '../tag/tag';
 
 const meta: Meta<TableGridProps> = {
-  title: '1. Components / 2. Level 2 / TableGrid',
+  title: '1. Components / 2. Molecules / TableGrid',
   tags: ['autodocs'],
   parameters: {
     docs: {

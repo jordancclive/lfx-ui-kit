@@ -10,7 +10,7 @@ const tagIcon = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2
 </svg>`;
 
 const meta: Meta<FilterPillProps> = {
-  title: '1. Components / 1. Level 1 / FilterPill',
+  title: '1. Components / 1. Atoms / FilterPill',
   tags: ['autodocs'],
   render: (args) => createFilterPill(args),
   argTypes: {

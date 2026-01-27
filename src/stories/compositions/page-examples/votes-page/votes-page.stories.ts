@@ -418,7 +418,7 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<VotesTablePageArgs> = {
-  title: '3. Page Examples / Votes',
+  title: '3. Page Examples / Table Pages / Votes',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

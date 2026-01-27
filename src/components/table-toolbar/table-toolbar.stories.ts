@@ -4,7 +4,7 @@ import { createSearchInput } from '../search-input/search-input';
 import { createFilterDropdownTrigger } from '../filter-dropdown-trigger/filter-dropdown-trigger';
 
 const meta: Meta<TableToolbarProps> = {
-  title: '1. Components / 2. Level 2 / TableToolbar',
+  title: '1. Components / 2. Molecules / TableToolbar',
   tags: ['autodocs'],
   render: (args) => createTableToolbar(args),
   parameters: {

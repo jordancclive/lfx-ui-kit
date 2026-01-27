@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createTablePagination, type TablePaginationProps } from './table-pagination';
 
 const meta: Meta<TablePaginationProps> = {
-  title: '1. Components / 2. Level 2 / TablePagination',
+  title: '1. Components / 2. Molecules / TablePagination',
   tags: ['autodocs'],
   render: (args) => createTablePagination(args),
   parameters: {

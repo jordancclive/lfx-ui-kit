@@ -10,7 +10,7 @@ import { createTableRow } from '../table-row/table-row';
 import { createTableCell } from '../table-cell/table-cell';
 
 const meta: Meta<PageSectionProps> = {
-  title: '1. Components / 3. Level 3 / PageSection',
+  title: '1. Components / 3. Organisms / PageSection',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',

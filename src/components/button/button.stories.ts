@@ -9,7 +9,7 @@ const plusIcon = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/
 </svg>`;
 
 const meta: Meta<ButtonProps> = {
-  title: '1. Components / 1. Level 1 / Button',
+  title: '1. Components / 1. Atoms / Button',
   tags: ['autodocs'],
   render: (args) => createButton(args),
   argTypes: {
