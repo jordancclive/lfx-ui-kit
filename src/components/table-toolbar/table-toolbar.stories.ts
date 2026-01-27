@@ -12,16 +12,26 @@ const meta: Meta<TableToolbarProps> = {
       description: {
         component: `
 TableToolbar is a Level 2 (Molecule) component that owns layout, spacing, 
-and hierarchy for table search + filter controls.
+and visual hierarchy for table search + filter controls.
 
 ## Purpose
 
 TableToolbar exists to:
-- Provide consistent layout for search and filter controls
-- Enforce search input full-width behavior by default
+- Provide consistent, production-ready layout for search and filter controls
+- Enforce search input dominance through full-width behavior and generous spacing
+- Create clear visual hierarchy between primary (search) and secondary (filters) controls
 - Create visual docking between controls and table header
 - Remove layout responsibility from TableGrid component
 - Eliminate layout drift across table page examples
+
+## Visual Quality
+
+TableToolbar is designed to feel **production-ready** and aligned with **LFX One design language**:
+- Search clearly dominates the toolbar visually
+- Filters feel secondary and naturally grouped
+- Generous spacing (spacing-16) creates calm, confident horizontal rhythm
+- All controls align on a single baseline
+- No cramped or awkward spacing
 
 ## Architectural Role
 
@@ -68,9 +78,14 @@ Do NOT use TableToolbar when:
 - Order determined by caller
 
 **Spacing:**
-- Gap between controls: \`spacing-8\`
+- Gap between controls: \`spacing-16\` (confident, calm horizontal rhythm)
 - Internal padding: \`spacing-12\` vertical, \`spacing-16\` horizontal
 - No external margins (clean docking)
+
+**Visual Hierarchy:**
+- Search dominates via \`flex: 1\` + generous spacing
+- Filters grouped via visual similarity + right alignment
+- Spacing creates intentional separation without feeling cramped
 
 ## Usage in Table Page Pattern
 
@@ -252,7 +267,8 @@ export const Default: Story = {
 
 Minimal toolbar with only a search input.
 
-The search input automatically receives \`flex: 1\` and spans the full width.
+The search input automatically receives \`flex: 1\` and spans the full width,
+creating a clean, dominant search experience.
         `,
       },
     },
@@ -281,7 +297,9 @@ export const WithSingleFilter: Story = {
 
 Common pattern for table pages with one categorical filter.
 
-Search dominates, filter is secondary and intrinsic width.
+Visual hierarchy is clear: search dominates the left side, filter sits
+comfortably to the right at intrinsic width. Generous spacing creates
+intentional separation without feeling cramped.
         `,
       },
     },
@@ -312,6 +330,10 @@ export const WithMultipleFilters: Story = {
 
 Pattern used by Votes, Surveys, and other data-heavy pages.
 
+Search clearly dominates the left side. Filters group naturally on the right
+through visual similarity and consistent spacing. The generous horizontal
+rhythm (spacing-16) creates a calm, confident layout that feels production-ready.
+
 Filter order is determined by caller (usually matching column order).
         `,
       },
@@ -337,7 +359,8 @@ export const FiltersOnly: Story = {
 
 Less common pattern where search is not needed.
 
-Filters render at intrinsic width with consistent gap.
+Filters render at intrinsic width with consistent, generous spacing (spacing-16)
+that creates a calm, balanced rhythm across the toolbar.
         `,
       },
     },

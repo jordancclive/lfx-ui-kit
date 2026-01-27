@@ -8,9 +8,15 @@
  * 
  * Layout Strategy:
  * - Horizontal flex container
+ * - Generous spacing creates clear visual hierarchy
  * - Internal padding for comfortable control spacing
  * - No external margins (docking controlled by parent)
  * - No background (inherits from Card)
+ * 
+ * Visual Hierarchy:
+ * - Search input dominates (flex: 1, full width)
+ * - Filters feel secondary (intrinsic width, grouped to the right)
+ * - Spacing creates intentional separation and calm rhythm
  * 
  * Ownership:
  * - Controls ONLY layout, spacing, and flex behavior
@@ -22,7 +28,7 @@
   /* Horizontal layout */
   display: flex;
   align-items: center;
-  gap: var(--spacing-8);
+  gap: var(--spacing-16);
   
   /* Internal padding */
   padding-top: var(--spacing-12);
@@ -38,11 +44,26 @@
 }
 
 /**
- * Layout Notes:
+ * Visual Hierarchy Notes:
  * 
+ * Search Dominance:
  * - Search input receives flex: 1 in JS (applied by createTableToolbar)
+ * - Spans available horizontal space
+ * - Reads as primary control
+ * 
+ * Filter Grouping:
  * - Filter controls remain intrinsic width
- * - Gap between controls is intentional and consistent
- * - Padding creates comfortable internal rhythm
- * - No margin ensures clean docking to table header
+ * - Visual similarity creates perceptual grouping
+ * - Right-aligned position reinforces secondary role
+ * 
+ * Spacing Strategy:
+ * - Gap: spacing-16 creates confident, calm horizontal rhythm
+ * - Matches horizontal padding for consistent internal spacing
+ * - Large enough to separate search from filters clearly
+ * - Tight enough to keep filters grouped perceptually
+ * 
+ * Alignment:
+ * - All controls align on a single baseline
+ * - Vertical padding balanced for input height alignment
+ * - No margin ensures clean docking to table header below
  */
