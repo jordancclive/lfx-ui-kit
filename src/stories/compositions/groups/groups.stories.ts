@@ -162,6 +162,40 @@ function createCheckmark(): HTMLElement {
   return span;
 }
 
+/**
+ * Placeholder for categorical content (Tag/Badge component)
+ * This signals semantic intent: Type column contains categorical data.
+ * In production, this would be replaced by a proper Tag component.
+ */
+function createTagPlaceholder(text: string): HTMLElement {
+  const tag = document.createElement('span');
+  tag.textContent = text;
+  tag.style.display = 'inline-block';
+  tag.style.padding = '2px 8px';
+  tag.style.borderRadius = 'var(--rounded-sm)';
+  tag.style.backgroundColor = 'var(--neutral-100)';
+  tag.style.fontSize = 'var(--text-xs)';
+  tag.style.fontWeight = 'var(--font-medium)';
+  tag.style.color = 'var(--neutral-700)';
+  tag.style.whiteSpace = 'nowrap';
+  return tag;
+}
+
+/**
+ * Creates a Groups table with proper column semantics.
+ * 
+ * Column semantics (per LFX One design):
+ * - Name: Primary text column (flexible width, left aligned)
+ * - Type: Categorical column (intrinsic width, uses Tag/Badge)
+ * - Description: Primary text column (flexible width, left aligned)
+ * - Members: Numeric column (intrinsic width, right aligned)
+ * - Voting: Categorical column (intrinsic width, icon/symbol)
+ * - Last Updated: Secondary text column (intrinsic width, muted)
+ * 
+ * Note: Equal-width columns are a CSS Grid default. In production,
+ * column widths should be semantic (flexible vs intrinsic) but this
+ * requires grid-template-columns tuning at the Table component level.
+ */
 function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
   const headerCells = [
     createTableHeaderCell({ children: 'Name' }),
@@ -174,11 +208,22 @@ function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
 
   const rows = data.map((group) => {
     const cells = [
+      // Primary text column - flexible width
       createTableCell({ children: group.name, contentType: 'primary' }),
-      createTableCell({ children: group.type, contentType: 'secondary' }),
+      
+      // Categorical column - intrinsic width, uses Tag placeholder
+      createTableCell({ children: createTagPlaceholder(group.type), contentType: 'secondary' }),
+      
+      // Primary text column - flexible width
       createTableCell({ children: group.description, contentType: 'secondary' }),
+      
+      // Numeric column - intrinsic width, right aligned
       createTableCell({ children: String(group.members), contentType: 'numeric', align: 'right' }),
+      
+      // Categorical column - intrinsic width, icon/symbol
       createTableCell({ children: group.voting ? createCheckmark() : createTextNode('—') }),
+      
+      // Secondary text column - intrinsic width, muted
       createTableCell({ children: group.lastUpdated, contentType: 'muted' }),
     ];
 
@@ -365,6 +410,22 @@ This story is a system composition validation artifact. It exists to prove wheth
 - Card surfaces behave consistently
 - PageSection spacing scales across variants
 - Tables support real product density
+- Column semantics (primary text, categorical, numeric) work via composition
+
+### Validated Patterns
+
+**Search + Filters Embedded with Table:**
+- Search and filter controls grouped in the same Card as the table
+- This creates a clear "filtered view" container
+- Pattern is validated and may become a reusable table variant
+- Do NOT extract into a component yet — let the pattern mature first
+
+**Column Semantics:**
+- Name column: Primary text (flexible width, left aligned)
+- Type column: Categorical (intrinsic width, uses Tag placeholder)
+- Description column: Primary text (flexible width, left aligned)
+- Members column: Numeric (intrinsic width, right aligned)
+- Tables express semantic intent via content type, not equal-width columns
 
 ### Architecture
 
@@ -476,15 +537,30 @@ export const Minimal: Story = {
  * ✓ No component CSS was modified
  * ✓ No tokens were added or changed
  * ✓ No new component props were introduced
- * ✓ Filters are NOT wrapped in a Card
- * ✓ Tables ARE wrapped in Cards
+ * ✓ Filters are grouped WITH tables in the same Card
  * ✓ Composition uses only existing components
+ * 
+ * COLUMN SEMANTICS VALIDATED:
+ * ✓ Primary text columns (Name, Description) use primary/secondary content types
+ * ✓ Categorical column (Type) uses Tag placeholder to signal semantic intent
+ * ✓ Numeric column (Members) uses right alignment and numeric content type
+ * ✓ Icon/symbol column (Voting) uses visual indicator elements
+ * ✓ Metadata column (Last Updated) uses muted content type
  * 
  * KNOWN LIMITATIONS (if any exist, document here):
  * - Section titles use inline styles for typography binding
  *   (a SectionTitle component may be needed if this pattern repeats)
  * - Filters row uses inline styles for flex layout
  *   (a FilterBar component may be needed if this pattern repeats)
+ * - Type column uses Tag placeholder (Tag/Badge component needed)
+ * - Column widths are currently equal-width via CSS Grid default
+ *   (semantic width control requires Table component enhancement)
+ * 
+ * FINDINGS:
+ * - Search + filters embedded with table is a validated, reusable pattern
+ * - Column semantics work correctly via composition and content types
+ * - Missing component: Tag/Badge for categorical data display
+ * - Future enhancement: Semantic column width control (flexible vs intrinsic)
  * 
  * If this page feels wrong, the fix must occur in tokens or contracts — never here.
  */
