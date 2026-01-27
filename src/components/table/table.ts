@@ -19,17 +19,62 @@
 
 import './table.css';
 
+/**
+ * Column semantic type for width behavior
+ * 
+ * - primary: Flexible width, expands to fill space (e.g., Name, Description)
+ * - categorical: Intrinsic width, content-sized (e.g., Type, Status with Tags)
+ * - numeric: Intrinsic width, right-aligned (e.g., Count, Percentage)
+ * - meta: Intrinsic width, metadata (e.g., Last Updated, Date)
+ * - action: Intrinsic or fixed width, controls only (e.g., Row actions, Menu)
+ */
+export type ColumnSemanticType = 'primary' | 'categorical' | 'numeric' | 'meta' | 'action';
+
+/**
+ * Column definition with semantic type
+ */
+export interface ColumnDefinition {
+  /** Column identifier */
+  key: string;
+  /** Semantic type controlling width behavior */
+  semanticType: ColumnSemanticType;
+}
+
 export interface TableProps {
   /** Table content - header row and body rows */
   children: HTMLElement | HTMLElement[];
-  /** Number of columns for grid layout */
-  columns?: number;
+  /** 
+   * Column definitions with semantic types (preferred)
+   * OR number of columns for equal-width grid (legacy)
+   */
+  columns?: number | ColumnDefinition[];
   /** Apply container border */
   withBorder?: boolean;
   /** Apply surface background */
   withBackground?: boolean;
   /** Reduced vertical spacing */
   dense?: boolean;
+}
+
+/**
+ * Generates grid-template-columns value based on semantic column types
+ */
+function generateSemanticGridTemplate(columns: ColumnDefinition[]): string {
+  return columns.map(col => {
+    switch (col.semanticType) {
+      case 'primary':
+        // Flexible columns use minmax with flex basis
+        return 'minmax(200px, 2fr)';
+      case 'categorical':
+      case 'numeric':
+      case 'meta':
+      case 'action':
+        // Intrinsic columns size to content
+        return 'auto';
+      default:
+        return 'auto';
+    }
+  }).join(' ');
 }
 
 export function createTable(props: TableProps): HTMLElement {
@@ -45,9 +90,17 @@ export function createTable(props: TableProps): HTMLElement {
   table.className = 'lfx-table';
   table.setAttribute('role', 'table');
 
-  // Column count class
-  if (columns && columns >= 2 && columns <= 8) {
-    table.classList.add(`lfx-table--cols-${columns}`);
+  // Handle columns prop - semantic definitions or legacy number
+  if (columns) {
+    if (Array.isArray(columns)) {
+      // Semantic column definitions
+      table.classList.add('lfx-table--semantic');
+      const gridTemplate = generateSemanticGridTemplate(columns);
+      table.style.gridTemplateColumns = gridTemplate;
+    } else if (typeof columns === 'number' && columns >= 2 && columns <= 8) {
+      // Legacy: equal-width column count
+      table.classList.add(`lfx-table--cols-${columns}`);
+    }
   }
 
   // Container variants

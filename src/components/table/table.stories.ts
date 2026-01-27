@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/html';
-import { createTable, createTableHeader, createTableBody, TableProps } from './table';
+import { createTable, createTableHeader, createTableBody, type TableProps, type ColumnDefinition } from './table';
 import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
 import { createTableRow } from '../table-row/table-row';
 import { createTableCell } from '../table-cell/table-cell';
+import { createTag } from '../tag/tag';
 
 const meta: Meta<TableProps> = {
   title: 'Components/Table',
@@ -203,6 +204,108 @@ export const Dense: Story = {
     docs: {
       description: {
         story: 'Dense table with reduced vertical spacing.',
+      },
+    },
+  },
+};
+
+// ========================================
+// Semantic Column Widths
+// ========================================
+
+export const SemanticColumnWidths: Story = {
+  render: () => {
+    // Define column semantics
+    const columns: ColumnDefinition[] = [
+      { key: 'name', semanticType: 'primary' },
+      { key: 'type', semanticType: 'categorical' },
+      { key: 'description', semanticType: 'primary' },
+      { key: 'count', semanticType: 'numeric' },
+      { key: 'updated', semanticType: 'meta' },
+    ];
+
+    // Create header cells
+    const headerCells = [
+      createTableHeaderCell({ children: 'Name' }),
+      createTableHeaderCell({ children: 'Type' }),
+      createTableHeaderCell({ children: 'Description' }),
+      createTableHeaderCell({ children: 'Count', align: 'right' }),
+      createTableHeaderCell({ children: 'Updated' }),
+    ];
+
+    // Create data rows with semantic content
+    const data = [
+      { 
+        name: 'Security Working Group',
+        type: 'Working Group',
+        description: 'Addresses security vulnerabilities and best practices',
+        count: 8,
+        updated: 'Mar 14, 2026'
+      },
+      { 
+        name: 'Technical Advisory Group',
+        type: 'TAG',
+        description: 'Provides expert guidance on technical architecture',
+        count: 6,
+        updated: 'Mar 14, 2026'
+      },
+      { 
+        name: 'Cloud Native SIG',
+        type: 'Special Interest',
+        description: 'Focuses on cloud-native practices and containerization',
+        count: 24,
+        updated: 'Mar 13, 2026'
+      },
+    ];
+
+    const rows = data.map(item => {
+      const cells = [
+        // Primary text column - expands to fill space
+        createTableCell({ children: item.name, contentType: 'primary' }),
+        
+        // Categorical column - intrinsic width with Tag
+        createTableCell({ children: createTag({ children: item.type }), contentType: 'secondary' }),
+        
+        // Primary text column - expands to fill space
+        createTableCell({ children: item.description, contentType: 'secondary' }),
+        
+        // Numeric column - intrinsic width, right aligned
+        createTableCell({ children: String(item.count), contentType: 'numeric', align: 'right' }),
+        
+        // Meta column - intrinsic width
+        createTableCell({ children: item.updated, contentType: 'muted' }),
+      ];
+
+      return createTableRow({ children: cells, clickable: true });
+    });
+
+    return createTable({
+      columns,
+      withBorder: true,
+      withBackground: true,
+      children: [
+        createTableHeader(headerCells),
+        createTableBody(rows),
+      ],
+    });
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Semantic Column Width Behavior**
+
+This table demonstrates semantic column widths based on content type:
+
+- **primary** columns (Name, Description): Flexible width, expand to fill available space
+- **categorical** column (Type): Intrinsic width, sized to Tag content
+- **numeric** column (Count): Intrinsic width, right-aligned for scannability
+- **meta** column (Updated): Intrinsic width, sized to date content
+
+Column width behavior is semantic, not visual. Primary columns share available space after intrinsic columns are sized.
+
+This replaces equal-width columns with LFX One-aligned semantic behavior.
+        `,
       },
     },
   },

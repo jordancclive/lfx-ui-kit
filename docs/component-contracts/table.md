@@ -90,6 +90,58 @@ The table component does NOT decide content rendering — cells do.
 - Intrinsic columns size to content
 - Fixed columns enforce explicit dimensions
 
+## Column Width Semantics
+
+**Tables MUST NOT assume equal-width columns.**
+
+Column width behavior is semantic, not visual. The Table component owns column width behavior. TableCell and TableHeaderCell do NOT control column width.
+
+### Semantic Column Width Types
+
+**primary**
+- Purpose: Main textual content (e.g., Name, Description, Title)
+- Width behavior: Flexible (expands to fill available space)
+- Multiple primary columns share available space proportionally
+- Example: Group name, Project description
+
+**categorical**
+- Purpose: Tags, labels, short categorical values
+- Width behavior: Intrinsic (content-sized)
+- Wraps Tag components or short text labels
+- Example: Type, Status, Category
+
+**numeric**
+- Purpose: Numbers, counts, metrics
+- Width behavior: Intrinsic (content-sized)
+- Alignment: Right (for scannability)
+- Example: Member count, Percentage, Duration
+
+**meta**
+- Purpose: Dates, timestamps, secondary metadata
+- Width behavior: Intrinsic (content-sized)
+- Example: Last Updated, Created Date, Modified By
+
+**action**
+- Purpose: Icons, menus, row actions
+- Width behavior: Intrinsic or fixed
+- Contains interactive controls only
+- Example: Row actions, Overflow menu, Quick actions
+
+### Implementation Rules
+
+- **Equal-width columns are forbidden by default**
+- Column width semantics MUST be encoded in Table component, not inferred in stories
+- The `columns` prop accepts semantic column definitions
+- Table generates `grid-template-columns` based on semantic types
+- Cells do NOT control their own width via CSS
+
+### Width Priority
+
+When multiple primary columns exist:
+1. First primary column receives priority (larger flex basis)
+2. Subsequent primary columns share remaining space
+3. All intrinsic columns size to content first
+
 ## Responsibilities
 
 - Render TableHeaderCell and TableRow children

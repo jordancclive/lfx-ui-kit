@@ -30,9 +30,25 @@
 
 /* ========================================
    Column Layout
-   Uses CSS custom property for dynamic columns
+   
+   SEMANTIC COLUMN WIDTHS (Preferred):
+   - Table with lfx-table--semantic uses inline grid-template-columns
+   - Columns are sized based on semantic type (primary, categorical, numeric, meta, action)
+   - Primary columns: flexible (minmax with flex basis)
+   - Other columns: intrinsic (auto, sized to content)
+   
+   LEGACY EQUAL-WIDTH (Backwards compatibility):
+   - Equal-width columns via repeat(N, 1fr)
+   - Deprecated in favor of semantic column definitions
    ======================================== */
 
+/* Semantic column layout - grid-template-columns set inline via JS */
+.lfx-table--semantic {
+  /* Grid template applied via inline style based on column semantic types */
+  /* e.g., "minmax(200px, 2fr) auto auto minmax(200px, 2fr) auto auto" */
+}
+
+/* Legacy equal-width columns (backwards compatibility only) */
 .lfx-table--cols-2 { grid-template-columns: repeat(2, 1fr); }
 .lfx-table--cols-3 { grid-template-columns: repeat(3, 1fr); }
 .lfx-table--cols-4 { grid-template-columns: repeat(4, 1fr); }
@@ -41,8 +57,8 @@
 .lfx-table--cols-7 { grid-template-columns: repeat(7, 1fr); }
 .lfx-table--cols-8 { grid-template-columns: repeat(8, 1fr); }
 
-/* Auto columns fallback */
-.lfx-table:not([class*="--cols-"]) {
+/* Auto columns fallback (only if no semantic or legacy columns defined) */
+.lfx-table:not([class*="--cols-"]):not(.lfx-table--semantic) {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
