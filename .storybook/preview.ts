@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/html';
 import '../src/styles/tokens.css';
+import '../src/styles/components.css';
 
 const customViewports = {
   macbookAir: {
