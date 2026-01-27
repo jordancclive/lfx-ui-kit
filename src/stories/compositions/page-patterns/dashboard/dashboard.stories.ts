@@ -1,40 +1,69 @@
 /**
- * Dashboard Page Example
+ * PAGE PATTERN — NORMATIVE
  * 
- * PURPOSE:
- * This dashboard exists to validate system composition, not to define final UI.
- * All layout, spacing, and hierarchy must emerge from existing contracts.
- * No styling overrides are permitted.
- * No new tokens or props may be introduced.
+ * This file defines a reusable page-level pattern.
+ * It is a structural blueprint, not a product page.
  * 
- * This story is a system-level composition test for AppShell, PageLayout,
- * PageSection, and pattern components.
+ * Agents may copy this pattern when creating new dashboard pages.
  * 
- * RULES:
- * - AppHeader must be the first child of PageLayout
- * - Every major block must be wrapped in PageSection
- * - Cards must only be used where surface containment is needed
- * - MetricsRow must contain only MetricCard children
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 
- * VERIFICATION:
- * If this dashboard feels wrong, the fix must occur in tokens or contracts — never here.
+ * DASHBOARD PAGE PATTERN
+ * 
+ * A top-level LFX One layout archetype for overview and summary pages.
+ * 
+ * PATTERN DEFINITION:
+ * Dashboard is a multi-surface composition that combines:
+ * - Metrics row (horizontal card row for key performance indicators)
+ * - Data table (single-table preview or summary)
+ * - List group (activity feed, recent items, or related links)
+ * 
+ * CANONICAL STRUCTURE:
+ * 
+ * AppShell
+ * └─ PageLayout
+ *    ├─ AppHeader (title + optional description/actions)
+ *    ├─ PageSection → MetricsRow → MetricCard×N
+ *    ├─ PageSection → Card → TableGrid
+ *    └─ PageSection → Card → ListGroup
+ * 
+ * KEY CHARACTERISTICS:
+ * - Multiple surfaces per page (metrics + table + list)
+ * - No section titles (AppHeader is the only title)
+ * - Each surface wrapped in PageSection for consistent vertical rhythm
+ * - Metrics span full width in horizontal row
+ * - Table and list each contained in Card surfaces
+ * 
+ * ARCHITECTURAL ROLE:
+ * Dashboard is a Page Pattern, not a Page Example.
+ * It defines HOW to compose overview pages, not WHAT data to show.
+ * It is an archetype like Table Page or Segmented Table Page.
+ * 
+ * PATTERN RULES:
+ * - No styling overrides allowed
+ * - No new tokens or props may be introduced
+ * - If something looks wrong, fix in:
+ *   - tokens
+ *   - component contracts
+ *   - or missing pattern components
+ * - Never patch in this pattern
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import { createAppShell } from '../../components/app-shell/app-shell';
-import { createPageLayout } from '../../components/page-layout/page-layout';
-import { createAppHeader } from '../../components/app-header/app-header';
-import { createPageSection } from '../../components/page-section/page-section';
-import { createMetricsRow } from '../../components/metrics-row/metrics-row';
-import { createMetricCard } from '../../components/metric-card/metric-card';
-import { createCard } from '../../components/card/card';
-import { createTableGrid, createTableHeader, createTableBody } from '../../components/table-grid/table-grid';
-import { createTableHeaderCell } from '../../components/table-header-cell/table-header-cell';
-import { createTableRow } from '../../components/table-row/table-row';
-import { createTableCell } from '../../components/table-cell/table-cell';
-import { createListGroup } from '../../components/list-group/list-group';
-import { createListItem } from '../../components/list-item/list-item';
-import { createGlobalNav, createNavSection, createNavItem } from '../../components/global-nav/global-nav';
+import { createAppShell } from '../../../../components/app-shell/app-shell';
+import { createPageLayout } from '../../../../components/page-layout/page-layout';
+import { createAppHeader } from '../../../../components/app-header/app-header';
+import { createPageSection } from '../../../../components/page-section/page-section';
+import { createMetricsRow } from '../../../../components/metrics-row/metrics-row';
+import { createMetricCard } from '../../../../components/metric-card/metric-card';
+import { createCard } from '../../../../components/card/card';
+import { createTableGrid, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
+import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
+import { createTableRow } from '../../../../components/table-row/table-row';
+import { createTableCell } from '../../../../components/table-cell/table-cell';
+import { createListGroup } from '../../../../components/list-group/list-group';
+import { createListItem } from '../../../../components/list-item/list-item';
+import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 
 // =============================================================================
 // HELPER: Create demo data structures
@@ -262,40 +291,96 @@ function createDashboard(args: DashboardArgs = {}) {
 // =============================================================================
 
 const meta: Meta<DashboardArgs> = {
-  title: '3. Page Examples / Dashboard',
+  title: '2. Page Patterns / Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
         component: `
-## Dashboard Page Example
+## Dashboard Page Pattern
 
-This is a **system verification artifact**, not a product feature.
+**Dashboard is a top-level LFX One layout archetype for overview and summary pages.**
 
-### Purpose
+This is a **Page Pattern**, not a Page Example.
 
-- Validates that existing components compose correctly at page scale
-- Proves the contract architecture is sound
-- Demonstrates the canonical layout hierarchy
+It defines HOW to compose multi-surface overview pages, not WHAT data to show.
 
-### Architecture
+### Pattern Definition
+
+Dashboard is a multi-surface composition that combines:
+- **Metrics row** (horizontal card row for key performance indicators)
+- **Data table** (single-table preview or summary)
+- **List group** (activity feed, recent items, or related links)
+
+### Canonical Structure
 
 \`\`\`
 AppShell
 └─ PageLayout
-   ├─ AppHeader
+   ├─ AppHeader (title + optional description/actions)
    ├─ PageSection → MetricsRow → MetricCard×N
-   ├─ PageSection → Card → Table
+   ├─ PageSection → Card → TableGrid
    └─ PageSection → Card → ListGroup
 \`\`\`
 
-### Rules
+### Key Characteristics
 
-- No styling overrides permitted
-- No new tokens or props introduced
-- All spacing/hierarchy emerges from contracts
-- If something looks wrong, fix tokens or contracts — not this story
+- Multiple surfaces per page (metrics + table + list)
+- No section titles (AppHeader is the only title)
+- Each surface wrapped in PageSection for consistent vertical rhythm
+- Metrics span full width in horizontal row
+- Table and list each contained in Card surfaces
+
+### When to Use Dashboard Pattern
+
+Use Dashboard when:
+- Building an overview or summary page
+- Displaying multiple related data surfaces on one page
+- Showing key metrics alongside preview data
+- Creating a home page or landing page for a section
+- Need a high-level snapshot across multiple data types
+
+**Examples:**
+- Project overview page (metrics + recent activity + task list)
+- Organization dashboard (stats + member table + recent events)
+- Home page (summary cards + quick access table + notifications)
+
+### When NOT to Use Dashboard Pattern
+
+Do NOT use Dashboard when:
+- Page focuses on a single dataset (use **Table Page** instead)
+- Page has multiple independent tables (use **Segmented Table Page** instead)
+- Page is detail-focused, not overview-focused
+- Page requires deep filtering or complex interactions per surface
+- Metrics are the only content (use metrics-only page composition)
+
+**Use these patterns instead:**
+- Single-dataset pages → **Table Page**
+- Multiple independent tables → **Segmented Table Page**
+- Detail pages → Custom composition
+
+### Pattern Rules
+
+**Dashboard pattern is locked:**
+- No styling overrides allowed
+- No new tokens or props may be introduced
+- All spacing/hierarchy emerges from component contracts
+- If something looks wrong, fix in tokens or contracts — not here
+
+### Architectural Role
+
+Dashboard is a **Page Pattern**, equal in hierarchy to Table Page and Segmented Table Page.
+
+It is:
+- ✅ A reusable structural blueprint
+- ✅ A top-level LFX One archetype
+- ✅ Copyable by agents when creating overview pages
+
+It is NOT:
+- ❌ A concrete product page
+- ❌ An example of another pattern
+- ❌ A system verification artifact
         `,
       },
     },
