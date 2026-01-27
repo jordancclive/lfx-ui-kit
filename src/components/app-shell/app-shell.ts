@@ -4,8 +4,14 @@
  * Tier 3 — Composite Layout Component
  * Defines the high-level page layout for LFX One.
  * 
+ * VISUAL STRUCTURE:
+ * - AppShell establishes the application background (ALWAYS)
+ * - Content is inset from viewport edges for visual structure
+ * - Navigation and content are structurally connected
+ * - Pages feel anchored inside the application frame
+ * 
  * OWNERSHIP BOUNDARIES:
- * - AppShell owns: layout structure, region positioning, scroll behavior
+ * - AppShell owns: layout structure, region positioning, scroll behavior, app background, content inset
  * - Children own: their own styling, interaction, state
  * - Parent owns: routing, data, application state
  * 
@@ -25,9 +31,13 @@ export interface AppShellProps {
   aside?: HTMLElement;
   /** Apply container border */
   withBorder?: boolean;
-  /** Apply surface background */
+  /** 
+   * @deprecated Background is now always applied to AppShell.
+   * This prop exists for backward compatibility only.
+   * It has no effect and will be removed in a future version.
+   */
   withBackground?: boolean;
-  /** Reduced spacing mode */
+  /** Reduced spacing mode (reduces horizontal inset and region gap) */
   dense?: boolean;
 }
 

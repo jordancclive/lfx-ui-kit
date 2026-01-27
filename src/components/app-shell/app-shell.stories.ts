@@ -14,7 +14,18 @@ const meta: Meta<AppShellProps> = {
 
 **Tier 3 — Composite Layout Component**
 
-AppShell defines the high-level page layout for LFX One. It composes major regions (navigation, header, content, optional aside) and establishes spacing, scrolling, and containment rules.
+AppShell defines the high-level page layout for LFX One. It composes major regions (navigation, header, content, optional aside) and establishes the application frame structure.
+
+### Visual Structure
+
+**AppShell establishes the production application frame:**
+
+- ✅ **Application background** (always present, not optional)
+- ✅ **Content inset** from viewport edges (creates visual structure)
+- ✅ **Structural connection** between navigation and content
+- ✅ **Vertical rhythm** locked at top edge
+
+**Result:** Pages feel anchored inside the application, not floating on canvas.
 
 ### ⚠️ Important
 
@@ -34,28 +45,27 @@ Those responsibilities belong to:
 |------|--------------|
 | Page layout structure | Text styling |
 | Region positioning | Icon styling |
-| Container padding/gaps | GlobalNav logic |
-| Scroll containment | ProjectSelector logic |
-| | Routing or URL state |
+| Application background | GlobalNav logic |
+| Content inset (horizontal padding) | ProjectSelector logic |
+| Scroll containment | Routing or URL state |
 
-### Non-Goals
+### Visual Rules
 
-- Does NOT implement routing
-- Does NOT style child components
-- Does NOT manage active navigation state
-- Does NOT implement responsiveness beyond layout rules
-- Does NOT implement animations or transitions
+1. **Background is always present** — AppShell uses \`--color-app-shell-surface-background\` by default
+2. **Content is inset** — Horizontal padding (\`spacing-24\`) prevents content from touching viewport edges
+3. **Nav aligns with content** — Top padding (\`spacing-16\`) locks vertical rhythm
+4. **Gap separates regions** — Horizontal gap (\`spacing-16\`) between nav and content
 
 ### Token Bindings (Layout Only)
 
-| Property | Token |
-|----------|-------|
-| Container background | \`--color-app-shell-surface-background\` |
-| Container border | \`--color-app-shell-surface-border\` |
-| Container radius | \`--radius-app-shell\` |
-| Container padding | \`--spacing-app-shell-padding\` |
-| Region gap | \`--spacing-app-shell-region-gap\` |
-| Nav width | \`--spacing-app-shell-nav-width\` |
+| Property | Token | Default |
+|----------|-------|---------|
+| Container background | \`--color-app-shell-surface-background\` | Always applied |
+| Container border | \`--color-app-shell-surface-border\` | Via \`withBorder\` prop |
+| Horizontal inset | \`spacing-24\` | Always applied |
+| Vertical top padding | \`spacing-16\` | Always applied |
+| Region gap | \`spacing-16\` | Always applied |
+| Nav width | \`--spacing-app-shell-nav-width\` | 240px |
 
 ### Composition
 
@@ -75,11 +85,11 @@ AppShell exposes named slots:
     },
     withBackground: {
       control: 'boolean',
-      description: 'Apply surface background',
+      description: '⚠️ DEPRECATED: Background is now always applied. This prop has no effect.',
     },
     dense: {
       control: 'boolean',
-      description: 'Reduced spacing mode',
+      description: 'Reduced horizontal inset and region gap (from 24px/16px to 16px/8px)',
     },
   },
 };

@@ -5,6 +5,12 @@
  * Defines the high-level page layout for LFX One.
  * Composes major regions: navigation, header, content, aside.
  * 
+ * VISUAL STRUCTURE:
+ * - AppShell establishes the application background
+ * - Content is inset from viewport edges
+ * - Navigation and content feel structurally connected
+ * - Pages feel anchored, not floating on canvas
+ * 
  * Token bindings (allowed - LAYOUT ONLY):
  * - --color-app-shell-surface-background
  * - --color-app-shell-surface-border
@@ -27,6 +33,17 @@
   height: 100vh;
   overflow: hidden;
   
+  /* 
+   * Application background (ALWAYS PRESENT)
+   * 
+   * This establishes the application frame and prevents
+   * white canvas bleed. The background is NOT optional.
+   * 
+   * AppShell background ≠ Card background
+   * AppShell background = Page-level surface (neutral-100)
+   */
+  background: var(--color-app-shell-surface-background);
+  
   /* Grid template areas */
   grid-template-areas:
     "nav header header"
@@ -36,19 +53,54 @@
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto 1fr;
   
-  /* Gap between regions */
-  gap: var(--spacing-app-shell-region-gap);
+  /* 
+   * Horizontal inset (STRUCTURAL)
+   * 
+   * Content should NOT touch viewport edges.
+   * This creates visual separation and makes pages
+   * feel anchored inside the application frame.
+   * 
+   * Applied at AppShell level ONLY.
+   * PageLayout must NOT add its own horizontal padding.
+   */
+  padding-inline: var(--spacing-24);
   
-  /* Container padding */
-  padding: var(--spacing-app-shell-padding);
+  /*
+   * Vertical spacing (TOP ONLY)
+   * 
+   * Top padding creates breathing room and aligns
+   * navigation with content at the top edge.
+   * 
+   * Bottom padding intentionally omitted to allow
+   * content to scroll flush to viewport bottom.
+   */
+  padding-block-start: var(--spacing-16);
+  padding-block-end: var(--spacing-0);
+  
+  /*
+   * Gap between regions
+   * 
+   * Horizontal gap between nav and content creates
+   * clear visual separation while maintaining
+   * structural connection.
+   */
+  gap: var(--spacing-16);
 }
 
 /* ========================================
    Container Variants
    ======================================== */
 
+/*
+ * withBackground variant (DEPRECATED)
+ * 
+ * Background is now always present on AppShell.
+ * This variant exists for backward compatibility only.
+ * 
+ * DO NOT USE in new code.
+ */
 .lfx-app-shell--with-background {
-  background: var(--color-app-shell-surface-background);
+  /* No-op: background already applied to base class */
 }
 
 .lfx-app-shell--with-border {
@@ -58,12 +110,16 @@
 
 /* ========================================
    Dense Variant
-   Reduced spacing
+   Reduced spacing (horizontal inset + gap only)
    ======================================== */
 
 .lfx-app-shell--dense {
-  gap: var(--spacing-4);
-  padding: var(--spacing-4);
+  /*
+   * Dense mode reduces horizontal inset and region gap.
+   * Top padding intentionally preserved for vertical rhythm.
+   */
+  padding-inline: var(--spacing-16);
+  gap: var(--spacing-8);
 }
 
 /* ========================================
