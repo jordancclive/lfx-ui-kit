@@ -222,10 +222,21 @@ function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
   });
 }
 
+/**
+ * Creates the search + filter control row.
+ * 
+ * This row is intentionally compact and left-aligned to read as a single
+ * horizontal control unit that feels attached to the table it filters.
+ * 
+ * Layout:
+ * - SearchInput dominates (expands naturally)
+ * - FilterDropdownTrigger is secondary (intrinsic width)
+ * - Tight gap (spacing-8) creates unified control bar feel
+ */
 function createFiltersRow(): HTMLElement {
   const container = document.createElement('div');
   container.style.display = 'flex';
-  container.style.gap = 'var(--spacing-12)';
+  container.style.gap = 'var(--spacing-8)';
   container.style.alignItems = 'center';
 
   container.appendChild(createSearchInput({ placeholder: 'Search Groups…' }));
@@ -305,7 +316,15 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
   ];
 
   // My Groups section with filters grouped in same card
-  // Build card children array - filters + table grouped together
+  // 
+  // COMPOSITION STRUCTURE:
+  // - Filters row sits directly above table (both inside same Card)
+  // - No wrapper divs between them
+  // - Card's padding provides outer spacing
+  // - Filters row uses tight horizontal gap (spacing-8) for unified feel
+  // 
+  // This creates a "filtered table view" pattern where the controls
+  // feel visually attached to the data they control.
   const myGroupsCardChildren: HTMLElement[] = [];
   
   if (showFilters) {
@@ -529,18 +548,41 @@ export const Minimal: Story = {
  * ✓ Icon/symbol column (Voting) uses visual indicator elements
  * ✓ Metadata column (Last Updated) uses muted content type
  * 
+ * SEARCH + FILTER ROW COMPOSITION:
+ * ✓ Reduced gap from spacing-12 to spacing-8 for tighter unified control bar feel
+ * ✓ SearchInput + FilterDropdownTrigger read as single horizontal unit
+ * ✓ Filters row sits directly above table with no extra wrappers
+ * ✓ Card padding provides outer spacing
+ * ✓ Left-aligned layout (SearchInput dominates, Filter is secondary)
+ * 
+ * COMPOSITION REFINEMENTS APPLIED:
+ * - Tightened horizontal rhythm in filters row (12px → 8px gap)
+ * - Documented composition intent (filters attached to table)
+ * - No extra wrappers or margins between filters and table
+ * - Structure is minimal and intentional
+ * 
  * KNOWN LIMITATIONS (if any exist, document here):
  * - Section titles use inline styles for typography binding
  *   (a SectionTitle component may be needed if this pattern repeats)
  * - Filters row uses inline styles for flex layout
  *   (a FilterBar component may be needed if this pattern repeats)
- * - Column widths are currently equal-width via CSS Grid default
- *   (semantic width control requires Table component enhancement)
+ * - Column widths use legacy equal-width (6 columns)
+ *   (semantic ColumnDefinition[] available but not yet applied to Groups story)
+ * - No vertical spacing between filters row and table
+ *   (they sit directly adjacent - if rhythm feels off, this is a Card or Table
+ *    component concern, not a composition issue)
+ * 
+ * POTENTIAL FUTURE REFINEMENTS (not bugs, just observations):
+ * - Filters row height might feel slightly tall compared to LFX One
+ *   (this is a SearchInput/FilterDropdownTrigger component density concern)
+ * - If a reusable FilterBar pattern emerges, extract it then (not prematurely)
+ * - Consider applying semantic column widths to Groups tables
  * 
  * FINDINGS:
  * - Search + filters embedded with table is a validated, reusable pattern
  * - Column semantics work correctly via composition and content types
  * - Tag component successfully extracted and implemented for categorical data display
+ * - Filters row composition feels tighter and more intentional after polish pass
  * - Future enhancement: Semantic column width control (flexible vs intrinsic)
  * 
  * If this page feels wrong, the fix must occur in tokens or contracts — never here.
