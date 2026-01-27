@@ -628,6 +628,10 @@ const meta: Meta<TablePageArgs> = {
 - **Clean vertical rhythm**
 - **Compact, scan-friendly density**
 
+⚠️ **Note:** \`Table\` is deprecated terminology.  
+Use \`TableGrid\` when referring to the data grid component.  
+Use \`DataTable\` when referring to the full single-table workflow.
+
 ### Used By
 
 This pattern is used for:

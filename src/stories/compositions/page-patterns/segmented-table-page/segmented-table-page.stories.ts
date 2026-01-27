@@ -53,6 +53,11 @@
  * - Page title != Section titles
  * - Each table block is independent
  * 
+ * ⚠️ TERMINOLOGY NOTE:
+ * - "Table" is deprecated terminology
+ * - Use "TableGrid" when referring to the data grid component
+ * - Use "DataTable" when referring to the full single-table workflow
+ * 
  * EXAMPLE USAGE:
  * - Groups page (My Groups, Other Groups)
  * - Future: Projects page (My Projects, All Projects)

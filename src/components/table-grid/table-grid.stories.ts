@@ -57,6 +57,34 @@ TableGrid owns:
 - ✅ Semantic column width behavior
 - ✅ Grid spacing and structure
 
+---
+
+### Why This Is Called TableGrid
+
+**TableGrid renders ONLY:**
+- Columns
+- Rows
+- Cells
+
+**TableGrid does NOT include:**
+- Search
+- Filters
+- Pagination
+- Card
+- Workflow structure
+
+> **If you want the standard LFX One table workflow, use \`DataTable\`, not \`TableGrid\`.**
+
+**Naming Clarity:**
+- **TableGrid** = grid layout component (Level 2)
+- **DataTable** = complete table workflow surface (Level 3)
+
+⚠️ **Note:** \`Table\` is deprecated terminology.  
+Use \`TableGrid\` when referring to the data grid component.  
+Use \`DataTable\` when referring to the full single-table workflow.
+
+---
+
 ### Layout Strategy
 
 TableGrid uses **CSS Grid** for column alignment:

@@ -22,9 +22,21 @@ export { createDataTable, type DataTableProps } from './components/data-table/da
 
 // DEPRECATED: Backward compatibility aliases
 // TODO: Remove in next major version
-/** @deprecated Use createTableGrid instead */
+/**
+ * @deprecated Use createTableGrid instead.
+ * This alias exists for backward compatibility only.
+ * 
+ * NAMING CLARIFICATION:
+ * - TableGrid = grid layout component (Level 2) — columns, rows, cells only
+ * - DataTable = complete table workflow surface (Level 3) — includes toolbar, grid, pagination
+ * 
+ * If you want the full table workflow, use DataTable, not this.
+ */
 export { createTableGrid as createTable } from './components/table-grid/table-grid';
-/** @deprecated Use TableGridProps instead */
+/**
+ * @deprecated Use TableGridProps instead.
+ * This alias exists for backward compatibility only.
+ */
 export type { TableGridProps as TableProps } from './components/table-grid/table-grid';
 export { createListItem, type ListItemProps } from './components/list-item/list-item';
 export { createListGroup, type ListGroupProps } from './components/list-group/list-group';

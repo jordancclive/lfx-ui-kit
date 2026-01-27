@@ -19,6 +19,24 @@ This architecture document exists to:
 
 ---
 
+## Terminology Clarification
+
+⚠️ **IMPORTANT:** The term "Table" is deprecated in this design system.
+
+**Use these terms instead:**
+- **TableGrid** — Level 2 component that provides grid layout for rows and cells ONLY
+- **DataTable** — Level 3 component that bundles TableToolbar + TableGrid + TablePagination into a complete single-table workflow surface
+- **Table Page** — Page pattern for single-table pages (pattern name unchanged)
+- **Segmented Table Page** — Page pattern for multi-table pages (pattern name unchanged)
+
+**Why the change:**
+The name "Table" was misleading because it suggested a complete table solution, when in reality it only provided grid layout. This caused confusion during development and architectural drift.
+
+**Backward compatibility:**
+The deprecated alias `createTable` still exists for backward compatibility but should not be used in new code.
+
+---
+
 ## The Four Layers
 
 The LFX One UI Kit is organized into four distinct layers, each with specific responsibilities:
@@ -97,7 +115,7 @@ Composite components or styled patterns built from atoms.
 Complex assemblies that combine multiple Level 1/2 components.
 
 **Examples:**
-- `Table`
+- `DataTable`
 - `MetricsRow`
 - `AppHeader`
 - `GlobalNav`
@@ -122,8 +140,8 @@ Complex assemblies that combine multiple Level 1/2 components.
 **Component Level Guidelines:**
 
 - **Level 1 (Atoms)** — Cannot be broken down further (Button, Tag, SearchInput)
-- **Level 2 (Molecules)** — Combine Level 1 components or add styled structure (Card, TableRow, MetricCard)
-- **Level 3 (Organisms)** — Complex assemblies of Level 1/2 components (Table, AppHeader, PageLayout)
+- **Level 2 (Molecules)** — Combine Level 1 components or add styled structure (Card, TableRow, MetricCard, TableGrid, TableToolbar, TablePagination)
+- **Level 3 (Organisms)** — Complex assemblies of Level 1/2 components (DataTable, AppHeader, PageLayout)
 
 Level classification is about **composition complexity**, not **value** or **priority**.
 
@@ -160,7 +178,7 @@ Page Patterns define WHAT appears on a page and WHERE it appears, but NOT how us
 
 **What Patterns Do NOT Define:**
 - Row-level interaction (owned by TableRow contract)
-- Column semantics (owned by Table contract)
+- Column semantics (owned by TableGrid contract)
 - Typography values (owned by tokens)
 - Hover affordances (owned by component contracts)
 
@@ -359,12 +377,15 @@ docs/
    │  ├─ TableRow
    │  ├─ TableCell
    │  ├─ TableHeaderCell
+   │  ├─ TableGrid
+   │  ├─ TableToolbar
+   │  ├─ TablePagination
    │  ├─ FilterDropdownTrigger
    │  ├─ ListItem
    │  ├─ TabItem
    │  └─ MetricCard
    └─ Level 3/
-      ├─ Table
+      ├─ DataTable
       ├─ MetricsRow
       ├─ AppHeader
       ├─ GlobalNav

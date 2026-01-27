@@ -83,6 +83,10 @@ Card
 
 No other structure is allowed.
 
+⚠️ **Note:** \`Table\` is deprecated terminology.  
+Use \`TableGrid\` when referring to the data grid component.  
+Use \`DataTable\` when referring to the full single-table workflow.
+
 ---
 
 ## Architectural Boundaries (LOCKED)
