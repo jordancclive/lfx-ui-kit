@@ -82,18 +82,26 @@ Each block is **independent**.
 
 ## Interaction Rules
 
-- Clickability is declared per table
+- Clickability is declared per table block
 - Hover only applies to clickable rows
 - Inline links must be explicit
 
-### Row-Level Interaction
+### Default Row Interaction per Table Block
 
-- Segmented Table Page patterns permit row-level navigation per table block
-- Page patterns do not restrict row clickability
-- Interaction behavior is governed by component contracts, not page structure
-- Agents MUST NOT disable row hover or click unless forbidden by TableRow contract
-- Each table block may independently have clickable or non-clickable rows
-- No assumptions may be made based on block position (top vs bottom)
+**Segmented Table Page inherits the same default row interaction model as Table Page.**
+
+Rules:
+- Each table block is clickable by default
+- Row-level navigation is the primary interaction model per block
+- The primary column MAY be visually styled as a link to reinforce row-level navigation
+- Visual link styling does NOT imply cell-level click ownership
+- Navigation is owned by the row, not by individual cells or columns
+- Row clickability MAY be disabled per table block, but this MUST be explicit
+- No assumptions may be made based on block position
+
+> **Agents must not infer different interaction behavior between table blocks.**
+> 
+> Row clickability must be declared per block if deviating from the default.
 
 **If navigation exists, it should be implemented at the row level, not via individual columns.**
 
@@ -103,24 +111,22 @@ Each block is **independent**.
 
 ## Interaction Flexibility (Non-Structural)
 
-**Page patterns lock STRUCTURE only.**
+**Page patterns lock STRUCTURE and define DEFAULT interaction expectations.**
 
-Interaction affordances are governed by:
+How interactions work is governed by:
 - Component contracts
 - Token rules
 - Explicit props
 
-The following are **ALLOWED variations** within the pattern and must NOT be inferred away by agents:
+The following are **ALLOWED variations** within the default clickable row model and must NOT be inferred away by agents:
 
-- Table rows MAY be hoverable or not
-- Individual columns MAY be clickable
-- Primary column text MAY be rendered as a link
+- Primary column text MAY be rendered as a link (visual reinforcement of row navigation)
 - Tags MAY have semantic color variants (info, success, warning, etc.)
 - Column header alignment MAY differ from cell alignment
 - Search inputs MAY be full-width or intrinsic
 - Multiple filter controls MAY appear in the filter row
 
-**Note:** These variations are intentional and context-dependent. They do not violate the page pattern.
+**Note:** These variations are intentional and context-dependent. They do not violate the page pattern or the default interaction model.
 
 ---
 
@@ -156,21 +162,25 @@ All behavior must be explicit.
 
 ## Agent Safety Appendix
 
+**Critical:** Page patterns define STRUCTURE and DEFAULT interaction expectations.
+- Component contracts govern HOW interaction works
+- Page patterns govern WHETHER interaction is expected by default
+
 ### Agents MUST:
 - Enforce page structure exactly as defined
-- Respect component contracts for interaction
-- Look to component APIs for behavior
-- Ask when interaction intent is unclear
-- Preserve row click behavior when explicitly enabled
+- Respect the default clickable row interaction model per table block
+- Preserve row click behavior and primary-column link styling by default
+- Look to component contracts for HOW interaction works
 - Look to TableRow contract for row interaction rules
+- Ask when deviation from defaults is needed
 
 ### Agents MUST NOT:
-- Infer interaction rules from page patterns
-- Disable hover, click, or links unless forbidden by component contract
-- Assume filters or pagination behave identically across pages
-- Remove semantic affordances to "simplify" the UI
+- Remove row-level navigation or primary-column link styling "for consistency"
+- Disable clickable rows unless explicitly instructed
+- Disable hover affordances unless explicitly instructed
+- Assume non-clickable rows without explicit guidance
+- Infer different behavior between table blocks without explicit declaration
 - Infer column-level navigation instead of row-level
-- Replace row clicks with links or buttons
-- Remove hover affordances "for consistency"
+- Replace row clicks with column/cell-level handlers
 
-**Critical:** Page patterns describe WHAT is on the page, not HOW users interact with each element.
+**Note:** Agents must not remove row-level navigation or primary-column link styling "for consistency" unless explicitly instructed.
