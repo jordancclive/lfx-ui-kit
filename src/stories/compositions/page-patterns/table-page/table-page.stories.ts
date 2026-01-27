@@ -474,7 +474,7 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
   if (primaryAction) {
     // Create primary button from semantic page intent
     headerActions = createButton({
-      children: primaryAction.label,
+      label: primaryAction.label,
       variant: 'primary',
       onClick: primaryAction.onClick,
     });
