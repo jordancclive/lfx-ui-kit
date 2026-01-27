@@ -1,9 +1,13 @@
 /**
- * Groups Page Composition Story
+ * Segmented Table Page Composition
  * 
  * PATTERN: SEGMENTED TABLE PAGE
  * 
- * Groups is a segmented table page composed of multiple independent table blocks.
+ * This composition demonstrates the Segmented Table Page pattern using Groups
+ * as a concrete example. Groups (My Groups, Other Groups) is an instance of
+ * this pattern, not the pattern itself.
+ * 
+ * A segmented table page is composed of multiple independent table blocks.
  * Each table block can independently declare:
  * - Section title (required)
  * - Filter row (optional)
@@ -15,15 +19,15 @@
  * 
  * STRUCTURE:
  * 
- * AppHeader (title: "Groups")
+ * AppHeader (page title)
  * └─ PageSection (dense: true)
- *    ├─ Table Block 1 ("My Groups")
+ *    ├─ Table Block 1 (e.g. "My Groups")
  *    │  ├─ Section Title
  *    │  ├─ Card
  *    │  │  ├─ (optional) Filter Row
  *    │  │  ├─ Table
  *    │  │  └─ (optional) Pagination Row
- *    └─ Table Block 2 ("Other Groups")
+ *    └─ Table Block 2 (e.g. "Other Groups")
  *       ├─ Section Title
  *       └─ Card
  *          ├─ (optional) Filter Row
@@ -31,10 +35,15 @@
  *          └─ (optional) Pagination Row
  * 
  * KEY DIFFERENCES FROM CANONICAL TABLE PAGE:
- * - Multiple tables (Groups is segmented)
+ * - Multiple tables (segmented by section)
  * - Section titles present (required per table block)
  * - Page title != Section titles
  * - Each table block is independent
+ * 
+ * EXAMPLE USAGE:
+ * - Groups page (My Groups, Other Groups)
+ * - Future: Projects page (My Projects, All Projects)
+ * - Future: Any page with multiple related table views
  * 
  * COMPOSITION RULES:
  * - No styling overrides allowed
@@ -379,9 +388,10 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 
 // =============================================================================
 // MAIN COMPOSITION FUNCTION
+// Creates a Segmented Table Page using Groups as the example
 // =============================================================================
 
-interface GroupsPageArgs {
+interface SegmentedTablePageArgs {
   dense?: boolean;
   myGroups?: GroupRow[];
   otherGroups?: GroupRow[];
@@ -392,7 +402,7 @@ interface GroupsPageArgs {
   otherGroupsShowPagination?: boolean;
 }
 
-function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
+function createSegmentedTablePage(args: SegmentedTablePageArgs = {}): HTMLElement {
   const {
     dense = false,
     myGroups = myGroupsData,
@@ -508,19 +518,22 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
 // STORYBOOK META
 // =============================================================================
 
-const meta: Meta<GroupsPageArgs> = {
-  title: 'Compositions/Groups',
+const meta: Meta<SegmentedTablePageArgs> = {
+  title: 'Compositions/Segmented Table Page',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
         component: `
-## Groups Page Composition
+## Segmented Table Page Composition
 
-**Segmented Table Page Pattern**
+**Pattern with Groups Example**
 
-Groups is a segmented table page composed of multiple independent table blocks.
+This composition demonstrates the Segmented Table Page pattern using Groups
+(My Groups, Other Groups) as a concrete example.
+
+A segmented table page is composed of multiple independent table blocks.
 Each table block can independently declare filters and pagination.
 
 ### Pattern Characteristics
@@ -571,12 +584,12 @@ No assumptions are made based on:
 
 ### Key Differences from Canonical Table Page
 
-| Aspect | Groups (Segmented) | Table Page (Canonical) |
-|--------|-------------------|------------------------|
+| Aspect | Segmented Table Page | Table Page (Canonical) |
+|--------|----------------------|------------------------|
 | Tables | Multiple | Single |
 | Section Titles | Yes (per block) | None |
 | Page Title | != Section titles | == Table title |
-| Pattern Usage | Groups only | Most pages |
+| Example Usage | Groups, Projects (future) | Most pages |
 
 ### What This Validates
 
@@ -623,22 +636,22 @@ No assumptions are made based on:
       description: 'Show pagination row for Other Groups table block',
     },
   },
-  render: (args) => createGroupsPage(args),
+  render: (args) => createSegmentedTablePage(args),
 };
 
 export default meta;
-type Story = StoryObj<GroupsPageArgs>;
+type Story = StoryObj<SegmentedTablePageArgs>;
 
 // =============================================================================
 // STORIES
 // =============================================================================
 
 /**
- * Canonical Groups page composition.
+ * Default Segmented Table Page composition (Groups example).
  * 
- * Default representation:
- * - My Groups has filters (typical user workflow)
- * - Other Groups has no filters (browse-only)
+ * Demonstrates typical segmented table page layout:
+ * - First table block (My Groups) has filters (typical user workflow)
+ * - Second table block (Other Groups) has no filters (browse-only)
  * - No pagination (typical small dataset)
  */
 export const Default: Story = {
@@ -652,11 +665,11 @@ export const Default: Story = {
 };
 
 /**
- * Dense variant with compact spacing.
+ * Dense variant of Segmented Table Page.
  * 
  * Demonstrates:
  * - Dense mode across all components
- * - My Groups has filters
+ * - First table block (My Groups) has filters
  * - Scanability maintained at higher density
  */
 export const Dense: Story = {
@@ -670,7 +683,7 @@ export const Dense: Story = {
 };
 
 /**
- * Without Filters variant.
+ * Segmented Table Page without filters.
  * 
  * Demonstrates:
  * - Clean baseline with no filter rows
@@ -688,7 +701,7 @@ export const WithoutFilters: Story = {
 };
 
 /**
- * With Pagination variant.
+ * Segmented Table Page with pagination.
  * 
  * Demonstrates:
  * - Pagination row below each table
@@ -706,12 +719,12 @@ export const WithPagination: Story = {
 };
 
 /**
- * Long Descriptions variant.
+ * Segmented Table Page with long descriptions.
  * 
  * Demonstrates:
  * - Increased description text length
  * - Table wrapping behavior
- * - My Groups has filters
+ * - First table block (My Groups) has filters
  */
 export const LongDescriptions: Story = {
   args: {
@@ -726,11 +739,11 @@ export const LongDescriptions: Story = {
 };
 
 /**
- * Minimal variant.
+ * Minimal Segmented Table Page.
  * 
  * Demonstrates:
- * - One group in each table (minimum viable content)
- * - My Groups has filters
+ * - Minimum viable content (one row per table)
+ * - First table block (My Groups) has filters
  * - Clean baseline composition
  */
 export const Minimal: Story = {
@@ -783,7 +796,8 @@ export const Minimal: Story = {
  * ✓ No implied defaults or position-based behavior
  * 
  * PATTERN GENERALIZATION:
- * ✓ Groups is now a repeatable segmented table page pattern
+ * ✓ Segmented Table Page is now a repeatable pattern
+ * ✓ Groups serves as the example/instance of this pattern
  * ✓ Each table block is explicit and obvious
  * ✓ Safe for agentic design environment
  * ✓ No abstractions extracted prematurely
