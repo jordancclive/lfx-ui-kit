@@ -262,7 +262,7 @@ function createDashboard(args: DashboardArgs = {}) {
 // =============================================================================
 
 const meta: Meta<DashboardArgs> = {
-  title: 'Page Examples / Dashboard',
+  title: '3. Page Examples / Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

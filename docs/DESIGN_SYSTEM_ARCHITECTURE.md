@@ -76,7 +76,7 @@ Single-purpose, indivisible UI elements.
 - `FilterPill`
 - `SearchInput`
 
-**Storybook:** `Components / Level 1 / *`
+**Storybook:** `1. Components / Level 1 / *`
 
 #### Level 2 — Patterns / Molecules
 Composite components or styled patterns built from atoms.
@@ -91,7 +91,7 @@ Composite components or styled patterns built from atoms.
 - `TabItem`
 - `MetricCard`
 
-**Storybook:** `Components / Level 2 / *`
+**Storybook:** `1. Components / Level 2 / *`
 
 #### Level 3 — Organisms
 Complex assemblies that combine multiple Level 1/2 components.
@@ -107,7 +107,7 @@ Complex assemblies that combine multiple Level 1/2 components.
 - `ListGroup`
 - `TabsGroup`
 
-**Storybook:** `Components / Level 3 / *`
+**Storybook:** `1. Components / Level 3 / *`
 
 **Location:** `src/components/`
 
@@ -150,7 +150,7 @@ Page Patterns define WHAT appears on a page and WHERE it appears, but NOT how us
 
 **Documentation:** `docs/page-patterns/`
 
-**Storybook:** `Page Patterns/*`
+**Storybook:** `2. Page Patterns / *`
 
 **What Patterns Define:**
 - Page structure (AppShell → PageLayout → sections)
@@ -188,7 +188,7 @@ Page Examples are real product pages (Votes, Groups, etc.) that IMPLEMENT a page
 
 **Location:** `src/stories/compositions/page-examples/`
 
-**Storybook:** `Page Examples/*`
+**Storybook:** `3. Page Examples / *`
 
 **What Examples Contain:**
 - Product-specific page title, description, actions
@@ -231,13 +231,16 @@ Page Examples are real product pages (Votes, Groups, etc.) that IMPLEMENT a page
 
 **Location in Storybook and filesystem determines meaning:**
 
-- `Components / Level 1 / *` = Atomic components (reusable)
-- `Components / Level 2 / *` = Pattern components (reusable)
-- `Components / Level 3 / *` = Organism components (reusable)
-- `Page Patterns / *` = Reusable structural blueprints
-- `Page Examples / *` = Non-reusable product pages
+- `1. Components / Level 1 / *` = Atomic components (reusable)
+- `1. Components / Level 2 / *` = Pattern components (reusable)
+- `1. Components / Level 3 / *` = Organism components (reusable)
+- `2. Page Patterns / *` = Reusable structural blueprints
+- `3. Page Examples / *` = Non-reusable product pages
 
 **No other top-level Storybook sections are allowed.**
+
+**Numeric Prefixes:**
+Numeric prefixes (1, 2, 3) ensure correct top-level ordering in Storybook's alphabetical navigation. Without prefixes, "Page Examples" would incorrectly sort before "Page Patterns".
 
 ---
 
@@ -342,42 +345,50 @@ docs/
 
 ### Sidebar Structure
 
-```
-Components/
-├─ Level 1/
-│  ├─ Button
-│  ├─ Tag
-│  ├─ FilterPill
-│  └─ SearchInput
-├─ Level 2/
-│  ├─ Card
-│  ├─ TableRow
-│  ├─ TableCell
-│  ├─ TableHeaderCell
-│  ├─ FilterDropdownTrigger
-│  ├─ ListItem
-│  ├─ TabItem
-│  └─ MetricCard
-└─ Level 3/
-   ├─ Table
-   ├─ MetricsRow
-   ├─ AppHeader
-   ├─ GlobalNav
-   ├─ PageSection
-   ├─ AppShell
-   ├─ PageLayout
-   ├─ ListGroup
-   └─ TabsGroup
+**Storybook sidebar displays in this exact order:**
 
-Page Patterns/
-├─ Table Page
-└─ Segmented Table Page
-
-Page Examples/
-├─ Dashboard
-├─ Votes
-└─ Groups (README, references pattern)
 ```
+1. Components/
+   ├─ Level 1/
+   │  ├─ Button
+   │  ├─ Tag
+   │  ├─ FilterPill
+   │  └─ SearchInput
+   ├─ Level 2/
+   │  ├─ Card
+   │  ├─ TableRow
+   │  ├─ TableCell
+   │  ├─ TableHeaderCell
+   │  ├─ FilterDropdownTrigger
+   │  ├─ ListItem
+   │  ├─ TabItem
+   │  └─ MetricCard
+   └─ Level 3/
+      ├─ Table
+      ├─ MetricsRow
+      ├─ AppHeader
+      ├─ GlobalNav
+      ├─ PageSection
+      ├─ AppShell
+      ├─ PageLayout
+      ├─ ListGroup
+      └─ TabsGroup
+
+2. Page Patterns/
+   ├─ Table Page
+   └─ Segmented Table Page
+
+3. Page Examples/
+   ├─ Dashboard
+   ├─ Votes
+   └─ Groups (README, references pattern)
+```
+
+**Ordering Strategy:**
+- Numeric prefixes (1, 2, 3) enforce top-level ordering
+- Ensures architectural flow: simple → complex → reusable → concrete
+- Without prefixes, "Page Examples" would sort before "Page Patterns" (E < P)
+- Prefixes are explicit, unambiguous, and agent-safe
 
 ### Why This Organization?
 
