@@ -82,6 +82,7 @@ import { createTablePagination } from '../../../../components/table-pagination/t
 import { createDataTable } from '../../../../components/data-table/data-table';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
+import { createButton } from '../../../../components/button/button';
 
 // =============================================================================
 // DATA: Representative table data for canonical table pages
@@ -340,6 +341,28 @@ interface TablePageConfig {
   // Page configuration
   title: string;
   description?: string;
+  
+  /**
+   * Primary action for the page (e.g., "Create Vote", "Create Survey").
+   * 
+   * This is semantic page intent. The pattern will create a primary button
+   * and place it in the AppHeader actions slot.
+   * 
+   * Do NOT use this for complex action layouts. For advanced cases,
+   * use the actions prop to pass a pre-composed HTMLElement.
+   */
+  primaryAction?: {
+    label: string;
+    onClick?: () => void;
+  };
+  
+  /**
+   * @deprecated Use primaryAction instead for simple CTAs.
+   * 
+   * Raw HTMLElement for AppHeader actions slot.
+   * Only use this for complex action layouts that cannot be expressed
+   * via primaryAction.
+   */
   actions?: HTMLElement;
   
   // Toolbar configuration
@@ -425,6 +448,7 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
   const {
     title,
     description,
+    primaryAction,
     actions,
     searchPlaceholder,
     filters = [],
@@ -442,12 +466,24 @@ function createTablePageFromConfig(config: TablePageConfig): HTMLElement {
     navKey,
   } = config;
 
+  // Normalize primary action into AppHeader actions
+  let headerActions: HTMLElement | undefined = actions;
+  
+  if (primaryAction && !actions) {
+    // Create primary button from semantic page intent
+    headerActions = createButton({
+      children: primaryAction.label,
+      variant: 'primary',
+      onClick: primaryAction.onClick,
+    });
+  }
+
   const pageChildren: HTMLElement[] = [
     // AppHeader must be first child
     createAppHeader({
       title,
       description,
-      actions,
+      actions: headerActions,
       dense: true, // DEFAULT: Dense header for workflow pages
     }),
   ];

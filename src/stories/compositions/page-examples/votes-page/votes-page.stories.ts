@@ -70,7 +70,6 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
-import { createButton } from '../../../../components/button/button';
 
 // =============================================================================
 // DATA: Representative vote data
@@ -368,10 +367,11 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     title: 'Votes',
     description: 'Make decisions with your project groups.',
     useDataTable: true,
-    actions: createButton({
-      children: 'Create Vote',
-      variant: 'primary',
-    }),
+    
+    // Primary action (semantic page intent)
+    primaryAction: {
+      label: 'Create Vote',
+    },
     
     // Toolbar configuration
     searchPlaceholder: 'Search votes…',

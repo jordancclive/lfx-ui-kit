@@ -70,7 +70,6 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createTablePageFromConfig } from '../../page-patterns/table-page/table-page.stories';
 import { createTag } from '../../../../components/tag/tag';
-import { createButton } from '../../../../components/button/button';
 
 // =============================================================================
 // DATA: Representative survey data
@@ -423,10 +422,11 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
     title: 'Surveys',
     description: 'Collect feedback from your project groups.',
     useDataTable: true,
-    actions: createButton({
-      children: 'Create Survey',
-      variant: 'primary',
-    }),
+    
+    // Primary action (semantic page intent)
+    primaryAction: {
+      label: 'Create Survey',
+    },
     
     // Toolbar configuration
     searchPlaceholder: 'Search surveys…',
