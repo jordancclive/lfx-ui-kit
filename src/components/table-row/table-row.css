@@ -32,10 +32,17 @@
 /* ========================================
    STATE: Hover
    Only applies when not selected or disabled
+   Provides clear affordance via:
+   - Background surface change
+   - Subtle left-edge accent indicator
    ======================================== */
 
 .lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) {
   background-color: var(--color-table-row-background-hover);
+  
+  /* Subtle left-edge indicator for clickable affordance */
+  border-left: 3px solid var(--accent-500);
+  padding-left: calc(var(--spacing-16) - 3px); /* Compensate for border to prevent content shift */
 }
 
 /* ========================================

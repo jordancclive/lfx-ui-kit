@@ -491,7 +491,9 @@
   --ui-surface-subtle: var(--neutral-50);
   
   /* Hover state for interactive surfaces */
-  --ui-surface-hover: var(--neutral-100);
+  /* Strengthened from neutral-100 to be distinct from page surface */
+  /* Intermediate value between neutral-100 (#f1f5f9) and neutral-200 (#e2e8f0) */
+  --ui-surface-hover: #eaeff5;
   
   /* Selected state highlight */
   --ui-surface-selected: var(--accent-100);

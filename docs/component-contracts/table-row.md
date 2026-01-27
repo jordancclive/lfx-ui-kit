@@ -99,6 +99,33 @@ This means:
 
 ---
 
+## Hover & Click Affordance
+
+**Visual affordance for clickable rows must be clear but subtle.**
+
+### Normative Rules
+
+- Hover affordance exists ONLY when `clickable: true`
+- Hover MUST provide a clear but subtle signal of interactivity
+- Hover MUST aid scanning, not compete with content
+- Non-clickable rows MUST NOT display hover affordance
+- Disabled rows MUST NOT display hover or click affordance
+
+### Visual Characteristics
+
+- Background surface change on hover (via tokens)
+- Cursor change to pointer
+- Optional: Subtle left-edge accent indicator
+- Smooth transition (150ms)
+
+### Lock Note
+
+> Visual affordance strength may be tuned via tokens, but the **presence
+> of hover is strictly tied to explicit clickability** (`clickable: true`).
+> Hover must never be inferred or applied to non-clickable rows.
+
+---
+
 ## Storybook Coverage
 
 - Default
