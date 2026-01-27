@@ -3,28 +3,33 @@
  * 
  * Canonical single-table workflow surface for LFX One.
  * 
- * COMPOSITION ONLY:
- * - DataTable contains NO layout logic
- * - ALL styling delegated to child components:
- *   - Card (container surface)
- *   - TableToolbar (search + filter layout)
- *   - TableGrid (data grid layout)
- *   - TablePagination (pagination controls)
+ * COMPOSITION:
+ * - DataTable wraps content in a Card container
+ * - Child components: TableToolbar, TableGrid, TablePagination
+ * - Minimal styling — delegates to child components
  * 
- * This CSS file exists for future extensibility only.
- * Currently, DataTable requires NO custom styles.
+ * VISUAL REFINEMENT:
+ * - Adjusts Card padding for workflow-optimized spacing
+ * - Reduces top padding to pull controls closer to content
+ * - Maintains generous horizontal and bottom padding for structure
  */
 
 .lfx-data-table {
   /* 
-   * Identifying class for DataTable component.
+   * Workflow-optimized padding:
    * 
-   * Currently contains NO styles.
-   * All layout and styling delegated to child components.
+   * Reduces top padding to create tighter visual connection
+   * between toolbar controls and table content.
    * 
-   * This class exists for:
-   * - Debugging and identification
-   * - Future extensibility if needed
-   * - Consistent component patterns
+   * This makes DataTable feel like a cohesive workflow surface
+   * rather than overly padded content blocks.
+   * 
+   * Rationale:
+   * - Top: spacing-12 (lighter, pulls controls closer to content)
+   * - Horizontal: spacing-16 (maintains structure and alignment)  
+   * - Bottom: spacing-16 (balances pagination and footer spacing)
    */
+  padding-top: var(--spacing-12);
+  padding-inline: var(--spacing-16);
+  padding-bottom: var(--spacing-16);
 }
