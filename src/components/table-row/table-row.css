@@ -53,13 +53,8 @@
   padding-left: calc(var(--spacing-16) - 4px); /* Compensate for border to prevent content shift */
 }
 
-/* Primary cell text strengthening on row hover */
-/* Reinforces that entire row is actionable, not individual cells */
-/* Visual only - click handling remains at row level */
-.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) .lfx-table-cell--primary {
-  color: var(--neutral-900);
-  font-weight: var(--font-medium);
-}
+/* Primary cell text strengthening removed - row affordance is sufficient */
+/* Row hover + left-edge indicator carry interaction signal without typography mutation */
 
 /* ========================================
    STATE: Selected

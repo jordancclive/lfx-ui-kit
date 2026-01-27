@@ -13,9 +13,9 @@
   align-items: flex-start;
   gap: var(--spacing-app-header-gap);
   
-  /* Vertical padding only — horizontal alignment is owned by PageLayout */
+  /* Vertical padding — reduced bottom to visually connect to content */
   padding-top: var(--spacing-app-header-padding-y);
-  padding-bottom: var(--spacing-app-header-padding-y);
+  padding-bottom: var(--spacing-12); /* Reduced from spacing-16 for better visual handoff */
   
   /* AppHeader does NOT own surface — sits on page background */
   background-color: transparent;
@@ -106,7 +106,7 @@
 .lfx-app-header__actions {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start; /* Align with title text top edge */
   gap: var(--spacing-app-header-actions-gap);
   flex-shrink: 0;
 }

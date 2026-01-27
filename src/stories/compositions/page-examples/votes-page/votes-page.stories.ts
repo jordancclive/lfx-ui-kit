@@ -30,6 +30,9 @@
  * - Filters: "All Groups", "All Statuses" (example labels, non-functional)
  * - Status Tags use semantic variants (success=Open, warning=Pending, default=Closed)
  * - Action column shows "Review" or "View" based on status (text only, non-interactive)
+ * - Vote Name styled as link (blue color) to signal primary entry point
+ * - SearchInput spans full width in filter row (dominates visually)
+ * - No dense variant (one confident default presentation)
  * 
  * PAGE STRUCTURE (from Table Page pattern):
  * 
@@ -56,10 +59,13 @@
  * 
  * INSTANCE-LEVEL POLISH NOTES:
  * - Default sorting implemented (Votes-specific, not generalized)
- * - Row interaction feels confident (clickable rows, strong hover)
+ * - Vote Name styled as link (blue, visual dominance)
+ * - Row interaction feels confident (clickable rows, strong hover, no typography jitter)
  * - Column widths balanced via semantic types
- * - Filter row feels attached to table
- * - Dense mode preserves scanability
+ * - Filter row attached to table (SearchInput full-width)
+ * - AppHeader visually anchors content (reduced bottom spacing)
+ * - Primary action (Create Vote) aligned with title text
+ * - Dense variant removed (one confident default presentation)
  * 
  * DEFERRED ISSUES (requiring component/token changes):
  * - None identified at instance level
@@ -223,6 +229,31 @@ function createTextNode(text: string): Text {
 }
 
 // =============================================================================
+// HELPER: Link-Styled Vote Name (Votes-Specific)
+// =============================================================================
+
+/**
+ * Creates a link-styled Vote Name element.
+ * 
+ * VOTES-SPECIFIC AFFORDANCE:
+ * Vote Name is the primary entry point to each vote. It must:
+ * - Use brand blue (accent-600) to signal interactivity
+ * - Look like a link at rest (no hover changes needed)
+ * - NOT change font size or weight (stable typography)
+ * - NOT shift layout on hover
+ * 
+ * Row-level hover (background + left-edge indicator) carries the
+ * interaction signal. Vote Name color simply reinforces the entry point.
+ */
+function createVoteNameLink(name: string): HTMLElement {
+  const link = document.createElement('span');
+  link.textContent = name;
+  link.style.color = 'var(--accent-600)'; // Brand blue for link affordance
+  link.style.textDecoration = 'none'; // No underline (row hover is enough)
+  return link;
+}
+
+// =============================================================================
 // HELPER: Filter Row (canonical placement inside Card)
 // =============================================================================
 
@@ -230,7 +261,7 @@ function createTextNode(text: string): Text {
  * Creates a filter row for Votes table.
  * 
  * Structure:
- * - SearchInput (toolbar variant, flexible width, dominates)
+ * - SearchInput (toolbar variant, full-width, dominates)
  * - FilterDropdownTrigger: "All Groups" (intrinsic width)
  * - FilterDropdownTrigger: "All Statuses" (intrinsic width)
  * 
@@ -244,10 +275,13 @@ function createFiltersRow(): HTMLElement {
   container.style.gap = 'var(--spacing-8)';
   container.style.alignItems = 'center';
 
-  container.appendChild(createSearchInput({ 
+  const searchInput = createSearchInput({ 
     placeholder: 'Search votes…',
     variant: 'toolbar',
-  }));
+  });
+  searchInput.style.flex = '1'; // Full-width, dominates the row
+  
+  container.appendChild(searchInput);
   container.appendChild(createFilterDropdownTrigger({ label: 'All Groups' }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
@@ -360,9 +394,9 @@ function createVotesTable(votes: VoteRow[], dense = false): HTMLElement {
       clickable: true, // Row-level navigation
       dense,
       children: [
-        // Vote Name — primary column
+        // Vote Name — primary column (link-styled for visual dominance)
         createTableCell({ 
-          children: vote.name, 
+          children: createVoteNameLink(vote.name), 
           contentType: 'primary',
         }),
         
@@ -450,7 +484,6 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 // =============================================================================
 
 interface VotesTablePageArgs {
-  dense?: boolean;
   showFilters?: boolean;
   showPagination?: boolean;
   votes?: VoteRow[];
@@ -458,7 +491,6 @@ interface VotesTablePageArgs {
 
 function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
   const {
-    dense = false,
     showFilters = true,
     showPagination = false,
     votes = votesData,
@@ -473,7 +505,7 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
   }
 
   // Required: Table
-  cardChildren.push(createVotesTable(votes, dense));
+  cardChildren.push(createVotesTable(votes, false));
 
   // Optional: Pagination row (inside Card, below table)
   if (showPagination) {
@@ -486,7 +518,6 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     createAppHeader({
       title: 'Votes',
       description: 'Make decisions with your project groups.',
-      dense,
       primaryAction: createButton({
         children: 'Create Vote',
         variant: 'primary',
@@ -497,14 +528,12 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
     createPageSection({
       dense: true,
       children: createCard({
-        dense,
         children: cardChildren,
       }),
     }),
   ];
 
   const pageContent = createPageLayout({
-    dense,
     children: pageChildren,
   });
 
@@ -595,10 +624,6 @@ If something feels off visually, fix in components or tokens, not here.
     },
   },
   argTypes: {
-    dense: {
-      control: 'boolean',
-      description: 'Apply dense spacing to all components',
-    },
     showFilters: {
       control: 'boolean',
       description: 'Show search and filter controls',
@@ -628,23 +653,6 @@ type Story = StoryObj<VotesTablePageArgs>;
  */
 export const Default: Story = {
   args: {
-    dense: false,
-    showFilters: true,
-    showPagination: false,
-  },
-};
-
-/**
- * Dense variant of Votes Table Page.
- * 
- * Demonstrates:
- * - Dense mode across all components
- * - Filters enabled
- * - Compact spacing for high-density data
- */
-export const Dense: Story = {
-  args: {
-    dense: true,
     showFilters: true,
     showPagination: false,
   },
@@ -660,7 +668,6 @@ export const Dense: Story = {
  */
 export const WithPagination: Story = {
   args: {
-    dense: false,
     showFilters: true,
     showPagination: true,
   },
@@ -677,7 +684,6 @@ export const WithPagination: Story = {
  */
 export const Minimal: Story = {
   args: {
-    dense: false,
     showFilters: false,
     showPagination: false,
     votes: minimalVotesData,
