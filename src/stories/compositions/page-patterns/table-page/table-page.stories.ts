@@ -27,22 +27,31 @@
  * Key characteristics:
  * - Page title == Table title (no section titles)
  * - One table per page
- * - Optional search + filters inside the Card, above the table
+ * - TIGHT header → table handoff (workflow-optimized vertical rhythm)
+ * - Filters DOCK to table (read as table's top edge, not floating toolbar)
+ * - Search is FULL-WIDTH by default (primary scoping mechanism)
  * - Semantic column widths (flexible vs intrinsic)
- * - Clean vertical rhythm
- * - Compact, scan-friendly density
+ * - Filter order matches column semantics (cognitive ease)
  * 
  * CANONICAL STRUCTURE:
  * 
  * AppShell
- * └─ PageLayout
- *    ├─ AppHeader
+ * └─ PageLayout (gap: 8px — TIGHTER than default)
+ *    ├─ AppHeader (dense: true)
  *    │  ├─ title (page title == table title)
  *    │  └─ description (optional)
  *    └─ PageSection (dense: true)
  *       └─ Card
- *          ├─ Search + Filter row (optional)
- *          └─ Table (semantic columns)
+ *          ├─ Filter row (DOCKED — no margin, internal padding only)
+ *          │  ├─ SearchInput (flex: 1 — FULL-WIDTH by default)
+ *          │  └─ Filters (order matches columns)
+ *          ├─ Table (semantic columns)
+ *          └─ Pagination (optional)
+ * 
+ * VISUAL GOALS:
+ * - Header hands off directly into table (no buffer feeling)
+ * - Filters feel like table's top edge (not floating controls)
+ * - Page reads as ONE workflow top → bottom
  * 
  * If something feels off visually:
  * - Identify which component owns the issue
@@ -155,25 +164,31 @@ function createTextNode(text: string): HTMLElement {
 /**
  * Creates the search + filter control row.
  * 
- * This row sits inside the Card, directly above the table.
+ * DOCKED TO TABLE — This row is the visual "top edge" of the table.
  * 
  * DEFAULT BEHAVIOR (Table Page Pattern):
  * - SearchInput is FULL-WIDTH by default (flex: 1)
  * - Filters are intrinsic width (auto)
- * - Filter order follows column semantics
- * - Tight gap (spacing-8) for unified toolbar feel
+ * - Filter order MUST match column semantics (left → right)
+ * - Internal padding provides breathing room
+ * - NO bottom margin — docks directly to table header
  * 
  * Filter placement pattern:
  * - Filters apply to the entire table
- * - This is the canonical filter placement for table pages
- * - Filters are grouped WITH the table in the same Card
+ * - Filters are INSIDE the Card, ABOVE the table
+ * - Filters read as the table's top edge, not a floating toolbar
  */
 function createFiltersRow(): HTMLElement {
   const container = document.createElement('div');
   container.style.display = 'flex';
   container.style.gap = 'var(--spacing-8)';
   container.style.alignItems = 'center';
-  container.style.marginBottom = 'var(--spacing-12)'; // Separate filters from table
+  
+  // Internal padding for breathing room (no margin — docks to table)
+  container.style.paddingTop = 'var(--spacing-12)';
+  container.style.paddingBottom = 'var(--spacing-12)';
+  container.style.paddingLeft = 'var(--spacing-16)';
+  container.style.paddingRight = 'var(--spacing-16)';
 
   const searchInput = createSearchInput({ 
     placeholder: 'Search projects…',
@@ -182,6 +197,7 @@ function createFiltersRow(): HTMLElement {
   searchInput.style.flex = '1'; // DEFAULT: Full-width search
   
   container.appendChild(searchInput);
+  // Filter order matches column semantics: Category → Status
   container.appendChild(createFilterDropdownTrigger({ label: 'All Categories' }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Statuses' }));
 
@@ -361,11 +377,18 @@ interface TablePageArgs {
  * 
  * Structure:
  * - AppHeader with page title (== table title)
+ * - TIGHT vertical handoff (workflow-optimized)
  * - PageSection (dense) containing Card
  * - Card contains optional filters + table + optional pagination
+ * - Filters DOCK to table (no gap)
  * 
  * NO section titles inside the page.
  * Page title == Table title.
+ * 
+ * Visual goals:
+ * - Header hands off directly into table
+ * - Filters read as table's top edge (not floating toolbar)
+ * - Page reads as ONE workflow, not separate regions
  */
 function createTablePage(args: TablePageArgs = {}): HTMLElement {
   const {
@@ -411,11 +434,16 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
     })
   );
 
-  // Build the page content
+  // Build the page content with tighter vertical rhythm for workflow pages
   const pageContent = createPageLayout({
-    dense,
+    dense: true, // ALWAYS dense for Table Pages (workflow handoff)
     children: pageChildren,
   });
+  
+  // WORKFLOW HANDOFF: Reduce gap between header and content
+  // This overrides the default 16px gap to create a tighter visual connection
+  // between the page title and the table data
+  pageContent.style.gap = 'var(--spacing-8)'; // Tighter than default dense (16px → 8px)
 
   // Full AppShell with nav
   const appShell = createAppShell({
