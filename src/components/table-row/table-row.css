@@ -12,20 +12,30 @@
  */
 
 .lfx-table-row {
-  /* Layout - horizontal, no fixed height */
+  /* Layout - uses display: contents in grid tables (overridden by table.css)
+     This flex layout is only for standalone row usage outside grid tables */
   display: flex;
   align-items: center;
   
-  /* Padding */
+  /* Padding - only applies to standalone rows outside grid tables
+     Grid table rows have padding applied to cells instead */
   padding: var(--spacing-12) var(--spacing-16);
   
-  /* Default state background */
+  /* Default state background - only applies to standalone rows
+     Grid table rows have background applied to cells instead */
   background-color: var(--color-table-row-background-default);
   
-  /* Bottom divider */
+  /* Bottom divider - only applies to standalone rows
+     Grid table rows have borders applied to cells instead */
   border-bottom: var(--button-stroke) solid var(--color-table-row-border);
   
   /* Transition */
+  transition: background-color 150ms ease;
+}
+
+/* For grid tables: apply background to cells since row uses display: contents */
+.lfx-table__body > .lfx-table-row > .lfx-table-cell {
+  background-color: var(--color-table-row-background-default);
   transition: background-color 150ms ease;
 }
 
@@ -33,22 +43,27 @@
    STATE: Hover
    Only applies when not selected or disabled
    
+   CRITICAL: TableRow uses display: contents in grid tables,
+   so it doesn't generate a box. Background and borders must
+   be applied to CELLS, not the row element.
+   
    Row Cohesion Strategy:
    - Full-width background surface change (visual binding across columns)
    - Left-edge accent indicator (immediate interactivity signal)
-   - Strengthened primary cell text (reinforces actionability)
    - Cursor pointer (standard interaction affordance)
    
    Goal: User can instantly tell row is interactive and track
    horizontally across wide column gaps while scanning.
    ======================================== */
 
-.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) {
+.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) > .lfx-table-cell {
   /* Full-width background change for horizontal row binding */
   background-color: var(--color-table-row-background-hover);
-  
+}
+
+/* Left-edge accent indicator on first cell only */
+.lfx-table-row--clickable:hover:not(.lfx-table-row--selected):not(.lfx-table-row--disabled) > .lfx-table-cell:first-child {
   /* Left-edge accent indicator - immediate interactivity signal */
-  /* Strengthened from 3px to 4px and accent-500 to accent-600 for clarity */
   border-left: 4px solid var(--accent-600);
   padding-left: calc(var(--spacing-16) - 4px); /* Compensate for border to prevent content shift */
 }
@@ -59,24 +74,29 @@
 /* ========================================
    STATE: Selected
    Selected overrides hover
+   Applied to cells since row uses display: contents
    ======================================== */
 
-.lfx-table-row--selected {
+.lfx-table-row--selected > .lfx-table-cell {
   background-color: var(--color-table-row-background-selected);
 }
 
 /* ========================================
    STATE: Disabled
    Disabled overrides all states
+   Applied to cells since row uses display: contents
    ======================================== */
 
-.lfx-table-row--disabled {
+.lfx-table-row--disabled > .lfx-table-cell {
   background-color: var(--color-table-row-background-disabled);
+}
+
+.lfx-table-row--disabled {
   cursor: not-allowed;
 }
 
 /* Ensure disabled overrides selected */
-.lfx-table-row--disabled.lfx-table-row--selected {
+.lfx-table-row--disabled.lfx-table-row--selected > .lfx-table-cell {
   background-color: var(--color-table-row-background-disabled);
 }
 
