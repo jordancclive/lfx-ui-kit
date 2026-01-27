@@ -492,18 +492,20 @@
   
   /* Hover state for interactive surfaces
      
-     CHOICE: accent-100 (#ecf4ff) - Brand blue
+     CHOICE: accent-50 (#f8fbff) - Very light brand blue
      
      Justification:
-     - Must be clearly visible in peripheral vision (not subtle)
-     - Brand blue reinforces interactive affordance (not passive neutral)
+     - Lighter than accent-100 for maximum peripheral visibility
+     - Still brand blue (reinforces interactive affordance)
      - Flat color maintains calm hierarchy (no shadow, no elevation)
-     - accent-100 (vs accent-50) provides sufficient contrast for scanability
-     - Consistent with selected state (same token)
+     - Provides excellent contrast for instant row recognition
+     - More visible than accent-100 while remaining calm
      
-     Considered: neutral-50 (#f8fafc) - Too subtle, no brand signal
+     Considered:
+     - accent-100 (#ecf4ff) - Good but slightly less visible
+     - neutral-50 (#f8fafc) - Too subtle, no brand signal
   */
-  --ui-surface-hover: var(--accent-100);
+  --ui-surface-hover: var(--accent-50);
   
   /* Selected state highlight */
   --ui-surface-selected: var(--accent-100);
@@ -790,8 +792,9 @@
   --spacing-app-header-meta-gap: var(--spacing-8);
   --spacing-app-header-actions-gap: var(--spacing-8);
   
-  /* Spacing - Dense (optimized for workflow pages with immediate table handoff) */
-  --spacing-app-header-padding-y-dense: var(--spacing-8);
+  /* Spacing - Dense (optimized for workflow pages with immediate table handoff)
+     Minimal vertical padding for direct header → table visual flow */
+  --spacing-app-header-padding-y-dense: var(--spacing-6);
   --spacing-app-header-gap-dense: var(--spacing-6);
   --spacing-app-header-title-gap-dense: var(--spacing-2);
 
