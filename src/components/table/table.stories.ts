@@ -6,7 +6,7 @@ import { createTableCell } from '../table-cell/table-cell';
 import { createTag } from '../tag/tag';
 
 const meta: Meta<TableProps> = {
-  title: 'Components/Table',
+  title: 'Components / Level 3 / Table',
   tags: ['autodocs'],
   parameters: {
     docs: {

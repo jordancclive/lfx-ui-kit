@@ -63,25 +63,69 @@ Page Examples (product-specific)
 - Bind to tokens only (no raw values)
 - Can be used anywhere
 
+**Component Levels:**
+
+Components are organized by complexity and composition:
+
+#### Level 1 — Atoms
+Single-purpose, indivisible UI elements.
+
 **Examples:**
 - `Button`
-- `Table`
+- `Tag`
+- `FilterPill`
+- `SearchInput`
+
+**Storybook:** `Components / Level 1 / *`
+
+#### Level 2 — Patterns / Molecules
+Composite components or styled patterns built from atoms.
+
+**Examples:**
+- `Card`
 - `TableRow`
 - `TableCell`
-- `Card`
-- `Tag`
-- `SearchInput`
+- `TableHeaderCell`
+- `FilterDropdownTrigger`
+- `ListItem`
+- `TabItem`
+- `MetricCard`
+
+**Storybook:** `Components / Level 2 / *`
+
+#### Level 3 — Organisms
+Complex assemblies that combine multiple Level 1/2 components.
+
+**Examples:**
+- `Table`
+- `MetricsRow`
+- `AppHeader`
+- `GlobalNav`
+- `PageSection`
+- `AppShell`
+- `PageLayout`
+- `ListGroup`
+- `TabsGroup`
+
+**Storybook:** `Components / Level 3 / *`
 
 **Location:** `src/components/`
 
 **Documentation:** `docs/component-contracts/`
 
-**Storybook:** `Components/*`
-
 **Rules:**
 - Components must not contain page-specific logic
 - Components must not know about page patterns
 - Components must be reusable across all contexts
+- Level does NOT imply importance, only composition complexity
+
+**Component Level Guidelines:**
+
+- **Level 1 (Atoms)** — Cannot be broken down further (Button, Tag, SearchInput)
+- **Level 2 (Molecules)** — Combine Level 1 components or add styled structure (Card, TableRow, MetricCard)
+- **Level 3 (Organisms)** — Complex assemblies of Level 1/2 components (Table, AppHeader, PageLayout)
+
+Level classification is about **composition complexity**, not **value** or **priority**.
 
 ---
 
@@ -183,13 +227,17 @@ Page Examples are real product pages (Votes, Groups, etc.) that IMPLEMENT a page
 - "Votes Table Page Pattern"
 - "Example Table Page"
 
-### Storybook "Composition" Is Presentation Only
+### Location Determines Reusability
 
-The term "composition" is a Storybook organizational concept. It does NOT indicate whether something is a pattern or an example.
+**Location in Storybook and filesystem determines meaning:**
 
-**Location determines meaning:**
-- `page-patterns/` = Reusable pattern
-- `page-examples/` = Non-reusable example
+- `Components / Level 1 / *` = Atomic components (reusable)
+- `Components / Level 2 / *` = Pattern components (reusable)
+- `Components / Level 3 / *` = Organism components (reusable)
+- `Page Patterns / *` = Reusable structural blueprints
+- `Page Examples / *` = Non-reusable product pages
+
+**No other top-level Storybook sections are allowed.**
 
 ---
 
@@ -296,29 +344,49 @@ docs/
 
 ```
 Components/
-├─ Button
-├─ Card
-├─ Table
-├─ TableRow
-├─ TableCell
-├─ Tag
-└─ ...
+├─ Level 1/
+│  ├─ Button
+│  ├─ Tag
+│  ├─ FilterPill
+│  └─ SearchInput
+├─ Level 2/
+│  ├─ Card
+│  ├─ TableRow
+│  ├─ TableCell
+│  ├─ TableHeaderCell
+│  ├─ FilterDropdownTrigger
+│  ├─ ListItem
+│  ├─ TabItem
+│  └─ MetricCard
+└─ Level 3/
+   ├─ Table
+   ├─ MetricsRow
+   ├─ AppHeader
+   ├─ GlobalNav
+   ├─ PageSection
+   ├─ AppShell
+   ├─ PageLayout
+   ├─ ListGroup
+   └─ TabsGroup
 
 Page Patterns/
 ├─ Table Page
 └─ Segmented Table Page
 
 Page Examples/
+├─ Dashboard
 ├─ Votes
-└─ Groups (README, no duplicate story)
+└─ Groups (README, references pattern)
 ```
 
 ### Why This Organization?
 
-1. **Clear separation** — Patterns vs Examples are visually distinct
-2. **No ambiguity** — Location determines reusability
-3. **Agent-safe** — AI systems can navigate by folder structure
-4. **Human-friendly** — Developers understand boundaries immediately
+1. **Architectural clarity** — Components organized by composition complexity
+2. **Clear separation** — Patterns vs Examples are visually distinct
+3. **No ambiguity** — Location determines reusability
+4. **Agent-safe** — AI systems can navigate by folder structure
+5. **Human-friendly** — Developers understand boundaries immediately
+6. **Level ≠ Importance** — Levels indicate composition, not value
 
 ---
 

@@ -1,5 +1,5 @@
 /**
- * Dashboard Composition Story
+ * Dashboard Page Example
  * 
  * PURPOSE:
  * This dashboard exists to validate system composition, not to define final UI.
@@ -262,14 +262,14 @@ function createDashboard(args: DashboardArgs = {}) {
 // =============================================================================
 
 const meta: Meta<DashboardArgs> = {
-  title: 'Compositions/Dashboard',
+  title: 'Page Examples / Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
         component: `
-## Dashboard Composition
+## Dashboard Page Example
 
 This is a **system verification artifact**, not a product feature.
 

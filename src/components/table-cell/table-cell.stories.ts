@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createTableCell, TableCellProps } from './table-cell';
 
 const meta: Meta<TableCellProps> = {
-  title: 'Components/TableCell',
+  title: 'Components / Level 2 / TableCell',
   tags: ['autodocs'],
   render: (args) => createTableCell(args),
   parameters: {

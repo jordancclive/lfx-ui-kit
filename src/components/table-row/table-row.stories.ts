@@ -22,7 +22,7 @@ const createSampleCells = (): HTMLElement[] => {
 };
 
 const meta: Meta<TableRowProps> = {
-  title: 'Components/TableRow',
+  title: 'Components / Level 2 / TableRow',
   tags: ['autodocs'],
   render: (args) => createTableRow({ ...args, children: createSampleCells() }),
   argTypes: {

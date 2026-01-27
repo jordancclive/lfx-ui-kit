@@ -30,7 +30,7 @@ const tabsWithIcons = [
 ];
 
 const meta: Meta<TabsGroupProps> = {
-  title: 'Components/TabsGroup',
+  title: 'Components / Level 3 / TabsGroup',
   tags: ['autodocs'],
   render: (args) => createTabsGroup(args),
   argTypes: {

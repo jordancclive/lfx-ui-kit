@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createGlobalNav, createNavSection, createNavItem, GlobalNavProps } from './global-nav';
 
 const meta: Meta<GlobalNavProps> = {
-  title: 'Components/GlobalNav',
+  title: 'Components / Level 3 / GlobalNav',
   tags: ['autodocs'],
   parameters: {
     docs: {
