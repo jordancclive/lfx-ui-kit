@@ -220,6 +220,65 @@ Card
 - They are siblings at the same architectural level
 - Neither should own or render the other
 
+---
+
+## Architectural Guardrails
+
+This component is part of the **LFX One table system**.
+
+The table system is intentionally layered to prevent layout drift and ownership confusion.
+
+### Core Principle
+
+> **Each layer owns exactly one responsibility.  
+No component may "help" another by re-implementing layout or behavior.**
+
+If something feels missing, it belongs in a **different layer**, not as an override.
+
+### DO
+
+- Use this component only for its documented responsibility
+- Assume sibling components exist and will handle adjacent concerns
+- Rely on defensive behavior instead of conditional rendering
+- Let Page Patterns decide *where* things appear
+- Let Molecules decide *how* things are laid out
+
+### DO NOT
+
+- Re-implement spacing, flex, or padding outside this component
+- Add layout flags or overrides
+- Move responsibilities up or down the stack
+- Render sibling components inside this one
+- Special-case page examples
+
+### Ownership Boundaries (Locked)
+
+| Layer | Owns |
+|------|------|
+| **TableGrid (Level 2)** | Grid layout for rows & cells only |
+| **TableToolbar (Level 2)** | Search + filter layout only |
+| **TablePagination (Level 2)** | Pagination controls only |
+| **DataTable (Level 3)** | Bundling the three above into a single workflow surface |
+| **Table Page (Pattern)** | Page placement, header, vertical rhythm |
+| **Page Examples** | Configuration only (labels, data, callbacks) |
+
+> **No other ownership model is valid.**
+
+If you find yourself wanting to violate this table, stop and redesign the layer instead of patching around it.
+
+### Agent & Contributor Warning
+
+If you feel tempted to:
+- add flex logic to a page example
+- add spacing to a pattern that belongs in a component
+- move toolbar or pagination into TableGrid
+
+You are introducing architectural drift.
+
+Consult the Design System Orientation before proceeding.
+
+---
+
 ## Ownership Lock
 
 **This section defines permanent architectural boundaries.**

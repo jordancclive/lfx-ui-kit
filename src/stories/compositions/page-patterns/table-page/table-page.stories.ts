@@ -638,6 +638,132 @@ If something feels off visually:
 ✓ Filters feel attached, not floating  
 ✓ No section titles clutter the page  
 ✓ Scanability is optimal
+
+---
+
+## Choosing Between TablePage and DataTable
+
+Both **TablePage** and **DataTable** exist intentionally.  
+They solve different problems.
+
+### Use DataTable (Level 3) when:
+
+- Exactly ONE dataset
+- Exactly ONE search + filter surface
+- Exactly ONE pagination surface
+- Workflow-style list page
+- Convention over configuration is desired
+
+Typical examples:
+- Votes
+- Surveys
+- Projects
+- Drive
+- Mailing Lists
+
+**Mental model:**  
+"I just want the standard LFX One table workflow."
+
+### Use TablePage (Pattern) when:
+
+- You need page-level control
+- The table is only part of the page
+- You are composing custom structures
+- You expect future divergence
+
+**Mental model:**  
+"I want to assemble the page myself, but correctly."
+
+### Do NOT use DataTable when:
+
+- Multiple tables exist on the page
+- SegmentedTablePage is used
+- Filters scope only part of the data
+- The page is comparative or analytical
+- Layout overrides are required
+
+In these cases, compose:
+- TableGrid
+- TableToolbar
+- TablePagination
+directly under the appropriate Page Pattern.
+
+### Decision Shortcut
+
+If all are true:
+- One dataset
+- One toolbar
+- One pagination row
+- Standard list workflow
+
+→ Use **DataTable**
+
+Otherwise:
+→ Use **TablePage**
+
+### Final Rule
+
+> Page Examples MUST NOT invent layout.  
+They either configure DataTable or configure TablePage.
+
+Anything else is a bug.
+
+---
+
+## Architectural Guardrails
+
+This component is part of the **LFX One table system**.
+
+The table system is intentionally layered to prevent layout drift and ownership confusion.
+
+### Core Principle
+
+> **Each layer owns exactly one responsibility.  
+No component may "help" another by re-implementing layout or behavior.**
+
+If something feels missing, it belongs in a **different layer**, not as an override.
+
+### DO
+
+- Use this component only for its documented responsibility
+- Assume sibling components exist and will handle adjacent concerns
+- Rely on defensive behavior instead of conditional rendering
+- Let Page Patterns decide *where* things appear
+- Let Molecules decide *how* things are laid out
+
+### DO NOT
+
+- Re-implement spacing, flex, or padding outside this component
+- Add layout flags or overrides
+- Move responsibilities up or down the stack
+- Render sibling components inside this one
+- Special-case page examples
+
+### Ownership Boundaries (Locked)
+
+| Layer | Owns |
+|------|------|
+| **TableGrid (Level 2)** | Grid layout for rows & cells only |
+| **TableToolbar (Level 2)** | Search + filter layout only |
+| **TablePagination (Level 2)** | Pagination controls only |
+| **DataTable (Level 3)** | Bundling the three above into a single workflow surface |
+| **Table Page (Pattern)** | Page placement, header, vertical rhythm |
+| **Page Examples** | Configuration only (labels, data, callbacks) |
+
+> **No other ownership model is valid.**
+
+If you find yourself wanting to violate this table, stop and redesign the layer instead of patching around it.
+
+### Agent & Contributor Warning
+
+If you feel tempted to:
+- add flex logic to a page example
+- add spacing to a pattern that belongs in a component
+- move toolbar or pagination into TableGrid
+
+You are introducing architectural drift.
+
+Consult the Design System Orientation before proceeding.
         `,
       },
     },
