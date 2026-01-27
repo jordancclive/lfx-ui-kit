@@ -16,6 +16,8 @@ export interface SearchInputProps {
   disabled?: boolean;
   /** Show search icon */
   showIcon?: boolean;
+  /** Visual variant - controls shape and density */
+  variant?: 'form' | 'toolbar';
 }
 
 /**
@@ -34,11 +36,17 @@ export const createSearchInput = ({
   value = '',
   disabled = false,
   showIcon = true,
+  variant = 'form',
 }: SearchInputProps = {}): HTMLDivElement => {
   const wrapper = document.createElement('div');
   
   // Build class list
   const classes = ['lfx-search-input'];
+  
+  // Apply variant class
+  if (variant === 'toolbar') {
+    classes.push('lfx-search-input--toolbar');
+  }
   
   if (disabled) {
     classes.push('lfx-search-input--disabled');

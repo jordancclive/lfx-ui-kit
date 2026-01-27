@@ -22,6 +22,11 @@ const meta: Meta<SearchInputProps> = {
       control: 'boolean',
       description: 'Show search icon',
     },
+    variant: {
+      control: 'select',
+      options: ['form', 'toolbar'],
+      description: 'Visual variant - controls shape and density',
+    },
   },
   parameters: {
     docs: {
@@ -119,5 +124,50 @@ export const WithIcon: Story = {
     placeholder: 'Search...',
     disabled: false,
     showIcon: true,
+  },
+};
+
+/**
+ * Toolbar variant for use in filter bars and table headers.
+ * 
+ * Visual traits:
+ * - Fully rounded (pill shape)
+ * - Slightly reduced height for compact toolbar contexts
+ * - Lighter visual weight
+ * 
+ * Use in: table filter bars, list headers, Groups page, Votes, Surveys.
+ */
+export const Toolbar: Story = {
+  args: {
+    placeholder: 'Search Groups…',
+    disabled: false,
+    showIcon: true,
+    variant: 'toolbar',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Toolbar Variant**
+
+Use the toolbar variant in table filter bars and list headers where a compact,
+lightweight search control is needed.
+
+This variant:
+- Uses pill shape (fully rounded borders)
+- Has reduced height compared to form variant
+- Provides lighter visual weight for toolbar contexts
+
+**When to use:**
+- Table filter rows (e.g., Groups, Votes, Surveys)
+- List headers with search functionality
+- Any toolbar or control bar context
+
+**When NOT to use:**
+- Form data entry contexts (use form variant)
+- Settings or dialog inputs (use form variant)
+        `,
+      },
+    },
   },
 };

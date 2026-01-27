@@ -232,6 +232,11 @@ function createGroupsTable(data: GroupRow[], dense = false): HTMLElement {
  * - SearchInput dominates (expands naturally)
  * - FilterDropdownTrigger is secondary (intrinsic width)
  * - Tight gap (spacing-8) creates unified control bar feel
+ * 
+ * Uses toolbar variant for SearchInput:
+ * - Pill shape (fully rounded)
+ * - Reduced height for compact toolbar context
+ * - Matches LFX One Groups Figma design
  */
 function createFiltersRow(): HTMLElement {
   const container = document.createElement('div');
@@ -239,7 +244,10 @@ function createFiltersRow(): HTMLElement {
   container.style.gap = 'var(--spacing-8)';
   container.style.alignItems = 'center';
 
-  container.appendChild(createSearchInput({ placeholder: 'Search Groups…' }));
+  container.appendChild(createSearchInput({ 
+    placeholder: 'Search Groups…',
+    variant: 'toolbar',
+  }));
   container.appendChild(createFilterDropdownTrigger({ label: 'All Types' }));
 
   return container;

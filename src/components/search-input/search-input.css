@@ -65,6 +65,26 @@
 }
 
 /* ========================================
+   VARIANT: Toolbar
+   
+   Toolbar variant provides a compact, pill-shaped
+   search input for use in filter bars and toolbars.
+   
+   Visual traits:
+   - Fully rounded (pill shape)
+   - Slightly reduced height
+   - Lighter visual weight for toolbar contexts
+   ======================================== */
+
+.lfx-search-input--toolbar {
+  /* Pill shape - fully rounded */
+  border-radius: var(--rounded-full);
+  
+  /* Reduced vertical padding for compact height */
+  padding: var(--spacing-6) var(--spacing-12);
+}
+
+/* ========================================
    INNER ELEMENTS
    ======================================== */
 

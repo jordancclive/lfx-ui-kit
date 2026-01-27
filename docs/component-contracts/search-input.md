@@ -47,19 +47,51 @@ Provides a text input for search/filter operations.
 - Button color tokens
 - Layout container tokens
 
+## Variants
+
+SearchInput supports two visual variants that control shape and density:
+
+### variant="form" (default)
+
+- **Purpose:** Data entry in forms
+- **Visual traits:**
+  - Standard input height and radius
+  - Form-field visual weight
+- **Used in:** Forms, dialogs, settings, data entry contexts
+
+### variant="toolbar"
+
+- **Purpose:** Search/filter control in toolbars and filter bars
+- **Visual traits:**
+  - Fully rounded (pill shape)
+  - Slightly reduced height
+  - Lighter visual weight
+  - Compact for toolbar contexts
+- **Used in:** Groups, Votes, Surveys, table filter rows, list headers
+
+### Variant Rules
+
+- Variants affect shape and density only
+- No change to accessibility, events, or semantics
+- No new interaction states
+- All variants support the same props and behavior
+- ARIA roles remain consistent across variants
+
 ## Responsibilities
 
 - Display focus affordance
 - Propagate disabled state
 - Render left icon consistently
+- Apply variant-specific visual styling
 
 ## Storybook Coverage
 
-- Default
+- Default (form variant)
+- Toolbar (toolbar variant)
 - Focus
 - Disabled
 - WithIcon
 
 ---
 
-**Lock Statement:** This contract is considered stable. Visual changes must be achieved through tokens or child components, not by expanding this component's responsibilities.
+**Lock Statement:** This contract is considered stable. Variants may adjust visual density and shape, but must not change semantics, accessibility, or behavior.
