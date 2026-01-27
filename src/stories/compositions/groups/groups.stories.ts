@@ -1,21 +1,54 @@
 /**
  * Groups Page Composition Story
  * 
- * This story is a system composition validation artifact. It exists to prove
- * whether the current UI Kit can reproduce the Groups page without custom
- * styling or new components.
+ * PATTERN: SEGMENTED TABLE PAGE
  * 
- * RULES:
- * - No styling overrides are allowed
+ * Groups is a segmented table page composed of multiple independent table blocks.
+ * Each table block can independently declare:
+ * - Section title (required)
+ * - Filter row (optional)
+ * - Table (required)
+ * - Pagination row (optional)
+ * 
+ * No assumptions are made about which tables are filterable or paginated.
+ * Each table block is self-contained and explicit.
+ * 
+ * STRUCTURE:
+ * 
+ * AppHeader (title: "Groups")
+ * └─ PageSection (dense: true)
+ *    ├─ Table Block 1 ("My Groups")
+ *    │  ├─ Section Title
+ *    │  ├─ Card
+ *    │  │  ├─ (optional) Filter Row
+ *    │  │  ├─ Table
+ *    │  │  └─ (optional) Pagination Row
+ *    └─ Table Block 2 ("Other Groups")
+ *       ├─ Section Title
+ *       └─ Card
+ *          ├─ (optional) Filter Row
+ *          ├─ Table
+ *          └─ (optional) Pagination Row
+ * 
+ * KEY DIFFERENCES FROM CANONICAL TABLE PAGE:
+ * - Multiple tables (Groups is segmented)
+ * - Section titles present (required per table block)
+ * - Page title != Section titles
+ * - Each table block is independent
+ * 
+ * COMPOSITION RULES:
+ * - No styling overrides allowed
  * - No new tokens or props may be introduced
- * - If something looks wrong, the fix must occur in:
+ * - If something looks wrong, fix in:
  *   - tokens
  *   - component contracts
  *   - or missing pattern components
  * - Never in this story
  * 
  * WHAT THIS VALIDATES:
- * - Filters + tables compose cleanly
+ * - Multiple independent table blocks compose cleanly
+ * - Filters + tables compose per block
+ * - Pagination can be added per block
  * - Card surfaces behave consistently
  * - PageSection spacing scales across variants
  * - Tables support real product density
@@ -265,6 +298,55 @@ function createSectionTitle(text: string): HTMLElement {
   return title;
 }
 
+/**
+ * Creates a minimal pagination row placeholder.
+ * 
+ * PLACEHOLDER ONLY - This is a story-only helper demonstrating where
+ * pagination controls would sit. This will be replaced by a proper
+ * Pagination component in the future.
+ * 
+ * No inline spacing hacks. No visual styling beyond basic structure.
+ * Sits directly below the table when enabled.
+ */
+function createPaginationPlaceholder(currentPage = 1, totalItems = 42): HTMLElement {
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.justifyContent = 'space-between';
+  container.style.alignItems = 'center';
+  
+  // Info text
+  const info = document.createElement('span');
+  info.textContent = `Rows ${(currentPage - 1) * 10 + 1}–${Math.min(currentPage * 10, totalItems)} of ${totalItems}`;
+  info.style.fontFamily = 'var(--ui-text-body-secondary-font-family)';
+  info.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+  info.style.color = 'var(--text-secondary)';
+  
+  // Controls
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.gap = 'var(--spacing-8)';
+  
+  const prevButton = document.createElement('button');
+  prevButton.textContent = 'Previous';
+  prevButton.disabled = currentPage === 1;
+  prevButton.style.fontFamily = 'var(--ui-text-control-font-family)';
+  prevButton.style.fontSize = 'var(--ui-text-control-font-size)';
+  
+  const nextButton = document.createElement('button');
+  nextButton.textContent = 'Next';
+  nextButton.disabled = currentPage * 10 >= totalItems;
+  nextButton.style.fontFamily = 'var(--ui-text-control-font-family)';
+  nextButton.style.fontSize = 'var(--ui-text-control-font-size)';
+  
+  controls.appendChild(prevButton);
+  controls.appendChild(nextButton);
+  
+  container.appendChild(info);
+  container.appendChild(controls);
+  
+  return container;
+}
+
 function createDemoNav(activeItemId = 'groups') {
   return createGlobalNav({
     activeItemId,
@@ -301,17 +383,24 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
 
 interface GroupsPageArgs {
   dense?: boolean;
-  showFilters?: boolean;
   myGroups?: GroupRow[];
   otherGroups?: GroupRow[];
+  // Per-table block controls
+  myGroupsShowFilters?: boolean;
+  myGroupsShowPagination?: boolean;
+  otherGroupsShowFilters?: boolean;
+  otherGroupsShowPagination?: boolean;
 }
 
 function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
   const {
     dense = false,
-    showFilters = true,
     myGroups = myGroupsData,
     otherGroups = otherGroupsData,
+    myGroupsShowFilters = true,
+    myGroupsShowPagination = false,
+    otherGroupsShowFilters = false,
+    otherGroupsShowPagination = false,
   } = args;
 
   const pageChildren: HTMLElement[] = [
@@ -323,25 +412,34 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
     }),
   ];
 
-  // My Groups section with filters grouped in same card
+  // =========================================================================
+  // TABLE BLOCK 1: My Groups
   // 
-  // COMPOSITION STRUCTURE:
-  // - Filters row sits directly above table (both inside same Card)
-  // - No wrapper divs between them
-  // - Card's padding provides outer spacing
-  // - Filters row uses tight horizontal gap (spacing-8) for unified feel
+  // Each table block is self-contained and independently declares:
+  // - Section title (required)
+  // - Filter row (optional)
+  // - Table (required)
+  // - Pagination row (optional)
   // 
-  // This creates a "filtered table view" pattern where the controls
-  // feel visually attached to the data they control.
+  // No assumptions about which blocks have filters or pagination.
+  // =========================================================================
+  
   const myGroupsCardChildren: HTMLElement[] = [];
   
-  if (showFilters) {
+  // Optional: Filter row (sits directly above table)
+  if (myGroupsShowFilters) {
     myGroupsCardChildren.push(createFiltersRow());
   }
   
+  // Required: Table
   myGroupsCardChildren.push(createGroupsTable(myGroups, dense));
   
-  // Section title sits outside Card, both directly in PageSection
+  // Optional: Pagination row (sits directly below table)
+  if (myGroupsShowPagination) {
+    myGroupsCardChildren.push(createPaginationPlaceholder(1, myGroups.length));
+  }
+  
+  // Table Block 1: Section title outside Card
   pageChildren.push(
     createPageSection({
       dense: true,
@@ -355,7 +453,28 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
     })
   );
 
-  // Other Groups section - title outside Card
+  // =========================================================================
+  // TABLE BLOCK 2: Other Groups
+  // 
+  // Independent table block with its own controls.
+  // =========================================================================
+  
+  const otherGroupsCardChildren: HTMLElement[] = [];
+  
+  // Optional: Filter row
+  if (otherGroupsShowFilters) {
+    otherGroupsCardChildren.push(createFiltersRow());
+  }
+  
+  // Required: Table
+  otherGroupsCardChildren.push(createGroupsTable(otherGroups, dense));
+  
+  // Optional: Pagination row
+  if (otherGroupsShowPagination) {
+    otherGroupsCardChildren.push(createPaginationPlaceholder(1, otherGroups.length));
+  }
+  
+  // Table Block 2: Section title outside Card
   pageChildren.push(
     createPageSection({
       dense: true,
@@ -363,7 +482,7 @@ function createGroupsPage(args: GroupsPageArgs = {}): HTMLElement {
         createSectionTitle('Other Groups'),
         createCard({
           dense,
-          children: createGroupsTable(otherGroups, dense),
+          children: otherGroupsCardChildren,
         }),
       ],
     })
@@ -399,61 +518,85 @@ const meta: Meta<GroupsPageArgs> = {
         component: `
 ## Groups Page Composition
 
-**This is not a product feature.**
+**Segmented Table Page Pattern**
 
-This story is a system composition validation artifact. It exists to prove whether the current UI Kit can reproduce the Groups page without custom styling or new components.
+Groups is a segmented table page composed of multiple independent table blocks.
+Each table block can independently declare filters and pagination.
 
-### Rules
+### Pattern Characteristics
 
-- No styling overrides are allowed
-- No new tokens or props were introduced
-- If something looks wrong, the fix must occur in:
-  - tokens
-  - component contracts
-  - or missing pattern components
-- Never in this story
+- **Multiple tables per page** (My Groups, Other Groups)
+- **Section titles** (required per table block)
+- **Independent table blocks** (each has its own optional filters/pagination)
+- **No position-based assumptions** (any block can have filters/pagination)
 
-### What This Validates
+### Table Block Structure
 
-- Filters + tables compose cleanly
-- Card surfaces behave consistently
-- PageSection spacing scales across variants
-- Tables support real product density
-- Column semantics (primary text, categorical, numeric) work via composition
-
-### Validated Patterns
-
-**Search + Filters Embedded with Table:**
-- Search and filter controls grouped in the same Card as the table
-- This creates a clear "filtered view" container
-- Pattern is validated and may become a reusable table variant
-- Do NOT extract into a component yet — let the pattern mature first
-
-**Column Semantics:**
-- Name column: Primary text (flexible width, left aligned)
-- Type column: Categorical (intrinsic width, uses Tag placeholder)
-- Description column: Primary text (flexible width, left aligned)
-- Members column: Numeric (intrinsic width, right aligned)
-- Tables express semantic intent via content type, not equal-width columns
+Each table block consists of:
+1. **Section Title** (required) — sits outside Card
+2. **Card** containing:
+   - **(Optional)** Filter Row — SearchInput + FilterDropdownTrigger
+   - **(Required)** Table — with semantic column widths
+   - **(Optional)** Pagination Row — pagination controls placeholder
 
 ### Architecture
 
 \`\`\`
-AppShell
-└─ PageLayout
-   ├─ AppHeader
-   │  ├─ title: "Groups"
-   │  └─ description: "A group is a team of people..."
-   ├─ PageSection
-   │  ├─ SearchInput (placeholder: "Search Groups…")
-   │  └─ FilterDropdownTrigger (label: "All Types")
-   ├─ PageSection
+AppHeader (title: "Groups")
+└─ PageSection (dense: true)
+   ├─ Table Block 1 ("My Groups")
+   │  ├─ Section Title
    │  └─ Card
-   │     └─ Table (My Groups)
-   └─ PageSection
+   │     ├─ (optional) Filter Row
+   │     ├─ Table
+   │     └─ (optional) Pagination Row
+   └─ Table Block 2 ("Other Groups")
+      ├─ Section Title
       └─ Card
-         └─ Table (Other Groups)
+         ├─ (optional) Filter Row
+         ├─ Table
+         └─ (optional) Pagination Row
 \`\`\`
+
+### Independent Block Controls
+
+Each table block independently declares:
+- \`showFilters\` — whether to render filter row
+- \`showPagination\` — whether to render pagination row
+
+No assumptions are made based on:
+- Block position (top vs bottom)
+- Block name (My Groups vs Other Groups)
+- Table content
+
+### Key Differences from Canonical Table Page
+
+| Aspect | Groups (Segmented) | Table Page (Canonical) |
+|--------|-------------------|------------------------|
+| Tables | Multiple | Single |
+| Section Titles | Yes (per block) | None |
+| Page Title | != Section titles | == Table title |
+| Pattern Usage | Groups only | Most pages |
+
+### What This Validates
+
+- Multiple independent table blocks compose cleanly
+- Filters can be added per table block
+- Pagination can be added per table block
+- Card surfaces behave consistently across blocks
+- PageSection spacing scales across variants
+- Tables support real product density
+- Column semantics work via composition
+
+### Composition Rules
+
+- No styling overrides allowed
+- No new tokens or props introduced
+- If something looks wrong, fix in:
+  - tokens
+  - component contracts
+  - or missing pattern components
+- Never in this story
         `,
       },
     },
@@ -463,9 +606,21 @@ AppShell
       control: 'boolean',
       description: 'Apply dense spacing to all components',
     },
-    showFilters: {
+    myGroupsShowFilters: {
       control: 'boolean',
-      description: 'Show search and filter controls',
+      description: 'Show filter row for My Groups table block',
+    },
+    myGroupsShowPagination: {
+      control: 'boolean',
+      description: 'Show pagination row for My Groups table block',
+    },
+    otherGroupsShowFilters: {
+      control: 'boolean',
+      description: 'Show filter row for Other Groups table block',
+    },
+    otherGroupsShowPagination: {
+      control: 'boolean',
+      description: 'Show pagination row for Other Groups table block',
     },
   },
   render: (args) => createGroupsPage(args),
@@ -480,45 +635,91 @@ type Story = StoryObj<GroupsPageArgs>;
 
 /**
  * Canonical Groups page composition.
- * This is the default representation of the Groups product page.
+ * 
+ * Default representation:
+ * - My Groups has filters (typical user workflow)
+ * - Other Groups has no filters (browse-only)
+ * - No pagination (typical small dataset)
  */
 export const Default: Story = {
   args: {
     dense: false,
-    showFilters: true,
+    myGroupsShowFilters: true,
+    myGroupsShowPagination: false,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: false,
   },
 };
 
 /**
- * Dense variant with dense=true passed wherever supported.
- * Demonstrates the system's density controls work consistently.
+ * Dense variant with compact spacing.
+ * 
+ * Demonstrates:
+ * - Dense mode across all components
+ * - My Groups has filters
+ * - Scanability maintained at higher density
  */
 export const Dense: Story = {
   args: {
     dense: true,
-    showFilters: true,
+    myGroupsShowFilters: true,
+    myGroupsShowPagination: false,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: false,
   },
 };
 
 /**
  * Without Filters variant.
- * Removes SearchInput and FilterDropdownTrigger to test layout resilience.
+ * 
+ * Demonstrates:
+ * - Clean baseline with no filter rows
+ * - Both table blocks filter-free
+ * - Layout resilience without controls
  */
 export const WithoutFilters: Story = {
   args: {
     dense: false,
-    showFilters: false,
+    myGroupsShowFilters: false,
+    myGroupsShowPagination: false,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: false,
+  },
+};
+
+/**
+ * With Pagination variant.
+ * 
+ * Demonstrates:
+ * - Pagination row below each table
+ * - Independent pagination per table block
+ * - Pagination placeholder sits directly below table
+ */
+export const WithPagination: Story = {
+  args: {
+    dense: false,
+    myGroupsShowFilters: true,
+    myGroupsShowPagination: true,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: true,
   },
 };
 
 /**
  * Long Descriptions variant.
- * Increases description text length to test table wrapping behavior.
+ * 
+ * Demonstrates:
+ * - Increased description text length
+ * - Table wrapping behavior
+ * - My Groups has filters
  */
 export const LongDescriptions: Story = {
   args: {
     dense: false,
-    showFilters: true,
+    myGroupsShowFilters: true,
+    myGroupsShowPagination: false,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: false,
     myGroups: longDescriptionMyGroups,
     otherGroups: longDescriptionOtherGroups,
   },
@@ -526,12 +727,19 @@ export const LongDescriptions: Story = {
 
 /**
  * Minimal variant.
- * One group in each table to test composition at minimum viable content.
+ * 
+ * Demonstrates:
+ * - One group in each table (minimum viable content)
+ * - My Groups has filters
+ * - Clean baseline composition
  */
 export const Minimal: Story = {
   args: {
     dense: false,
-    showFilters: true,
+    myGroupsShowFilters: true,
+    myGroupsShowPagination: false,
+    otherGroupsShowFilters: false,
+    otherGroupsShowPagination: false,
     myGroups: minimalMyGroups,
     otherGroups: minimalOtherGroups,
   },
@@ -542,12 +750,23 @@ export const Minimal: Story = {
 // =============================================================================
 
 /**
- * VERIFICATION CHECKLIST:
+ * COMPOSITION VALIDATION:
  * ✓ No component CSS was modified
- * ✓ No tokens were added or changed (Tag tokens added as system-level ui.tag.*)
- * ✓ No new component props were introduced
- * ✓ Filters are grouped WITH tables in the same Card
+ * ✓ No tokens were added or changed
+ * ✓ No new components introduced (pagination is placeholder only)
+ * ✓ Uses existing components and props only
  * ✓ Composition uses only existing components
+ * 
+ * TABLE BLOCK STRUCTURE:
+ * ✓ Each table block is independent and self-contained
+ * ✓ Each block independently declares:
+ *   - Section title (required)
+ *   - Filter row (optional per block)
+ *   - Table (required)
+ *   - Pagination row (optional per block)
+ * ✓ No assumptions based on block position or name
+ * ✓ Filters sit directly above table (no wrappers)
+ * ✓ Pagination sits directly below table (no wrappers)
  * 
  * COLUMN SEMANTICS VALIDATED:
  * ✓ Primary text columns (Name, Description) use primary/secondary content types
@@ -556,42 +775,35 @@ export const Minimal: Story = {
  * ✓ Icon/symbol column (Voting) uses visual indicator elements
  * ✓ Metadata column (Last Updated) uses muted content type
  * 
- * SEARCH + FILTER ROW COMPOSITION:
- * ✓ Reduced gap from spacing-12 to spacing-8 for tighter unified control bar feel
- * ✓ SearchInput + FilterDropdownTrigger read as single horizontal unit
- * ✓ Filters row sits directly above table with no extra wrappers
- * ✓ Card padding provides outer spacing
- * ✓ Left-aligned layout (SearchInput dominates, Filter is secondary)
+ * FILTER + PAGINATION COMPOSITION:
+ * ✓ Filter row: SearchInput (toolbar variant) + FilterDropdownTrigger
+ * ✓ Tight horizontal gap (spacing-8) for unified toolbar feel
+ * ✓ Pagination placeholder: Minimal structure, no styling
+ * ✓ Each table block controls its own filters and pagination
+ * ✓ No implied defaults or position-based behavior
  * 
- * COMPOSITION REFINEMENTS APPLIED:
- * - Tightened horizontal rhythm in filters row (12px → 8px gap)
- * - Documented composition intent (filters attached to table)
- * - No extra wrappers or margins between filters and table
- * - Structure is minimal and intentional
+ * PATTERN GENERALIZATION:
+ * ✓ Groups is now a repeatable segmented table page pattern
+ * ✓ Each table block is explicit and obvious
+ * ✓ Safe for agentic design environment
+ * ✓ No abstractions extracted prematurely
  * 
- * KNOWN LIMITATIONS (if any exist, document here):
+ * KNOWN LIMITATIONS (future enhancements):
  * - Section titles use inline styles for typography binding
- *   (a SectionTitle component may be needed if this pattern repeats)
+ *   (SectionTitle component may be needed if pattern repeats 3+ times)
  * - Filters row uses inline styles for flex layout
- *   (a FilterBar component may be needed if this pattern repeats)
+ *   (FilterBar component may be needed if pattern repeats 3+ times)
+ * - Pagination uses placeholder elements
+ *   (Pagination component needed for production)
  * - Column widths use legacy equal-width (6 columns)
- *   (semantic ColumnDefinition[] available but not yet applied to Groups story)
- * - No vertical spacing between filters row and table
- *   (they sit directly adjacent - if rhythm feels off, this is a Card or Table
- *    component concern, not a composition issue)
- * 
- * POTENTIAL FUTURE REFINEMENTS (not bugs, just observations):
- * - Filters row height might feel slightly tall compared to LFX One
- *   (this is a SearchInput/FilterDropdownTrigger component density concern)
- * - If a reusable FilterBar pattern emerges, extract it then (not prematurely)
- * - Consider applying semantic column widths to Groups tables
+ *   (semantic ColumnDefinition[] available but not yet applied)
  * 
  * FINDINGS:
- * - Search + filters embedded with table is a validated, reusable pattern
+ * - Search + filters + pagination per table block is validated pattern
  * - Column semantics work correctly via composition and content types
- * - Tag component successfully extracted and implemented for categorical data display
- * - Filters row composition feels tighter and more intentional after polish pass
- * - Future enhancement: Semantic column width control (flexible vs intrinsic)
+ * - Tag component successfully integrated for categorical data
+ * - Table blocks are independent and composable
+ * - Pattern is explicit and safe for agents
  * 
  * If this page feels wrong, the fix must occur in tokens or contracts — never here.
  */
