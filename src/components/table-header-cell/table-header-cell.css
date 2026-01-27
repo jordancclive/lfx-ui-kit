@@ -27,8 +27,8 @@
   font-weight: var(--ui-text-label-font-weight);
   line-height: var(--ui-text-label-line-height);
   
-  /* Spacing - slightly taller than rows for distinction */
-  padding: var(--spacing-10) var(--spacing-12);
+  /* Spacing - taller than data rows for visual anchoring */
+  padding: var(--spacing-12) var(--spacing-12);
   
   /* Default alignment */
   text-align: left;
@@ -113,6 +113,10 @@
 
 /* ========================================
    Dense variant - reduced vertical padding
+   
+   Maintains proportional header-to-row distinction:
+   - Default: 40px headers vs 32px rows (8px distinction)
+   - Dense: 32px headers vs 28px rows (4px distinction)
    ======================================== */
 
 .lfx-table--dense .lfx-table-header-cell,
