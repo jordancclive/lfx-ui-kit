@@ -82,7 +82,7 @@ import { createPageLayout } from '../../../../components/page-layout/page-layout
 import { createAppHeader } from '../../../../components/app-header/app-header';
 import { createPageSection } from '../../../../components/page-section/page-section';
 import { createCard } from '../../../../components/card/card';
-import { createTable, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
+import { createTableGrid, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
