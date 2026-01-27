@@ -38,17 +38,17 @@
  * 
  * AppShell
  * └─ PageLayout
- *    ├─ AppHeader
+ *    ├─ AppHeader (dense: true for workflow pages)
  *    │  ├─ title: "Votes"
  *    │  ├─ description: "Make decisions with your project groups."
- *    │  └─ primaryAction: "Create Vote" button
+ *    │  └─ actions: "Create Vote" button (primary variant)
  *    └─ PageSection (dense: true)
  *       └─ Card
  *          ├─ Filter Row (optional)
- *          │  ├─ SearchInput (variant="toolbar")
+ *          │  ├─ SearchInput (variant="toolbar", full-width)
  *          │  ├─ FilterDropdownTrigger: "All Groups"
  *          │  └─ FilterDropdownTrigger: "All Statuses"
- *          ├─ Table (semantic columns, default sorted)
+ *          ├─ Table (semantic columns, default rows for comfort)
  *          └─ Pagination Row (optional)
  * 
  * STRUCTURAL RULES (from pattern):
@@ -61,11 +61,13 @@
  * - Default sorting implemented (Votes-specific, not generalized)
  * - Vote Name styled as link (blue, visual dominance)
  * - Row interaction feels confident (clickable rows, strong hover, no typography jitter)
+ * - Rows use default (comfortable) height for action-oriented table
  * - Column widths balanced via semantic types
  * - Filter row attached to table (SearchInput full-width)
- * - AppHeader visually anchors content (reduced bottom spacing)
- * - Primary action (Create Vote) aligned with title text
+ * - AppHeader uses dense spacing for workflow pages (tight vertical rhythm)
+ * - Primary action (Create Vote) visible and aligned with title
  * - Dense variant removed (one confident default presentation)
+ * - Header → table rhythm feels intentional and connected
  * 
  * DEFERRED ISSUES (requiring component/token changes):
  * - None identified at instance level
@@ -514,14 +516,15 @@ function createVotesTablePage(args: VotesTablePageArgs = {}): HTMLElement {
 
   // Page structure (MUST MATCH Table Page pattern)
   const pageChildren: HTMLElement[] = [
-    // AppHeader with primary action
+    // AppHeader with primary action (tighter spacing for workflow pages)
     createAppHeader({
       title: 'Votes',
       description: 'Make decisions with your project groups.',
-      primaryAction: createButton({
+      actions: createButton({
         children: 'Create Vote',
         variant: 'primary',
       }),
+      dense: true, // Tighter header spacing for workflow pages
     }),
 
     // PageSection (dense) → Card → [Filters, Table, Pagination]
