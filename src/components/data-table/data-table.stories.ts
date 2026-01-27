@@ -15,7 +15,7 @@ import { createTableCell } from '../table-cell/table-cell';
 import { createTag } from '../tag/tag';
 
 const meta: Meta<DataTableProps> = {
-  title: '1. Components / 3. Organisms / DataTable',
+  title: '1. Components / 3. Organisms / 3. DataTable',
   tags: ['autodocs'],
   parameters: {
     docs: {

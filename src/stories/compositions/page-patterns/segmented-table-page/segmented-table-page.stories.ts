@@ -537,7 +537,7 @@ function createSegmentedTablePage(args: SegmentedTablePageArgs = {}): HTMLElemen
 // =============================================================================
 
 const meta: Meta<SegmentedTablePageArgs> = {
-  title: '2. Page Patterns / Segmented Table Page',
+  title: '2. Page Patterns / 2. Segmented Table Page',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

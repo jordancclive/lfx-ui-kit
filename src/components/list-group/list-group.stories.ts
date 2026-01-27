@@ -3,7 +3,7 @@ import { createListGroup, ListGroupProps } from './list-group';
 import { createListItem } from '../list-item/list-item';
 
 const meta: Meta<ListGroupProps> = {
-  title: '1. Components / 3. Organisms / ListGroup',
+  title: '1. Components / 3. Organisms / 5. ListGroup',
   tags: ['autodocs'],
   parameters: {
     docs: {

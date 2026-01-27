@@ -610,7 +610,7 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<TablePageArgs> = {
-  title: '2. Page Patterns / Table Page',
+  title: '2. Page Patterns / 3. Table Page',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

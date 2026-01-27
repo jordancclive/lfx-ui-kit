@@ -291,7 +291,7 @@ function createDashboard(args: DashboardArgs = {}) {
 // =============================================================================
 
 const meta: Meta<DashboardArgs> = {
-  title: '2. Page Patterns / Dashboard',
+  title: '2. Page Patterns / 1. Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

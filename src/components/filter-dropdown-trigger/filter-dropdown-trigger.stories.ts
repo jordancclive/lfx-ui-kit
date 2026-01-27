@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createFilterDropdownTrigger, type FilterDropdownTriggerProps } from './filter-dropdown-trigger';
 
 const meta: Meta<FilterDropdownTriggerProps> = {
-  title: '1. Components / 2. Molecules / FilterDropdownTrigger',
+  title: '1. Components / 2. Molecules / 2. FilterDropdownTrigger',
   tags: ['autodocs'],
   render: (args) => createFilterDropdownTrigger(args),
   argTypes: {
