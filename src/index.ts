@@ -18,6 +18,7 @@ export { createTableHeaderCell, type TableHeaderCellProps } from './components/t
 export { createTableGrid, createTableHeader, createTableBody, type TableGridProps, type ColumnDefinition, type ColumnSemanticType } from './components/table-grid/table-grid';
 export { createTableToolbar, type TableToolbarProps } from './components/table-toolbar/table-toolbar';
 export { createTablePagination, type TablePaginationProps } from './components/table-pagination/table-pagination';
+export { createDataTable, type DataTableProps } from './components/data-table/data-table';
 
 // DEPRECATED: Backward compatibility aliases
 // TODO: Remove in next major version

@@ -1,0 +1,395 @@
+/**
+ * DataTable — Level 3 (Organism)
+ * 
+ * Storybook documentation and examples for the DataTable component.
+ */
+
+import type { Meta, StoryObj } from '@storybook/html';
+import { createDataTable, type DataTableProps } from './data-table';
+import { createSearchInput } from '../search-input/search-input';
+import { createFilterDropdownTrigger } from '../filter-dropdown-trigger/filter-dropdown-trigger';
+import { createTableGrid, createTableHeader, createTableBody, type ColumnDefinition } from '../table-grid/table-grid';
+import { createTableHeaderCell } from '../table-header-cell/table-header-cell';
+import { createTableRow } from '../table-row/table-row';
+import { createTableCell } from '../table-cell/table-cell';
+import { createTag } from '../tag/tag';
+
+const meta: Meta<DataTableProps> = {
+  title: '1. Components / 3. Level 3 / DataTable',
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+# DataTable — Canonical Single-Table Workflow Surface
+
+DataTable is a **Level 3 (Organism)** component that represents the canonical
+single-table workflow surface for LFX One.
+
+## Purpose
+
+DataTable bundles Card, TableToolbar, TableGrid, and TablePagination with
+opinionated defaults that are VALID ONLY for single-table pages.
+
+It exists to:
+- Reduce boilerplate for common single-table pages
+- Encode correct defaults by convention
+- Prevent misuse through clear architectural boundaries
+
+---
+
+## When to Use
+
+✅ **USE DataTable for:**
+- Pages with exactly ONE dataset
+- Pages with a single search + filter surface
+- Pages with ONE pagination control
+- Workflow-style list pages:
+  - Votes
+  - Surveys
+  - Projects
+  - Drive
+  - Mailing Lists
+
+---
+
+## When NOT to Use
+
+❌ **DO NOT USE DataTable for:**
+- SegmentedTablePage (multiple tables)
+- Pages with multiple independent tables
+- Pages where filters scope only part of the data
+- Comparison pages
+- Dashboard pages with multiple data surfaces
+
+> **WARNING:** Do NOT use DataTable in SegmentedTablePage or multi-table layouts.
+> Use TableGrid, TableToolbar, and TablePagination directly instead.
+
+---
+
+## Structure (FIXED)
+
+DataTable renders EXACTLY this structure:
+
+\`\`\`
+Card
+├─ TableToolbar        (search + filters)
+├─ TableGrid           (data grid only)
+└─ TablePagination     (page navigation)
+\`\`\`
+
+No other structure is allowed.
+
+---
+
+## Architectural Boundaries (LOCKED)
+
+**DataTable owns:**
+- Composition ONLY
+- Bundling child components into Card
+
+**DataTable does NOT own:**
+- Search + filter layout → TableToolbar
+- Data grid layout → TableGrid
+- Pagination controls → TablePagination
+- Page placement → Page Patterns (Table Page)
+
+**DataTable MUST NOT:**
+- Style children directly
+- Apply padding, margins, or flex rules
+- Detect child types
+- Contain conditional spacing logic
+
+---
+
+## Defensive Behavior
+
+**Empty states are handled by child components:**
+- If \`toolbar\` is undefined → TableToolbar renders \`display: none\`
+- If \`pagination\` not needed → TablePagination renders \`display: none\`
+- DataTable itself never conditionally renders children
+
+This ensures consistent layout without phantom spacing.
+
+---
+
+## API
+
+**Required:**
+- \`table\` (HTMLElement) — TableGrid component
+
+**Optional:**
+- \`toolbar\` (object) — Search input and filter controls
+  - \`search\` (HTMLElement) — SearchInput with variant="toolbar"
+  - \`filters\` (HTMLElement[]) — FilterDropdownTrigger components
+- \`pagination\` (object) — Pagination configuration
+  - \`page\` (number) — Current page (1-based)
+  - \`pageSize\` (number) — Items per page
+  - \`totalItems\` (number) — Total items across all pages
+  - \`pageSizeOptions\` (number[]) — Optional page size selector
+  - \`onPageChange\` (function) — Page change callback
+  - \`onPageSizeChange\` (function) — Page size change callback
+
+---
+
+## Composition Pattern
+
+DataTable is a **thin composition wrapper**:
+1. Creates child components (TableToolbar, TablePagination)
+2. Wraps them in Card
+3. Delegates ALL layout behavior to children
+
+**Zero layout logic beyond composition.**
+
+---
+
+## Relationship to Page Patterns
+
+**Table Page pattern decides:**
+- WHERE DataTable is placed
+- AppHeader configuration
+- PageSection density
+- Vertical rhythm with header
+
+**DataTable decides:**
+- Card composition
+- Child component ordering
+
+---
+
+## Level 3 Philosophy
+
+DataTable is opinionated by design:
+- Single-table only
+- Workflow-oriented
+- Convention over configuration
+- No layout flags or overrides
+`,
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<DataTableProps>;
+
+/**
+ * Helper: Create a simple placeholder table for demonstration.
+ */
+function createPlaceholderTable(rows: number = 5): HTMLElement {
+  const columns: ColumnDefinition[] = [
+    { key: 'name', semanticType: 'primary' },
+    { key: 'type', semanticType: 'categorical' },
+    { key: 'status', semanticType: 'categorical' },
+    { key: 'count', semanticType: 'numeric' },
+  ];
+
+  const header = createTableHeader([
+    createTableHeaderCell({ children: 'Name' }),
+    createTableHeaderCell({ children: 'Type' }),
+    createTableHeaderCell({ children: 'Status' }),
+    createTableHeaderCell({ children: 'Count', align: 'right' }),
+  ]);
+
+  const bodyRows: HTMLElement[] = [];
+  for (let i = 0; i < rows; i++) {
+    bodyRows.push(
+      createTableRow({
+        clickable: true,
+        children: [
+          createTableCell({ children: `Item ${i + 1}`, contentType: 'primary' }),
+          createTableCell({ children: createTag({ children: 'Type A', variant: 'info' }) }),
+          createTableCell({ children: createTag({ children: 'Active', variant: 'success' }) }),
+          createTableCell({ children: String(Math.floor(Math.random() * 100)), align: 'right' }),
+        ],
+      })
+    );
+  }
+
+  const body = createTableBody(bodyRows);
+
+  return createTableGrid({
+    columns,
+    children: [header, body],
+  });
+}
+
+/**
+ * Default
+ * 
+ * Canonical DataTable with all features enabled:
+ * - Toolbar (search + filters)
+ * - TableGrid (data)
+ * - Pagination (page navigation)
+ * 
+ * This is the most common configuration for single-table pages.
+ */
+export const Default: Story = {
+  render: () => {
+    return createDataTable({
+      toolbar: {
+        search: createSearchInput({
+          placeholder: 'Search items…',
+          variant: 'toolbar',
+        }),
+        filters: [
+          createFilterDropdownTrigger({ label: 'All Types' }),
+          createFilterDropdownTrigger({ label: 'All Statuses' }),
+        ],
+      },
+      table: createPlaceholderTable(10),
+      pagination: {
+        page: 2,
+        pageSize: 10,
+        totalItems: 42,
+        pageSizeOptions: [10, 20, 50],
+      },
+    });
+  },
+};
+
+/**
+ * No Toolbar
+ * 
+ * DataTable without search or filters.
+ * 
+ * Use when:
+ * - Dataset is small and does not require filtering
+ * - Search and filters are handled externally
+ * - Minimal workflow pages
+ * 
+ * TableToolbar will render with display: none (no phantom spacing).
+ */
+export const NoToolbar: Story = {
+  render: () => {
+    return createDataTable({
+      table: createPlaceholderTable(10),
+      pagination: {
+        page: 1,
+        pageSize: 10,
+        totalItems: 42,
+      },
+    });
+  },
+};
+
+/**
+ * No Pagination
+ * 
+ * DataTable without pagination controls.
+ * 
+ * Use when:
+ * - Dataset is small (fits on one page)
+ * - Pagination is handled externally
+ * - Infinite scroll is used instead
+ * 
+ * TablePagination will render with display: none (no phantom spacing).
+ */
+export const NoPagination: Story = {
+  render: () => {
+    return createDataTable({
+      toolbar: {
+        search: createSearchInput({
+          placeholder: 'Search items…',
+          variant: 'toolbar',
+        }),
+      },
+      table: createPlaceholderTable(5),
+    });
+  },
+};
+
+/**
+ * Minimal
+ * 
+ * DataTable with ONLY the table (no toolbar, no pagination).
+ * 
+ * Use when:
+ * - Dataset is simple and self-contained
+ * - No search, filter, or pagination required
+ * - Read-only data display
+ * 
+ * Both TableToolbar and TablePagination will render with display: none.
+ * 
+ * **Note:** This is the absolute minimum configuration.
+ * If you need more control over layout, consider using TableGrid directly.
+ */
+export const Minimal: Story = {
+  render: () => {
+    return createDataTable({
+      table: createPlaceholderTable(5),
+    });
+  },
+};
+
+/**
+ * With Page Size Selector
+ * 
+ * DataTable with page size options enabled.
+ * 
+ * Use when:
+ * - Users need to control results per page
+ * - Dataset size varies significantly
+ * - Power users benefit from density control
+ * 
+ * Page size selector appears on right side of pagination row.
+ */
+export const WithPageSizeSelector: Story = {
+  render: () => {
+    return createDataTable({
+      toolbar: {
+        search: createSearchInput({
+          placeholder: 'Search items…',
+          variant: 'toolbar',
+        }),
+        filters: [
+          createFilterDropdownTrigger({ label: 'All Types' }),
+        ],
+      },
+      table: createPlaceholderTable(10),
+      pagination: {
+        page: 1,
+        pageSize: 10,
+        totalItems: 120,
+        pageSizeOptions: [10, 25, 50, 100],
+      },
+    });
+  },
+};
+
+/**
+ * Large Dataset
+ * 
+ * DataTable with a large dataset requiring pagination windowing.
+ * 
+ * Demonstrates:
+ * - Ellipsis in page navigation
+ * - Page windowing (max 7 visible pages)
+ * - Page size selector with multiple options
+ * 
+ * This configuration is common for high-volume data pages.
+ */
+export const LargeDataset: Story = {
+  render: () => {
+    return createDataTable({
+      toolbar: {
+        search: createSearchInput({
+          placeholder: 'Search items…',
+          variant: 'toolbar',
+        }),
+        filters: [
+          createFilterDropdownTrigger({ label: 'All Types' }),
+          createFilterDropdownTrigger({ label: 'All Statuses' }),
+          createFilterDropdownTrigger({ label: 'All Groups' }),
+        ],
+      },
+      table: createPlaceholderTable(20),
+      pagination: {
+        page: 15,
+        pageSize: 20,
+        totalItems: 680,
+        pageSizeOptions: [10, 20, 50, 100],
+      },
+    });
+  },
+};

@@ -1,0 +1,30 @@
+/**
+ * DataTable — Level 3 (Organism)
+ * 
+ * Canonical single-table workflow surface for LFX One.
+ * 
+ * COMPOSITION ONLY:
+ * - DataTable contains NO layout logic
+ * - ALL styling delegated to child components:
+ *   - Card (container surface)
+ *   - TableToolbar (search + filter layout)
+ *   - TableGrid (data grid layout)
+ *   - TablePagination (pagination controls)
+ * 
+ * This CSS file exists for future extensibility only.
+ * Currently, DataTable requires NO custom styles.
+ */
+
+.lfx-data-table {
+  /* 
+   * Identifying class for DataTable component.
+   * 
+   * Currently contains NO styles.
+   * All layout and styling delegated to child components.
+   * 
+   * This class exists for:
+   * - Debugging and identification
+   * - Future extensibility if needed
+   * - Consistent component patterns
+   */
+}
