@@ -9,13 +9,15 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
-import ReadmeMDX from './README.mdx';
+import README from './README.mdx';
 
 const meta: Meta = {
-  title: '0. README / Design System Orientation',
+  title: '0. README',
+  tags: [],
   parameters: {
     docs: {
-      page: ReadmeMDX,
+      page: README,
+      disable: false,
     },
     previewTabs: {
       'storybook/docs/panel': { index: 0 },
