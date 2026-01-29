@@ -46,5 +46,4 @@ export { createAppHeader, type AppHeaderProps } from './components/app-header/ap
 export { createPageLayout, type PageLayoutProps } from './components/page-layout/page-layout';
 export { createPageSection, type PageSectionProps } from './components/page-section/page-section';
 export { createCard, type CardProps } from './components/card/card';
-export { createMetricCard, type MetricCardProps } from './components/metric-card/metric-card';
 export { createMetricsRow, type MetricsRowProps } from './components/metrics-row/metrics-row';

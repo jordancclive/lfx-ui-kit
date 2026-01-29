@@ -1,28 +1,68 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { createMetricsRow, MetricsRowProps } from './metrics-row';
-import { createMetricCard } from '../metric-card/metric-card';
+import { createCard } from '../card/card';
 import { createPageLayout } from '../page-layout/page-layout';
 import { createPageSection } from '../page-section/page-section';
 import { createAppHeader } from '../app-header/app-header';
+
+/**
+ * Creates a placeholder chart card for demonstration.
+ * NOTE: This is temporary. Real chart cards will be implemented
+ * as specializations of ChartCard once product usage exists.
+ */
+function createPlaceholderChartCard(config: { label?: string; value: string; meta?: string; dense?: boolean }) {
+  const card = createCard({ dense: config.dense });
+  card.style.padding = config.dense ? 'var(--spacing-12)' : 'var(--spacing-16)';
+  card.style.minHeight = '120px';
+  card.style.display = 'flex';
+  card.style.flexDirection = 'column';
+  card.style.gap = 'var(--spacing-8)';
+  
+  if (config.label) {
+    const label = document.createElement('div');
+    label.textContent = config.label;
+    label.style.fontSize = 'var(--ui-text-label-font-size)';
+    label.style.color = 'var(--text-secondary)';
+    label.style.fontWeight = '600';
+    card.appendChild(label);
+  }
+  
+  const value = document.createElement('div');
+  value.textContent = config.value;
+  value.style.fontSize = 'var(--ui-text-page-title-font-size)';
+  value.style.fontWeight = 'var(--ui-text-page-title-font-weight)';
+  value.style.color = 'var(--text-primary)';
+  card.appendChild(value);
+  
+  if (config.meta) {
+    const meta = document.createElement('div');
+    meta.textContent = config.meta;
+    meta.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+    meta.style.color = 'var(--text-muted)';
+    card.appendChild(meta);
+  }
+  
+  return card;
+}
 
 /**
  * # MetricsRow
  * 
  * **Tier 3 — Layout / Composition Component**
  * 
- * MetricsRow arranges multiple MetricCard components in a horizontal row.
+ * MetricsRow arranges multiple chart cards in a horizontal row.
  * It standardizes spacing, wrapping, and alignment for metric groups.
  * 
  * ## Ownership Boundaries
  * 
  * **MetricsRow owns:**
- * - Horizontal spacing between MetricCards
+ * - Horizontal spacing between chart cards
  * - Wrapping behavior at smaller widths
  * - Alignment of cards within the row
  * 
  * **MetricsRow does NOT own:**
  * - Card surface (delegated to Card)
- * - Metric layout or typography (delegated to MetricCard)
+ * - Chart card layout or typography (delegated to ChartCard in future)
  * - Data semantics or calculation
  * - Color or trend semantics
  * - Page-level spacing (delegated to PageSection)
@@ -37,7 +77,7 @@ import { createAppHeader } from '../app-header/app-header';
  * ## Important Notes
  * 
  * - **MetricsRow owns layout only**
- * - **MetricCard owns content and hierarchy**
+ * - **Chart cards own content and hierarchy**
  * - **Card owns surface**
  * - **No visual semantics live here**
  */
@@ -68,24 +108,24 @@ export default meta;
 type Story = StoryObj<MetricsRowProps>;
 
 /**
- * Default metrics row with 3 MetricCards.
+ * Default metrics row with 3 chart cards.
  */
 export const Default: Story = {
   render: () => createMetricsRow({
     children: [
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Revenue',
         value: '$847,293',
         meta: '+8.1% from last month',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Orders',
         value: '12,847',
         meta: '+3.4% from last month',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Conversion',
         value: '3.24%',
         meta: '-0.2% from last month',
@@ -102,13 +142,13 @@ export const Default: Story = {
 export const TwoMetrics: Story = {
   render: () => createMetricsRow({
     children: [
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Total Users',
         value: '48,293',
         meta: 'All time',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Active Today',
         value: '2,847',
         meta: 'Last 24 hours',
@@ -129,12 +169,12 @@ export const ManyMetrics: Story = {
     
     wrapper.appendChild(createMetricsRow({
       children: [
-        createMetricCard({ label: 'Revenue', value: '$847K', dense: true }),
-        createMetricCard({ label: 'Orders', value: '12,847', dense: true }),
-        createMetricCard({ label: 'Users', value: '48,293', dense: true }),
-        createMetricCard({ label: 'Conversion', value: '3.24%', dense: true }),
-        createMetricCard({ label: 'Avg. Order', value: '$127.50', dense: true }),
-        createMetricCard({ label: 'Churn', value: '2.1%', dense: true }),
+        createPlaceholderChartCard({ label: 'Revenue', value: '$847K', dense: true }),
+        createPlaceholderChartCard({ label: 'Orders', value: '12,847', dense: true }),
+        createPlaceholderChartCard({ label: 'Users', value: '48,293', dense: true }),
+        createPlaceholderChartCard({ label: 'Conversion', value: '3.24%', dense: true }),
+        createPlaceholderChartCard({ label: 'Avg. Order', value: '$127.50', dense: true }),
+        createPlaceholderChartCard({ label: 'Churn', value: '2.1%', dense: true }),
       ],
       equalWidth: true,
     }));
@@ -149,19 +189,19 @@ export const ManyMetrics: Story = {
 export const Dense: Story = {
   render: () => createMetricsRow({
     children: [
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Revenue',
         value: '$847,293',
         meta: '+8.1%',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Orders',
         value: '12,847',
         meta: '+3.4%',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Conversion',
         value: '3.24%',
         meta: '-0.2%',
@@ -179,18 +219,18 @@ export const Dense: Story = {
 export const CenterAligned: Story = {
   render: () => createMetricsRow({
     children: [
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Small',
         value: '42',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Medium Value',
         value: '$12,345',
         meta: 'Some additional context',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Large',
         value: '999',
         dense: true,
@@ -207,25 +247,25 @@ export const InContextWithPageLayout: Story = {
   render: () => {
     const metricsRow = createMetricsRow({
       children: [
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Total Revenue',
           value: '$2,847,293',
           meta: '+12.1% YoY',
           dense: true,
         }),
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Active Users',
           value: '48,293',
           meta: '+5.4% MoM',
           dense: true,
         }),
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Avg. Order Value',
           value: '$127.50',
           meta: '+2.8% MoM',
           dense: true,
         }),
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Conversion Rate',
           value: '4.32%',
           meta: '-0.3% MoM',
@@ -263,19 +303,19 @@ export const InContextWithPageSection: Story = {
     
     const metricsRow = createMetricsRow({
       children: [
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Revenue',
           value: '$847,293',
           meta: '+8.1% from last month',
           dense: true,
         }),
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Orders',
           value: '12,847',
           meta: '+3.4% from last month',
           dense: true,
         }),
-        createMetricCard({
+        createPlaceholderChartCard({
           label: 'Customers',
           value: '3,284',
           meta: '+12.5% from last month',
@@ -308,25 +348,25 @@ export const InContextWithPageSection: Story = {
 export const WithMixedMetricValues: Story = {
   render: () => createMetricsRow({
     children: [
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Response Time',
         value: '142ms',
         meta: 'P95 latency',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Uptime',
         value: '99.97%',
         meta: 'Last 30 days',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Requests',
         value: '1.2M',
         meta: 'This month',
         dense: true,
       }),
-      createMetricCard({
+      createPlaceholderChartCard({
         label: 'Errors',
         value: '0.03%',
         meta: 'Error rate',
@@ -359,9 +399,9 @@ export const SpacingComparison: Story = {
     defaultSection.appendChild(defaultLabel);
     defaultSection.appendChild(createMetricsRow({
       children: [
-        createMetricCard({ label: 'Metric 1', value: '$100', dense: true }),
-        createMetricCard({ label: 'Metric 2', value: '$200', dense: true }),
-        createMetricCard({ label: 'Metric 3', value: '$300', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 1', value: '$100', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 2', value: '$200', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 3', value: '$300', dense: true }),
       ],
       equalWidth: true,
     }));
@@ -377,9 +417,9 @@ export const SpacingComparison: Story = {
     denseSection.appendChild(denseLabel);
     denseSection.appendChild(createMetricsRow({
       children: [
-        createMetricCard({ label: 'Metric 1', value: '$100', dense: true }),
-        createMetricCard({ label: 'Metric 2', value: '$200', dense: true }),
-        createMetricCard({ label: 'Metric 3', value: '$300', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 1', value: '$100', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 2', value: '$200', dense: true }),
+        createPlaceholderChartCard({ label: 'Metric 3', value: '$300', dense: true }),
       ],
       dense: true,
       equalWidth: true,

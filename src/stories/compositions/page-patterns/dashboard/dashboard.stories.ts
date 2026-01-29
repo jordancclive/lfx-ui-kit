@@ -23,7 +23,7 @@
  * AppShell
  * └─ PageLayout
  *    ├─ AppHeader (title + optional description/actions)
- *    ├─ PageSection → MetricsRow → MetricCard×N
+ *    ├─ PageSection → MetricsRow → Chart cards
  *    ├─ PageSection → Card → TableGrid
  *    └─ PageSection → Card → ListGroup
  * 
@@ -55,7 +55,6 @@ import { createPageLayout } from '../../../../components/page-layout/page-layout
 import { createAppHeader } from '../../../../components/app-header/app-header';
 import { createPageSection } from '../../../../components/page-section/page-section';
 import { createMetricsRow } from '../../../../components/metrics-row/metrics-row';
-import { createMetricCard } from '../../../../components/metric-card/metric-card';
 import { createCard } from '../../../../components/card/card';
 import { createTableGrid, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
@@ -70,30 +69,43 @@ import { createGlobalNav, createNavSection, createNavItem } from '../../../../co
 // These are neutral placeholders, not product data
 // =============================================================================
 
-function createDemoMetrics(dense = false) {
-  return createMetricsRow({
-    dense,
-    children: [
-      createMetricCard({
-        label: 'Total Items',
-        value: '1,234',
-        meta: 'All time',
-        dense,
-      }),
-      createMetricCard({
-        label: 'Active Users',
-        value: '567',
-        meta: 'This month',
-        dense,
-      }),
-      createMetricCard({
-        label: 'Completion Rate',
-        value: '89%',
-        meta: 'Average',
-        dense,
-      }),
-    ],
-  });
+/**
+ * Creates a placeholder chart card for dashboard demonstration.
+ * NOTE: This is a temporary placeholder. Real chart cards will be
+ * implemented as specializations of ChartCard once product usage exists.
+ */
+function createPlaceholderChartCard(config: { label: string; value: string; meta?: string; dense?: boolean }) {
+  const card = createCard({ dense: config.dense });
+  card.style.padding = config.dense ? 'var(--spacing-12)' : 'var(--spacing-16)';
+  card.style.minHeight = '120px';
+  card.style.display = 'flex';
+  card.style.flexDirection = 'column';
+  card.style.gap = 'var(--spacing-8)';
+  
+  const label = document.createElement('div');
+  label.textContent = config.label;
+  label.style.fontSize = 'var(--ui-text-label-font-size)';
+  label.style.color = 'var(--text-secondary)';
+  label.style.fontWeight = '600';
+  
+  const value = document.createElement('div');
+  value.textContent = config.value;
+  value.style.fontSize = 'var(--ui-text-page-title-font-size)';
+  value.style.fontWeight = 'var(--ui-text-page-title-font-weight)';
+  value.style.color = 'var(--text-primary)';
+  
+  card.appendChild(label);
+  card.appendChild(value);
+  
+  if (config.meta) {
+    const meta = document.createElement('div');
+    meta.textContent = config.meta;
+    meta.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
+    meta.style.color = 'var(--text-muted)';
+    card.appendChild(meta);
+  }
+  
+  return card;
 }
 
 function createDemoTable(columns = 3) {
@@ -218,9 +230,9 @@ function createDashboard(args: DashboardArgs = {}) {
     tableColumns = 3,
   } = args;
 
-  // Build metrics based on count
-  const metricCards = [];
-  const metricData = [
+  // Build chart cards based on count
+  const chartCards = [];
+  const chartData = [
     { label: 'Total Items', value: '1,234', meta: 'All time' },
     { label: 'Active Users', value: '567', meta: 'This month' },
     { label: 'Completion Rate', value: '89%', meta: 'Average' },
@@ -229,10 +241,10 @@ function createDashboard(args: DashboardArgs = {}) {
     { label: 'Growth', value: '15%', meta: 'Year over year' },
   ];
 
-  for (let i = 0; i < Math.min(metricsCount, metricData.length); i++) {
-    metricCards.push(
-      createMetricCard({
-        ...metricData[i],
+  for (let i = 0; i < Math.min(metricsCount, chartData.length); i++) {
+    chartCards.push(
+      createPlaceholderChartCard({
+        ...chartData[i],
         dense,
       })
     );
@@ -254,7 +266,7 @@ function createDashboard(args: DashboardArgs = {}) {
         dense,
         children: createMetricsRow({
           dense,
-          children: metricCards,
+          children: chartCards,
         }),
       }),
 
@@ -325,7 +337,7 @@ Dashboard is a multi-surface composition that combines:
 AppShell
 └─ PageLayout
    ├─ AppHeader (title + optional description/actions)
-   ├─ PageSection → MetricsRow → MetricCard×N
+   ├─ PageSection → MetricsRow → Chart cards
    ├─ PageSection → Card → TableGrid
    └─ PageSection → Card → ListGroup
 \`\`\`
@@ -449,11 +461,11 @@ PageSection (MetricCluster)
 │  ├─ title: "Performance Metrics"
 │  ├─ description (optional)
 │  └─ action: "Ask LFX Lens" (optional)
-├─ MetricCardRow (horizontal layout)
-│  ├─ MetricCard (clickable)
-│  ├─ MetricCard (clickable)
-│  ├─ MetricCard (clickable)
-│  └─ MetricCard (clickable)
+├─ Chart card row (horizontal layout)
+│  ├─ Chart card (clickable)
+│  ├─ Chart card (clickable)
+│  ├─ Chart card (clickable)
+│  └─ Chart card (clickable)
 └─ Drawer (revealed on card click)
    ├─ Detailed chart(s)
    ├─ Contextual explanation
@@ -505,7 +517,7 @@ Use MetricCluster when:
 
 Do NOT use MetricCluster when:
 
-- Displaying a **single metric** (use standalone MetricCard instead)
+- Displaying a **single metric** (use standalone chart card instead)
 - Building **deep analytical workflows** (use dedicated analytics pages)
 - Metrics require **complex filtering** (use Table Page with metrics row)
 - Page is focused on **task execution** (use Creation Flow or action-oriented layouts)
@@ -547,6 +559,8 @@ When generating dashboards, agents should:
 - Reference Board Member, Contributor, or Maintainer dashboard examples
 - Ask for clarification before diverging
 - Prefer existing patterns over novel compositions
+
+**Note:** Metric-only cards may emerge later as a specialization of ChartCard once real product usage exists.
 
 ---
 
@@ -803,7 +817,7 @@ Section primitives are **dashboard-level patterns**, not components. They define
 - Enable drilldown to detailed analytics
 
 **Typical Content:**
-- 3-6 related metric cards
+- 3-6 related chart cards displaying metrics
 - Optional section header with title and "Ask LFX Lens" action
 - Horizontal layout with optional overflow/carousel
 
