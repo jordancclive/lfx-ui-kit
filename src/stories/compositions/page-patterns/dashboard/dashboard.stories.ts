@@ -1151,27 +1151,27 @@ When agents are instructed to create or modify dashboards, they should:
 
 ### Decision Tree for Section Composition
 
-```
+\`\`\`
 Is user role known?
-├─ YES → Use role-specific section primitives
-│  ├─ Board Member → Governance focus
-│  ├─ Contributor → Productivity focus
-│  ├─ Maintainer → Operations focus
-│  └─ Executive Director → Strategic focus
-└─ NO → Use universal sections only (MetricCluster + Recent Activity)
+  YES -> Use role-specific section primitives
+    - Board Member -> Governance focus
+    - Contributor -> Productivity focus
+    - Maintainer -> Operations focus
+    - Executive Director -> Strategic focus
+  NO -> Use universal sections only (MetricCluster + Recent Activity)
 
 Does user have pending actions?
-├─ YES → Include Pending Actions section
-└─ NO → Omit Pending Actions section
+  YES -> Include Pending Actions section
+  NO -> Omit Pending Actions section
 
 Is role meeting-focused?
-├─ YES → Include Meeting Summary section
-└─ NO → Omit Meeting Summary section (or make optional)
+  YES -> Include Meeting Summary section
+  NO -> Omit Meeting Summary section (or make optional)
 
 Is user Executive Director?
-├─ YES → Include Strategic Alerts section
-└─ NO → Omit Strategic Alerts section
-```
+  YES -> Include Strategic Alerts section
+  NO -> Omit Strategic Alerts section
+\`\`\`
 
 ### Final Rule
 
