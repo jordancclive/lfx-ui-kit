@@ -1,0 +1,43 @@
+/**
+ * ChartCard Component Styles
+ * 
+ * Level 2 — Molecule
+ * 
+ * ChartCard provides minimal structural styles only.
+ * Visual design opinions are intentionally NOT locked here.
+ */
+
+.lfx-chart-card {
+  /* Inherits all Card styles */
+}
+
+.lfx-chart-card__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.lfx-chart-card__header {
+  font-size: var(--ui-text-label-font-size);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.lfx-chart-card__value {
+  /* Slot wrapper - no opinions */
+}
+
+.lfx-chart-card__chart {
+  /* Slot wrapper - no opinions */
+}
+
+.lfx-chart-card__meta {
+  font-size: var(--ui-text-body-secondary-font-size);
+  color: var(--text-muted);
+}
+
+/* Click affordance */
+.lfx-chart-card[style*="cursor: pointer"]:hover {
+  /* Subtle hover state - inherits from Card hover behavior */
+  box-shadow: var(--shadow-card-hover, 0 2px 8px rgba(0, 0, 0, 0.1));
+}
