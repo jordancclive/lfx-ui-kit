@@ -564,6 +564,162 @@ When generating dashboards, agents should:
 
 ---
 
+## Chart Cards (Observed Pattern — Non-Normative)
+
+Chart cards are **compact visual summaries** of metrics observed across LFX One dashboard prototypes
+(Board Member, Contributor, Maintainer, Executive Director).
+
+This documentation is **DESCRIPTIVE ONLY** and captures observed behavior.
+It is **NOT a component specification** and does **NOT lock implementation**.
+
+### Purpose
+
+Chart cards serve as **at-a-glance visual indicators** that combine:
+- A metric value
+- Visual context (sparkline, bar, trend indicator)
+- Optional metadata (timeframe, delta, comparison)
+
+They are designed for:
+- **Quick scanning** — Users can assess status without drilling in
+- **Contextual summaries** — Provide just enough information to inform decisions
+- **Escalation paths** — Click to open drawer for detailed exploration
+
+**Chart cards are NOT:**
+- Deep analytical tools
+- Full chart rendering surfaces
+- Standalone visualization pages
+- Data exploration interfaces
+
+### Typical Structure (Descriptive)
+
+Chart cards observed in LFX One prototypes typically follow this structure:
+
+\`\`\`
+Chart Card (Card surface)
+├─ Header
+│  ├─ Metric title (e.g., "Active Contributors")
+│  └─ Optional context icon or badge
+├─ Primary value
+│  └─ Large, prominent display (e.g., "1,234")
+├─ Chart summary (visual context)
+│  ├─ Sparkline (line trend over time)
+│  ├─ Vertical bar (categorical breakdown)
+│  └─ Progress indicator (completion %)
+└─ Footer / Meta
+   ├─ Trend indicator (e.g., "+8.1%", "↑ 15 from last month")
+   └─ Timeframe (e.g., "Last 30 days", "This quarter")
+\`\`\`
+
+**Important:**
+- This is NOT a locked structure
+- This describes what exists in prototypes
+- A future ChartCard component may formalize or vary this structure
+
+### Interaction Model
+
+**Default Behavior (Observed):**
+- Chart cards are **clickable** by default
+- Clicking a chart card opens a **RIGHT-SIDE DRAWER**
+
+**Drawer Content:**
+- **Expanded chart** — Full-size version of the summary chart
+- **Related charts** — 1-2 additional perspectives on the metric
+- **Supporting metadata** — Definitions, calculation details, caveats
+- **Optional CTA** — Link to deeper analytics (e.g., LFX Insights)
+
+**Interaction Surface Contract:**
+
+Interaction behavior follows the system-wide contract defined in  
+**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+
+- Chart card click → **Drawer** (preserves dashboard context)
+- Deep analytics → **Page** (full navigation, e.g., LFX Insights)
+- NOT Modal (modals block context and are for short interruptions)
+
+**Why Drawer (Not Modal or Page):**
+- User is **exploring metrics in context**
+- Dashboard remains visible (preserves scanning flow)
+- Non-blocking (user can dismiss and continue)
+- Multiple metrics can be explored sequentially without losing place
+
+### When Chart Cards Are Used
+
+Use chart cards when:
+- Building **dashboard overview surfaces**
+- Displaying **KPI summaries** for at-a-glance monitoring
+- Creating **role-specific summaries** (Board Member, Contributor, etc.)
+- Need **compact visual representations** within MetricCluster sections
+- Users need to **quickly assess status** without drilling in
+
+**Typical Use Cases:**
+- Contribution activity sparklines
+- Project health indicators
+- Organizational KPIs
+- Resource utilization summaries
+- Trend indicators (growth, churn, velocity)
+
+### When Chart Cards Are NOT Used
+
+Do NOT use chart cards when:
+- Building **deep analytical workflows** (use dedicated analytics pages)
+- Displaying **detailed data tables** (use Table Page or DataTable)
+- Users need **complex filtering or segmentation** (use full chart page)
+- Visualization is **one-off or exploratory** (use embedded chart)
+- Metric has **no drill-down value** (use simple text metric instead)
+- Display is **list-oriented** (use list group or table)
+
+### Relationship to Other Patterns
+
+**Lives INSIDE:**
+- **MetricCluster** — Chart cards are items within a MetricCluster section
+- **Dashboard Page Pattern** — Primary context for chart cards
+
+**Interacts WITH:**
+- **Drawer** — Default detail surface for chart card drill-down
+- **Page (LFX Insights)** — Escalation path for deep analytics
+
+**Does NOT Exist Inside:**
+- **Table Page** — Table Page uses metrics row for KPIs, not chart cards
+- **Creation Flow Page** — Creation Flow is task-focused, not summary-focused
+- **Modals** — Chart cards do not open modals
+
+**Composition Hierarchy:**
+\`\`\`
+Dashboard Page
+└─ MetricCluster (section primitive)
+   ├─ Chart card (observed pattern)
+   ├─ Chart card (observed pattern)
+   └─ Chart card (observed pattern)
+        └─ Drawer (on click)
+           ├─ Expanded chart
+           └─ Related charts
+\`\`\`
+
+### Explicit Non-Normative Disclaimer
+
+> **This pattern is OBSERVED, not locked.**
+>
+> Chart cards exist in LFX One prototypes but are NOT yet formalized as a component.
+>
+> A **ChartCard component may be introduced later** once:
+> - Structure and behavior stabilize across multiple dashboards
+> - Real product usage validates the pattern
+> - API surface and prop contract become clear
+>
+> **Until then:**
+> - Agents should follow existing dashboard examples
+> - Use Card + custom content for chart card behavior
+> - Assume drawer interaction for drill-down
+> - Do NOT invent new interaction models
+>
+> **This documentation exists to:**
+> - Provide shared vocabulary
+> - Prevent accidental divergence
+> - Guide agents toward observed patterns
+> - NOT to lock implementation prematurely
+
+---
+
 ## ActionCard & My Actions Drawer
 
 ActionCard is a **dashboard-level primitive** used to surface **system-requested user actions**
