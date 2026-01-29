@@ -93,17 +93,7 @@ export function createChartCard(props: ChartCardProps): HTMLElement {
     dense = false,
   } = props;
 
-  // Create base Card
-  const card = createCard({ dense });
-  card.classList.add('lfx-chart-card');
-
-  // Add click handler and affordance if provided
-  if (onClick) {
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', onClick);
-  }
-
-  // Build internal structure
+  // Build internal structure first
   const container = document.createElement('div');
   container.className = 'lfx-chart-card__container';
 
@@ -137,7 +127,15 @@ export function createChartCard(props: ChartCardProps): HTMLElement {
     container.appendChild(metaWrapper);
   }
 
-  card.appendChild(container);
+  // Create Card with container as children
+  const card = createCard({ dense, children: container });
+  card.classList.add('lfx-chart-card');
+
+  // Add click handler and affordance if provided
+  if (onClick) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', onClick);
+  }
 
   return card;
 }
