@@ -56,6 +56,7 @@ import { createAppHeader } from '../../../../components/app-header/app-header';
 import { createPageSection } from '../../../../components/page-section/page-section';
 import { createMetricsRow } from '../../../../components/metrics-row/metrics-row';
 import { createCard } from '../../../../components/card/card';
+import { createChartCard } from '../../../../components/chart-card/chart-card';
 import { createTableGrid, createTableHeader, createTableBody } from '../../../../components/table-grid/table-grid';
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
@@ -70,42 +71,35 @@ import { createGlobalNav, createNavSection, createNavItem } from '../../../../co
 // =============================================================================
 
 /**
- * Creates a placeholder chart card for dashboard demonstration.
- * NOTE: This is a temporary placeholder. Real chart cards will be
- * implemented as specializations of ChartCard once product usage exists.
+ * Creates a chart card for dashboard demonstration using ChartCard component.
+ * This demonstrates the minimal ChartCard abstraction in real dashboard context.
  */
 function createPlaceholderChartCard(config: { label: string; value: string; meta?: string; dense?: boolean }) {
-  const card = createCard({ dense: config.dense });
-  card.style.padding = config.dense ? 'var(--spacing-12)' : 'var(--spacing-16)';
-  card.style.minHeight = '120px';
-  card.style.display = 'flex';
-  card.style.flexDirection = 'column';
-  card.style.gap = 'var(--spacing-8)';
+  // Create value element
+  const valueElement = document.createElement('div');
+  valueElement.textContent = config.value;
+  valueElement.style.fontSize = 'var(--ui-text-page-title-font-size)';
+  valueElement.style.fontWeight = 'var(--ui-text-page-title-font-weight)';
+  valueElement.style.color = 'var(--text-primary)';
   
-  const label = document.createElement('div');
-  label.textContent = config.label;
-  label.style.fontSize = 'var(--ui-text-label-font-size)';
-  label.style.color = 'var(--text-secondary)';
-  label.style.fontWeight = '600';
-  
-  const value = document.createElement('div');
-  value.textContent = config.value;
-  value.style.fontSize = 'var(--ui-text-page-title-font-size)';
-  value.style.fontWeight = 'var(--ui-text-page-title-font-weight)';
-  value.style.color = 'var(--text-primary)';
-  
-  card.appendChild(label);
-  card.appendChild(value);
-  
+  // Create meta element if provided
+  let metaElement: HTMLElement | undefined;
   if (config.meta) {
-    const meta = document.createElement('div');
-    meta.textContent = config.meta;
-    meta.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
-    meta.style.color = 'var(--text-muted)';
-    card.appendChild(meta);
+    metaElement = document.createElement('div');
+    metaElement.textContent = config.meta;
   }
   
-  return card;
+  // Use ChartCard component
+  return createChartCard({
+    title: config.label,
+    value: valueElement,
+    meta: metaElement,
+    dense: config.dense,
+    onClick: () => {
+      // Placeholder: In production, this would open a drawer with detailed chart
+      console.log(`Chart card clicked: ${config.label}`);
+    },
+  });
 }
 
 function createDemoTable(columns = 3) {
