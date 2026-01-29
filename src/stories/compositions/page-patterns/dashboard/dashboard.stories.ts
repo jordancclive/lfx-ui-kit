@@ -782,6 +782,417 @@ When generating dashboards with action surfaces, agents should:
 - Follow the drawer pattern used by MetricCluster
 - Ask for clarification before introducing page navigation
 - Prefer drawers over pages for lightweight action browsing
+
+---
+
+## Dashboard Section Primitives
+
+The Dashboard Page pattern is composed of **reusable section primitives** that can be
+combined in different ways based on role, context, and organizational needs.
+
+Section primitives are **dashboard-level patterns**, not components. They define
+**WHAT appears** and **HOW it behaves**, not HOW it looks or WHERE it's positioned.
+
+### Overview of Section Primitives
+
+#### 1. MetricCluster
+
+**Purpose:**
+- Display grouped metrics for at-a-glance health monitoring
+- Provide summary-first view of KPIs
+- Enable drilldown to detailed analytics
+
+**Typical Content:**
+- 3-6 related metric cards
+- Optional section header with title and "Ask LFX Lens" action
+- Horizontal layout with optional overflow/carousel
+
+**Primary Interaction:**
+- **Drawer** for metric drilldown (expanded chart + details)
+- Optional link to LFX Insights (page navigation)
+
+**Role Dependency:**
+- **Role-aware:** Metrics vary by role (Board Member sees org-level, Contributor sees personal stats)
+- Present in: Board Member, Contributor, Maintainer, Executive Director dashboards
+
+---
+
+#### 2. Pending Actions (ActionCard Summary)
+
+**Purpose:**
+- Surface system-requested user actions requiring attention
+- Prioritize urgent decisions or tasks
+- Provide quick access to full action inventory
+
+**Typical Content:**
+- 2-3 most urgent ActionCards (votes, reviews, approvals)
+- Section header with count (e.g., "My Pending Actions (2/3)")
+- "View All" action to open drawer
+
+**Primary Interaction:**
+- **ActionCard CTA:** Executes action directly OR navigates to detail page
+- **View All → Drawer:** Opens My Actions drawer (search, filter, full list)
+
+**Role Dependency:**
+- **Role-specific:** Content varies by role (Board Member sees governance votes, Maintainer sees PR reviews)
+- Present in: Board Member, Contributor, Maintainer dashboards
+- **May be omitted:** If user has no pending actions
+
+---
+
+#### 3. Meeting Summary Cluster
+
+**Purpose:**
+- Show upcoming meetings and recent meeting highlights
+- Enable quick access to meeting details and recordings
+- Support meeting scheduling workflows
+
+**Typical Content:**
+- 2-4 meeting summary cards (upcoming + recent)
+- Each card shows: title, date/time, participant count, join/view action
+- Optional section header with "Schedule Meeting" action
+
+**Primary Interaction:**
+- **Meeting card click → Drawer:** Meeting details, agenda, participants
+- **"Schedule Meeting" → Page:** Navigate to Creation Flow (Schedule Meeting pattern)
+- **"Join Meeting" → External:** Launch meeting platform (Zoom, etc)
+
+**Role Dependency:**
+- **Role-aware:** Meetings vary by role (Board Member sees board meetings, Contributor sees project meetings)
+- Present in: Board Member, Maintainer, Executive Director dashboards
+- **May be omitted:** Contributor dashboard (less meeting-focused)
+
+---
+
+#### 4. Strategic Alerts (Executive Director-Only)
+
+**Purpose:**
+- Surface high-priority organizational issues requiring executive attention
+- Highlight cross-project risks or opportunities
+- Enable rapid response to strategic concerns
+
+**Typical Content:**
+- 1-3 alert cards (budget alerts, compliance issues, strategic opportunities)
+- Each card shows: alert type, description, affected projects, CTA
+- Attention-demanding visual treatment (colored border or background)
+
+**Primary Interaction:**
+- **Alert card click → Drawer:** Alert details, affected entities, recommended actions
+- **Alert CTA → Page:** Navigate to resolution workflow (varies by alert type)
+
+**Role Dependency:**
+- **Executive Director only**
+- Does NOT appear in: Board Member, Contributor, or Maintainer dashboards
+
+---
+
+#### 5. Recent Activity / Table Preview (Universal)
+
+**Purpose:**
+- Show recent activity or preview of primary dataset
+- Provide quick access to full table view
+- Support common workflows without navigation
+
+**Typical Content:**
+- Table or list preview (3-5 items)
+- Typically: recent votes, recent surveys, recent contributions, or recent projects
+- Optional "View All" action
+
+**Primary Interaction:**
+- **Row click → Drawer:** Item details (inspection without navigation)
+- **"View All" → Page:** Navigate to full Table Page
+
+**Role Dependency:**
+- **Role-aware:** Content varies by role (Board Member sees votes, Contributor sees contributions)
+- Present in: All dashboard roles (universal pattern)
+
+---
+
+### Section Primitive Summary Table
+
+| Section Primitive | Primary Interaction | Role Dependency | Typical Position |
+|-------------------|---------------------|-----------------|------------------|
+| **MetricCluster** | Drawer (metric drilldown) | Role-aware (all roles) | Top (hero section) |
+| **Pending Actions** | Drawer (View All), Page (action execution) | Role-specific (governance/ops) | Upper-middle (attention zone) |
+| **Meeting Summary** | Drawer (details), Page (schedule), External (join) | Role-aware (meeting-focused roles) | Middle (contextual) |
+| **Strategic Alerts** | Drawer (details), Page (resolution) | Executive Director only | Upper-middle (attention zone) |
+| **Recent Activity** | Drawer (inspection), Page (full view) | Role-aware (all roles) | Bottom (contextual preview) |
+
+---
+
+## Role-Specific Dashboard Composition (Observed)
+
+This section documents **observed dashboard compositions** in LFX One prototypes.
+
+**Important:** This is NOT a locked specification. Role-specific compositions may evolve
+based on user research, product requirements, and organizational context.
+
+### Board Member Dashboard
+
+**Focus:** Organizational governance and oversight
+
+**Section Primitives Present:**
+- ✅ MetricCluster (organizational health metrics)
+- ✅ Pending Actions (votes, approvals)
+- ✅ Meeting Summary (board meetings, committee meetings)
+- ✅ Recent Activity (recent votes, recent decisions)
+
+**Emphasized:**
+- Pending Actions (governance decisions are primary workflow)
+- Meeting Summary (meetings are core responsibility)
+
+**Omitted:**
+- Strategic Alerts (not executive-level)
+
+**Interaction Pattern:**
+- Heavy drawer usage (inspection without leaving dashboard)
+- Page navigation for voting and scheduling
+
+---
+
+### Contributor Dashboard
+
+**Focus:** Personal productivity and project engagement
+
+**Section Primitives Present:**
+- ✅ MetricCluster (personal contribution stats)
+- ✅ Pending Actions (issues assigned, PRs to review)
+- ✅ Recent Activity (recent contributions, recent comments)
+
+**Emphasized:**
+- MetricCluster (personal stats are motivating)
+- Pending Actions (assigned work is primary focus)
+
+**Omitted:**
+- Meeting Summary (less meeting-focused role)
+- Strategic Alerts (not contributor-level)
+
+**Interaction Pattern:**
+- Page navigation for task execution (issue detail, PR review)
+- Drawer for quick stats and activity inspection
+
+---
+
+### Maintainer Dashboard
+
+**Focus:** Project health and operational oversight
+
+**Section Primitives Present:**
+- ✅ MetricCluster (project health metrics)
+- ✅ Pending Actions (PR reviews, issue triage, releases)
+- ✅ Meeting Summary (project meetings, sync meetings)
+- ✅ Recent Activity (recent PRs, recent issues)
+
+**Emphasized:**
+- Pending Actions (operational decisions are primary workflow)
+- MetricCluster (project health monitoring)
+
+**Omitted:**
+- Strategic Alerts (not executive-level)
+
+**Interaction Pattern:**
+- Balanced drawer and page usage
+- Drawer for quick inspection, page for deep work
+
+---
+
+### Executive Director Dashboard
+
+**Focus:** Strategic oversight and cross-project leadership
+
+**Section Primitives Present:**
+- ✅ MetricCluster (organizational and cross-project metrics)
+- ✅ Strategic Alerts (high-priority organizational issues)
+- ✅ Pending Actions (strategic decisions, budget approvals)
+- ✅ Meeting Summary (executive meetings, all-hands)
+- ✅ Recent Activity (cross-project activity, organizational changes)
+
+**Emphasized:**
+- Strategic Alerts (executive-level concerns)
+- MetricCluster (org-wide health monitoring)
+
+**Omitted:**
+- None (most comprehensive dashboard)
+
+**Interaction Pattern:**
+- Heavy drawer usage (strategic overview without context switching)
+- Page navigation for resolution workflows and deep analysis
+
+---
+
+## Interaction Surfaces at Section Level
+
+Each section primitive follows the system-wide **Drawer vs Modal vs Page** contract
+defined in **0. README → Interaction Surfaces**.
+
+### MetricCluster Interactions
+
+**Metric Card Click:**
+- **→ Drawer** (default, primary)
+  - Expanded chart with historical data
+  - Contextual explanation
+  - Optional link to LFX Insights
+
+**"Ask LFX Lens" Button:**
+- **→ Modal OR Drawer** (TBD based on LFX Lens UX)
+  - Quick AI-powered metric explanation
+  - Does NOT navigate away from dashboard
+
+**Rule:** MetricCluster MUST use drawers for metric drilldown (preserves context).
+
+---
+
+### Pending Actions Interactions
+
+**ActionCard CTA Click:**
+- **→ Page** (for complex actions: vote, approve, review)
+- **→ Inline execution** (for simple actions: dismiss, acknowledge)
+
+**"View All" Click:**
+- **→ Drawer** (My Actions drawer with search + filter)
+
+**ActionCard Body Click:**
+- **→ Drawer** (action details without executing)
+
+**Rule:** View All MUST use drawer (NOT page, NOT modal). Action execution may navigate to page.
+
+---
+
+### Meeting Summary Interactions
+
+**Meeting Card Click:**
+- **→ Drawer** (meeting details, agenda, participants)
+
+**"Schedule Meeting" Button:**
+- **→ Page** (Creation Flow: Schedule Meeting pattern)
+
+**"Join Meeting" Button:**
+- **→ External** (launch meeting platform in new tab/window)
+
+**Rule:** Inspection uses drawer. Scheduling uses page. Joining is external.
+
+---
+
+### Strategic Alerts Interactions
+
+**Alert Card Click:**
+- **→ Drawer** (alert details, affected entities, context)
+
+**Alert CTA Click:**
+- **→ Page** (resolution workflow, varies by alert type)
+
+**Rule:** Inspection uses drawer. Resolution uses page.
+
+---
+
+### Recent Activity Interactions
+
+**Row Click:**
+- **→ Drawer** (item details for quick inspection)
+
+**"View All" Click:**
+- **→ Page** (full Table Page with filters + pagination)
+
+**Rule:** Inspection uses drawer. Full browsing uses page.
+
+---
+
+## Agent Guidance for Dashboard Generation
+
+**This guidance is observational, not locked.**
+
+When agents are instructed to create or modify dashboards, they should:
+
+### Choosing Section Primitives
+
+**Step 1: Identify user role**
+- Board Member → Governance-focused sections
+- Contributor → Personal productivity sections
+- Maintainer → Operational oversight sections
+- Executive Director → Strategic oversight sections
+
+**Step 2: Select section primitives based on role**
+- All roles → MetricCluster + Recent Activity
+- Governance/ops roles → Pending Actions
+- Meeting-focused roles → Meeting Summary
+- Executive Director only → Strategic Alerts
+
+**Step 3: Compose sections in priority order**
+- Hero section: MetricCluster (always first)
+- Attention zone: Pending Actions OR Strategic Alerts
+- Contextual sections: Meeting Summary, Recent Activity
+
+### Varying Dashboards by Role
+
+**Do:**
+- Adjust MetricCluster content to role-appropriate metrics
+- Show Pending Actions only if user has accountable workflows
+- Include Meeting Summary for meeting-focused roles
+- Add Strategic Alerts only for Executive Director
+
+**Do NOT:**
+- Create new section types without explicit instruction
+- Mix role contexts (e.g., contributor metrics on board member dashboard)
+- Hide sections that always apply (MetricCluster, Recent Activity)
+
+### What NOT to Invent
+
+**Agents MUST NOT invent:**
+- New section primitive types (use existing patterns)
+- Custom grid layouts (section layout is not locked)
+- Chart types or visualizations (defer to drawer content)
+- Role logic (roles are provided by context)
+- Complex filtering within dashboard sections (use drawers for that)
+
+**If unclear:**
+- Default to MetricCluster + Recent Activity (universal sections)
+- Reference existing role-specific dashboard examples
+- Ask for clarification before creating new section types
+
+### Decision Tree for Section Composition
+
+```
+Is user role known?
+├─ YES → Use role-specific section primitives
+│  ├─ Board Member → Governance focus
+│  ├─ Contributor → Productivity focus
+│  ├─ Maintainer → Operations focus
+│  └─ Executive Director → Strategic focus
+└─ NO → Use universal sections only (MetricCluster + Recent Activity)
+
+Does user have pending actions?
+├─ YES → Include Pending Actions section
+└─ NO → Omit Pending Actions section
+
+Is role meeting-focused?
+├─ YES → Include Meeting Summary section
+└─ NO → Omit Meeting Summary section (or make optional)
+
+Is user Executive Director?
+├─ YES → Include Strategic Alerts section
+└─ NO → Omit Strategic Alerts section
+```
+
+### Final Rule
+
+Agents MUST treat section primitives as **building blocks**, not as fixed layouts.
+
+The Dashboard pattern defines:
+- ✅ WHAT sections exist (primitives)
+- ✅ WHY they exist (purpose)
+- ✅ HOW they behave (interaction surfaces)
+
+The Dashboard pattern does NOT define:
+- ❌ Visual layout (spacing, sizing, positioning)
+- ❌ Grid systems (columns, rows, breakpoints)
+- ❌ Chart rendering (visualization details)
+- ❌ Role authorization logic (backend concerns)
+
+**When in doubt:**
+- Reference Board Member, Contributor, Maintainer, or Executive Director dashboards
+- Follow the Drawer vs Modal vs Page contract
+- Compose sections vertically in priority order
+- Ask before inventing new patterns
         `,
       },
     },
