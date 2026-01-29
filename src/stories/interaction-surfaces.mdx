@@ -1,0 +1,401 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="0. README / Interaction Surfaces" />
+
+# Drawer vs Modal vs Page
+
+**Canonical Interaction Surface Contract for LFX One**
+
+This document defines the **authoritative rules** for when to use Drawer, Modal, or Page
+as interaction surfaces in LFX One.
+
+This contract is **normative** and applies to:
+- All page patterns (Dashboard, Table Page, Creation Flow, Segmented Table Page)
+- All dashboard primitives (MetricCluster, ActionCard)
+- All future agent-generated interfaces
+- All human-authored components and pages
+
+---
+
+## Purpose
+
+LFX One deliberately uses **three distinct interaction surfaces** to balance:
+
+- **Context preservation:** Keeping users oriented within their workflow
+- **Cognitive load:** Managing attention and focus appropriately
+- **Task complexity:** Matching surface to task depth
+- **Navigational clarity:** Providing predictable interaction models
+
+Each surface exists for a specific cognitive and workflow purpose.
+
+The wrong choice creates:
+- ❌ User disorientation
+- ❌ Workflow interruption
+- ❌ Inconsistent behavior across the system
+- ❌ Agent drift (unpredictable generation)
+
+The right choice enables:
+- ✅ Predictable user mental models
+- ✅ Consistent interaction patterns
+- ✅ Deterministic agent generation
+- ✅ Scalable system design
+
+---
+
+## Interaction Surface Definitions
+
+### Drawer
+
+**What it is:**
+- Slides in from the **right side** of the screen
+- Overlays the main content without replacing it
+- Can be dismissed by clicking outside, ESC key, or close button
+- Main content remains **visible** (though dimmed or inactive)
+
+**Visual Behavior:**
+- Preserves underlying page context
+- Non-blocking (user can see what they were doing)
+- Temporary, lightweight overlay
+- Width typically 400-600px (fixed or responsive)
+
+**Cognitive Purpose:**
+- **"Let me quickly look at this detail without losing my place"**
+- Contextual exploration or inspection
+- Lightweight execution (filtering, reviewing, acting)
+- Supports comparison and reference back to main content
+
+---
+
+### Modal
+
+**What it is:**
+- Centered overlay that **blocks** the main content
+- Requires user action to dismiss (button, ESC key)
+- Intentionally interruptive
+- Background is dimmed and inactive
+
+**Visual Behavior:**
+- Temporarily blocks background completely
+- Forces focus on modal content
+- Cannot interact with background until dismissed
+- Size typically small to medium (300-500px wide)
+
+**Cognitive Purpose:**
+- **"I need your attention right now for this one thing"**
+- Short, focused, atomic tasks
+- Confirmations, warnings, or acknowledgments
+- Intentional interruption of workflow
+
+---
+
+### Page
+
+**What it is:**
+- Full navigation to a new route/URL
+- Replaces the **entire main content area**
+- Browser back button returns to previous page
+- Persists in navigation history
+
+**Visual Behavior:**
+- Full viewport content replacement
+- Supports complex, multi-section layouts
+- Can have its own AppHeader, sections, and navigation
+- User expects to "be somewhere else"
+
+**Cognitive Purpose:**
+- **"I'm going somewhere to do something substantial"**
+- Deep focus workflows
+- Multi-step tasks
+- Complex creation or configuration
+- Full-featured data browsing
+
+---
+
+## Canonical Usage Rules (Normative)
+
+These rules are **binding** and **non-negotiable**.
+
+### Use a DRAWER when:
+
+✅ **User is drilling into details** from a dashboard or table  
+✅ **Inspecting or reviewing** items in context  
+✅ **Acting on items** without navigation (approve, dismiss, etc.)  
+✅ **Filtering or searching** within a constrained scope  
+✅ **Task is reversible** or lightweight  
+✅ **Context should remain visible** (metrics, table, dashboard)  
+
+**Example Use Cases:**
+- Metric drill-down from dashboard (expanded chart + details)
+- My Actions "View All" (search, filter, act on pending actions)
+- Inspecting a project, contributor, or organization
+- Viewing alert details from a monitoring dashboard
+- Reading notification details from a notification center
+- Reviewing a pull request summary from a list
+- Expanding a table row for detailed fields
+
+**Why Drawer:**
+- Preserves dashboard or table context
+- User can reference other metrics/rows while viewing details
+- Encourages quick exploration without navigation commitment
+- Easy to dismiss and continue browsing
+
+---
+
+### Use a MODAL when:
+
+✅ **User must confirm** a destructive or critical action  
+✅ **Task is short and atomic** (one decision, one input)  
+✅ **Blocking is intentional** (user must respond before continuing)  
+✅ **Action requires explicit acknowledgment**  
+
+**Example Use Cases:**
+- Confirm destructive action ("Delete this item?")
+- Rename item (single text input + save/cancel)
+- Simple yes/no decisions
+- "Are you sure?" confirmations
+- Quick single-field forms (e.g., "Add tag")
+- Warning messages requiring acknowledgment
+- Permission requests
+
+**Why Modal:**
+- Forces user to make a decision before proceeding
+- Prevents accidental destructive actions
+- Short, focused interaction
+- Clear call to action with explicit dismiss
+
+---
+
+### Use a PAGE when:
+
+✅ **Task is multi-step** or long-running  
+✅ **User is creating or configuring** a complex entity  
+✅ **User expects deep focus** and dedicated navigation  
+✅ **Task requires its own URL** (shareable, bookmarkable)  
+✅ **Workflow spans multiple sections** or views  
+✅ **User is browsing a full dataset** (not a preview)  
+
+**Example Use Cases:**
+- Create Vote (multi-step creation flow)
+- Create Survey (multi-step creation flow)
+- Schedule Meeting (multi-step creation flow)
+- Full table views (all votes, all surveys, all projects)
+- Detail pages for entities (Project Details, User Profile)
+- Settings pages (multi-section configuration)
+- Edit entity workflows (complex form with multiple steps)
+- Analytics dashboards (dedicated focus on data exploration)
+
+**Why Page:**
+- Complex tasks deserve dedicated space
+- User expects navigation (URL change, back button)
+- Multi-step flows need persistent state
+- Full dataset browsing requires dedicated layout
+- Shareable URLs enable collaboration
+
+---
+
+## Explicit Anti-Patterns (Forbidden)
+
+The following patterns are **explicitly forbidden** in LFX One:
+
+### ❌ Do NOT use Modals for:
+- Multi-step workflows (use Page with Creation Flow pattern instead)
+- Complex forms with multiple sections (use Page)
+- Long content that requires scrolling (use Drawer or Page)
+- Content that users need to reference while working elsewhere (use Drawer)
+- Anything that takes more than 30 seconds to complete (use Page)
+
+### ❌ Do NOT use Drawers for:
+- Creation flows (use Page with Creation Flow pattern)
+- Multi-step configuration wizards (use Page)
+- Editing complex entities with many fields (use Page)
+- Tasks that require URL sharing (use Page)
+- Stacked drawers (drawer inside drawer) — forbidden
+
+### ❌ Do NOT use Pages for:
+- Quick inspections or detail views (use Drawer)
+- Simple confirmations (use Modal)
+- Lightweight filtering or search (use Drawer)
+- Temporary context that doesn't need a URL (use Drawer or Modal)
+
+### ❌ General Forbidden Patterns:
+- **Stacking drawers:** Never open a drawer from inside a drawer
+- **Modal chains:** Never open a modal from inside a modal
+- **Drawer → Modal:** Avoid opening modals from drawers (use single surface)
+- **Page → Drawer → Modal:** Minimize surface nesting complexity
+
+---
+
+## Relationship to Page Patterns
+
+This contract applies across all LFX One page patterns:
+
+### Dashboard Page Pattern
+
+**Default Behavior:**
+- **MetricCluster drill-down:** DRAWER (expanded chart, not a new page)
+- **ActionCard "View All":** DRAWER (My Actions drawer with search/filter)
+- **Meeting details:** DRAWER (quick inspection without navigation)
+- **Create action (from dashboard CTA):** PAGE (use Creation Flow pattern)
+
+**Why:**
+- Dashboard is a summary surface
+- Details should preserve dashboard context
+- Users scan multiple metrics/actions → drawers support comparison
+- Creation is a deep task → deserves dedicated page
+
+---
+
+### Table Page Pattern
+
+**Default Behavior:**
+- **Row click (inspection):** DRAWER (view details, not navigate away)
+- **Bulk actions confirmation:** MODAL (confirm before executing)
+- **Create new entity:** PAGE (navigate to Creation Flow)
+- **Filter/search:** Inline (no drawer or modal needed)
+- **Navigate to full entity details:** PAGE (if entity is complex enough)
+
+**Why:**
+- Table Page is for browsing datasets
+- Inspecting rows should preserve table context
+- Creating entities requires dedicated focus → page
+- Confirmations for bulk actions prevent mistakes → modal
+
+---
+
+### Creation Flow Page Pattern
+
+**Default Behavior:**
+- **Entire flow:** PAGE (multi-step, deep focus required)
+- **Confirm cancellation:** MODAL (prevent accidental loss of work)
+- **Add participant/attachment:** Inline or MODAL (if simple) or PAGE (if complex search)
+
+**Why:**
+- Creation flows are multi-step and require focus
+- Users expect navigation (URL change, back button)
+- Preserving draft state requires page-level context
+- Lightweight sub-actions may use modals (but avoid complexity)
+
+---
+
+### Segmented Table Page Pattern
+
+**Default Behavior:**
+- Same as Table Page (drawers for inspection, pages for creation)
+- Each table segment follows Table Page rules independently
+
+---
+
+## Agent Contract (Normative)
+
+This section defines **binding rules for agents** generating interfaces in LFX One.
+
+### Required Behavior
+
+Agents MUST:
+
+1. **Choose the interaction surface BEFORE designing layout**
+   - Do not design first, then choose surface
+   - Surface choice drives layout and interaction design
+
+2. **Follow the rules above without exception**
+   - Use Drawer for detail inspection
+   - Use Modal for confirmations
+   - Use Page for creation and complex workflows
+
+3. **Default conservatively when unclear:**
+   - **Drawer** for inspection and lightweight actions
+   - **Page** for creation and multi-step workflows
+   - **Modal** ONLY for explicit confirmations
+
+4. **Never violate anti-patterns:**
+   - No stacked drawers
+   - No multi-step modals
+   - No drawer-based creation flows
+
+### Decision Tree for Agents
+
+When instructed to create an interface, agents MUST ask:
+
+**Step 1: Is this a creation or multi-step workflow?**
+- YES → Use **PAGE** (with Creation Flow pattern if applicable)
+- NO → Continue to Step 2
+
+**Step 2: Is this a confirmation or single-action decision?**
+- YES → Use **MODAL**
+- NO → Continue to Step 3
+
+**Step 3: Is this inspection or contextual action?**
+- YES → Use **DRAWER**
+- NO → Re-evaluate requirements or ask for clarification
+
+### Ambiguity Resolution
+
+When requirements are ambiguous, agents MUST:
+
+1. **Prioritize context preservation:** Default to Drawer
+2. **Respect task complexity:** Multi-step → Page
+3. **Ask before inventing:** If unclear, ask user before choosing
+
+### Forbidden Agent Behavior
+
+Agents MUST NOT:
+
+- Invent new interaction surfaces (only Drawer, Modal, Page exist)
+- Mix interaction models (e.g., drawer that behaves like a page)
+- Create stacked surfaces (drawer → drawer, modal → modal)
+- Bypass this contract based on "best practices" from other systems
+- Use modals for convenience when drawer or page is appropriate
+
+---
+
+## Why This Matters
+
+This contract exists to:
+
+### Prevent UI Inconsistency
+- Users develop muscle memory for interaction patterns
+- Inconsistent surface choice breaks mental models
+- Predictability reduces cognitive load
+
+### Preserve User Mental Models
+- Drawer = "quick look, keep context"
+- Modal = "decide now, blocking"
+- Page = "go somewhere, do something substantial"
+
+### Enable Agentic Generation Without Drift
+- Agents need deterministic rules
+- Without this contract, agents guess based on training data
+- Guessing leads to inconsistent UX across generated interfaces
+
+### Align with Real LFX One Behavior
+- This contract documents **actual LFX One patterns**
+- Not speculative or aspirational
+- Reflects design decisions already made in:
+  - Board Member Dashboard
+  - Contributor Dashboard
+  - Maintainer Dashboard
+  - Votes, Surveys, Groups pages
+
+---
+
+## Final Rule
+
+**If an agent or developer produces an interface that violates this contract,
+the output is architecturally incorrect, regardless of visual quality.**
+
+This contract is **non-negotiable** and applies to:
+- All existing pages
+- All future pages
+- All agent-generated interfaces
+- All human-authored components
+
+**When in doubt:**
+- Reference this document
+- Choose conservatively (Drawer > Page > Modal)
+- Ask for clarification before violating the contract
+
+---
+
+## Revision History
+
+- **2026-01-28:** Initial canonical contract established

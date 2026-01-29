@@ -388,6 +388,15 @@ It is NOT:
 - ❌ An example of another pattern
 - ❌ A system verification artifact
 
+### Interaction Behavior
+
+Interaction behavior in Dashboard follows the system-wide contract defined in  
+**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+
+- Metric drill-down → Drawer
+- ActionCard "View All" → Drawer
+- Create actions → Page (Creation Flow pattern)
+
 ---
 
 ## MetricCluster (Dashboard Section Primitive)

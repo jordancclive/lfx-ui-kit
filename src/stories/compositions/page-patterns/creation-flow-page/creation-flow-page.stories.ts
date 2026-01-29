@@ -716,6 +716,17 @@ agent-generated creation flows remain production-ready.
 
 ---
 
+## Interaction Behavior
+
+Interaction behavior in Creation Flow follows the system-wide contract defined in  
+**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+
+- Entire creation flow → Page (this pattern)
+- Confirmation before cancel → Modal
+- Sub-actions within steps → Inline or Modal (keep simple)
+
+---
+
 ## Future Extensibility Notes
 
 This pattern is designed to be extended in the future with:

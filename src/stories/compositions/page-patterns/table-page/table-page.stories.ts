@@ -967,6 +967,17 @@ Anything else is a bug.
 
 ---
 
+## Interaction Behavior
+
+Interaction behavior in Table Page follows the system-wide contract defined in  
+**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+
+- Row inspection → Drawer
+- Bulk action confirmation → Modal
+- Create new entity → Page (Creation Flow pattern)
+
+---
+
 ## Architectural Guardrails
 
 This component is part of the **LFX One table system**.
