@@ -387,6 +387,157 @@ It is NOT:
 - ❌ A concrete product page
 - ❌ An example of another pattern
 - ❌ A system verification artifact
+
+---
+
+## MetricCluster (Dashboard Section Primitive)
+
+MetricCluster is an **emergent, reusable dashboard-level section pattern** observed
+across multiple LFX One dashboards (Board Member, Contributor, Maintainer, Executive Director).
+
+This is a DESCRIPTIVE pattern documentation, not a locked component contract.
+
+### Purpose
+
+MetricCluster groups high-level metrics for **at-a-glance monitoring** and
+**decision-oriented summaries**.
+
+It provides:
+- Quick visual scanning of key performance indicators
+- Summary-first design philosophy
+- Clear escalation paths to detailed analytics
+- Contextual drill-down via drawer interactions
+
+**MetricCluster is NOT:**
+- A single metric card
+- A deep analytics surface
+- A replacement for dedicated reporting tools
+
+### Typical Structure
+
+A MetricCluster section typically contains:
+
+1. **Section Header**
+   - Title (e.g., "Performance Metrics", "Activity Overview")
+   - Optional description
+   - Optional action button (e.g., "Ask LFX Lens")
+
+2. **Metric Card Cluster**
+   - Horizontally aligned metric cards
+   - May overflow into carousel/horizontal scroll
+   - Typically 3-6 cards per cluster
+
+3. **Interaction Layer**
+   - Click handler on each metric card
+   - Opens detail drawer (not modal, not page)
+   - Drawer contains expanded chart + context
+
+**ASCII Structure:**
+
+\`\`\`
+PageSection (MetricCluster)
+├─ SectionHeader
+│  ├─ title: "Performance Metrics"
+│  ├─ description (optional)
+│  └─ action: "Ask LFX Lens" (optional)
+├─ MetricCardRow (horizontal layout)
+│  ├─ MetricCard (clickable)
+│  ├─ MetricCard (clickable)
+│  ├─ MetricCard (clickable)
+│  └─ MetricCard (clickable)
+└─ Drawer (revealed on card click)
+   ├─ Detailed chart(s)
+   ├─ Contextual explanation
+   └─ Optional CTA → LFX Insights
+\`\`\`
+
+### Interaction Model
+
+MetricCluster follows a **summary → detail** interaction model:
+
+**On Card Click:**
+- Opens a **drawer** (slides in from right)
+- Drawer does NOT replace dashboard context
+- Drawer shows expanded view of the metric:
+  - Detailed chart (line, bar, or trend visualization)
+  - Contextual explanation of what the metric means
+  - Historical data or trend information
+  - Optional escalation link to deeper analytics (e.g., LFX Insights)
+
+**Why Drawer, Not Modal or Page:**
+- Preserves dashboard context (user can see other metrics)
+- Lightweight, non-blocking interaction
+- Encourages quick exploration without losing place
+- Supports comparison between metrics
+
+**Drawer Contents:**
+- Expanded metric visualization
+- Time-series data (if applicable)
+- Contextual help text
+- Link to related LFX product (e.g., "View full analytics in LFX Insights")
+
+### When to Use
+
+Use MetricCluster when:
+
+- Building **overview dashboards** for role-based personas
+- Displaying **health monitoring** surfaces
+- Showing **KPI summaries** that require quick scanning
+- Creating **executive summaries** with escalation paths
+- Need to group **related metrics** into semantic clusters
+
+**Typical Use Cases:**
+- Board Member Dashboard → Organizational health metrics
+- Contributor Dashboard → Personal contribution stats
+- Maintainer Dashboard → Project health indicators
+- Executive Director Dashboard → Cross-project KPIs
+
+### When NOT to Use
+
+Do NOT use MetricCluster when:
+
+- Displaying a **single metric** (use standalone MetricCard instead)
+- Building **deep analytical workflows** (use dedicated analytics pages)
+- Metrics require **complex filtering** (use Table Page with metrics row)
+- Page is focused on **task execution** (use Creation Flow or action-oriented layouts)
+- Metrics are **static** with no drill-down need (use simple metrics row)
+
+### Relationship to Other Patterns
+
+**Lives INSIDE:**
+- Dashboard Page Pattern (as a section primitive)
+
+**Often Paired With:**
+- Action sections (e.g., "Create Vote", "Schedule Meeting")
+- Recent activity sections (list groups)
+- Preview tables (single-table summaries)
+
+**Does NOT Exist Inside:**
+- Table Page (Table Page uses metrics row, not MetricCluster)
+- Creation Flow Page (Creation Flow is task-focused, not summary-focused)
+- Segmented Table Page (Segmented uses section titles, not metric clusters)
+
+### Agent Guidance (Non-Normative)
+
+**This pattern is observed, not locked.**
+
+When generating dashboards, agents should:
+- Follow existing dashboard examples in LFX One
+- Use MetricsRow component for horizontal metric layout
+- Assume drawer interaction for metric drill-down
+- Do NOT invent new interaction models (e.g., modals, tooltips, popovers)
+- Preserve the summary → detail escalation pattern
+
+**Agents should NOT:**
+- Lock this pattern prematurely
+- Create normative rules for MetricCluster structure
+- Invent custom metric card variants
+- Bypass existing dashboard compositions
+
+**If in doubt:**
+- Reference Board Member, Contributor, or Maintainer dashboard examples
+- Ask for clarification before diverging
+- Prefer existing patterns over novel compositions
         `,
       },
     },
