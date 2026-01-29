@@ -763,6 +763,88 @@ If something feels off visually:
 
 ---
 
+## Agent Contract (Normative)
+
+This section defines the **authoritative contract** for agents generating pages
+using the **Table Page** pattern.
+
+This is not an example.
+This is not guidance.
+This is a binding contract.
+
+### Purpose
+
+The Table Page pattern exists to produce **deterministic, production-ready,
+single-table pages** using a stable hierarchy of components and tokens.
+
+Agents must follow this contract exactly.
+
+### Required Behavior
+
+When instructed to create a Table Page, an agent MUST:
+
+- Use the **Table Page pattern** as the page-level composition authority
+- Place the table inside a **Card**
+- Use **TableToolbar** for search + filter controls
+- Use **TableGrid** for the data grid (rows + cells only)
+- Use **TablePagination** for pagination when applicable
+- Treat the page as a **single workflow surface**
+- Prefer defaults over customization
+
+### Defaults (Must Be Preserved)
+
+Unless explicitly instructed otherwise, agents MUST assume:
+
+- Rows are clickable by default
+- The first column is the primary entry point
+- Search is full-width
+- Filters are ordered to match column semantics
+- Toolbar sits directly above the table
+- Pagination sits directly below the table
+- Spacing, density, and hover behavior come from tokens and components
+- No page-level spacing overrides are applied
+
+### Forbidden Actions
+
+Agents MUST NOT:
+
+- Re-implement layout inside page examples
+- Add margins, padding, or flex rules at the page level
+- Render search, filters, or pagination inside TableGrid
+- Modify TableToolbar or TablePagination responsibilities
+- Invent new variants or flags
+- Reorder components for visual preference
+- Add logic to "improve" the design
+- Bypass the pattern to get a similar result
+
+If a requirement cannot be met within this contract,
+the agent MUST stop and ask for clarification.
+
+### Ambiguity Resolution Rule
+
+When instructions are ambiguous, agents MUST:
+
+1. Choose the most conservative interpretation
+2. Prefer existing defaults
+3. Preserve architectural boundaries
+4. Avoid adding new structure or behavior
+
+### Relationship to Other Patterns
+
+- **Use Table Page** when the page contains a single primary table
+- **Use DataTable** when you want a fully bundled, opinionated table workflow
+- **Do NOT use Table Page** for segmented or multi-table layouts
+
+### Final Rule
+
+If an agent produces output that differs visually or structurally from the
+Table Page pattern without explicit instruction, the output is incorrect.
+
+This contract exists to prevent drift, preserve consistency, and ensure that
+agent-generated pages remain production-ready.
+
+---
+
 ## TablePage × DataTable Relationship
 
 **TablePage uses DataTable by default** for single-table workflows.
