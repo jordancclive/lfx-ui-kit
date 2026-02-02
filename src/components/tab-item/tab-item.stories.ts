@@ -9,7 +9,7 @@ const starIcon = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/
 </svg>`;
 
 const meta: Meta<TabItemProps> = {
-  title: '1. Components / 2. Molecules / 5. TabItem',
+  title: '1. Components / 2. Molecules / TabItem',
   tags: ['autodocs'],
   render: (args) => createTabItem(args),
   argTypes: {

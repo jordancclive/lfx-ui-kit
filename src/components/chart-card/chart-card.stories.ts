@@ -167,7 +167,7 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * No new tokens are introduced by ChartCard.
  */
 const meta: Meta<ChartCardProps> = {
-  title: '1. Components / 2. Molecules / 5. ChartCard',
+  title: '1. Components / 2. Molecules / ChartCard',
   tags: ['autodocs'],
   argTypes: {
     title: {

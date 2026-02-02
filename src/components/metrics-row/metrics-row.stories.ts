@@ -82,7 +82,7 @@ function createPlaceholderChartCard(config: { label?: string; value: string; met
  * - **No visual semantics live here**
  */
 const meta: Meta<MetricsRowProps> = {
-  title: '1. Components / 3. Organisms / 6. MetricsRow',
+  title: '1. Components / 3. Organisms / MetricsRow',
   tags: ['autodocs'],
   argTypes: {
     dense: {

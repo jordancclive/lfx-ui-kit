@@ -342,7 +342,7 @@ function createGroupsTablePage(args: GroupsTablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<GroupsTablePageArgs> = {
-  title: '3. Page Examples / 1. Table Pages / 3. Groups',
+  title: '3. Page Examples / Groups',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

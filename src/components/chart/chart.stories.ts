@@ -13,7 +13,7 @@ import { createChart, disposeChart } from './chart';
 import { createSparklineOption, createStatusSparklineOption } from './config/lineAreaSparkline';
 
 const meta: Meta = {
-  title: 'Components/2. Molecules/Chart',
+  title: '1. Components / 2. Molecules / Chart',
   tags: ['autodocs'],
   argTypes: {
     height: {

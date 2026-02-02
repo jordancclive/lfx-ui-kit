@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createListItem, ListItemProps } from './list-item';
 
 const meta: Meta<ListItemProps> = {
-  title: '1. Components / 2. Molecules / 3. ListItem',
+  title: '1. Components / 2. Molecules / ListItem',
   tags: ['autodocs'],
   render: (args) => createListItem(args),
   parameters: {
