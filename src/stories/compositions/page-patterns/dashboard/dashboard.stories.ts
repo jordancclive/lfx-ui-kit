@@ -47,6 +47,10 @@
  *   - component contracts
  *   - or missing pattern components
  * - Never patch in this pattern
+ * 
+ * INSIGHTS ESCALATION:
+ * Dashboard charts provide signal, not exploration.
+ * See docs/insights-escalation-contract.md for escalation rules.
  */
 
 import type { Meta, StoryObj } from '@storybook/html';

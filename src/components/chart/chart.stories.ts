@@ -6,6 +6,10 @@
  * This is the first step toward incorporating ALL Insights charts into
  * the LFX UI kit with visual parity. Add new chart types by porting
  * configs one-by-one from Insights.
+ * 
+ * SCOPE:
+ * Charts in LFX One provide signal, not exploration.
+ * See docs/insights-escalation-contract.md for boundary rules.
  */
 
 import type { Meta, StoryObj } from '@storybook/html';
