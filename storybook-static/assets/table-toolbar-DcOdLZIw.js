@@ -1,0 +1,1 @@
+function r(o={}){const{search:t,filters:l=[]}=o,e=document.createElement("div");return t||l.length>0?(e.className="lfx-table-toolbar",t&&(t.style.flex="1",e.appendChild(t)),l.forEach(a=>{e.appendChild(a)}),e):(e.style.display="none",e)}export{r as c};
