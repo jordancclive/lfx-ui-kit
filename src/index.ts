@@ -46,5 +46,9 @@ export { createAppHeader, type AppHeaderProps } from './components/app-header/ap
 export { createPageLayout, type PageLayoutProps } from './components/page-layout/page-layout';
 export { createPageSection, type PageSectionProps } from './components/page-section/page-section';
 export { createCard, type CardProps } from './components/card/card';
+export { createChart, updateChart, disposeChart, type ChartProps } from './components/chart/chart';
+export { createSparklineOption, createStatusSparklineOption } from './components/chart/config/lineAreaSparkline';
+export { getChartColors, getStatusColor } from './components/chart/config/colors';
+export { getChartDefaults, mergeChartOptions } from './components/chart/config/defaults';
 export { createChartCard, type ChartCardProps } from './components/chart-card/chart-card';
 export { createMetricsRow, type MetricsRowProps } from './components/metrics-row/metrics-row';
