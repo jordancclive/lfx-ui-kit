@@ -790,3 +790,101 @@ export const DenseStackedBarChart: Story = {
     return chart;
   },
 };
+
+/**
+ * Contributor Dependency (Insights Parity)
+ * 
+ * VALIDATION: Confirms that Insights-grade stacked bar charts
+ * can be hosted inside LFX One interaction surfaces without
+ * becoming an Insights page.
+ * 
+ * This chart shows contribution distribution:
+ * - Top 12 contributors = ~53% of activity
+ * - Remaining contributors = ~47% of activity
+ * 
+ * Visual characteristics match Insights:
+ * - Horizontal stacked bar
+ * - Minimal grid
+ * - No axis titles
+ * - Clean, focused presentation
+ * - Appropriate for drawer context
+ * 
+ * Purpose: Validate that the chart system is extensible
+ * and that Insights-grade visualizations fit naturally
+ * into LFX One's interaction surfaces.
+ */
+export const ContributorDependencyInsightsParity: Story = {
+  render: () => {
+    const container = document.createElement('div');
+    container.style.cssText = `
+      background: var(--ui-surface-container);
+      border: 1px solid var(--ui-surface-divider);
+      border-radius: var(--ui-card-radius);
+      padding: var(--spacing-16);
+      max-width: 700px;
+    `;
+
+    // Title
+    const title = document.createElement('div');
+    title.textContent = 'Contributor Dependency';
+    title.style.cssText = `
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-4);
+    `;
+    container.appendChild(title);
+
+    // Description
+    const desc = document.createElement('div');
+    desc.textContent = 'A small group of contributors accounts for a majority of activity';
+    desc.style.cssText = `
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-16);
+    `;
+    container.appendChild(desc);
+
+    // Chart (Insights parity: horizontal stacked bar)
+    const chart = createChart({
+      option: createStackedBarOption({
+        categories: ['Contributions'],
+        series: [
+          { 
+            name: 'Top 12 contributors', 
+            data: [53],
+          },
+          { 
+            name: 'Remaining contributors', 
+            data: [47],
+          },
+        ],
+        orientation: 'horizontal',
+        showLegend: true,
+      }),
+      height: 200,
+    });
+    container.appendChild(chart);
+
+    // Explanatory note
+    const note = document.createElement('div');
+    note.style.cssText = `
+      margin-top: var(--spacing-16);
+      padding-top: var(--spacing-16);
+      border-top: 1px solid var(--ui-surface-divider);
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      line-height: var(--leading-text-xs);
+    `;
+    note.innerHTML = `
+      This visualization demonstrates concentration risk in contributor activity.
+      <br/><br/>
+      <a href="#" style="color: var(--accent-600); text-decoration: none;">
+        View full analysis in LFX Insights →
+      </a>
+    `;
+    container.appendChild(note);
+
+    return container;
+  },
+};
