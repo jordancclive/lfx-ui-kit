@@ -811,24 +811,38 @@ export const DenseStackedBarChart: Story = {
 /**
  * Contributor Dependency (Insights Parity)
  * 
- * VALIDATION: Confirms that Insights-grade stacked bar charts
- * can be hosted inside LFX One interaction surfaces without
- * becoming an Insights page.
+ * SIGNAL-LEVEL VISUALIZATION ONLY
  * 
- * This chart shows contribution distribution:
- * - Top 12 contributors = ~53% of activity
- * - Remaining contributors = ~47% of activity
+ * This chart is a PARITY VALIDATION that demonstrates Insights-grade
+ * stacked bar charts can be hosted in LFX One as **signal only**.
  * 
- * Visual characteristics match Insights:
+ * WHAT THIS CHART SHOWS:
+ * - Top 12 contributors = 53% of activity
+ * - Remaining contributors = 47% of activity
+ * - Concentration risk indicator
+ * 
+ * VISUAL PARITY WITH INSIGHTS:
  * - Horizontal stacked bar
- * - Minimal grid
- * - No axis titles
+ * - Percentage-based scale (0-100)
+ * - Rounded bar ends
+ * - Minimal grid, no axis titles
  * - Clean, focused presentation
- * - Appropriate for drawer context
  * 
- * Purpose: Validate that the chart system is extensible
- * and that Insights-grade visualizations fit naturally
- * into LFX One's interaction surfaces.
+ * ESCALATION BOUNDARY (PER INSIGHTS ESCALATION CONTRACT):
+ * This chart does NOT and MUST NOT provide:
+ * - ❌ Filtering (no contributor type, date range, or project filters)
+ * - ❌ Drill-down (no clickable segments, no contributor identities)
+ * - ❌ Time range controls (no date pickers or period toggles)
+ * - ❌ Tables (no sortable lists of individual contributors)
+ * - ❌ Any exploratory affordances
+ * 
+ * All exploration MUST escalate to LFX Insights.
+ * See: docs/insights-escalation-contract.md
+ * 
+ * PURPOSE:
+ * This story exists to validate that the Insights Escalation Contract
+ * is respected without exception. It proves LFX One can host Insights-grade
+ * visualizations as signal indicators while maintaining clear boundaries.
  */
 export const ContributorDependencyInsightsParity: Story = {
   render: () => {
@@ -883,24 +897,49 @@ export const ContributorDependencyInsightsParity: Story = {
     });
     container.appendChild(chart);
 
-    // Explanatory note
-    const note = document.createElement('div');
-    note.style.cssText = `
-      margin-top: var(--spacing-16);
-      padding-top: var(--spacing-16);
-      border-top: 1px solid var(--ui-surface-divider);
+    // Signal explanation
+    const signal = document.createElement('div');
+    signal.style.cssText = `
+      margin-top: var(--spacing-12);
+      padding: var(--spacing-12);
+      background: var(--ui-surface-subtle);
+      border-radius: 4px;
       font-size: var(--text-xs);
       color: var(--text-secondary);
       line-height: var(--leading-text-xs);
     `;
-    note.innerHTML = `
-      This visualization demonstrates concentration risk in contributor activity.
-      <br/><br/>
-      <a href="#" style="color: var(--accent-600); text-decoration: none;">
+    signal.innerHTML = `
+      <strong style="color: var(--text-primary);">Signal:</strong> 
+      This chart indicates concentration risk. A small group of contributors 
+      accounts for the majority of activity, which may represent governance risk.
+    `;
+    container.appendChild(signal);
+
+    // Escalation CTA
+    const cta = document.createElement('div');
+    cta.style.cssText = `
+      margin-top: var(--spacing-16);
+      padding-top: var(--spacing-16);
+      border-top: 1px solid var(--ui-surface-divider);
+      text-align: center;
+    `;
+    cta.innerHTML = `
+      <a href="#" style="
+        display: inline-block;
+        padding: var(--spacing-8) var(--spacing-16);
+        background: var(--accent-50);
+        color: var(--accent-600);
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        transition: background-color 0.15s ease;
+      " onmouseover="this.style.backgroundColor='var(--accent-100)'" 
+         onmouseout="this.style.backgroundColor='var(--accent-50)'">
         View full analysis in LFX Insights →
       </a>
     `;
-    container.appendChild(note);
+    container.appendChild(cta);
 
     return container;
   },
