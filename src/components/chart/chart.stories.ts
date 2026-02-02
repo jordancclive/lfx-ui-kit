@@ -12,6 +12,7 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createChart, disposeChart } from './chart';
 import { createSparklineOption, createStatusSparklineOption } from './config/lineAreaSparkline';
 import { createVerticalBarChartOption, createHorizontalBarChartOption } from './config/bar';
+import { createStackedBarOption } from './config/stackedBar';
 
 const meta: Meta = {
   title: '1. Components / 2. Molecules / Chart',
@@ -569,6 +570,221 @@ export const SmallBarChart: Story = {
     const chart = createChart({
       option: createVerticalBarChartOption(data),
       height: 150,
+    });
+
+    return chart;
+  },
+};
+
+/**
+ * Vertical Stacked Bar Chart
+ * 
+ * Composition visualization with multiple series stacked.
+ * Ported from Insights dependency distribution patterns.
+ * 
+ * Visual characteristics:
+ * - Rounded corners on topmost segment only
+ * - Square edges on internal segments
+ * - Legend shows all series
+ * - Tooltip aggregates and shows percentages
+ * 
+ * Use cases:
+ * - Dependency composition (direct, transitive, dev)
+ * - Organization distribution
+ * - Package breakdown
+ */
+export const VerticalStackedBarChart: Story = {
+  render: () => {
+    const option = createStackedBarOption({
+      categories: ['Repo A', 'Repo B', 'Repo C', 'Repo D', 'Repo E'],
+      series: [
+        { name: 'Direct', data: [45, 38, 50, 42, 35] },
+        { name: 'Transitive', data: [30, 25, 28, 32, 30] },
+        { name: 'Dev', data: [15, 12, 10, 8, 15] },
+      ],
+    });
+    
+    const chart = createChart({
+      option,
+      height: 350,
+    });
+
+    return chart;
+  },
+};
+
+/**
+ * Horizontal Stacked Bar Chart
+ * 
+ * Better for longer category labels.
+ * Same stacking behavior as vertical.
+ */
+export const HorizontalStackedBarChart: Story = {
+  render: () => {
+    const option = createStackedBarOption({
+      categories: [
+        '@angular/core',
+        'react',
+        'vue',
+        '@types/node',
+        'typescript',
+      ],
+      series: [
+        { name: 'Production', data: [85, 120, 95, 60, 110] },
+        { name: 'Development', data: [45, 60, 50, 90, 70] },
+        { name: 'Peer', data: [20, 30, 25, 40, 35] },
+      ],
+      orientation: 'horizontal',
+    });
+    
+    const chart = createChart({
+      option,
+      height: 350,
+    });
+
+    return chart;
+  },
+};
+
+/**
+ * Stacked Bar Status Variants
+ * 
+ * Shows status-based color theming for stacked bars.
+ */
+export const StackedBarStatusVariants: Story = {
+  render: () => {
+    const container = document.createElement('div');
+    container.style.cssText = `
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-16);
+      max-width: 900px;
+    `;
+
+    const variants = [
+      { label: 'Success', status: 'success' as const },
+      { label: 'Warning', status: 'warning' as const },
+      { label: 'Danger', status: 'danger' as const },
+      { label: 'Neutral', status: 'neutral' as const },
+    ];
+
+    variants.forEach(({ label, status }) => {
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background: var(--ui-surface-container);
+        border: 1px solid var(--ui-surface-divider);
+        border-radius: var(--ui-card-radius);
+        padding: var(--spacing-12);
+      `;
+
+      const titleEl = document.createElement('div');
+      titleEl.textContent = label;
+      titleEl.style.cssText = `
+        font-size: var(--text-xs);
+        font-weight: var(--font-medium);
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-8);
+      `;
+      card.appendChild(titleEl);
+
+      const chart = createChart({
+        option: createStackedBarOption({
+          categories: ['Q1', 'Q2', 'Q3', 'Q4'],
+          series: [
+            { name: 'Series A', data: [30, 35, 40, 38] },
+            { name: 'Series B', data: [20, 25, 22, 28] },
+            { name: 'Series C', data: [10, 15, 18, 14] },
+          ],
+          statusVariant: status,
+          showLegend: false,
+        }),
+        height: 200,
+      });
+      card.appendChild(chart);
+
+      container.appendChild(card);
+    });
+
+    return container;
+  },
+};
+
+/**
+ * Stacked Bar in Card (Common Pattern)
+ * 
+ * Shows stacked bar chart with title and description.
+ * Matches Insights dependency card pattern.
+ */
+export const StackedBarInCard: Story = {
+  render: () => {
+    const container = document.createElement('div');
+    container.style.cssText = `
+      background: var(--ui-surface-container);
+      border: 1px solid var(--ui-surface-divider);
+      border-radius: var(--ui-card-radius);
+      padding: var(--spacing-16);
+      max-width: 600px;
+    `;
+
+    // Title
+    const title = document.createElement('div');
+    title.textContent = 'Dependency Distribution';
+    title.style.cssText = `
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-4);
+    `;
+    container.appendChild(title);
+
+    // Description
+    const desc = document.createElement('div');
+    desc.textContent = 'Package dependency breakdown by type';
+    desc.style.cssText = `
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-16);
+    `;
+    container.appendChild(desc);
+
+    // Chart
+    const chart = createChart({
+      option: createStackedBarOption({
+        categories: ['express', 'lodash', 'axios', 'react', 'typescript'],
+        series: [
+          { name: 'Direct Dependencies', data: [25, 18, 30, 42, 35] },
+          { name: 'Transitive Dependencies', data: [15, 22, 18, 28, 25] },
+          { name: 'Dev Dependencies', data: [8, 10, 12, 15, 20] },
+        ],
+      }),
+      height: 320,
+    });
+    container.appendChild(chart);
+
+    return container;
+  },
+};
+
+/**
+ * Dense Stacked Bar Chart
+ * 
+ * Compact version for dashboard tiles or small spaces.
+ */
+export const DenseStackedBarChart: Story = {
+  render: () => {
+    const option = createStackedBarOption({
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      series: [
+        { name: 'Type A', data: [20, 25, 22, 28, 30, 26] },
+        { name: 'Type B', data: [15, 18, 20, 22, 25, 23] },
+        { name: 'Type C', data: [10, 12, 15, 18, 20, 22] },
+      ],
+      showLegend: false,
+    });
+    
+    const chart = createChart({
+      option,
+      height: 180,
     });
 
     return chart;
