@@ -586,6 +586,8 @@ They are designed for:
 - Deep analytical tools
 - Full chart rendering surfaces
 - Standalone visualization pages
+
+**Note:** Charts in dashboards are **signal-level summaries only**. Any filtering, drill-down, or deep exploration MUST escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
 - Data exploration interfaces
 
 ### Typical Structure (Descriptive)
@@ -624,6 +626,8 @@ Chart Card (Card surface)
 - **Related charts** — 1-2 additional perspectives on the metric
 - **Supporting metadata** — Definitions, calculation details, caveats
 - **Optional CTA** — Link to deeper analytics (e.g., LFX Insights)
+
+**Important:** Drawers provide limited context only. Any feature requiring filtering, time-range selection, or deep exploration MUST escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
 
 **Interaction Surface Contract:**
 
@@ -1200,6 +1204,8 @@ defined in **0. README → Interaction Surfaces**.
   - Expanded chart with historical data
   - Contextual explanation
   - Optional link to LFX Insights
+
+**Important:** Metric charts and drawers provide **signal only**. They do NOT support filtering, drill-down, or deep exploration. For analytical features, escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
 
 **"Ask LFX Lens" Button:**
 - **→ Modal OR Drawer** (TBD based on LFX Lens UX)

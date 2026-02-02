@@ -21,6 +21,19 @@ import { createStackedBarOption } from './config/stackedBar';
 const meta: Meta = {
   title: '1. Components / 2. Molecules / Chart',
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+## Insights Escalation
+
+Charts in LFX One provide **signal-level visualizations only**. They indicate status, risk, or trends but do NOT support filtering, drill-down, or deep exploration. Any feature requiring analytical exploration MUST escalate to LFX Insights.
+
+**See:** \`docs/insights-escalation-contract.md\` for complete boundary rules.
+        `,
+      },
+    },
+  },
   argTypes: {
     height: {
       control: { type: 'number' },
