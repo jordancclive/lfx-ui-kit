@@ -25,7 +25,7 @@ import type { EChartsOption } from 'echarts';
 
 // Import required ECharts components (tree-shaken)
 // Ported from Insights setup/echarts.ts pattern
-import { LineChart } from 'echarts/charts';
+import { LineChart, BarChart } from 'echarts/charts';
 import {
   GridComponent,
   TooltipComponent,
@@ -37,6 +37,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 // Register components
 echarts.use([
   LineChart,
+  BarChart,
   GridComponent,
   TooltipComponent,
   TitleComponent,

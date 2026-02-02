@@ -48,6 +48,7 @@ export { createPageSection, type PageSectionProps } from './components/page-sect
 export { createCard, type CardProps } from './components/card/card';
 export { createChart, updateChart, disposeChart, type ChartProps } from './components/chart/chart';
 export { createSparklineOption, createStatusSparklineOption } from './components/chart/config/lineAreaSparkline';
+export { createVerticalBarChartOption, createHorizontalBarChartOption, type BarChartData } from './components/chart/config/bar';
 export { getChartColors, getStatusColor } from './components/chart/config/colors';
 export { getChartDefaults, mergeChartOptions } from './components/chart/config/defaults';
 export { createChartCard, type ChartCardProps } from './components/chart-card/chart-card';
