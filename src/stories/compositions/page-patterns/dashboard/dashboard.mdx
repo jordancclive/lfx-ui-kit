@@ -1,0 +1,258 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta
+  title="Page Patterns / Dashboard"
+  parameters={{
+    docs: {
+      description: {
+        component:
+          'Canonical page-level pattern for role-based dashboards in LFX One.',
+      },
+    },
+  }}
+/>
+
+🟡 **OBSERVED PATTERN** — Validated by real Board Member, Contributor, Maintainer, and Executive Director dashboards.  
+Structure is stable, but role coverage is still expanding.
+
+---
+
+## Purpose
+
+The **Dashboard Pattern** defines how LFX One dashboards are composed to surface
+**high-level signals, pending actions, and escalation paths** for different roles.
+
+Dashboards are optimized for:
+
+- Fast scanning
+- Minimal cognitive load
+- Progressive disclosure
+- Clear escalation to drawers and full pages
+
+This is **not a free-form layout**. Dashboards must be assembled from known
+sections and primitives to remain predictable and agent-safe.
+
+---
+
+## When to Use
+
+Use the Dashboard Pattern when:
+
+- A role needs a high-level snapshot of system, project, or organizational health
+- The primary interaction is **review → drill-down → act**
+- Data is time-based, aggregated, or summary-oriented
+- The page is not intended for editing or configuration
+
+---
+
+## When NOT to Use
+
+Do **NOT** use the Dashboard Pattern for:
+
+- Data-heavy exploration (use Table Page or Insights)
+- Configuration workflows
+- Forms or creation flows
+- Pages with a single dataset and deep interaction
+
+---
+
+## Canonical Page Structure
+
+All dashboards MUST use the following page frame:
+
+```
+AppShell
+└─ PageLayout
+   ├─ AppHeader
+   └─ PageSection (× N)
+```
+
+No dashboard may bypass this structure.
+
+---
+
+## Allowed Section Archetypes
+
+Dashboards are composed from **only these section types**.
+
+### 1. Metric Carousel Section
+
+**Purpose:** Surface key quantitative signals at a glance.
+
+**Structure:**
+
+```
+PageSection
+└─ MetricsRow
+   └─ ChartCard (× N)
+```
+
+**Rules:**
+- Cards are fixed-width and horizontally scrollable
+- Charts are sparklines or aggregates only
+- Clicking a card opens a **RIGHT-SIDE DRAWER**
+- No filters or controls on summary cards
+
+**Escalation:**
+- Summary Card → Drawer → Insights
+
+**Used by:**
+- Board Member (Foundation Health, My Organization)
+- Contributor / Maintainer (Recent Progress)
+- Executive Director (Foundation Health, Governance Health)
+
+---
+
+### 2. Action Summary Section
+
+**Purpose:** Show items requiring user attention or decision.
+
+**Structure:**
+
+```
+PageSection
+├─ SectionHeader (title + View All)
+└─ SummaryCard (stacked, × N)
+```
+
+**Rules:**
+- Cards are equal height
+- Typically 2–3 visible
+- "View All" escalates to:
+  - Drawer (e.g. My Actions)
+  - Or full page, depending on role
+
+**Used by:**
+- Board Member
+- Maintainer
+- Executive Director
+
+---
+
+### 3. Meeting Summary Section
+
+**Purpose:** Preview upcoming meetings relevant to the user.
+
+**Structure:**
+
+```
+PageSection
+├─ SectionHeader (title + View All)
+└─ SummaryCard (Meeting)
+```
+
+**Rules:**
+- Visual height aligns with Action Summary when paired
+- Inline "Join" actions when applicable
+- "View All" always routes to Meetings page
+
+**Used by:**
+- All roles
+
+---
+
+### 4. Table Preview Section
+
+**Purpose:** Provide a lightweight preview of tabular data.
+
+**Structure:**
+
+```
+PageSection
+├─ TableGrid (preview rows only)
+└─ Footer CTA
+```
+
+**Rules:**
+- Read-only preview
+- No sorting, filtering, or pagination
+- Escalates to full Table Page
+
+**Used by:**
+- Contributor
+- Maintainer
+
+---
+
+### 5. Strategic Alert Section (Executive Director Only)
+
+**Purpose:** Surface high-salience risks and recommendations.
+
+**Structure:**
+
+```
+PageSection
+└─ AlertCard (expandable)
+```
+
+**Rules:**
+- Higher visual weight than summary cards
+- Color encodes urgency
+- Expand reveals explanation and recommendation
+- Still uses Card primitives (no custom alert system)
+
+---
+
+## Role-Based Composition (Bounded Variations)
+
+Roles may **omit sections**, but must not invent new ones.
+
+| Role | Allowed Sections |
+|-----|------------------|
+| Board Member | Metric Carousel, Action Summary, Meeting Summary |
+| Contributor | Metric Carousel, Action Summary, Table Preview |
+| Maintainer | Metric Carousel, Action Summary, Table Preview |
+| Executive Director | Metric Carousel, Action Summary, Meeting Summary, Strategic Alerts |
+
+---
+
+## Mapping to UI Kit Components
+
+| Dashboard Element | UI Kit Component |
+|------------------|------------------|
+| Summary metric card | ChartCard |
+| Metric row | MetricsRow |
+| Action / Meeting card | SummaryCard |
+| Section wrapper | PageSection |
+| Section header | SectionHeader |
+| Drawer | Drawer |
+| Preview table | TableGrid |
+| CTA buttons | Button |
+
+No dashboard-specific components are introduced.
+
+---
+
+## Interaction Contracts
+
+- Summary cards never navigate directly
+- All summary interactions escalate via **Drawer**
+- Drawers may escalate to full pages (e.g. Insights, Meetings)
+- Charts follow the **Insights Escalation Contract**
+
+---
+
+## Non-Goals
+
+The Dashboard Pattern does **NOT**:
+
+- Define chart semantics or metrics
+- Control routing
+- Manage data fetching
+- Replace Insights or Table Pages
+- Introduce role-specific layout logic
+
+Those responsibilities belong to parent application layers.
+
+---
+
+## Validation Status
+
+- ✅ Board Member dashboard implemented
+- ✅ Contributor and Maintainer dashboards implemented
+- ✅ Executive Director dashboard implemented
+- 🚧 Additional role refinements in progress
+
+This pattern is considered **observed and stable**, pending final canonical lock.
+
+---
