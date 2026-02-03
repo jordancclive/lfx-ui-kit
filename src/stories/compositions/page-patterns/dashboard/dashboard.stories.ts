@@ -273,40 +273,10 @@ function createDashboard(args: DashboardArgs = {}) {
 
 const meta: Meta<DashboardArgs> = {
   title: '2. Page Patterns / Dashboard',
-  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {
-      description: {
-        component: `
-> **⚠️ PATTERN DOCUMENTATION HAS MOVED**
->
-> This story provides a visual demonstration only.
->
-> **For complete Dashboard Page Pattern documentation, see:**
-> - Navigate to the **Docs tab** above
-> - Or read: \`src/stories/compositions/page-patterns/dashboard/dashboard.mdx\`
->
-> The canonical documentation includes:
-> - Section Archetypes (5 types)
-> - Role-Based Composition rules
-> - Interaction Contracts
-> - Validation Status (2 roles validated)
-> - Component mapping table
->
-> **Do NOT use this story's Canvas tab as pattern reference.**
-
----
-
-## Visual Demonstration
-
-This story demonstrates the Dashboard Page Pattern structure visually.
-
-Use the **Docs tab** above to see the full pattern documentation with section archetypes,
-role-based composition rules, and interaction contracts.
-
-        `,
-      },
+      disable: true,
     },
   },
   argTypes: {
