@@ -23,10 +23,21 @@ const meta: Meta<DataTableProps> = {
         component: `
 # DataTable — Canonical Single-Table Workflow Surface
 
-DataTable is a **Level 3 (Organism)** component that represents the canonical
-single-table workflow surface for LFX One.
+## Quick Start
+
+• **What:** Bundles Card + TableToolbar + TableGrid + TablePagination into one component for single-table workflows  
+• **When to use:** Pages with ONE dataset, ONE search/filter surface, ONE pagination (Votes, Surveys, Projects, Drive)  
+• **When NOT to use:** SegmentedTablePage, multiple tables, comparison pages, or dashboards  
+• **Structure:** Fixed composition (Card → Toolbar → Grid → Pagination) with zero layout logic  
+• **Use TablePage pattern when:** You need page-level control or custom structures  
+• **Default:** TablePage uses DataTable unless explicitly disabled
+
+---
 
 ## Purpose
+
+DataTable is a **Level 3 (Organism)** component that represents the canonical
+single-table workflow surface for LFX One.
 
 DataTable bundles Card, TableToolbar, TableGrid, and TablePagination with
 opinionated defaults that are VALID ONLY for single-table pages.
@@ -89,7 +100,9 @@ Use \`DataTable\` when referring to the full single-table workflow.
 
 ---
 
-## Architectural Boundaries (LOCKED)
+## Rules & Contracts (Normative)
+
+### Architectural Boundaries (LOCKED)
 
 **DataTable owns:**
 - Composition ONLY
@@ -107,16 +120,34 @@ Use \`DataTable\` when referring to the full single-table workflow.
 - Detect child types
 - Contain conditional spacing logic
 
----
+### Ownership Boundaries (Locked)
 
-## Defensive Behavior
+| Layer | Owns |
+|------|------|
+| **TableGrid (Level 2)** | Grid layout for rows & cells only |
+| **TableToolbar (Level 2)** | Search + filter layout only |
+| **TablePagination (Level 2)** | Pagination controls only |
+| **DataTable (Level 3)** | Bundling the three above into a single workflow surface |
+| **Table Page (Pattern)** | Page placement, header, vertical rhythm |
+| **Page Examples** | Configuration only (labels, data, callbacks) |
 
-**Empty states are handled by child components:**
-- If \`toolbar\` is undefined → TableToolbar renders \`display: none\`
-- If \`pagination\` not needed → TablePagination renders \`display: none\`
-- DataTable itself never conditionally renders children
+> **No other ownership model is valid.**
 
-This ensures consistent layout without phantom spacing.
+If you find yourself wanting to violate this table, stop and redesign the layer instead of patching around it.
+
+### Core Principle
+
+> **Each layer owns exactly one responsibility.  
+No component may "help" another by re-implementing layout or behavior.**
+
+If something feels missing, it belongs in a **different layer**, not as an override.
+
+### Binding Rules
+
+**Page Examples MUST NOT invent layout.**  
+They either configure DataTable or configure TablePage.
+
+Anything else is a bug.
 
 ---
 
@@ -139,7 +170,18 @@ This ensures consistent layout without phantom spacing.
 
 ---
 
-## Composition Pattern
+## Appendix: Defensive Behavior
+
+**Empty states are handled by child components:**
+- If \`toolbar\` is undefined → TableToolbar renders \`display: none\`
+- If \`pagination\` not needed → TablePagination renders \`display: none\`
+- DataTable itself never conditionally renders children
+
+This ensures consistent layout without phantom spacing.
+
+---
+
+## Appendix: Composition Pattern
 
 DataTable is a **thin composition wrapper**:
 1. Creates child components (TableToolbar, TablePagination)
@@ -150,7 +192,7 @@ DataTable is a **thin composition wrapper**:
 
 ---
 
-## Relationship to Page Patterns
+## Appendix: Relationship to Page Patterns
 
 **Table Page pattern decides:**
 - WHERE DataTable is placed
@@ -164,7 +206,7 @@ DataTable is a **thin composition wrapper**:
 
 ---
 
-## Choosing Between TablePage and DataTable
+## Appendix: Choosing Between TablePage and DataTable
 
 Both **TablePage** and **DataTable** exist intentionally.  
 They solve different problems.
@@ -224,27 +266,13 @@ If all are true:
 Otherwise:
 → Use **TablePage**
 
-### Final Rule
-
-> Page Examples MUST NOT invent layout.  
-They either configure DataTable or configure TablePage.
-
-Anything else is a bug.
-
 ---
 
-## Architectural Guardrails
+## Appendix: Architectural Guardrails for Agents
 
 This component is part of the **LFX One table system**.
 
 The table system is intentionally layered to prevent layout drift and ownership confusion.
-
-### Core Principle
-
-> **Each layer owns exactly one responsibility.  
-No component may "help" another by re-implementing layout or behavior.**
-
-If something feels missing, it belongs in a **different layer**, not as an override.
 
 ### DO
 
@@ -262,21 +290,6 @@ If something feels missing, it belongs in a **different layer**, not as an overr
 - Render sibling components inside this one
 - Special-case page examples
 
-### Ownership Boundaries (Locked)
-
-| Layer | Owns |
-|------|------|
-| **TableGrid (Level 2)** | Grid layout for rows & cells only |
-| **TableToolbar (Level 2)** | Search + filter layout only |
-| **TablePagination (Level 2)** | Pagination controls only |
-| **DataTable (Level 3)** | Bundling the three above into a single workflow surface |
-| **Table Page (Pattern)** | Page placement, header, vertical rhythm |
-| **Page Examples** | Configuration only (labels, data, callbacks) |
-
-> **No other ownership model is valid.**
-
-If you find yourself wanting to violate this table, stop and redesign the layer instead of patching around it.
-
 ### Agent & Contributor Warning
 
 If you feel tempted to:
@@ -290,7 +303,7 @@ Consult the Design System Orientation before proceeding.
 
 ---
 
-## Level 3 Philosophy
+## Appendix: Level 3 Philosophy
 
 DataTable is opinionated by design:
 - Single-table only

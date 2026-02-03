@@ -314,6 +314,17 @@ const meta: Meta<DashboardArgs> = {
     docs: {
       description: {
         component: `
+## Quick Start
+
+• **What:** Top-level page pattern for overview and summary pages with multiple data surfaces  
+• **When to use:** Overview pages with metrics + table + list (project dashboards, organization summaries, home pages)  
+• **When NOT to use:** Single-dataset pages (use Table Page), multiple independent tables (use Segmented Table Page)  
+• **Structure:** AppShell → PageLayout → AppHeader → PageSection (metrics row) → PageSection (table) → PageSection (list)  
+• **Key rule:** No section titles (AppHeader is the only title) - each surface wrapped in PageSection  
+• **Default interaction:** Metric click → Drawer, ActionCard "View All" → Drawer. See `docs/interaction-surfaces.md`
+
+---
+
 ## Dashboard Page Pattern
 
 **Dashboard is a top-level LFX One layout archetype for overview and summary pages.**
@@ -376,6 +387,10 @@ Do NOT use Dashboard when:
 - Multiple independent tables → **Segmented Table Page**
 - Detail pages → Custom composition
 
+---
+
+## Rules & Contracts (Normative)
+
 ### Pattern Rules
 
 **Dashboard pattern is locked:**
@@ -384,7 +399,18 @@ Do NOT use Dashboard when:
 - All spacing/hierarchy emerges from component contracts
 - If something looks wrong, fix in tokens or contracts — not here
 
-### Architectural Role
+### Interaction Contract
+
+Interaction behavior in Dashboard follows the system-wide contract defined in  
+**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+
+- Metric drill-down → Drawer
+- ActionCard "View All" → Drawer
+- Create actions → Page (Creation Flow pattern)
+
+---
+
+## Appendix: Architectural Role
 
 Dashboard is a **Page Pattern**, equal in hierarchy to Table Page and Segmented Table Page.
 
@@ -397,15 +423,6 @@ It is NOT:
 - ❌ A concrete product page
 - ❌ An example of another pattern
 - ❌ A system verification artifact
-
-### Interaction Behavior
-
-Interaction behavior in Dashboard follows the system-wide contract defined in  
-**0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
-
-- Metric drill-down → Drawer
-- ActionCard "View All" → Drawer
-- Create actions → Page (Creation Flow pattern)
 
 ---
 

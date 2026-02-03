@@ -6,12 +6,21 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * 
  * **Level 2 — Molecule Component**
  * 
- * ChartCard is a minimal structural wrapper around Card that provides named slots
- * for the observed dashboard chart-card pattern.
+ * ## Quick Start
+ * 
+ * • **What:** Minimal structural wrapper (extends Card) with named slots for dashboard chart-based metrics  
+ * • **When to use:** Dashboard overviews, MetricClusters, KPI summaries with sparklines or bar charts  
+ * • **When NOT to use:** Deep analytics, data tables, full-page charts, text-only displays, complex interactives  
+ * • **Default interaction:** Click → opens RIGHT-SIDE DRAWER (not modal, not page). See `docs/interaction-surfaces.md`  
+ * • **Structure:** Fixed slots (title, value, chart, meta) - all optional except title  
+ * • **Slots accept:** Pre-rendered `HTMLElement` only (no chart rendering, metric formatting, or data logic)
  * 
  * ---
  * 
  * ## Purpose
+ * 
+ * ChartCard is a minimal structural wrapper around Card that provides named slots
+ * for the observed dashboard chart-card pattern.
  * 
  * ChartCard exists to:
  * - **Reduce duplication** across dashboard implementations
@@ -20,21 +29,6 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * - **Preserve future flexibility** by avoiding visual or chart-type lock-in
  * 
  * ChartCard is intentionally minimal and underpowered.
- * 
- * ---
- * 
- * ## Structure (Fixed)
- * 
- * ```
- * ChartCard (extends Card)
- * └─ Container
- *    ├─ Header (title) — required
- *    ├─ Value slot — optional
- *    ├─ Chart slot — optional
- *    └─ Meta slot — optional
- * ```
- * 
- * All slots accept pre-rendered `HTMLElement` only.
  * 
  * ---
  * 
@@ -65,7 +59,39 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * 
  * ---
  * 
- * ## Interaction Model
+ * ## Rules & Contracts (Normative)
+ * 
+ * ### Structure (Fixed)
+ * 
+ * ```
+ * ChartCard (extends Card)
+ * └─ Container
+ *    ├─ Header (title) — required
+ *    ├─ Value slot — optional
+ *    ├─ Chart slot — optional
+ *    └─ Meta slot — optional
+ * ```
+ * 
+ * All slots accept pre-rendered `HTMLElement` only.
+ * 
+ * ### What ChartCard Owns
+ * 
+ * ChartCard owns:
+ * - **Structural layout** (header, value, chart, meta slots)
+ * - **Click affordance** (cursor, hover state)
+ * - **Default interaction expectation** (→ drawer)
+ * 
+ * ### What ChartCard Does NOT Own
+ * 
+ * ChartCard does NOT own:
+ * - **Chart rendering** (caller provides chart element)
+ * - **Metric formatting** (caller provides value element)
+ * - **Data fetching** (caller handles data)
+ * - **Drawer implementation** (caller implements drawer)
+ * - **Visual design opinions** (intentionally minimal)
+ * - **Chart types or variants** (no sparkline vs bar logic)
+ * 
+ * ### Interaction Contract
  * 
  * **Default Expectation:**
  * - ChartCard is **clickable** (when `onClick` is provided)
@@ -74,16 +100,28 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * 
  * **Interaction Surface Contract:**
  * 
- * Interaction behavior follows the system-wide contract defined in  
- * **0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
+ * Follows system-wide contract: `docs/interaction-surfaces.md`
  * 
  * - ChartCard click → **Drawer** (preserves dashboard context)
  * - Deep analytics → **Page** (full navigation, e.g., LFX Insights)
  * - NOT Modal (modals block context and are for short interruptions)
  * 
+ * ### Token Bindings
+ * 
+ * ChartCard inherits all Card tokens and uses:
+ * 
+ * | Property | Token |
+ * |----------|-------|
+ * | Header font size | `--ui-text-label-font-size` |
+ * | Meta font size | `--ui-text-body-secondary-font-size` |
+ * | Container gap | `--spacing-12` |
+ * | Text colors | `--text-secondary`, `--text-muted` |
+ * 
+ * No new tokens are introduced by ChartCard.
+ * 
  * ---
  * 
- * ## Relationship to Other Patterns
+ * ## Appendix: Relationship to Other Patterns
  * 
  * **Lives INSIDE:**
  * - **MetricCluster** (dashboard section primitive)
@@ -107,28 +145,7 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * 
  * ---
  * 
- * ## What ChartCard Owns
- * 
- * ChartCard owns:
- * - **Structural layout** (header, value, chart, meta slots)
- * - **Click affordance** (cursor, hover state)
- * - **Default interaction expectation** (→ drawer)
- * 
- * ---
- * 
- * ## What ChartCard Does NOT Own
- * 
- * ChartCard does NOT own:
- * - **Chart rendering** (caller provides chart element)
- * - **Metric formatting** (caller provides value element)
- * - **Data fetching** (caller handles data)
- * - **Drawer implementation** (caller implements drawer)
- * - **Visual design opinions** (intentionally minimal)
- * - **Chart types or variants** (no sparkline vs bar logic)
- * 
- * ---
- * 
- * ## Important Non-Normative Disclaimer
+ * ## Appendix: Non-Normative Disclaimer
  * 
  * > **This component abstracts observed structure only.**
  * >
@@ -150,21 +167,6 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * >
  * > Future refinements to chart-card patterns may evolve this component
  * > or introduce specializations (e.g., SparklineCard, BarCard, etc.).
- * 
- * ---
- * 
- * ## Token Bindings
- * 
- * ChartCard inherits all Card tokens and uses:
- * 
- * | Property | Token |
- * |----------|-------|
- * | Header font size | `--ui-text-label-font-size` |
- * | Meta font size | `--ui-text-body-secondary-font-size` |
- * | Container gap | `--spacing-12` |
- * | Text colors | `--text-secondary`, `--text-muted` |
- * 
- * No new tokens are introduced by ChartCard.
  */
 const meta: Meta<ChartCardProps> = {
   title: '1. Components / 2. Molecules / ChartCard',

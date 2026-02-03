@@ -672,6 +672,17 @@ const meta: Meta<TablePageArgs> = {
     docs: {
       description: {
         component: `
+## Quick Start
+
+• **What:** Canonical single-table page pattern for workflow-driven list pages  
+• **When to use:** Pages with ONE dataset (Votes, Surveys, Projects, Drive, Mailing Lists)  
+• **When NOT to use:** Multiple tables, segmented layouts, comparison pages (use Segmented Table Page)  
+• **Key rule:** Page title == Table title (no section titles)  
+• **Structure:** AppShell → PageLayout → AppHeader → PageSection (dense) → Card → Toolbar → TableGrid  
+• **Default:** Use DataTable component unless custom structure needed
+
+---
+
 ## Table Page Composition
 
 **This is the canonical table-driven page pattern for LFX One.**
@@ -763,7 +774,7 @@ If something feels off visually:
 
 ---
 
-## Agent Contract (Normative)
+## Rules & Contracts (Normative)
 
 This section defines the **authoritative contract** for agents generating pages
 using the **Table Page** pattern.
@@ -845,7 +856,7 @@ agent-generated pages remain production-ready.
 
 ---
 
-## TablePage × DataTable Relationship
+## Appendix: TablePage × DataTable Relationship
 
 **TablePage uses DataTable by default** for single-table workflows.
 
@@ -898,7 +909,7 @@ Use manual composition for:
 
 ---
 
-## Choosing Between TablePage and DataTable
+## Appendix: Choosing Between TablePage and DataTable
 
 Both **TablePage** and **DataTable** exist intentionally.  
 They solve different problems.
@@ -967,7 +978,7 @@ Anything else is a bug.
 
 ---
 
-## Interaction Behavior
+## Appendix: Interaction Behavior
 
 Interaction behavior in Table Page follows the system-wide contract defined in  
 **0. README → Interaction Surfaces (Drawer vs Modal vs Page)**.
@@ -978,7 +989,7 @@ Interaction behavior in Table Page follows the system-wide contract defined in
 
 ---
 
-## Architectural Guardrails
+## Appendix: Architectural Guardrails
 
 This component is part of the **LFX One table system**.
 
