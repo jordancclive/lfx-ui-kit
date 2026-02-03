@@ -12,6 +12,23 @@ import { Meta } from '@storybook/addon-docs';
   }}
 />
 
+> **⚠️ CANONICAL DOCUMENTATION WARNING**
+>
+> This is the **ONLY** authoritative Dashboard Page Pattern documentation.
+>
+> **For Agents and Contributors:**
+> - Do NOT create parallel Dashboard pattern docs elsewhere
+> - Do NOT duplicate this content in Page Examples or Components
+> - Modify this file ONLY to update the Dashboard pattern
+> - Add new dashboards as **Page Examples** under `3. Page Examples / <RoleName> Dashboard`
+> - All Dashboard validation artifacts live in `docs/steward/validations/`
+>
+> **Storybook Hierarchy:**
+> - `2. Page Patterns / Dashboard` ← You are here (canonical pattern)
+> - `3. Page Examples / <Role> Dashboard` ← Concrete role implementations
+
+---
+
 🟡 **OBSERVED PATTERN** — Validated by real Board Member, Contributor, Maintainer, and Executive Director dashboards.  
 Structure is stable, but role coverage is still expanding.
 
@@ -197,12 +214,14 @@ PageSection
 
 Roles may **omit sections**, but must not invent new ones.
 
-| Role | Allowed Sections |
-|-----|------------------|
-| Board Member | Metric Carousel, Action Summary, Meeting Summary |
-| Contributor | Metric Carousel, Action Summary, Table Preview |
-| Maintainer | Metric Carousel, Action Summary, Table Preview |
-| Executive Director | Metric Carousel, Action Summary, Meeting Summary, Strategic Alerts |
+| Role | Allowed Sections | Validation Status |
+|-----|------------------|-------------------|
+| Board Member | Metric Carousel, Action Summary, Meeting Summary, Table Preview | ✅ Validated |
+| Maintainer | Metric Carousel, Action Summary, Meeting Summary, Table Preview | ✅ Validated |
+| Contributor | Metric Carousel, Action Summary, Table Preview | 🚧 Planned |
+| Executive Director | Metric Carousel, Action Summary, Meeting Summary, Strategic Alerts | 🚧 Planned |
+
+**Note:** Board Member and Maintainer roles have been structurally validated and demonstrate pattern stability. Role differences are content-only; structure remains identical.
 
 ---
 
@@ -248,11 +267,25 @@ Those responsibilities belong to parent application layers.
 
 ## Validation Status
 
-- ✅ Board Member dashboard implemented
-- ✅ Contributor and Maintainer dashboards implemented
-- ✅ Executive Director dashboard implemented
-- 🚧 Additional role refinements in progress
+### Structurally Validated Examples
 
-This pattern is considered **observed and stable**, pending final canonical lock.
+- ✅ **Board Member Dashboard** — Fully validated (see `docs/steward/validations/board-member-dashboard.v1.md`)
+- ✅ **Maintainer Dashboard** — Fully validated (pattern validation complete)
+- 🚧 **Contributor Dashboard** — Planned (optional third role validation)
+- 🚧 **Executive Director Dashboard** — Planned
+
+### Pattern Stability
+
+This pattern is considered **observed and stable** based on multi-role validation:
+- **2 roles validated** (Board Member, Maintainer)
+- **Zero new components required** for role adaptation
+- **Structural consistency confirmed** across roles
+- **Interaction model generalizes cleanly**
+
+### Next Steps
+
+- **Visual Normalization:** Unblocked (2+ roles validated)
+- **Component Extraction:** Deferred pending 3rd role validation (SectionHeader, ActionCard, MeetingCard)
+- **Canonical Lock:** Pending Executive Director dashboard validation
 
 ---
