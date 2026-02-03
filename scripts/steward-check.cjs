@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * Design System Steward - Automated CI Check
+ * Design System Steward - Automated CI Check (v2)
  * 
  * This script performs read-only architectural health checks
  * based on docs/steward-checklist.v1.yaml.
+ * 
+ * v2 Features:
+ * - Baseline acceptance support (docs/steward-baseline.yaml)
+ * - Diff-aware enforcement (only scan changed files)
+ * - Falls back to full scan if baseline missing
  * 
  * Exit codes:
  * - 0: No P0 issues (may have P1/P2 warnings)
@@ -13,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // ============================================================================
 // CONFIGURATION
@@ -20,6 +26,69 @@ const path = require('path');
 
 const ROOT_DIR = path.join(__dirname, '..');
 const REPORT_PATH = path.join(ROOT_DIR, 'docs/steward-runs/latest.md');
+const BASELINE_PATH = path.join(ROOT_DIR, 'docs/steward-baseline.yaml');
+
+// ============================================================================
+// BASELINE SUPPORT
+// ============================================================================
+
+/**
+ * Read baseline configuration if present
+ * @returns {Object|null} Baseline config or null if not found
+ */
+function readBaseline() {
+  try {
+    if (!fs.existsSync(BASELINE_PATH)) {
+      return null;
+    }
+    
+    const content = fs.readFileSync(BASELINE_PATH, 'utf8');
+    
+    // Simple YAML parser for our specific structure
+    const lines = content.split('\n');
+    const baseline = {};
+    
+    for (const line of lines) {
+      if (line.startsWith('#') || line.trim() === '') continue;
+      
+      const match = line.match(/^(\w+):\s*["']?([^"'\n]+)["']?/);
+      if (match) {
+        const [, key, value] = match;
+        baseline[key] = value.trim();
+      }
+    }
+    
+    return baseline.version && baseline.commit ? baseline : null;
+  } catch (error) {
+    console.error(`⚠️  Failed to read baseline: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Get list of files changed since baseline commit
+ * @param {string} baselineCommit - Git commit hash
+ * @returns {Set<string>} Set of changed file paths (relative to repo root)
+ */
+function getChangedFiles(baselineCommit) {
+  try {
+    // Get list of changed files between baseline and HEAD
+    const output = execSync(
+      `git diff --name-only ${baselineCommit}..HEAD`,
+      { cwd: ROOT_DIR, encoding: 'utf8' }
+    );
+    
+    const files = output
+      .split('\n')
+      .filter(f => f.trim())
+      .map(f => f.trim());
+    
+    return new Set(files);
+  } catch (error) {
+    console.error(`⚠️  Failed to get changed files: ${error.message}`);
+    return null;
+  }
+}
 
 // ============================================================================
 // UTILITY: Simple file globbing
@@ -401,11 +470,38 @@ Low priority, address when convenient.
 // ============================================================================
 
 async function main() {
-  console.log('🤖 Design System Steward v1.0');
+  console.log('🤖 Design System Steward v2.0');
   console.log('=====================================\n');
   
   const timestamp = new Date().toISOString().replace('T', ' ').split('.')[0];
   const results = {};
+  
+  // Check for baseline
+  const baseline = readBaseline();
+  let changedFiles = null;
+  
+  if (baseline && baseline.commit) {
+    console.log(`📍 Baseline Mode: ACTIVE`);
+    console.log(`   Baseline commit: ${baseline.commit}`);
+    console.log(`   Accepted at: ${baseline.accepted_at || 'unknown'}`);
+    
+    changedFiles = getChangedFiles(baseline.commit);
+    
+    if (changedFiles) {
+      console.log(`   Changed files: ${changedFiles.size}`);
+      if (changedFiles.size === 0) {
+        console.log(`   ✅ No files changed since baseline\n`);
+      } else {
+        console.log('');
+      }
+    } else {
+      console.log(`   ⚠️  Could not determine changed files, falling back to full scan\n`);
+      changedFiles = null;
+    }
+  } else {
+    console.log(`📍 Baseline Mode: DISABLED`);
+    console.log(`   Running full repository scan\n`);
+  }
   
   console.log('Running checks...\n');
   
@@ -414,7 +510,16 @@ async function main() {
     process.stdout.write(`  ${check.name}... `);
     
     try {
-      const violations = await check.scan();
+      let violations = await check.scan();
+      
+      // Filter violations by changed files if baseline mode is active
+      if (changedFiles && changedFiles.size > 0) {
+        violations = violations.filter(v => {
+          const filePath = typeof v === 'string' ? v : (v.file || '');
+          return changedFiles.has(filePath);
+        });
+      }
+      
       results[checkId] = {
         name: check.name,
         severity: check.severity,

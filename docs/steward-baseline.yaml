@@ -1,0 +1,21 @@
+# Design System Steward - Accepted Baseline
+#
+# This file marks the last known-good state of the repository.
+# The steward will only report violations introduced in files changed
+# after this baseline commit.
+#
+# To update the baseline:
+# 1. Review and close all current steward findings
+# 2. Update the `commit` field to the current HEAD
+# 3. Update `accepted_at` to the current timestamp
+# 4. Commit this file with message: "chore(steward): update accepted baseline"
+
+version: 2
+accepted_at: "2026-02-03T04:13:42Z"
+commit: "9b9e6ca"
+notes: |
+  Baseline established after:
+  - P1 findings closure (transition tokens, pattern labels)
+  - Steward CI implementation
+  - All experimental component labeling complete
+  - Zero P0 violations, minimal P2 observations
