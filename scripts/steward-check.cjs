@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * Design System Steward - Automated CI Check (v2)
+ * Design System Steward - Automated CI Check (v3)
  * 
  * This script performs read-only architectural health checks
  * based on docs/steward-checklist.v1.yaml.
+ * 
+ * v3 Features:
+ * - PR annotations on violations (::error, ::warning, ::notice)
+ * - Automated PR comment with summary
+ * - Inline feedback on the PR diff
  * 
  * v2 Features:
  * - Baseline acceptance support (docs/steward-baseline.yaml)
@@ -27,6 +32,7 @@ const { execSync } = require('child_process');
 const ROOT_DIR = path.join(__dirname, '..');
 const REPORT_PATH = path.join(ROOT_DIR, 'docs/steward-runs/latest.md');
 const BASELINE_PATH = path.join(ROOT_DIR, 'docs/steward-baseline.yaml');
+const PR_SUMMARY_PATH = path.join(ROOT_DIR, 'docs/steward-runs/pr-summary.md');
 
 // ============================================================================
 // BASELINE SUPPORT
@@ -504,11 +510,180 @@ Low priority, address when convenient.
 }
 
 // ============================================================================
+// GITHUB ACTIONS ANNOTATIONS
+// ============================================================================
+
+/**
+ * Emit GitHub Actions workflow annotation
+ * @param {string} level - 'error', 'warning', or 'notice'
+ * @param {string} checkId - Check identifier
+ * @param {string} file - File path
+ * @param {number|null} line - Line number (optional)
+ * @param {string} message - Annotation message
+ */
+function emitAnnotation(level, checkId, file, line, message) {
+  // Only emit annotations if running in GitHub Actions
+  if (!process.env.GITHUB_ACTIONS) return;
+  
+  const params = [`file=${file}`];
+  if (line && line > 0) {
+    params.push(`line=${line}`);
+  }
+  
+  const annotation = `::${level} ${params.join(',')}::[${checkId}] ${message}`;
+  console.log(annotation);
+}
+
+/**
+ * Emit annotations for all violations
+ * @param {Object} results - Check results
+ */
+function emitAnnotations(results) {
+  for (const [checkId, result] of Object.entries(results)) {
+    if (result.violations.length === 0) continue;
+    
+    // Map severity to annotation level
+    const level = (result.severity === 'critical' || result.severity === 'high') ? 'error' :
+                   result.severity === 'medium' ? 'warning' : 'notice';
+    
+    for (const violation of result.violations) {
+      const file = typeof violation === 'string' ? violation : (violation.file || 'unknown');
+      const line = (typeof violation === 'object' && violation.line) ? violation.line : null;
+      
+      let message = result.name;
+      if (typeof violation === 'object' && violation.description) {
+        message = violation.description;
+      } else if (typeof violation === 'object' && violation.issue) {
+        message = violation.issue;
+      }
+      
+      emitAnnotation(level, checkId, file, line, message);
+    }
+  }
+}
+
+// ============================================================================
+// PR SUMMARY GENERATION
+// ============================================================================
+
+/**
+ * Generate markdown summary for PR comment
+ * @param {Object} results - Check results
+ * @param {Object} diffRange - Diff range information
+ * @returns {string} Markdown summary
+ */
+function generatePRSummary(results, diffRange) {
+  const p0Issues = [];
+  const p1Issues = [];
+  const p2Issues = [];
+  
+  for (const [checkId, result] of Object.entries(results)) {
+    if (result.violations.length === 0) continue;
+    
+    const issue = {
+      checkId,
+      name: result.name,
+      count: result.violations.length,
+      severity: result.severity
+    };
+    
+    if (result.severity === 'critical' || result.severity === 'high') {
+      p0Issues.push(issue);
+    } else if (result.severity === 'medium') {
+      p1Issues.push(issue);
+    } else {
+      p2Issues.push(issue);
+    }
+  }
+  
+  const totalFindings = p0Issues.length + p1Issues.length + p2Issues.length;
+  
+  let summary = `## 🤖 Design System Steward v3 Report\n\n`;
+  
+  // Status badge
+  if (p0Issues.length > 0) {
+    summary += `**Status:** 🔴 **BLOCKING ISSUES** — Must be resolved before merge\n\n`;
+  } else if (p1Issues.length > 0 || p2Issues.length > 0) {
+    summary += `**Status:** ⚠️ **PASSED WITH WARNINGS** — Non-blocking issues found\n\n`;
+  } else {
+    summary += `**Status:** ✅ **ALL CHECKS PASSED**\n\n`;
+  }
+  
+  // Diff context
+  if (diffRange.mode === 'baseline') {
+    summary += `**Diff Mode:** Baseline (\`${diffRange.range}\`)\n`;
+  } else if (diffRange.mode === 'pr') {
+    summary += `**Diff Mode:** Pull Request (\`${diffRange.range}\`)\n`;
+  } else {
+    summary += `**Diff Mode:** Full Scan\n`;
+  }
+  
+  summary += `**Files Changed:** ${diffRange.changedFiles ? diffRange.changedFiles.size : 'all'}\n`;
+  summary += `**Total Findings:** ${totalFindings}\n\n`;
+  
+  summary += `---\n\n`;
+  
+  // P0 Issues
+  summary += `### 🔴 Blocking Issues (P0)\n\n`;
+  if (p0Issues.length === 0) {
+    summary += `✅ None\n\n`;
+  } else {
+    for (const issue of p0Issues) {
+      summary += `- ❌ **${issue.name}** — ${issue.count} violation(s)\n`;
+      summary += `  - \`${issue.checkId}\`\n`;
+    }
+    summary += `\n`;
+  }
+  
+  // P1 Issues
+  summary += `### ⚠️ Warnings (P1)\n\n`;
+  if (p1Issues.length === 0) {
+    summary += `✅ None\n\n`;
+  } else {
+    for (const issue of p1Issues) {
+      summary += `- ⚠️ **${issue.name}** — ${issue.count} violation(s)\n`;
+    }
+    summary += `\n`;
+  }
+  
+  // P2 Issues
+  summary += `### 💡 Informational (P2)\n\n`;
+  if (p2Issues.length === 0) {
+    summary += `✅ None\n\n`;
+  } else {
+    for (const issue of p2Issues) {
+      summary += `- 💡 **${issue.name}** — ${issue.count} observation(s)\n`;
+    }
+    summary += `\n`;
+  }
+  
+  summary += `---\n\n`;
+  
+  // What to do next
+  if (p0Issues.length > 0) {
+    summary += `### 🚨 Action Required\n\n`;
+    summary += `This PR has **${p0Issues.length} blocking issue(s)** that must be resolved before merge.\n\n`;
+    summary += `Please review the inline annotations on the changed files and address the violations.\n\n`;
+  } else if (p1Issues.length > 0) {
+    summary += `### ℹ️ Recommended Actions\n\n`;
+    summary += `This PR has **${p1Issues.length} warning(s)**. While not blocking, addressing these improves system health.\n\n`;
+  } else if (p2Issues.length > 0) {
+    summary += `### ℹ️ Optional Improvements\n\n`;
+    summary += `This PR has **${p2Issues.length} informational observation(s)**. These are low-priority suggestions.\n\n`;
+  }
+  
+  summary += `<sub>📄 Full report: [docs/steward-runs/latest.md](docs/steward-runs/latest.md)</sub>\n`;
+  summary += `<sub>🤖 Design System Steward v3 • Diff-aware enforcement</sub>\n`;
+  
+  return summary;
+}
+
+// ============================================================================
 // MAIN EXECUTION
 // ============================================================================
 
 async function main() {
-  console.log('🤖 Design System Steward v2.0');
+  console.log('🤖 Design System Steward v3.0');
   console.log('=====================================\n');
   
   const timestamp = new Date().toISOString().replace('T', ' ').split('.')[0];
@@ -590,6 +765,9 @@ async function main() {
   
   console.log('\n=====================================\n');
   
+  // Emit GitHub Actions annotations for PR inline feedback
+  emitAnnotations(results);
+  
   // Generate report
   const report = generateReport(results, timestamp);
   
@@ -601,6 +779,11 @@ async function main() {
   
   fs.writeFileSync(REPORT_PATH, report, 'utf8');
   console.log(`📄 Report saved to: ${path.relative(ROOT_DIR, REPORT_PATH)}\n`);
+  
+  // Generate PR summary for GitHub Actions to post as comment
+  const prSummary = generatePRSummary(results, diffRange);
+  fs.writeFileSync(PR_SUMMARY_PATH, prSummary, 'utf8');
+  console.log(`💬 PR summary saved to: ${path.relative(ROOT_DIR, PR_SUMMARY_PATH)}\n`);
   
   // Count P0 issues
   const p0Count = Object.values(results).filter(r => 
