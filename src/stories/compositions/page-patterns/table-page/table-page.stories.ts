@@ -1253,4 +1253,5 @@ export const AdvancedComposition: Story = {
 // EXPORTS: For page examples to use
 // =============================================================================
 
-export { createTablePageFromConfig, type TablePageConfig };
+// Export function only (not type) to avoid CSF parser confusion
+export { createTablePageFromConfig };
