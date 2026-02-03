@@ -6,45 +6,36 @@ This directory represents the Groups product page for LFX One.
 
 ## Pattern Used
 
-Groups implements the **Segmented Table Page** pattern.
+Groups uses the **Table Page** pattern via `createTablePageFromConfig`.
 
 The complete implementation is shown in:
 ```
-Page Patterns / Segmented Table Page
+Page Patterns / Table Page
 ```
 
-## Why No Separate Story File?
+## Structure
 
-The Groups page is the canonical demonstration of the Segmented Table Page pattern.
-Rather than duplicate the implementation, the pattern itself uses Groups as its
-example data (My Groups, Other Groups).
-
-**Key Point:**
-- Segmented Table Page (under Page Patterns) = The reusable structural blueprint
-- Groups page content = The example data used to demonstrate that blueprint
+Groups follows the canonical Table Page structure:
+- AppShell → PageLayout → AppHeader → PageSection → DataTable
+- Single table surface with search, filters, and optional pagination
+- Configuration-only approach (no custom layout)
 
 ## For Agents
 
 **Do NOT copy or modify Groups page structure directly.**
 
 Instead:
-1. Reference the Segmented Table Page pattern
-2. Copy the pattern structure
+1. Reference the Table Page pattern
+2. Use `createTablePageFromConfig` as demonstrated in `groups-page.stories.ts`
 3. Replace Groups-specific data with your page's data
 
 ## Pattern Location
 
 ```
-src/stories/compositions/page-patterns/segmented-table-page/
-```
-
-## Pattern Documentation
-
-```
-docs/page-patterns/segmented-table-page.md
+src/stories/compositions/page-patterns/table-page/
 ```
 
 ---
 
-This approach prevents duplication and makes clear that Groups is an instance
-of a reusable pattern, not a unique page structure.
+This approach ensures Groups follows the canonical single-table workflow
+pattern used by Votes, Surveys, Drive, and Mailing Lists.

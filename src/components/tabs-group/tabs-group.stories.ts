@@ -60,6 +60,12 @@ const meta: Meta<TabsGroupProps> = {
     docs: {
       description: {
         component: `
+🟡 **EXPERIMENTAL — Demonstrated in AppHeader stories only.**
+
+No page pattern or page example usage yet.
+
+---
+
 TabsGroup component - layout and state coordinator only.
 
 ## Responsibilities

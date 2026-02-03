@@ -314,11 +314,17 @@ const meta: Meta<DashboardArgs> = {
     docs: {
       description: {
         component: `
+🟡 **OBSERVED PATTERN — No concrete page example yet.**
+
+Structure is based on LFX One prototypes but has not been validated against a production dashboard page.
+
+---
+
 ## Quick Start
 
 • **What:** Top-level page pattern for overview and summary pages with multiple data surfaces  
 • **When to use:** Overview pages with metrics + table + list (project dashboards, organization summaries, home pages)  
-• **When NOT to use:** Single-dataset pages (use Table Page), multiple independent tables (use Segmented Table Page)  
+• **When NOT to use:** Single-dataset pages (use Table Page), multiple independent tables (use separate Table Pages)  
 • **Structure:** AppShell → PageLayout → AppHeader → PageSection (metrics row) → PageSection (table) → PageSection (list)  
 • **Key rule:** No section titles (AppHeader is the only title) - each surface wrapped in PageSection  
 • **Default interaction:** Metric click → Drawer, ActionCard "View All" → Drawer. See docs/interaction-surfaces.md

@@ -347,6 +347,12 @@ const meta: Meta<CreationFlowPageArgs> = {
     docs: {
       description: {
         component: `
+🚧 **IN PROGRESS — Structural blueprint only.**
+
+Form components and validation system not yet implemented.
+
+---
+
 ## Creation Flow Page Pattern
 
 **This is the canonical progressive disclosure creation flow pattern for LFX One.**

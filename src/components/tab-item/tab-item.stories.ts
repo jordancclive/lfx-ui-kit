@@ -39,6 +39,12 @@ const meta: Meta<TabItemProps> = {
     docs: {
       description: {
         component: `
+🟡 **EXPERIMENTAL — Demonstrated in AppHeader stories only.**
+
+No page pattern or page example usage yet.
+
+---
+
 TabItem component implementing the LFX One design token contract.
 
 ## Token Bindings
