@@ -314,9 +314,11 @@ const meta: Meta<DashboardArgs> = {
     docs: {
       description: {
         component: `
-🟡 **OBSERVED PATTERN — No concrete page example yet.**
+✅ **VALIDATED PATTERN**
 
-Structure is based on LFX One prototypes but has not been validated against a production dashboard page.
+Validated against Board Member Dashboard page example.
+
+**See:** \`3. Page Examples / Board Member Dashboard\`
 
 ---
 
