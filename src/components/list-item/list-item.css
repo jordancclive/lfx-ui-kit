@@ -34,7 +34,7 @@
   cursor: default;
   
   /* Smooth transitions */
-  transition: background-color 0.15s ease;
+  transition: background-color var(--ui-transition-duration-default) ease;
 }
 
 /* ========================================

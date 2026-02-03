@@ -314,9 +314,7 @@ const meta: Meta<DashboardArgs> = {
     docs: {
       description: {
         component: `
-✅ **VALIDATED PATTERN**
-
-Validated against Board Member Dashboard page example.
+🟡 **OBSERVED PATTERN** — Validated by Board Member Dashboard example. Structure is stable but not yet marked canonical.
 
 **See:** \`3. Page Examples / Board Member Dashboard\`
 

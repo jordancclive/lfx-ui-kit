@@ -347,9 +347,7 @@ const meta: Meta<CreationFlowPageArgs> = {
     docs: {
       description: {
         component: `
-🚧 **IN PROGRESS — Structural blueprint only.**
-
-Form components and validation system not yet implemented.
+🚧 **IN PROGRESS** — Structural blueprint defined. Awaiting first concrete page example implementation.
 
 ---
 

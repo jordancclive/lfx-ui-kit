@@ -30,13 +30,13 @@
   border-bottom: var(--button-stroke) solid var(--color-table-row-border);
   
   /* Transition */
-  transition: background-color 150ms ease;
+  transition: background-color var(--ui-transition-duration-default) ease;
 }
 
 /* For grid tables: apply background to cells since row uses display: contents */
 .lfx-table__body > .lfx-table-row > .lfx-table-cell {
   background-color: var(--color-table-row-background-default);
-  transition: background-color 150ms ease;
+  transition: background-color var(--ui-transition-duration-default) ease;
 }
 
 /* Subtle border radius for polished row appearance */
