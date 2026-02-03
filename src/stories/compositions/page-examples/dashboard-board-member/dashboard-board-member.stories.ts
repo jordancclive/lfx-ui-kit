@@ -820,9 +820,9 @@ const meta: Meta = {
     docs: {
       description: {
         component: `
-# Board Member Dashboard — Pattern Validation
-
 **PAGE EXAMPLE — NOT A PATTERN**
+
+**Pattern Validation**
 
 This page validates the Dashboard Page Pattern against a real LFX One Board Member use case.
 

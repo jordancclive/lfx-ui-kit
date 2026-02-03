@@ -11,8 +11,6 @@ import { createPageLayout } from '../page-layout/page-layout';
 import { createPageSection } from '../page-section/page-section';
 
 /**
- * # Card
- * 
  * **Tier 2 — Pattern / Surface Wrapper**
  * 
  * Card provides a consistent visual surface for grouping content.

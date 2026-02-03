@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { createChartCard, type ChartCardProps } from './chart-card';
 
 /**
- * # ChartCard
- * 
  * **Level 2 — Molecule Component**
  * 
  * ## Quick Start

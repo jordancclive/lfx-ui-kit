@@ -46,8 +46,6 @@ function createPlaceholderChartCard(config: { label?: string; value: string; met
 }
 
 /**
- * # MetricsRow
- * 
  * **Tier 3 — Layout / Composition Component**
  * 
  * MetricsRow arranges multiple chart cards in a horizontal row.

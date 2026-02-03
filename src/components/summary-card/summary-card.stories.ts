@@ -62,9 +62,9 @@ const meta: Meta<SummaryCardProps> = {
     docs: {
       description: {
         component: `
-# SummaryCard — Dashboard Summary Primitive
-
 **Level 2 — Molecule**
+
+**Dashboard Summary Primitive**
 
 Canonical structural wrapper for dashboard summary cards.
 

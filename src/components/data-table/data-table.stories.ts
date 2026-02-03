@@ -21,7 +21,7 @@ const meta: Meta<DataTableProps> = {
     docs: {
       description: {
         component: `
-# DataTable — Canonical Single-Table Workflow Surface
+**Canonical Single-Table Workflow Surface**
 
 ## Quick Start
 

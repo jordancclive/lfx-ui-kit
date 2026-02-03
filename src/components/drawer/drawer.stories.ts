@@ -81,9 +81,9 @@ const meta: Meta<DrawerProps> = {
     docs: {
       description: {
         component: `
-# Drawer — Canonical Interaction Surface
-
 **Level 2 — Molecule**
+
+**Canonical Interaction Surface**
 
 Right-side slide-in surface for lightweight inspection and actions.
 
