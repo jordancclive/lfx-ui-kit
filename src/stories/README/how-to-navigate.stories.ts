@@ -7,8 +7,6 @@ const meta: Meta = {
     docs: {
       description: {
         component: `
-# How to Navigate This Storybook
-
 A quick reference for finding what you need.
 
 ---
