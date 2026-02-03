@@ -1,0 +1,50 @@
+name: Design System Steward
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'docs/**'
+      - '.github/workflows/steward.yml'
+      - 'scripts/steward-check.cjs'
+
+jobs:
+  steward:
+    name: Design System Steward Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for comparison
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run Design System Steward
+        id: steward
+        run: node scripts/steward-check.cjs
+        continue-on-error: true
+      
+      - name: Upload Steward Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: steward-report
+          path: docs/steward-runs/latest.md
+          retention-days: 30
+      
+      - name: Check Steward Result
+        if: steps.steward.outcome == 'failure'
+        run: |
+          echo "::error::Design System Steward detected blocking issues (P0). See artifact for details."
+          exit 1
