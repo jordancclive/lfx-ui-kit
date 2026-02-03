@@ -14,8 +14,6 @@ const meta: Meta<PageLayoutProps> = {
     docs: {
       description: {
         component: `
-## PageLayout
-
 **Tier 3 — Composite Layout Component**
 
 PageLayout provides a consistent content wrapper for all LFX One pages. It enforces width, padding, and vertical spacing rules inside the AppShell content area.

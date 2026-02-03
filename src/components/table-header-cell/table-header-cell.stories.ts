@@ -9,8 +9,6 @@ const meta: Meta<TableHeaderCellProps> = {
     docs: {
       description: {
         component: `
-## TableHeaderCell
-
 **Tier 2 — Structural + Visual Indicator Component**
 
 TableHeaderCell represents a single header cell in a table. It owns header text presentation and optional visual indicators (tooltip icon, sort indicator).

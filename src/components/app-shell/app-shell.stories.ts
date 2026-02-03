@@ -10,8 +10,6 @@ const meta: Meta<AppShellProps> = {
     docs: {
       description: {
         component: `
-## AppShell
-
 **Tier 3 — Composite Layout Component**
 
 AppShell defines the high-level page layout for LFX One. It composes major regions (navigation, header, content, optional aside) and establishes the application frame structure.

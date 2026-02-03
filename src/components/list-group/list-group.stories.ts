@@ -9,8 +9,6 @@ const meta: Meta<ListGroupProps> = {
     docs: {
       description: {
         component: `
-## ListGroup
-
 **Tier 3 — Composite Layout Component**
 
 ListGroup provides structural layout for vertical lists. It composes ListItem components and optionally applies container-level background and border styling.

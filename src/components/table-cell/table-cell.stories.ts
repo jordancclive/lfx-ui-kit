@@ -9,8 +9,6 @@ const meta: Meta<TableCellProps> = {
     docs: {
       description: {
         component: `
-## TableCell
-
 **Tier 2 — Structural Content Component**
 
 TableCell represents a single cell within a table row. It owns text presentation, alignment, and optional leading/trailing content.

@@ -17,8 +17,6 @@ const meta: Meta<PageSectionProps> = {
     docs: {
       description: {
         component: `
-## PageSection
-
 **Tier 2 — Structural Content Wrapper**
 
 PageSection represents a single vertical section within a page. It provides consistent vertical spacing, optional dividers, and optional section-level padding, without styling its children.

@@ -12,8 +12,6 @@ const meta: Meta<AppHeaderProps> = {
     docs: {
       description: {
         component: `
-## AppHeader
-
 **Tier 3 — Composite Layout Component**
 
 AppHeader defines the top-of-page header region for LFX One pages. It provides workflow-optimized layout for page title, optional description, optional metadata, and optional actions area.

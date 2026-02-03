@@ -8,8 +8,6 @@ const meta: Meta<GlobalNavProps> = {
     docs: {
       description: {
         component: `
-## GlobalNav
-
 **Tier 3 — Composite Layout Component**
 
 GlobalNav provides structural layout for application navigation. It renders vertical navigation sections with support for selected item highlighting.

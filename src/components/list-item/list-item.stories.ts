@@ -9,8 +9,6 @@ const meta: Meta<ListItemProps> = {
     docs: {
       description: {
         component: `
-## ListItem
-
 **Tier 2 — Interactive Single Component**
 
 ListItem represents a single row in a list. It can be selectable, hoverable, clickable, or static. Used in list views, menus, and simple collections.
