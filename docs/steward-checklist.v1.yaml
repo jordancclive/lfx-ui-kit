@@ -1,0 +1,468 @@
+# Design System Steward Checklist v1.0
+# Machine-readable enforcement rules for LFX UI Kit
+# This is a contract for agents, not documentation for humans.
+
+version: "1.0"
+agent: "Design System Steward"
+mode: "read-only"  # read-only | report | optional-refactor
+purpose: "Detect architectural drift, enforce boundaries, and validate system health"
+
+checks:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # TOKEN SYSTEM ENFORCEMENT
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - id: token_drift_detection
+    name: Token Drift Detection
+    description: >
+      Detect hard-coded visual values where semantic tokens should be used.
+      Prevents token system erosion through direct value usage.
+    scope:
+      - src/components/**/*.css
+      - src/styles/**/*.css
+    severity: high
+    detection_method:
+      type: static_scan
+      patterns:
+        - regex: ":\\s*\\d+px(?!\\s*;\\s*/\\*\\s*optical)"
+          description: "Hard-coded pixel values without optical alignment comment"
+        - regex: ":\\s*\\d+ms\\b"
+          description: "Hard-coded millisecond values"
+        - regex: "rgba?\\([^)]+\\)"
+          description: "Inline color values instead of tokens"
+        - regex: "box-shadow:\\s*[^;]+(?<!var\\()"
+          description: "Hard-coded box-shadow instead of elevation token"
+        - regex: "font-weight:\\s*\\d{3}\\b"
+          description: "Numeric font-weight instead of token"
+      exclusions:
+        - pattern: "/\\*\\s*optical\\s*\\*/"
+          reason: "Optical alignment override"
+        - pattern: "echarts"
+          reason: "Library-required configuration"
+    allowed_exceptions:
+      - optical_alignment
+      - third_party_library_override
+      - browser_reset
+    outputs:
+      - token_gap_report
+      - refactor_candidates
+
+  - id: control_size_standardization
+    name: Control Size Standardization
+    description: >
+      Ensure interactive controls use --ui-control-size-default token.
+      Prevents inconsistent button/input sizing across components.
+    scope:
+      - src/components/**/*.css
+    severity: medium
+    detection_method:
+      type: static_scan
+      patterns:
+        - regex: "(height|min-height|width|min-width):\\s*(32px|2rem)(?!.*var\\(--ui-control-size)"
+          description: "Control-like sizing without token"
+      context:
+        - button
+        - input
+        - select
+        - pagination
+        - tab
+    allowed_exceptions:
+      - icon_only_controls
+      - compact_variants
+    outputs:
+      - control_sizing_audit
+      - refactor_prompt
+
+  - id: transition_duration_consistency
+    name: Transition Duration Consistency
+    description: >
+      Ensure CSS transitions use --ui-transition-duration-default token.
+      Prevents animation timing inconsistency.
+    scope:
+      - src/components/**/*.css
+    severity: medium
+    detection_method:
+      type: static_scan
+      patterns:
+        - regex: "transition:\\s*[^;]*\\d+m?s"
+          description: "Transition with hard-coded duration"
+        - regex: "animation-duration:\\s*\\d+m?s"
+          description: "Animation with hard-coded duration"
+      exclusions:
+        - pattern: "var\\(--ui-transition-duration"
+          reason: "Already using token"
+    allowed_exceptions:
+      - drawer_slide_override
+      - chart_animation
+    outputs:
+      - transition_audit
+      - refactor_prompt
+
+  - id: elevation_token_usage
+    name: Elevation Token Usage
+    description: >
+      Ensure box-shadow uses semantic elevation tokens.
+      Prevents shadow inconsistency and visual hierarchy drift.
+    scope:
+      - src/components/**/*.css
+    severity: high
+    detection_method:
+      type: static_scan
+      patterns:
+        - regex: "box-shadow:\\s*\\d"
+          description: "Hard-coded box-shadow value"
+      exclusions:
+        - pattern: "var\\(--ui-card-elevation"
+          reason: "Using elevation token"
+        - pattern: "none"
+          reason: "Explicitly no shadow"
+    allowed_exceptions:
+      - custom_focus_ring
+    outputs:
+      - elevation_audit
+      - refactor_prompt
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # ARCHITECTURAL BOUNDARY ENFORCEMENT
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - id: component_boundary_violation
+    name: Component Boundary Violation
+    description: >
+      Detect components owning responsibilities outside their documented scope.
+      Prevents architectural drift and responsibility creep.
+    scope:
+      - src/components/**/*.ts
+      - src/components/**/*.css
+    severity: high
+    detection_method:
+      type: semantic_scan
+      indicators:
+        - fetch_in_component: "Component contains fetch/axios/http calls"
+        - routing_in_component: "Component contains routing logic"
+        - state_management: "Component manages global state"
+        - business_logic: "Component contains domain logic"
+        - cross_concern_styling: "Component styles children from other components"
+      patterns:
+        - "fetch\\("
+        - "axios\\."
+        - "navigate\\("
+        - "localStorage\\."
+        - "sessionStorage\\."
+    allowed_exceptions:
+      - drawer_scroll_lock
+      - modal_focus_trap
+    outputs:
+      - boundary_violation_report
+      - refactor_recommendation
+
+  - id: pattern_usage_reality
+    name: Pattern Usage Reality
+    description: >
+      Ensure documented patterns are actually used in page examples.
+      Prevents documentation drift from implementation reality.
+    scope:
+      - src/stories/compositions/page-patterns/**
+      - src/stories/compositions/page-examples/**
+    severity: medium
+    detection_method:
+      type: cross_reference
+      method: >
+        For each pattern in page-patterns/, verify at least one
+        page example imports and uses it.
+      indicators:
+        - pattern_has_no_usage
+        - pattern_claimed_by_example_but_not_imported
+    allowed_exceptions:
+      - in_progress_pattern
+    outputs:
+      - unused_pattern_report
+      - example_validation_report
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # DOCUMENTATION QUALITY ENFORCEMENT
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - id: documentation_tiering
+    name: Documentation Tiering
+    description: >
+      Ensure Storybook documentation follows tier structure:
+      Quick Start, Rules & Contracts, Appendices.
+      Prevents documentation scroll fatigue.
+    scope:
+      - src/**/*.stories.ts
+    severity: low
+    detection_method:
+      type: structural_scan
+      required_sections:
+        - "## Quick Start"
+        - "## Rules & Contracts"
+      optional_sections:
+        - "## Appendix:"
+      anti_patterns:
+        - h1_inside_description
+        - missing_quick_start
+    allowed_exceptions:
+      - readme_pages
+      - minimal_components
+    outputs:
+      - documentation_structure_audit
+      - refactor_suggestion
+
+  - id: aspirational_pattern_labeling
+    name: Aspirational Pattern Labeling
+    description: >
+      Ensure patterns without concrete usage are labeled as
+      "OBSERVED", "IN PROGRESS", or "EXPERIMENTAL".
+    scope:
+      - src/stories/compositions/page-patterns/**/*.stories.ts
+    severity: medium
+    detection_method:
+      type: label_presence
+      required_labels:
+        - "🟡 OBSERVED PATTERN"
+        - "🚧 IN PROGRESS"
+        - "✅ Canonical"
+      check: >
+        If pattern has no page example usage, it must have
+        a non-canonical status label at top of docs.
+    allowed_exceptions:
+      - table_page
+      - dashboard
+    outputs:
+      - unlabeled_pattern_report
+      - labeling_suggestion
+
+  - id: experimental_component_labeling
+    name: Experimental Component Labeling
+    description: >
+      Ensure components with no page example usage are labeled
+      as "EXPERIMENTAL" at top of documentation.
+    scope:
+      - src/components/**/*.stories.ts
+    severity: low
+    detection_method:
+      type: label_presence
+      required_label: "🟡 EXPERIMENTAL"
+      check: >
+        If component is not used in any page example,
+        docs must have experimental label at top.
+    allowed_exceptions:
+      - atoms
+      - molecules_with_pattern_usage
+    outputs:
+      - unlabeled_component_report
+
+  - id: contract_conflict_detection
+    name: Contract Conflict Detection
+    description: >
+      Detect conflicting normative rules across documentation files.
+      Prevents contradictory guidance.
+    scope:
+      - docs/**/*.md
+      - src/**/*.stories.ts
+    severity: high
+    detection_method:
+      type: semantic_analysis
+      indicators:
+        - conflicting_must_rules
+        - conflicting_ownership_claims
+        - contradictory_when_to_use
+      keywords:
+        - "MUST"
+        - "MUST NOT"
+        - "owns"
+        - "does NOT own"
+    allowed_exceptions: []
+    outputs:
+      - conflict_report
+      - resolution_recommendation
+
+  - id: insights_escalation_compliance
+    name: Insights Escalation Contract Compliance
+    description: >
+      Ensure chart usage follows Insights Escalation Contract rules.
+      Charts must be signal-only, with no filters, drilldown, or tables.
+    scope:
+      - src/components/chart/**
+      - src/components/chart-card/**
+      - src/stories/compositions/page-examples/**dashboard**
+    severity: critical
+    detection_method:
+      type: contract_validation
+      contract_file: docs/insights-escalation-contract.md
+      violations:
+        - chart_has_filters
+        - chart_has_drilldown
+        - chart_has_time_controls
+        - chart_has_table
+        - missing_escalation_cta
+      patterns:
+        - "createFilterPill"
+        - "createTabsGroup"
+        - "createTableGrid.*chart"
+    allowed_exceptions: []
+    outputs:
+      - escalation_violation_report
+      - remediation_steps
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STORYBOOK HEALTH CHECKS
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - id: broken_story_detection
+    name: Broken Story Detection
+    description: >
+      Detect Storybook stories with runtime errors that prevent rendering.
+      Ensures Storybook is demo-ready at all times.
+    scope:
+      - src/**/*.stories.ts
+    severity: critical
+    detection_method:
+      type: runtime_validation
+      checks:
+        - story_throws_error
+        - story_renders_blank
+        - story_missing_required_props
+        - invalid_node_append
+      indicators:
+        - "TypeError"
+        - "ReferenceError"
+        - "not of type 'Node'"
+    allowed_exceptions: []
+    outputs:
+      - broken_story_report
+      - fix_priority_list
+
+  - id: unused_component_detection
+    name: Unused Component Detection
+    description: >
+      Identify components with no usage in patterns or page examples.
+      Helps maintain lean, reality-driven design system.
+    scope:
+      - src/components/**
+      - src/stories/compositions/**
+    severity: low
+    detection_method:
+      type: usage_analysis
+      method: >
+        For each component, search for imports across all
+        page patterns and page examples. Flag if zero usage.
+      exclusions:
+        - "*.stories.ts"
+        - "*.test.ts"
+    allowed_exceptions:
+      - atoms
+      - recently_added
+    outputs:
+      - unused_component_list
+      - archive_recommendation
+
+  - id: title_redundancy_detection
+    name: Title Redundancy Detection
+    description: >
+      Detect duplicate H1/H2 titles in Storybook documentation.
+      Prevents visual noise and scroll fatigue.
+    scope:
+      - src/**/*.stories.ts
+    severity: low
+    detection_method:
+      type: structural_scan
+      anti_patterns:
+        - pattern: "^\\s*\\*\\s*#\\s+\\w+\\s*$"
+          description: "H1 inside component description"
+        - pattern: "^\\s*##\\s+[A-Z]\\w+\\s*$"
+          description: "H2 repeating component name"
+      check: >
+        First non-empty line in component description should not
+        be an H1/H2 header repeating the component name.
+    allowed_exceptions:
+      - readme_files
+    outputs:
+      - title_redundancy_report
+      - cleanup_diff
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# EXECUTION MODES
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+execution_modes:
+  read_only:
+    description: "Scan only, produce reports, no modifications"
+    outputs:
+      - markdown_report
+      - json_summary
+  
+  report:
+    description: "Scan and generate detailed recommendations"
+    outputs:
+      - violation_report
+      - refactor_roadmap
+      - priority_matrix
+  
+  optional_refactor:
+    description: "Scan, report, and offer to fix violations automatically"
+    outputs:
+      - all_reports
+      - automated_fixes
+      - manual_fix_guidance
+    requires_approval: true
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SEVERITY LEVELS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+severity_levels:
+  critical:
+    description: "Violates core contracts, breaks system guarantees"
+    action: "Block until fixed"
+    examples:
+      - insights_escalation_violation
+      - broken_story_preventing_demo
+  
+  high:
+    description: "Violates architectural boundaries or token system"
+    action: "Fix in current sprint"
+    examples:
+      - component_boundary_violation
+      - token_drift
+  
+  medium:
+    description: "Reduces consistency or maintainability"
+    action: "Fix in next cycle"
+    examples:
+      - pattern_not_used
+      - unlabeled_experimental
+  
+  low:
+    description: "Minor quality or clarity issue"
+    action: "Fix when convenient"
+    examples:
+      - title_redundancy
+      - documentation_structure
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# USAGE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+usage:
+  agent_invocation: >
+    When invoked, the Design System Steward agent should:
+    1. Load this checklist
+    2. Execute all checks in sequence
+    3. Collect violations by severity
+    4. Generate report in requested format
+    5. Await user decision for refactor mode
+  
+  report_format:
+    - check_id
+    - violation_count
+    - affected_files
+    - severity
+    - recommended_action
+  
+  integration_points:
+    - pre_commit_hook
+    - ci_pipeline
+    - monthly_audit
+    - on_demand_steward_invocation
