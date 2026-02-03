@@ -131,6 +131,16 @@
   width: var(--spacing-app-shell-nav-width);
   overflow-y: auto;
   overflow-x: hidden;
+  
+  /*
+   * Elevated above drawer overlay
+   * 
+   * Drawer uses z-index: 1000
+   * Nav must remain visible and stable when drawer is open
+   * This ensures nav stays above the drawer overlay
+   */
+  position: relative;
+  z-index: 1100;
 }
 
 /* When nav is not present, content spans */

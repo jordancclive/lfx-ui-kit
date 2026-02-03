@@ -111,10 +111,27 @@
 }
 
 /* ========================================
+   Hover State
+   Subtle background change on hover
+   ======================================== */
+
+.lfx-global-nav__item:hover {
+  background-color: var(--ui-surface-hover);
+}
+
+/* ========================================
    Selected State
    Applied via data-nav-item-id matching activeItemId
    ======================================== */
 
 .lfx-global-nav__item--selected {
+  background-color: var(--color-nav-item-background-selected);
+}
+
+/* 
+ * Selected state MUST override hover
+ * This ensures the active page is always clearly indicated
+ */
+.lfx-global-nav__item--selected:hover {
   background-color: var(--color-nav-item-background-selected);
 }
