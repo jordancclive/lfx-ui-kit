@@ -321,7 +321,7 @@ const meta: Meta<DashboardArgs> = {
 • **When NOT to use:** Single-dataset pages (use Table Page), multiple independent tables (use Segmented Table Page)  
 • **Structure:** AppShell → PageLayout → AppHeader → PageSection (metrics row) → PageSection (table) → PageSection (list)  
 • **Key rule:** No section titles (AppHeader is the only title) - each surface wrapped in PageSection  
-• **Default interaction:** Metric click → Drawer, ActionCard "View All" → Drawer. See `docs/interaction-surfaces.md`
+• **Default interaction:** Metric click → Drawer, ActionCard "View All" → Drawer. See docs/interaction-surfaces.md
 
 ---
 

@@ -11,9 +11,9 @@ import { createChartCard, type ChartCardProps } from './chart-card';
  * • **What:** Minimal structural wrapper (extends Card) with named slots for dashboard chart-based metrics  
  * • **When to use:** Dashboard overviews, MetricClusters, KPI summaries with sparklines or bar charts  
  * • **When NOT to use:** Deep analytics, data tables, full-page charts, text-only displays, complex interactives  
- * • **Default interaction:** Click → opens RIGHT-SIDE DRAWER (not modal, not page). See `docs/interaction-surfaces.md`  
+ * • **Default interaction:** Click → opens RIGHT-SIDE DRAWER (not modal, not page). See docs/interaction-surfaces.md  
  * • **Structure:** Fixed slots (title, value, chart, meta) - all optional except title  
- * • **Slots accept:** Pre-rendered `HTMLElement` only (no chart rendering, metric formatting, or data logic)
+ * • **Slots accept:** Pre-rendered HTMLElement only (no chart rendering, metric formatting, or data logic)
  * 
  * ---
  * 
