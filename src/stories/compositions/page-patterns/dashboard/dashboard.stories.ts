@@ -604,7 +604,7 @@ They are designed for:
 - Full chart rendering surfaces
 - Standalone visualization pages
 
-**Note:** Charts in dashboards are **signal-level summaries only**. Any filtering, drill-down, or deep exploration MUST escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
+**Note:** Charts in dashboards are **signal-level summaries only**. Any filtering, drill-down, or deep exploration MUST escalate to LFX Insights. See docs/insights-escalation-contract.md.
 - Data exploration interfaces
 
 ### Typical Structure (Descriptive)
