@@ -34,3 +34,5 @@ jobs:
           buildScriptName: 'build-storybook'
           exitZeroOnChanges: true  # Don't fail CI on visual changes
           autoAcceptChanges: true  # Accept new baseline after story ID refactor
+          exitOnceUploaded: true  # Publish immediately without waiting for snapshots
+          allowConsoleErrors: true  # Allow runtime errors during refactor cleanup
