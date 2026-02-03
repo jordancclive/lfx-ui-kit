@@ -458,7 +458,7 @@ function createSurveysTablePage(args: SurveysTablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<SurveysTablePageArgs> = {
-  title: '3. Page Examples / Surveys',
+  title: 'Page Examples / Surveys',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

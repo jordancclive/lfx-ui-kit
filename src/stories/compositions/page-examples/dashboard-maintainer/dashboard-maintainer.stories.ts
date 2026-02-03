@@ -1024,7 +1024,7 @@ function createMaintainerDashboard(): HTMLElement {
 // =============================================================================
 
 const meta: Meta = {
-  title: '3. Page Examples / Maintainer Dashboard',
+  title: 'Page Examples / Maintainer Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

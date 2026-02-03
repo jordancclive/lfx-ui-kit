@@ -370,7 +370,7 @@ function createMailingListsTablePage(args: MailingListsTablePageArgs = {}): HTML
 // =============================================================================
 
 const meta: Meta<MailingListsTablePageArgs> = {
-  title: '3. Page Examples / Mailing Lists',
+  title: 'Page Examples / Mailing Lists',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

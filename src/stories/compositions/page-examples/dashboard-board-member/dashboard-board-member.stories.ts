@@ -813,7 +813,7 @@ function createBoardMemberDashboard(): HTMLElement {
 // =============================================================================
 
 const meta: Meta = {
-  title: '3. Page Examples / Board Member Dashboard',
+  title: 'Page Examples / Board Member Dashboard',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',

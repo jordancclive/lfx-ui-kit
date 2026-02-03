@@ -340,7 +340,7 @@ function createCreationFlowPage(args: CreationFlowPageArgs): HTMLElement {
 // =============================================================================
 
 const meta: Meta<CreationFlowPageArgs> = {
-  title: '2. Page Patterns / Creation Flow Page',
+  title: 'Page Patterns / Creation Flow Page',
   parameters: {
     layout: 'fullscreen',
     docs: {

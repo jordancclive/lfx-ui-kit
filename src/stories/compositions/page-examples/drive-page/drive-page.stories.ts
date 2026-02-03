@@ -324,7 +324,7 @@ function createDriveTablePage(args: DriveTablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<DriveTablePageArgs> = {
-  title: '3. Page Examples / Drive',
+  title: 'Page Examples / Drive',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
