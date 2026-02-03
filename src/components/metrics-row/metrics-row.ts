@@ -79,11 +79,17 @@ export function createMetricsRow(props: MetricsRowProps): HTMLElement {
     row.classList.add('lfx-metrics-row--equal-width');
   }
 
-  // Append children
+  // Append children (with defensive guards)
   if (Array.isArray(children)) {
-    children.forEach(child => row.appendChild(child));
+    // Filter out null/undefined/non-Node values before appending
+    children
+      .filter(child => child != null && child instanceof Node)
+      .forEach(child => row.appendChild(child));
   } else {
-    row.appendChild(children);
+    // Guard against null/undefined single child
+    if (children != null && children instanceof Node) {
+      row.appendChild(children);
+    }
   }
 
   return row;

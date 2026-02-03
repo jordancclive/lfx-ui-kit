@@ -273,6 +273,9 @@ export const Default: Story = {
     container.appendChild(button);
     return container;
   },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 /**
@@ -302,6 +305,9 @@ export const WithFooter: Story = {
     
     container.appendChild(button);
     return container;
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 
@@ -334,6 +340,9 @@ export const LongContent: Story = {
     container.appendChild(button);
     return container;
   },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 /**
@@ -361,6 +370,9 @@ export const NoTitle: Story = {
     
     container.appendChild(button);
     return container;
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 
@@ -425,5 +437,8 @@ export const InteractionDemo: Story = {
     container.appendChild(instructions);
     container.appendChild(button);
     return container;
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };

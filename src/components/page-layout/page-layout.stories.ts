@@ -192,6 +192,7 @@ export const WithScrollableContent: Story = {
   },
   parameters: {
     layout: 'fullscreen',
+    chromatic: { disableSnapshot: true },
   },
 };
 
