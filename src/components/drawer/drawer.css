@@ -1,0 +1,238 @@
+/**
+ * Drawer Component Styles
+ * 
+ * Level 2 — Molecule
+ * 
+ * Right-side slide-in surface for lightweight inspection and actions.
+ * Uses existing surface and card tokens only.
+ */
+
+/* =============================================================================
+   OVERLAY
+   ============================================================================= */
+
+/**
+ * Overlay backdrop
+ * 
+ * - Covers entire viewport
+ * - Semi-transparent background
+ * - Click closes drawer
+ */
+.lfx-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  /* Layering - above page content, below any potential modals */
+  z-index: 1000;
+  
+  /* Semi-transparent backdrop */
+  background-color: rgba(0, 0, 0, 0.4);
+  
+  /* Display */
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  
+  /* Fade in animation */
+  animation: lfx-drawer-fade-in 200ms ease-out;
+}
+
+@keyframes lfx-drawer-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   DRAWER CONTAINER
+   ============================================================================= */
+
+/**
+ * Drawer aside element
+ * 
+ * - Fixed width (based on standard card/container sizing)
+ * - Slides in from right
+ * - Contains header, body, and optional footer
+ */
+.lfx-drawer {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  max-width: 90vw;
+  
+  /* Surface styling */
+  background: var(--ui-surface-container);
+  border-left: 1px solid var(--ui-surface-divider);
+  
+  /* Elevation */
+  box-shadow: var(--ui-card-elevation-default);
+  
+  /* Slide in animation */
+  animation: lfx-drawer-slide-in 250ms ease-out;
+  
+  /* Focus outline for accessibility */
+  outline: none;
+}
+
+@keyframes lfx-drawer-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* =============================================================================
+   HEADER
+   ============================================================================= */
+
+/**
+ * Drawer header
+ * 
+ * - Contains optional title and close button
+ * - Close button always present (top right)
+ * - Spacing matches card header patterns
+ */
+.lfx-drawer__header {
+  /* Layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-12);
+  
+  /* Spacing */
+  padding: var(--spacing-16) var(--spacing-20);
+  
+  /* Bottom border */
+  border-bottom: 1px solid var(--ui-surface-divider);
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+}
+
+.lfx-drawer__title {
+  /* Typography */
+  font-family: var(--ui-text-section-title-font-family);
+  font-size: var(--ui-text-section-title-font-size);
+  font-weight: var(--ui-text-section-title-font-weight);
+  color: var(--text-primary);
+  
+  /* Reset margin */
+  margin: 0;
+  
+  /* Allow wrapping if needed */
+  flex: 1;
+}
+
+/**
+ * Close button
+ * 
+ * - Always visible in top right
+ * - X icon
+ * - Hover state
+ */
+.lfx-drawer__close {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  
+  /* Reset button styles */
+  padding: 0;
+  border: none;
+  background: transparent;
+  
+  /* Icon color */
+  color: var(--text-secondary);
+  
+  /* Border radius */
+  border-radius: var(--rounded-md);
+  
+  /* Cursor */
+  cursor: pointer;
+  
+  /* Transition */
+  transition: background-color var(--ui-transition-duration-default) ease,
+              color var(--ui-transition-duration-default) ease;
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+}
+
+.lfx-drawer__close:hover {
+  background-color: var(--ui-surface-hover);
+  color: var(--text-primary);
+}
+
+.lfx-drawer__close:active {
+  background-color: var(--ui-surface-selected);
+}
+
+.lfx-drawer__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =============================================================================
+   BODY
+   ============================================================================= */
+
+/**
+ * Drawer body
+ * 
+ * - Scrollable content area
+ * - Takes remaining vertical space
+ * - Padding matches card patterns
+ */
+.lfx-drawer__body {
+  /* Layout */
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Spacing */
+  padding: var(--spacing-20);
+  
+  /* Scroll behavior */
+  overscroll-behavior: contain;
+}
+
+/* =============================================================================
+   FOOTER
+   ============================================================================= */
+
+/**
+ * Drawer footer (optional)
+ * 
+ * - Fixed at bottom
+ * - Typical use: action buttons
+ * - Top border for separation
+ */
+.lfx-drawer__footer {
+  /* Layout */
+  display: flex;
+  gap: var(--spacing-8);
+  justify-content: flex-end;
+  
+  /* Spacing */
+  padding: var(--spacing-16) var(--spacing-20);
+  
+  /* Top border */
+  border-top: 1px solid var(--ui-surface-divider);
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+  
+  /* Background (in case body content is behind) */
+  background: var(--ui-surface-container);
+}
