@@ -66,15 +66,40 @@ function readBaseline() {
 }
 
 /**
- * Get list of files changed since baseline commit
- * @param {string} baselineCommit - Git commit hash
- * @returns {Set<string>} Set of changed file paths (relative to repo root)
+ * Determine the appropriate diff range
+ * @param {Object|null} baseline - Baseline config if present
+ * @returns {Object} Diff range info { mode, range, changedFiles }
  */
-function getChangedFiles(baselineCommit) {
+function determineDiffRange(baseline) {
+  // Strategy 1: Use baseline if present
+  if (baseline && baseline.commit) {
+    try {
+      const output = execSync(
+        `git diff --name-only ${baseline.commit}...HEAD`,
+        { cwd: ROOT_DIR, encoding: 'utf8' }
+      );
+      
+      const files = output
+        .split('\n')
+        .filter(f => f.trim())
+        .map(f => f.trim());
+      
+      return {
+        mode: 'baseline',
+        range: `${baseline.commit}...HEAD`,
+        changedFiles: new Set(files)
+      };
+    } catch (error) {
+      console.error(`⚠️  Failed to get baseline diff: ${error.message}`);
+    }
+  }
+  
+  // Strategy 2: Check if we're in a PR (origin/main exists)
   try {
-    // Get list of changed files between baseline and HEAD
+    execSync('git rev-parse origin/main', { cwd: ROOT_DIR, stdio: 'ignore' });
+    
     const output = execSync(
-      `git diff --name-only ${baselineCommit}..HEAD`,
+      'git diff --name-only origin/main...HEAD',
       { cwd: ROOT_DIR, encoding: 'utf8' }
     );
     
@@ -83,18 +108,28 @@ function getChangedFiles(baselineCommit) {
       .filter(f => f.trim())
       .map(f => f.trim());
     
-    return new Set(files);
+    return {
+      mode: 'pr',
+      range: 'origin/main...HEAD',
+      changedFiles: new Set(files)
+    };
   } catch (error) {
-    console.error(`⚠️  Failed to get changed files: ${error.message}`);
-    return null;
+    // origin/main doesn't exist or git diff failed
   }
+  
+  // Strategy 3: Fallback to full scan
+  return {
+    mode: 'full',
+    range: null,
+    changedFiles: null
+  };
 }
 
 // ============================================================================
 // UTILITY: Simple file globbing
 // ============================================================================
 
-function findFiles(dir, pattern, ignore = []) {
+function findFiles(dir, pattern, ignore = [], changedFilesFilter = null) {
   const results = [];
   
   function walk(currentPath) {
@@ -113,7 +148,10 @@ function findFiles(dir, pattern, ignore = []) {
         }
       } else if (entry.isFile()) {
         if (pattern.test(entry.name)) {
-          results.push(relativePath);
+          // If we have a changed files filter, only include files in that set
+          if (changedFilesFilter === null || changedFilesFilter.has(relativePath)) {
+            results.push(relativePath);
+          }
         }
       }
     }
@@ -134,7 +172,7 @@ const checks = {
     name: 'Transition Duration Consistency',
     severity: 'medium',
     scan: async () => {
-      const files = findFiles(path.join(ROOT_DIR, 'src/components'), /\.css$/);
+      const files = findFiles(path.join(ROOT_DIR, 'src/components'), /\.css$/, [], global.STEWARD_CHANGED_FILES);
       const violations = [];
       
       const pattern = /transition:\s*[^;]*\b\d+m?s\b/g;
@@ -164,7 +202,7 @@ const checks = {
     name: 'Component Boundary Violation',
     severity: 'high',
     scan: async () => {
-      const files = findFiles(path.join(ROOT_DIR, 'src/components'), /\.ts$/, ['.stories.ts', '.test.ts']);
+      const files = findFiles(path.join(ROOT_DIR, 'src/components'), /\.ts$/, ['.stories.ts', '.test.ts'], global.STEWARD_CHANGED_FILES);
       const violations = [];
       
       const patterns = [
@@ -197,7 +235,7 @@ const checks = {
     scan: async () => {
       // This would require actually running Storybook
       // For CI, we'll do basic static checks
-      const files = findFiles(path.join(ROOT_DIR, 'src'), /\.stories\.ts$/);
+      const files = findFiles(path.join(ROOT_DIR, 'src'), /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
       const violations = [];
       
       for (const file of files) {
@@ -225,8 +263,8 @@ const checks = {
       const componentDirs = fs.readdirSync(path.join(ROOT_DIR, 'src/components'), { withFileTypes: true })
         .filter(d => d.isDirectory())
         .map(d => d.name);
-      const storyFiles = findFiles(path.join(ROOT_DIR, 'src/components'), /\.stories\.ts$/);
-      const pageExamples = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /\.stories\.ts$/);
+      const storyFiles = findFiles(path.join(ROOT_DIR, 'src/components'), /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
+      const pageExamples = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
       
       const violations = [];
       const components = componentDirs;
@@ -273,8 +311,8 @@ const checks = {
     name: 'Aspirational Pattern Labeling',
     severity: 'medium',
     scan: async () => {
-      const patterns = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-patterns'), /\.stories\.ts$/);
-      const pageExamples = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /\.stories\.ts$/);
+      const patterns = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-patterns'), /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
+      const pageExamples = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
       const violations = [];
       
       const pageExampleContents = pageExamples.map(f => 
@@ -308,7 +346,7 @@ const checks = {
     scan: async () => {
       // This check requires semantic analysis of chart usage context
       // For now, we'll do a simple check: charts should not be co-located with filters
-      const dashboardFiles = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /dashboard.*\.ts$/);
+      const dashboardFiles = findFiles(path.join(ROOT_DIR, 'src/stories/compositions/page-examples'), /dashboard.*\.ts$/, [], global.STEWARD_CHANGED_FILES);
       const violations = [];
       
       for (const file of dashboardFiles) {
@@ -476,47 +514,51 @@ async function main() {
   const timestamp = new Date().toISOString().replace('T', ' ').split('.')[0];
   const results = {};
   
-  // Check for baseline
+  // Determine diff range
   const baseline = readBaseline();
-  let changedFiles = null;
+  const diffRange = determineDiffRange(baseline);
   
-  if (baseline && baseline.commit) {
-    console.log(`📍 Baseline Mode: ACTIVE`);
+  // Print diff range information
+  if (diffRange.mode === 'baseline') {
+    console.log(`📍 Diff Mode: BASELINE`);
     console.log(`   Baseline commit: ${baseline.commit}`);
     console.log(`   Accepted at: ${baseline.accepted_at || 'unknown'}`);
+    console.log(`   Diff range: ${diffRange.range}`);
+    console.log(`   Changed files: ${diffRange.changedFiles.size}`);
     
-    changedFiles = getChangedFiles(baseline.commit);
-    
-    if (changedFiles) {
-      console.log(`   Changed files: ${changedFiles.size}`);
-      if (changedFiles.size === 0) {
-        console.log(`   ✅ No files changed since baseline\n`);
-      } else {
-        console.log('');
-      }
+    if (diffRange.changedFiles.size === 0) {
+      console.log(`   ✅ No files changed since baseline\n`);
     } else {
-      console.log(`   ⚠️  Could not determine changed files, falling back to full scan\n`);
-      changedFiles = null;
+      console.log('');
     }
+  } else if (diffRange.mode === 'pr') {
+    console.log(`📍 Diff Mode: PULL REQUEST`);
+    console.log(`   Diff range: ${diffRange.range}`);
+    console.log(`   Changed files: ${diffRange.changedFiles.size}`);
+    console.log('');
   } else {
-    console.log(`📍 Baseline Mode: DISABLED`);
-    console.log(`   Running full repository scan\n`);
+    console.log(`📍 Diff Mode: FULL SCAN`);
+    console.log(`   No baseline or PR context detected`);
+    console.log(`   Scanning entire repository\n`);
   }
   
   console.log('Running checks...\n');
   
-  // Run all checks
+  // Run all checks (they now use changedFiles filter internally via findFiles)
+  // Store the changedFiles globally for checks to access
+  global.STEWARD_CHANGED_FILES = diffRange.changedFiles;
+  
   for (const [checkId, check] of Object.entries(checks)) {
     process.stdout.write(`  ${check.name}... `);
     
     try {
       let violations = await check.scan();
       
-      // Filter violations by changed files if baseline mode is active
-      if (changedFiles && changedFiles.size > 0) {
+      // Filter violations by changed files if diff-aware mode is active
+      if (diffRange.changedFiles && diffRange.changedFiles.size > 0) {
         violations = violations.filter(v => {
           const filePath = typeof v === 'string' ? v : (v.file || '');
-          return changedFiles.has(filePath);
+          return diffRange.changedFiles.has(filePath);
         });
       }
       
