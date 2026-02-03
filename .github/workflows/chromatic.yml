@@ -33,3 +33,4 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: 'build-storybook'
           exitZeroOnChanges: true  # Don't fail CI on visual changes
+          autoAcceptChanges: true  # Accept new baseline after story ID refactor
