@@ -644,7 +644,7 @@ Chart Card (Card surface)
 - **Supporting metadata** — Definitions, calculation details, caveats
 - **Optional CTA** — Link to deeper analytics (e.g., LFX Insights)
 
-**Important:** Drawers provide limited context only. Any feature requiring filtering, time-range selection, or deep exploration MUST escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
+**Important:** Drawers provide limited context only. Any feature requiring filtering, time-range selection, or deep exploration MUST escalate to LFX Insights. See docs/insights-escalation-contract.md.
 
 **Interaction Surface Contract:**
 
@@ -1222,7 +1222,7 @@ defined in **0. README → Interaction Surfaces**.
   - Contextual explanation
   - Optional link to LFX Insights
 
-**Important:** Metric charts and drawers provide **signal only**. They do NOT support filtering, drill-down, or deep exploration. For analytical features, escalate to LFX Insights. See `docs/insights-escalation-contract.md`.
+**Important:** Metric charts and drawers provide **signal only**. They do NOT support filtering, drill-down, or deep exploration. For analytical features, escalate to LFX Insights. See docs/insights-escalation-contract.md.
 
 **"Ask LFX Lens" Button:**
 - **→ Modal OR Drawer** (TBD based on LFX Lens UX)
