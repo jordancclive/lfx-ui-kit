@@ -26,6 +26,7 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 @import '../components/card/card.css';
+@import '../components/summary-card/summary-card.css';
 @import '../components/drawer/drawer.css';
 @import '../components/chart/chart.css';
 @import '../components/chart-card/chart-card.css';

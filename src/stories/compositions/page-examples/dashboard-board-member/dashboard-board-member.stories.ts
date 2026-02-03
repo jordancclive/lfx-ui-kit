@@ -53,6 +53,7 @@ import { createListItem } from '../../../../components/list-item/list-item';
 import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
+import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -156,55 +157,31 @@ function createGovernanceHealthSection(): HTMLElement {
 // =============================================================================
 
 /**
- * ⚠️ AWKWARD: No ActionCard component exists yet
- * Using Card + manual HTML as documented placeholder
- * This section demonstrates what WOULD use ActionCard when available
+ * ✅ WORKS WELL: SummaryCard eliminates hand-rolled HTML
+ * Clean, reusable primitive for action summaries
  * 
- * 💡 FUTURE: ActionCard component should standardize this pattern
- * For now, using Card with custom content proves the layout works
+ * 💡 FUTURE: ActionCard may specialize from SummaryCard with action-specific semantics
  */
 function createPendingActionsSection(): HTMLElement {
-  // Manual action card construction (placeholder for future ActionCard component)
-  function createActionCardPlaceholder(config: {
+  // Helper: Creates action summary card using SummaryCard primitive
+  function createActionCard(config: {
     title: string;
     description: string;
     dueDate: string;
     priority: 'high' | 'medium' | 'low';
   }): HTMLElement {
-    const container = document.createElement('div');
-    container.style.padding = 'var(--spacing-12)';
-    container.style.cursor = 'pointer';
-    container.style.borderRadius = 'var(--rounded-md)';
-    container.style.transition = 'background-color 150ms ease';
+    // Body content
+    const body = document.createElement('div');
+    body.textContent = config.description;
 
-    container.addEventListener('mouseenter', () => {
-      container.style.backgroundColor = 'var(--ui-surface-hover)';
-    });
-    container.addEventListener('mouseleave', () => {
-      container.style.backgroundColor = 'transparent';
-    });
+    // Meta row (date + priority tag)
+    const meta = document.createElement('div');
+    meta.style.display = 'flex';
+    meta.style.gap = 'var(--spacing-8)';
+    meta.style.alignItems = 'center';
 
-    const titleEl = document.createElement('div');
-    titleEl.textContent = config.title;
-    titleEl.style.fontWeight = 'var(--font-semibold)';
-    titleEl.style.color = 'var(--text-primary)';
-    titleEl.style.marginBottom = 'var(--spacing-4)';
-
-    const descEl = document.createElement('div');
-    descEl.textContent = config.description;
-    descEl.style.fontSize = 'var(--ui-text-label-font-size)';
-    descEl.style.color = 'var(--text-secondary)';
-    descEl.style.marginBottom = 'var(--spacing-8)';
-
-    const metaRow = document.createElement('div');
-    metaRow.style.display = 'flex';
-    metaRow.style.gap = 'var(--spacing-8)';
-    metaRow.style.alignItems = 'center';
-
-    const dueDateEl = document.createElement('span');
-    dueDateEl.textContent = `Due: ${config.dueDate}`;
-    dueDateEl.style.fontSize = 'var(--ui-text-label-font-size)';
-    dueDateEl.style.color = 'var(--text-muted)';
+    const dueDateSpan = document.createElement('span');
+    dueDateSpan.textContent = `Due: ${config.dueDate}`;
 
     const priorityVariant = config.priority === 'high' ? 'danger' : config.priority === 'medium' ? 'warning' : 'default';
     const priorityTag = createTag({
@@ -212,22 +189,22 @@ function createPendingActionsSection(): HTMLElement {
       variant: priorityVariant,
     });
 
-    metaRow.appendChild(dueDateEl);
-    metaRow.appendChild(priorityTag);
+    meta.appendChild(dueDateSpan);
+    meta.appendChild(priorityTag);
 
-    container.appendChild(titleEl);
-    container.appendChild(descEl);
-    container.appendChild(metaRow);
-
-    container.addEventListener('click', () => {
-      console.log(`[DRAWER STUB] Opening action detail drawer for: ${config.title}`);
-      console.log('Would show:');
-      console.log('- Full action details');
-      console.log('- Context and history');
-      console.log('- Primary CTA to execute action (routes to page)');
+    // Create SummaryCard
+    return createSummaryCard({
+      title: config.title,
+      body,
+      meta,
+      onClick: () => {
+        console.log(`[DRAWER STUB] Opening action detail drawer for: ${config.title}`);
+        console.log('Would show:');
+        console.log('- Full action details');
+        console.log('- Context and history');
+        console.log('- Primary CTA to execute action (routes to page)');
+      },
     });
-
-    return container;
   }
 
   const actionsCard = createCard({
@@ -267,19 +244,19 @@ function createPendingActionsSection(): HTMLElement {
       })(),
 
       // Action items
-      createActionCardPlaceholder({
+      createActionCard({
         title: 'Review Q1 Budget Proposal',
         description: 'Finance committee needs board approval',
         dueDate: 'Feb 15, 2026',
         priority: 'high',
       }),
-      createActionCardPlaceholder({
+      createActionCard({
         title: 'Approve Technical Charter Update',
         description: 'TSC submitted governance changes',
         dueDate: 'Feb 20, 2026',
         priority: 'medium',
       }),
-      createActionCardPlaceholder({
+      createActionCard({
         title: 'Sign Contributor Agreement',
         description: 'New platinum member onboarding',
         dueDate: 'Feb 28, 2026',
@@ -296,60 +273,43 @@ function createPendingActionsSection(): HTMLElement {
 // =============================================================================
 
 /**
- * ✅ WORKS WELL: Card + custom content pattern is flexible
- * ⚠️ AWKWARD: Similar to ActionCard - no MeetingCard primitive yet
- * 💡 FUTURE: Consider if MeetingCard should be a distinct component
- * or if ActionCard pattern generalizes to cover this use case
+ * ✅ WORKS WELL: SummaryCard eliminates hand-rolled HTML
+ * Clean, reusable primitive for meeting summaries
+ * 
+ * 💡 FUTURE: MeetingCard may specialize from SummaryCard with meeting-specific semantics
  */
 function createMeetingSummarySection(): HTMLElement {
-  function createMeetingCardPlaceholder(config: {
+  // Helper: Creates meeting summary card using SummaryCard primitive
+  function createMeetingCard(config: {
     title: string;
     date: string;
     time: string;
     attendees: number;
   }): HTMLElement {
-    const container = document.createElement('div');
-    container.style.padding = 'var(--spacing-12)';
-    container.style.cursor = 'pointer';
-    container.style.borderRadius = 'var(--rounded-md)';
-    container.style.transition = 'background-color 150ms ease';
+    // Meta content (date, time, attendees)
+    const meta = document.createElement('div');
 
-    container.addEventListener('mouseenter', () => {
-      container.style.backgroundColor = 'var(--ui-surface-hover)';
+    const dateTime = document.createElement('div');
+    dateTime.textContent = `${config.date} • ${config.time}`;
+    dateTime.style.marginBottom = 'var(--spacing-4)';
+
+    const attendeeCount = document.createElement('div');
+    attendeeCount.textContent = `${config.attendees} attendees`;
+
+    meta.appendChild(dateTime);
+    meta.appendChild(attendeeCount);
+
+    // Create SummaryCard
+    return createSummaryCard({
+      title: config.title,
+      meta,
+      onClick: () => {
+        console.log(`[DRAWER STUB] Opening meeting detail drawer for: ${config.title}`);
+        console.log('Would show:');
+        console.log('- Meeting metadata (agenda, attendees, documents)');
+        console.log('- CTA: "View meeting" → routes to full meeting page');
+      },
     });
-    container.addEventListener('mouseleave', () => {
-      container.style.backgroundColor = 'transparent';
-    });
-
-    const titleEl = document.createElement('div');
-    titleEl.textContent = config.title;
-    titleEl.style.fontWeight = 'var(--font-semibold)';
-    titleEl.style.color = 'var(--text-primary)';
-    titleEl.style.marginBottom = 'var(--spacing-4)';
-
-    const dateEl = document.createElement('div');
-    dateEl.textContent = `${config.date} • ${config.time}`;
-    dateEl.style.fontSize = 'var(--ui-text-label-font-size)';
-    dateEl.style.color = 'var(--text-secondary)';
-    dateEl.style.marginBottom = 'var(--spacing-4)';
-
-    const attendeesEl = document.createElement('div');
-    attendeesEl.textContent = `${config.attendees} attendees`;
-    attendeesEl.style.fontSize = 'var(--ui-text-label-font-size)';
-    attendeesEl.style.color = 'var(--text-muted)';
-
-    container.appendChild(titleEl);
-    container.appendChild(dateEl);
-    container.appendChild(attendeesEl);
-
-    container.addEventListener('click', () => {
-      console.log(`[DRAWER STUB] Opening meeting detail drawer for: ${config.title}`);
-      console.log('Would show:');
-      console.log('- Meeting metadata (agenda, attendees, documents)');
-      console.log('- CTA: "View meeting" → routes to full meeting page');
-    });
-
-    return container;
   }
 
   const meetingsCard = createCard({
@@ -386,19 +346,19 @@ function createMeetingSummarySection(): HTMLElement {
       })(),
 
       // Meeting items
-      createMeetingCardPlaceholder({
+      createMeetingCard({
         title: 'Board of Directors Meeting',
         date: 'Feb 10, 2026',
         time: '2:00 PM PST',
         attendees: 8,
       }),
-      createMeetingCardPlaceholder({
+      createMeetingCard({
         title: 'Quarterly Budget Review',
         date: 'Feb 15, 2026',
         time: '10:00 AM PST',
         attendees: 12,
       }),
-      createMeetingCardPlaceholder({
+      createMeetingCard({
         title: 'Strategic Planning Session',
         date: 'Feb 22, 2026',
         time: '1:00 PM PST',
@@ -552,18 +512,17 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
  * ✅ CHART INTEGRATION: ChartCard + Chart configs work as expected
  * ✅ TABLE INTEGRATION: TableGrid primitives are perfect for preview tables
  * ✅ SECTION RHYTHM: PageSection + Card composition feels natural
+ * ✅ SUMMARY CARDS: SummaryCard eliminates hand-rolled HTML for actions/meetings
  * 
- * ⚠️ DRAWER GAP: No drawer primitive yet - had to stub handlers
- * ⚠️ ACTIONCARD GAP: Had to manually construct action/meeting cards
  * ⚠️ VALUE ELEMENTS: ChartCard value prop is verbose (requires manual HTMLElement creation)
  * 
  * 💡 INSIGHTS ESCALATION: Compliant - charts are signal-only with clear CTAs
- * 💡 INTERACTION MODEL: Drawer pattern is correct but needs primitive component
+ * 💡 INTERACTION MODEL: Drawer + SummaryCard work together cleanly
  * 💡 OVERALL FIT: Pattern is production-ready for dashboard use cases
  * 
  * RECOMMENDATION: Dashboard pattern is VALIDATED and ready for broader use.
- * Future enhancements (Drawer component, ActionCard component) would improve DX
- * but are not blocking.
+ * SummaryCard provides clean abstraction for action/meeting cards.
+ * ActionCard/MeetingCard may specialize later for domain semantics.
  */
 function createBoardMemberDashboard(): HTMLElement {
   // ✅ WORKS WELL: Standard Dashboard pattern structure

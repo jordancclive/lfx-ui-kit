@@ -46,6 +46,7 @@ export { createAppHeader, type AppHeaderProps } from './components/app-header/ap
 export { createPageLayout, type PageLayoutProps } from './components/page-layout/page-layout';
 export { createPageSection, type PageSectionProps } from './components/page-section/page-section';
 export { createCard, type CardProps } from './components/card/card';
+export { createSummaryCard, type SummaryCardProps } from './components/summary-card/summary-card';
 export { createDrawer, type DrawerProps } from './components/drawer/drawer';
 export { createChart, updateChart, disposeChart, type ChartProps } from './components/chart/chart';
 export { createSparklineOption, createStatusSparklineOption } from './components/chart/config/lineAreaSparkline';

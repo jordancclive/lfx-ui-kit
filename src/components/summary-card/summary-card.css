@@ -1,0 +1,105 @@
+/**
+ * SummaryCard Component Styles
+ * 
+ * Level 2 — Molecule
+ * 
+ * Minimal structural styles for dashboard summary cards.
+ * Delegates surface styling to Card component.
+ */
+
+/* =============================================================================
+   CONTAINER
+   ============================================================================= */
+
+/**
+ * Summary card container
+ * 
+ * - Wraps header, body, and meta slots
+ * - Spacing via existing tokens
+ */
+.lfx-summary-card {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  
+  /* Spacing */
+  padding: var(--spacing-12);
+}
+
+/**
+ * Clickable variant
+ * 
+ * - Adds hover affordance when onClick is provided
+ * - Subtle background change on hover
+ */
+.lfx-summary-card--clickable {
+  /* Border radius for hover affordance */
+  border-radius: var(--rounded-md);
+  
+  /* Transition */
+  transition: background-color var(--ui-transition-duration-default) ease;
+}
+
+.lfx-summary-card--clickable:hover {
+  background-color: var(--ui-surface-hover);
+}
+
+/* =============================================================================
+   HEADER
+   ============================================================================= */
+
+/**
+ * Summary card header (title)
+ * 
+ * - Prominent title display
+ * - Typography via existing tokens
+ */
+.lfx-summary-card__header {
+  /* Typography */
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.4;
+  
+  /* Reset margin */
+  margin: 0;
+}
+
+/* =============================================================================
+   BODY
+   ============================================================================= */
+
+/**
+ * Summary card body (main content)
+ * 
+ * - Optional content area
+ * - Neutral styling for flexibility
+ */
+.lfx-summary-card__body {
+  /* Typography */
+  font-size: var(--ui-text-label-font-size);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* =============================================================================
+   META
+   ============================================================================= */
+
+/**
+ * Summary card meta (footer metadata)
+ * 
+ * - Optional footer area
+ * - Typically contains dates, tags, counts
+ */
+.lfx-summary-card__meta {
+  /* Layout */
+  display: flex;
+  gap: var(--spacing-8);
+  align-items: center;
+  
+  /* Typography */
+  font-size: var(--ui-text-label-font-size);
+  color: var(--text-muted);
+}
