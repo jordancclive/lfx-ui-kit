@@ -220,15 +220,25 @@ export const InContextWithAppShell: Story = {
   render: () => {
     const nav = createGlobalNav({
       activeItemId: 'dashboard',
-      sections: [
-        createNavSection({
-          children: [
-            createNavItem({ id: 'dashboard', label: 'Dashboard', icon: '📊' }),
-            createNavItem({ id: 'projects', label: 'Projects', icon: '📁' }),
-            createNavItem({ id: 'team', label: 'Team', icon: '👥' }),
-            createNavItem({ id: 'settings', label: 'Settings', icon: '⚙️' }),
-          ],
-        }),
+      children: [
+        createNavSection([
+          createNavItem({ 
+            id: 'dashboard', 
+            children: document.createTextNode('Dashboard')
+          }),
+          createNavItem({ 
+            id: 'projects', 
+            children: document.createTextNode('Projects')
+          }),
+          createNavItem({ 
+            id: 'team', 
+            children: document.createTextNode('Team')
+          }),
+          createNavItem({ 
+            id: 'settings', 
+            children: document.createTextNode('Settings')
+          }),
+        ]),
       ],
     });
 
