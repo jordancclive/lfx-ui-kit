@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "steward:docs": "node scripts/steward/check-storybook-docs-boundaries.cjs"
   },
   "keywords": [
     "design-system",
