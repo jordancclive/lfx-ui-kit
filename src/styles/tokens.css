@@ -884,6 +884,33 @@
   --ui-metrics-row-gap-dense: var(--spacing-12);
 
   /* ========================================
+     UI ROLE — Control Sizing (System-Level)
+     
+     Standard sizing for interactive controls (buttons, pagination, etc.)
+     Used across all control components for consistency.
+     ======================================== */
+  
+  --ui-control-size-default: 32px;
+
+  /* ========================================
+     UI ROLE — Transition Duration (System-Level)
+     
+     Standard animation timing for interactive state changes.
+     Used across all components for consistent animation feel.
+     ======================================== */
+  
+  --ui-transition-duration-default: 150ms;
+
+  /* ========================================
+     UI ROLE — Card Elevation (System-Level)
+     
+     Extends ui.card.* tokens with hover state elevation.
+     Used by clickable card components for hover feedback.
+     ======================================== */
+  
+  --ui-card-elevation-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  /* ========================================
      UI ROLE — Focus Ring (System-Level)
      
      Single system-wide focus ring color for accessibility consistency.

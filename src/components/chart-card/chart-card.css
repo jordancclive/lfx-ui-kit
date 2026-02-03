@@ -19,7 +19,7 @@
 
 .lfx-chart-card__header {
   font-size: var(--ui-text-label-font-size);
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   color: var(--text-secondary);
 }
 
@@ -39,5 +39,5 @@
 /* Click affordance */
 .lfx-chart-card[style*="cursor: pointer"]:hover {
   /* Subtle hover state - inherits from Card hover behavior */
-  box-shadow: var(--shadow-card-hover, 0 2px 8px rgba(0, 0, 0, 0.1));
+  box-shadow: var(--ui-card-elevation-hover);
 }
