@@ -49,11 +49,7 @@ import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 import { createDrawer } from '../../../../components/drawer/drawer';
-import { 
-  createMetricClusterHeader,
-  createMetricCarousel
-} from '../../../../components/metric-cluster-header/metric-cluster-header';
-import { createAskLfxLensTrigger } from '../../../../components/ask-lfx-lens/ask-lfx-lens';
+import { createMetricClusterSection } from '../../../../components/dashboard-sections/metric-cluster-section';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -323,10 +319,13 @@ function createRecentProgressSection(): HTMLElement {
     return pill;
   });
 
-  // Build Ask LFX Lens button
-  const askLensButton = createAskLfxLensTrigger({
-    context: 'Recent Progress',
-    onClick: () => {
+  // Create fully assembled metric cluster section
+  return createMetricClusterSection({
+    title: 'Recent Progress',
+    metrics: cards,
+    filters: filterPills,
+    askLensContext: 'Recent Progress',
+    onAskLensClick: () => {
       const drawer = createDrawer({
         title: 'Ask LFX Lens',
         body: (() => {
@@ -339,46 +338,6 @@ function createRecentProgressSection(): HTMLElement {
       document.body.appendChild(drawer);
     },
   });
-
-  // Build arrow controls (raw elements, no container)
-  // Note: onClick handlers will be wired by createMetricCarousel
-  const leftArrow = createButton({ 
-    label: '←', 
-    variant: 'secondary', 
-    size: 'small',
-  });
-  
-  const rightArrow = createButton({ 
-    label: '→', 
-    variant: 'secondary', 
-    size: 'small',
-  });
-
-  // Create header - MetricClusterHeader owns all layout
-  const header = createMetricClusterHeader({
-    title: 'Recent Progress',
-    filters: filterPills,
-    actions: askLensButton,
-    controls: [leftArrow, rightArrow],
-  });
-
-  // Create fully assembled carousel with cards and navigation
-  const carousel = createMetricCarousel({
-    cards,
-    leftArrow,
-    rightArrow,
-  });
-
-  // Create container and assemble
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.gap = 'var(--spacing-16)';
-
-  container.appendChild(header);
-  container.appendChild(carousel);
-
-  return container;
 }
 
 // =============================================================================

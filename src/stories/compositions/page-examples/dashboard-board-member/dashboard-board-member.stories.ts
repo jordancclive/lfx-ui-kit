@@ -55,11 +55,7 @@ import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 import { createDrawer } from '../../../../components/drawer/drawer';
-import { 
-  createMetricClusterHeader,
-  createMetricCarousel
-} from '../../../../components/metric-cluster-header/metric-cluster-header';
-import { createAskLfxLensTrigger } from '../../../../components/ask-lfx-lens/ask-lfx-lens';
+import { createMetricClusterSection } from '../../../../components/dashboard-sections/metric-cluster-section';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -98,42 +94,7 @@ function createFoundationHealthSection(): HTMLElement {
     return pill;
   });
 
-  // Build Ask LFX Lens button
-  const askLensButton = createAskLfxLensTrigger({
-    context: 'Foundation Health',
-    onClick: () => {
-      console.log('Open Ask LFX Lens for Foundation Health');
-    },
-  });
-
-  // Build arrow controls (raw elements, no container)
-  // Note: onClick handlers will be wired by createMetricCarousel
-  const leftArrow = createButton({
-    label: '←',
-    variant: 'secondary',
-    size: 'small',
-  });
-
-  const rightArrow = createButton({
-    label: '→',
-    variant: 'secondary',
-    size: 'small',
-  });
-
-  // Create header - MetricClusterHeader owns all layout
-  const header = createMetricClusterHeader({
-    title: 'Foundation Health',
-    filters: filterPills,
-    actions: askLensButton,
-    controls: [leftArrow, rightArrow],
-  });
-
   // Foundation Health Metric Cards (9 required cards)
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.gap = 'var(--spacing-16)';
-  container.appendChild(header);
   const cards = [];
 
   // 1. Governance Framework
@@ -291,16 +252,16 @@ function createFoundationHealthSection(): HTMLElement {
     onClick: () => console.log('View Project Health Status details'),
   }));
 
-  // Create fully assembled carousel with cards and navigation
-  const carousel = createMetricCarousel({
-    cards,
-    leftArrow,
-    rightArrow,
+  // Create fully assembled metric cluster section
+  return createMetricClusterSection({
+    title: 'Foundation Health',
+    metrics: cards,
+    filters: filterPills,
+    askLensContext: 'Foundation Health',
+    onAskLensClick: () => {
+      console.log('Open Ask LFX Lens for Foundation Health');
+    },
   });
-
-  container.appendChild(carousel);
-
-  return container;
 }
 
 // =============================================================================
@@ -325,42 +286,6 @@ function createMyOrganizationSection(): HTMLElement {
     });
     return pill;
   });
-
-  // Build Ask LFX Lens button
-  const askLensButton = createAskLfxLensTrigger({
-    context: 'My Organization',
-    onClick: () => {
-      console.log('Open Ask LFX Lens for My Organization');
-    },
-  });
-
-  // Build arrow controls (raw elements, no container)
-  // Note: onClick handlers will be wired by createMetricCarousel
-  const leftArrow = createButton({
-    label: '←',
-    variant: 'secondary',
-    size: 'small',
-  });
-
-  const rightArrow = createButton({
-    label: '→',
-    variant: 'secondary',
-    size: 'small',
-  });
-
-  // Create header - MetricClusterHeader owns all layout
-  const header = createMetricClusterHeader({
-    title: 'My Organization',
-    filters: filterPills,
-    actions: askLensButton,
-    controls: [leftArrow, rightArrow],
-  });
-
-  const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.gap = 'var(--spacing-16)';
-  container.appendChild(header);
 
   // My Organization Metric Cards (7 required cards)
   const orgCards = [];
@@ -473,16 +398,16 @@ function createMyOrganizationSection(): HTMLElement {
     onClick: () => console.log('View Certified Employees details'),
   }));
 
-  // Create fully assembled carousel with cards and navigation
-  const carousel = createMetricCarousel({
-    cards: orgCards,
-    leftArrow,
-    rightArrow,
+  // Create fully assembled metric cluster section
+  return createMetricClusterSection({
+    title: 'My Organization',
+    metrics: orgCards,
+    filters: filterPills,
+    askLensContext: 'My Organization',
+    onAskLensClick: () => {
+      console.log('Open Ask LFX Lens for My Organization');
+    },
   });
-
-  container.appendChild(carousel);
-
-  return container;
 }
 
 // =============================================================================

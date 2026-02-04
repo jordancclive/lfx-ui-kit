@@ -58,3 +58,4 @@ export { createChartCard, type ChartCardProps } from './components/chart-card/ch
 export { createMetricsRow, type MetricsRowProps } from './components/metrics-row/metrics-row';
 export { createMetricClusterHeader, type MetricClusterHeaderProps } from './components/metric-cluster-header/metric-cluster-header';
 export { createMetricCarousel, applyMetricCarouselStyle, applyMetricCardSizing, getCarouselScrollDistance } from './components/metric-cluster-header/metric-cluster-header';
+export { createMetricClusterSection, type MetricClusterSectionProps } from './components/dashboard-sections/metric-cluster-section';
