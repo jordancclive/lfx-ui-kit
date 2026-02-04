@@ -231,10 +231,25 @@ function createGovernanceHealthSection(): HTMLElement {
     },
   });
 
-  // ✅ WORKS WELL: MetricsRow handles multiple ChartCards cleanly
-  return createMetricsRow({
+  // Enforce fixed card dimensions for carousel behavior
+  [contributorDependencyCard, activityTrendCard].forEach(card => {
+    card.style.minWidth = '280px';
+    card.style.maxWidth = '280px';
+    card.style.flex = '0 0 auto';
+  });
+
+  const metricsRow = createMetricsRow({
     children: [contributorDependencyCard, activityTrendCard],
   });
+
+  metricsRow.style.display = 'flex';
+  metricsRow.style.flexWrap = 'nowrap';
+  metricsRow.style.gap = 'var(--spacing-16)';
+  metricsRow.style.overflowX = 'auto';
+  metricsRow.style.overflowY = 'hidden';
+  metricsRow.style.scrollbarWidth = 'thin';
+
+  return metricsRow;
 }
 
 // =============================================================================
@@ -279,7 +294,7 @@ function createPendingActionsSection(): HTMLElement {
     meta.appendChild(priorityTag);
 
     // Create SummaryCard
-    return createSummaryCard({
+    const card = createSummaryCard({
       title: config.title,
       body,
       meta,
@@ -332,133 +347,131 @@ function createPendingActionsSection(): HTMLElement {
         document.body.appendChild(drawer);
       },
     });
+    
+    card.style.minHeight = '120px';
+    return card;
   }
 
-  const actionsCard = createCard({
-    children: [
-      // Section header
-      (() => {
-        const header = document.createElement('div');
-        header.style.display = 'flex';
-        header.style.justifyContent = 'space-between';
-        header.style.alignItems = 'center';
-        header.style.marginBottom = 'var(--spacing-12)';
-        header.style.padding = 'var(--spacing-12) var(--spacing-12) 0';
+  const container = document.createElement('div');
 
-        const title = document.createElement('h3');
-        title.textContent = 'Pending Actions';
-        title.style.fontSize = 'var(--ui-text-section-title-font-size)';
-        title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
-        title.style.color = 'var(--text-primary)';
-        title.style.margin = '0';
+  // Section header
+  const header = document.createElement('div');
+  header.style.display = 'flex';
+  header.style.justifyContent = 'space-between';
+  header.style.alignItems = 'center';
+  header.style.marginBottom = 'var(--spacing-12)';
 
-        const viewAllBtn = createButton({
-          label: 'View All',
-          variant: 'secondary',
-          size: 'small',
-          onClick: () => {
-            // ✅ WORKS WELL: Real drawer integration is clean and straightforward
-            
-            // Drawer body: List of all pending actions
-            const drawerBody = document.createElement('div');
-            
-            // Introduction text
-            const intro = document.createElement('p');
-            intro.textContent = 'All pending actions requiring your attention:';
-            intro.style.marginBottom = 'var(--spacing-16)';
-            intro.style.color = 'var(--text-secondary)';
-            
-            drawerBody.appendChild(intro);
-            
-            // Action list (reusing SummaryCard for consistency)
-            const allActions = [
-              { title: 'Review Q1 Budget Proposal', description: 'Finance committee needs board approval', dueDate: 'Feb 15, 2026', priority: 'high' as const },
-              { title: 'Approve Technical Charter Update', description: 'TSC submitted governance changes', dueDate: 'Feb 20, 2026', priority: 'medium' as const },
-              { title: 'Sign Contributor Agreement', description: 'New platinum member onboarding', dueDate: 'Feb 28, 2026', priority: 'medium' as const },
-              { title: 'Review Security Audit Report', description: 'Annual security assessment complete', dueDate: 'Mar 5, 2026', priority: 'high' as const },
-              { title: 'Approve 2026 Roadmap', description: 'Strategic planning deliverable', dueDate: 'Mar 10, 2026', priority: 'medium' as const },
-            ];
-            
-            allActions.forEach((action, index) => {
-              const actionCard = document.createElement('div');
-              actionCard.style.padding = 'var(--spacing-12)';
-              actionCard.style.marginBottom = index < allActions.length - 1 ? 'var(--spacing-12)' : '0';
-              actionCard.style.border = '1px solid var(--ui-surface-divider)';
-              actionCard.style.borderRadius = 'var(--rounded-md)';
-              actionCard.style.cursor = 'pointer';
-              actionCard.style.transition = 'background-color var(--ui-transition-duration-default) ease';
-              
-              actionCard.innerHTML = `
-                <div style="font-weight: var(--font-semibold); margin-bottom: var(--spacing-4);">
-                  ${action.title}
-                </div>
-                <div style="font-size: var(--ui-text-label-font-size); color: var(--text-secondary); margin-bottom: var(--spacing-8);">
-                  ${action.description}
-                </div>
-                <div style="font-size: var(--ui-text-label-font-size); color: var(--text-muted);">
-                  Due: ${action.dueDate} • Priority: ${action.priority.toUpperCase()}
-                </div>
-              `;
-              
-              actionCard.addEventListener('mouseenter', () => {
-                actionCard.style.backgroundColor = 'var(--ui-surface-hover)';
-              });
-              actionCard.addEventListener('mouseleave', () => {
-                actionCard.style.backgroundColor = 'transparent';
-              });
-              actionCard.addEventListener('click', () => {
-                console.log(`Navigate to action: ${action.title}`);
-              });
-              
-              drawerBody.appendChild(actionCard);
-            });
-            
-            // Drawer footer: Go to Actions page
-            const footer = createButton({
-              label: 'Go to Actions page →',
-              variant: 'primary',
-              onClick: () => console.log('Navigate to Actions page'),
-            });
-            
-            // Create and mount drawer
-            const drawer = createDrawer({
-              title: 'My Actions',
-              body: drawerBody,
-              footer,
-            });
-            
-            document.body.appendChild(drawer);
-          },
+  const title = document.createElement('h3');
+  title.textContent = 'Pending Actions';
+  title.style.fontSize = 'var(--ui-text-section-title-font-size)';
+  title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
+  title.style.color = 'var(--text-primary)';
+  title.style.margin = '0';
+
+  const viewAllBtn = createButton({
+    label: 'View All',
+    variant: 'secondary',
+    size: 'small',
+    onClick: () => {
+      // ✅ WORKS WELL: Real drawer integration is clean and straightforward
+      
+      // Drawer body: List of all pending actions
+      const drawerBody = document.createElement('div');
+      
+      // Introduction text
+      const intro = document.createElement('p');
+      intro.textContent = 'All pending actions requiring your attention:';
+      intro.style.marginBottom = 'var(--spacing-16)';
+      intro.style.color = 'var(--text-secondary)';
+      
+      drawerBody.appendChild(intro);
+      
+      // Action list (reusing SummaryCard for consistency)
+      const allActions = [
+        { title: 'Review Q1 Budget Proposal', description: 'Finance committee needs board approval', dueDate: 'Feb 15, 2026', priority: 'high' as const },
+        { title: 'Approve Technical Charter Update', description: 'TSC submitted governance changes', dueDate: 'Feb 20, 2026', priority: 'medium' as const },
+        { title: 'Sign Contributor Agreement', description: 'New platinum member onboarding', dueDate: 'Feb 28, 2026', priority: 'medium' as const },
+        { title: 'Review Security Audit Report', description: 'Annual security assessment complete', dueDate: 'Mar 5, 2026', priority: 'high' as const },
+        { title: 'Approve 2026 Roadmap', description: 'Strategic planning deliverable', dueDate: 'Mar 10, 2026', priority: 'medium' as const },
+      ];
+      
+      allActions.forEach((action, index) => {
+        const actionCard = document.createElement('div');
+        actionCard.style.padding = 'var(--spacing-12)';
+        actionCard.style.marginBottom = index < allActions.length - 1 ? 'var(--spacing-12)' : '0';
+        actionCard.style.border = '1px solid var(--ui-surface-divider)';
+        actionCard.style.borderRadius = 'var(--rounded-md)';
+        actionCard.style.cursor = 'pointer';
+        actionCard.style.transition = 'background-color var(--ui-transition-duration-default) ease';
+        
+        actionCard.innerHTML = `
+          <div style="font-weight: var(--font-semibold); margin-bottom: var(--spacing-4);">
+            ${action.title}
+          </div>
+          <div style="font-size: var(--ui-text-label-font-size); color: var(--text-secondary); margin-bottom: var(--spacing-8);">
+            ${action.description}
+          </div>
+          <div style="font-size: var(--ui-text-label-font-size); color: var(--text-muted);">
+            Due: ${action.dueDate} • Priority: ${action.priority.toUpperCase()}
+          </div>
+        `;
+        
+        actionCard.addEventListener('mouseenter', () => {
+          actionCard.style.backgroundColor = 'var(--ui-surface-hover)';
         });
-
-        header.appendChild(title);
-        header.appendChild(viewAllBtn);
-        return header;
-      })(),
-
-      // Action items
-      createActionCard({
-        title: 'Review Q1 Budget Proposal',
-        description: 'Finance committee needs board approval',
-        dueDate: 'Feb 15, 2026',
-        priority: 'high',
-      }),
-      createActionCard({
-        title: 'Approve Technical Charter Update',
-        description: 'TSC submitted governance changes',
-        dueDate: 'Feb 20, 2026',
-        priority: 'medium',
-      }),
-      createActionCard({
-        title: 'Sign Contributor Agreement',
-        description: 'New platinum member onboarding',
-        dueDate: 'Feb 28, 2026',
-        priority: 'medium',
-      }),
-    ],
+        actionCard.addEventListener('mouseleave', () => {
+          actionCard.style.backgroundColor = 'transparent';
+        });
+        actionCard.addEventListener('click', () => {
+          console.log(`Navigate to action: ${action.title}`);
+        });
+        
+        drawerBody.appendChild(actionCard);
+      });
+      
+      // Drawer footer: Go to Actions page
+      const footer = createButton({
+        label: 'Go to Actions page →',
+        variant: 'primary',
+        onClick: () => console.log('Navigate to Actions page'),
+      });
+      
+      // Create and mount drawer
+      const drawer = createDrawer({
+        title: 'My Actions',
+        body: drawerBody,
+        footer,
+      });
+      
+      document.body.appendChild(drawer);
+    },
   });
 
-  return actionsCard;
+  header.appendChild(title);
+  header.appendChild(viewAllBtn);
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.style.display = 'flex';
+  cardsContainer.style.flexDirection = 'column';
+  cardsContainer.style.gap = 'var(--spacing-12)';
+
+  cardsContainer.appendChild(createActionCard({
+    title: 'Review Q1 Budget Proposal',
+    description: 'Finance committee needs board approval',
+    dueDate: 'Feb 15, 2026',
+    priority: 'high',
+  }));
+  cardsContainer.appendChild(createActionCard({
+    title: 'Approve Technical Charter Update',
+    description: 'TSC submitted governance changes',
+    dueDate: 'Feb 20, 2026',
+    priority: 'medium',
+  }));
+
+  container.appendChild(header);
+  container.appendChild(cardsContainer);
+
+  return container;
 }
 
 // =============================================================================
@@ -494,7 +507,7 @@ function createMeetingSummarySection(): HTMLElement {
     meta.appendChild(attendeeCount);
 
     // Create SummaryCard
-    return createSummaryCard({
+    const card = createSummaryCard({
       title: config.title,
       meta,
       onClick: () => {
@@ -546,63 +559,61 @@ function createMeetingSummarySection(): HTMLElement {
         document.body.appendChild(drawer);
       },
     });
+    
+    card.style.minHeight = '120px';
+    return card;
   }
 
-  const meetingsCard = createCard({
-    children: [
-      // Section header
-      (() => {
-        const header = document.createElement('div');
-        header.style.display = 'flex';
-        header.style.justifyContent = 'space-between';
-        header.style.alignItems = 'center';
-        header.style.marginBottom = 'var(--spacing-12)';
-        header.style.padding = 'var(--spacing-12) var(--spacing-12) 0';
+  const container = document.createElement('div');
 
-        const title = document.createElement('h3');
-        title.textContent = 'Upcoming Meetings';
-        title.style.fontSize = 'var(--ui-text-section-title-font-size)';
-        title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
-        title.style.color = 'var(--text-primary)';
-        title.style.margin = '0';
+  // Section header
+  const header = document.createElement('div');
+  header.style.display = 'flex';
+  header.style.justifyContent = 'space-between';
+  header.style.alignItems = 'center';
+  header.style.marginBottom = 'var(--spacing-12)';
 
-        const viewAllBtn = createButton({
-          label: 'View All',
-          variant: 'secondary',
-          size: 'small',
-          onClick: () => {
-            console.log('[ROUTE] Navigate to Meetings page: /meetings');
-          },
-        });
+  const title = document.createElement('h3');
+  title.textContent = 'Upcoming Meetings';
+  title.style.fontSize = 'var(--ui-text-section-title-font-size)';
+  title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
+  title.style.color = 'var(--text-primary)';
+  title.style.margin = '0';
 
-        header.appendChild(title);
-        header.appendChild(viewAllBtn);
-        return header;
-      })(),
-
-      // Meeting items
-      createMeetingCard({
-        title: 'Board of Directors Meeting',
-        date: 'Feb 10, 2026',
-        time: '2:00 PM PST',
-        attendees: 8,
-      }),
-      createMeetingCard({
-        title: 'Quarterly Budget Review',
-        date: 'Feb 15, 2026',
-        time: '10:00 AM PST',
-        attendees: 12,
-      }),
-      createMeetingCard({
-        title: 'Strategic Planning Session',
-        date: 'Feb 22, 2026',
-        time: '1:00 PM PST',
-        attendees: 15,
-      }),
-    ],
+  const viewAllBtn = createButton({
+    label: 'View All',
+    variant: 'secondary',
+    size: 'small',
+    onClick: () => {
+      console.log('[ROUTE] Navigate to Meetings page: /meetings');
+    },
   });
 
-  return meetingsCard;
+  header.appendChild(title);
+  header.appendChild(viewAllBtn);
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.style.display = 'flex';
+  cardsContainer.style.flexDirection = 'column';
+  cardsContainer.style.gap = 'var(--spacing-12)';
+
+  cardsContainer.appendChild(createMeetingCard({
+    title: 'Board of Directors Meeting',
+    date: 'Feb 10, 2026',
+    time: '2:00 PM PST',
+    attendees: 8,
+  }));
+  cardsContainer.appendChild(createMeetingCard({
+    title: 'Quarterly Budget Review',
+    date: 'Feb 15, 2026',
+    time: '10:00 AM PST',
+    attendees: 12,
+  }));
+
+  container.appendChild(header);
+  container.appendChild(cardsContainer);
+
+  return container;
 }
 
 // =============================================================================
@@ -761,6 +772,22 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
  * Pattern is ready for broader use without modification.
  */
 function createBoardMemberDashboard(): HTMLElement {
+  // Create paired Actions + Meetings row
+  const pairedSection = document.createElement('div');
+  pairedSection.style.display = 'grid';
+  pairedSection.style.gridTemplateColumns = '1fr 1fr';
+  pairedSection.style.gap = 'var(--spacing-16)';
+  pairedSection.style.width = '100%';
+
+  const actionsWrapper = document.createElement('div');
+  actionsWrapper.appendChild(createPendingActionsSection());
+
+  const meetingsWrapper = document.createElement('div');
+  meetingsWrapper.appendChild(createMeetingSummarySection());
+
+  pairedSection.appendChild(actionsWrapper);
+  pairedSection.appendChild(meetingsWrapper);
+
   // ✅ WORKS WELL: Standard Dashboard pattern structure
   const pageContent = createPageLayout({
     dense: true,
@@ -778,16 +805,10 @@ function createBoardMemberDashboard(): HTMLElement {
         children: createGovernanceHealthSection(),
       }),
 
-      // Section 2: Pending Actions
+      // Section 2 + 3: Pending Actions + Meetings (Paired)
       createPageSection({
         dense: true,
-        children: createPendingActionsSection(),
-      }),
-
-      // Section 3: Meeting Summary
-      createPageSection({
-        dense: true,
-        children: createMeetingSummarySection(),
+        children: pairedSection,
       }),
 
       // Section 4: Recent Activity (Table Preview)
