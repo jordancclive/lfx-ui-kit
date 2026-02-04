@@ -57,6 +57,7 @@ import { createSummaryCard } from '../../../../components/summary-card/summary-c
 import { createDrawer } from '../../../../components/drawer/drawer';
 import { createMetricClusterSection } from '../../../../components/dashboard-sections/metric-cluster-section';
 import { createPendingActionsSection } from '../../../../components/dashboard-sections/pending-actions-section';
+import { createUpcomingMeetingsSection } from '../../../../components/dashboard-sections/upcoming-meetings-section';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -692,68 +693,34 @@ function createMeetingSummarySection(): HTMLElement {
       },
     });
     
-    card.style.minHeight = '120px';
     return card;
   }
 
-  const container = document.createElement('div');
+  // Create meeting cards
+  const meetingCards = [
+    createMeetingCard({
+      title: 'Board of Directors Meeting',
+      date: 'Feb 10, 2026',
+      time: '2:00 PM PST',
+      attendees: 8,
+    }),
+    createMeetingCard({
+      title: 'Quarterly Budget Review',
+      date: 'Feb 15, 2026',
+      time: '10:00 AM PST',
+      attendees: 12,
+    }),
+  ];
 
-  // Section header
-  const header = document.createElement('div');
-  header.style.display = 'flex';
-  header.style.alignItems = 'center';
-  header.style.gap = 'var(--spacing-8)';
-  header.style.marginBottom = 'var(--spacing-12)';
-
-  // Title group - keeps title and action together
-  const titleGroup = document.createElement('div');
-  titleGroup.style.display = 'inline-flex';
-  titleGroup.style.alignItems = 'center';
-  titleGroup.style.gap = 'var(--spacing-8)';
-
-  const title = document.createElement('h3');
-  title.textContent = 'Upcoming Meetings';
-  title.style.fontSize = 'var(--ui-text-section-title-font-size)';
-  title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
-  title.style.color = 'var(--text-primary)';
-  title.style.margin = '0';
-  title.style.flex = '0 0 auto';
-
-  const viewAllBtn = createButton({
-    label: 'View All',
-    variant: 'secondary',
-    size: 'small',
-    onClick: () => {
+  // Create fully assembled section with View All navigation
+  return createUpcomingMeetingsSection({
+    title: 'Upcoming Meetings',
+    meetings: meetingCards,
+    maxVisible: 2,
+    onViewAll: () => {
       console.log('[ROUTE] Navigate to Meetings page: /meetings');
     },
   });
-
-  titleGroup.appendChild(title);
-  titleGroup.appendChild(viewAllBtn);
-  header.appendChild(titleGroup);
-
-  const cardsContainer = document.createElement('div');
-  cardsContainer.style.display = 'flex';
-  cardsContainer.style.flexDirection = 'column';
-  cardsContainer.style.gap = 'var(--spacing-12)';
-
-  cardsContainer.appendChild(createMeetingCard({
-    title: 'Board of Directors Meeting',
-    date: 'Feb 10, 2026',
-    time: '2:00 PM PST',
-    attendees: 8,
-  }));
-  cardsContainer.appendChild(createMeetingCard({
-    title: 'Quarterly Budget Review',
-    date: 'Feb 15, 2026',
-    time: '10:00 AM PST',
-    attendees: 12,
-  }));
-
-  container.appendChild(header);
-  container.appendChild(cardsContainer);
-
-  return container;
 }
 
 // =============================================================================

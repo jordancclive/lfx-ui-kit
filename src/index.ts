@@ -60,3 +60,4 @@ export { createMetricClusterHeader, type MetricClusterHeaderProps } from './comp
 export { createMetricCarousel, applyMetricCarouselStyle, applyMetricCardSizing, getCarouselScrollDistance } from './components/metric-cluster-header/metric-cluster-header';
 export { createMetricClusterSection, type MetricClusterSectionProps } from './components/dashboard-sections/metric-cluster-section';
 export { createPendingActionsSection, type PendingActionsSectionProps } from './components/dashboard-sections/pending-actions-section';
+export { createUpcomingMeetingsSection, type UpcomingMeetingsSectionProps } from './components/dashboard-sections/upcoming-meetings-section';
