@@ -714,6 +714,11 @@ function createMyProjectsSection(): HTMLElement {
 
   const rows = projectData.map((project) => {
     // Create code activities cell with sparkline only (signal-only)
+    const codeSparklineWrapper = document.createElement('div');
+    codeSparklineWrapper.style.display = 'flex';
+    codeSparklineWrapper.style.alignItems = 'center';
+    codeSparklineWrapper.style.justifyContent = 'center';
+    
     const codeSparkline = createChart({
       option: createSparklineOption({
         values: project.codeValues,
@@ -723,8 +728,14 @@ function createMyProjectsSection(): HTMLElement {
     });
     codeSparkline.style.width = '80px';
     codeSparkline.style.minWidth = '80px';
+    codeSparklineWrapper.appendChild(codeSparkline);
 
     // Create non-code activities cell with sparkline only (signal-only)
+    const nonCodeSparklineWrapper = document.createElement('div');
+    nonCodeSparklineWrapper.style.display = 'flex';
+    nonCodeSparklineWrapper.style.alignItems = 'center';
+    nonCodeSparklineWrapper.style.justifyContent = 'center';
+    
     const nonCodeSparkline = createChart({
       option: createSparklineOption({
         values: project.nonCodeValues,
@@ -734,6 +745,7 @@ function createMyProjectsSection(): HTMLElement {
     });
     nonCodeSparkline.style.width = '80px';
     nonCodeSparkline.style.minWidth = '80px';
+    nonCodeSparklineWrapper.appendChild(nonCodeSparkline);
 
     // Create table cell for project name with constrained width
     const projectCell = createTableCell({ children: project.name, contentType: 'primary' });
@@ -743,8 +755,8 @@ function createMyProjectsSection(): HTMLElement {
       children: [
         projectCell,
         createTableCell({ children: project.affiliations, contentType: 'secondary' }),
-        createTableCell({ children: codeSparkline, contentType: 'secondary' }),
-        createTableCell({ children: nonCodeSparkline, contentType: 'secondary' }),
+        createTableCell({ children: codeSparklineWrapper, contentType: 'secondary' }),
+        createTableCell({ children: nonCodeSparklineWrapper, contentType: 'secondary' }),
       ],
       clickable: true,
       onClick: () => {
