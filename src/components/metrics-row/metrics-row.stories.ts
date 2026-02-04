@@ -11,12 +11,12 @@ import { createAppHeader } from '../app-header/app-header';
  * as specializations of ChartCard once product usage exists.
  */
 function createPlaceholderChartCard(config: { label?: string; value: string; meta?: string; dense?: boolean }) {
-  const card = createCard({ dense: config.dense });
-  card.style.padding = config.dense ? 'var(--spacing-12)' : 'var(--spacing-16)';
-  card.style.minHeight = '120px';
-  card.style.display = 'flex';
-  card.style.flexDirection = 'column';
-  card.style.gap = 'var(--spacing-8)';
+  const contentContainer = document.createElement('div');
+  contentContainer.style.padding = config.dense ? 'var(--spacing-12)' : 'var(--spacing-16)';
+  contentContainer.style.minHeight = '120px';
+  contentContainer.style.display = 'flex';
+  contentContainer.style.flexDirection = 'column';
+  contentContainer.style.gap = 'var(--spacing-8)';
   
   if (config.label) {
     const label = document.createElement('div');
@@ -24,7 +24,7 @@ function createPlaceholderChartCard(config: { label?: string; value: string; met
     label.style.fontSize = 'var(--ui-text-label-font-size)';
     label.style.color = 'var(--text-secondary)';
     label.style.fontWeight = '600';
-    card.appendChild(label);
+    contentContainer.appendChild(label);
   }
   
   const value = document.createElement('div');
@@ -32,15 +32,20 @@ function createPlaceholderChartCard(config: { label?: string; value: string; met
   value.style.fontSize = 'var(--ui-text-page-title-font-size)';
   value.style.fontWeight = 'var(--ui-text-page-title-font-weight)';
   value.style.color = 'var(--text-primary)';
-  card.appendChild(value);
+  contentContainer.appendChild(value);
   
   if (config.meta) {
     const meta = document.createElement('div');
     meta.textContent = config.meta;
     meta.style.fontSize = 'var(--ui-text-body-secondary-font-size)';
     meta.style.color = 'var(--text-muted)';
-    card.appendChild(meta);
+    contentContainer.appendChild(meta);
   }
+  
+  const card = createCard({ 
+    children: contentContainer,
+    dense: config.dense 
+  });
   
   return card;
 }
