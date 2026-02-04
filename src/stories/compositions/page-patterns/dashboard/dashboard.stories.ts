@@ -272,12 +272,9 @@ function createDashboard(args: DashboardArgs = {}) {
 // =============================================================================
 
 const meta: Meta<DashboardArgs> = {
-  title: 'Dashboard',
+  title: 'Page Patterns / Dashboard',
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      disable: true,
-    },
   },
   argTypes: {
     dense: {

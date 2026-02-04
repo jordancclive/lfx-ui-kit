@@ -665,12 +665,9 @@ function createTablePage(args: TablePageArgs = {}): HTMLElement {
 // =============================================================================
 
 const meta: Meta<TablePageArgs> = {
-  title: 'Table Page',
+  title: 'Page Patterns / Table Page',
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      disable: true,
-    },
   },
   argTypes: {
     dense: {
