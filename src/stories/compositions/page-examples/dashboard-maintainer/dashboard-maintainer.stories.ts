@@ -50,6 +50,7 @@ import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 import { createDrawer } from '../../../../components/drawer/drawer';
 import { createMetricClusterSection } from '../../../../components/dashboard-sections/metric-cluster-section';
+import { createPendingActionsSection } from '../../../../components/dashboard-sections/pending-actions-section';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -430,34 +431,28 @@ function createPendingActionsSection(): HTMLElement {
     return card;
   }
 
-  const container = document.createElement('div');
+  // Create action cards
+  const actionCards = [
+    createActionCard({
+      title: 'Review security vulnerability fix',
+      description: 'Critical security patch needs review and approval',
+      context: 'api-gateway repo',
+      priority: 'high',
+    }),
+    createActionCard({
+      title: 'Triage 12 new issues',
+      description: 'Weekly triage backlog across project repositories',
+      context: 'multiple repos',
+      priority: 'medium',
+    }),
+  ];
 
-  // Section header
-  const header = document.createElement('div');
-  header.style.display = 'flex';
-  header.style.alignItems = 'center';
-  header.style.gap = 'var(--spacing-8)';
-  header.style.marginBottom = 'var(--spacing-12)';
-
-  // Title group - keeps title and action together
-  const titleGroup = document.createElement('div');
-  titleGroup.style.display = 'inline-flex';
-  titleGroup.style.alignItems = 'center';
-  titleGroup.style.gap = 'var(--spacing-8)';
-
-  const title = document.createElement('h3');
-  title.textContent = 'Pending Actions';
-  title.style.fontSize = 'var(--ui-text-section-title-font-size)';
-  title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
-  title.style.color = 'var(--text-primary)';
-  title.style.margin = '0';
-  title.style.flex = '0 0 auto';
-
-  const viewAllBtn = createButton({
-    label: 'View All',
-    variant: 'secondary',
-    size: 'small',
-    onClick: () => {
+  // Create fully assembled section with View All drawer
+  return createPendingActionsSection({
+    title: 'Pending Actions',
+    actions: actionCards,
+    maxVisible: 2,
+    onViewAll: () => {
       const drawerBody = document.createElement('div');
       const intro = document.createElement('p');
       intro.textContent = 'All pending actions requiring your attention:';
@@ -495,33 +490,6 @@ function createPendingActionsSection(): HTMLElement {
       document.body.appendChild(drawer);
     },
   });
-
-  titleGroup.appendChild(title);
-  titleGroup.appendChild(viewAllBtn);
-  header.appendChild(titleGroup);
-
-  const cardsContainer = document.createElement('div');
-  cardsContainer.style.display = 'flex';
-  cardsContainer.style.flexDirection = 'column';
-  cardsContainer.style.gap = 'var(--spacing-12)';
-
-  cardsContainer.appendChild(createActionCard({
-    title: 'Review security vulnerability fix',
-    description: 'Critical security patch needs review and approval',
-    context: 'api-gateway repo',
-    priority: 'high',
-  }));
-  cardsContainer.appendChild(createActionCard({
-    title: 'Triage 12 new issues',
-    description: 'Weekly triage backlog across project repositories',
-    context: 'multiple repos',
-    priority: 'medium',
-  }));
-
-  container.appendChild(header);
-  container.appendChild(cardsContainer);
-
-  return container;
 }
 
 // =============================================================================
