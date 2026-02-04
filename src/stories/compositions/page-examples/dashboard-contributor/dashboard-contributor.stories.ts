@@ -575,32 +575,24 @@ function createContributorUpcomingMeetings(): HTMLElement {
 // DEMO NAV
 // =============================================================================
 
-function createDemoNav(activeId: string): HTMLElement {
-  const dashboardSection = createNavSection({
-    title: 'Dashboard',
-    items: [
-      createNavItem({ id: 'dashboard', label: 'Overview', icon: '📊', active: activeId === 'dashboard' }),
-    ],
-  });
+function createTextNode(text: string): HTMLElement {
+  const span = document.createElement('span');
+  span.textContent = text;
+  return span;
+}
 
-  const projectsSection = createNavSection({
-    title: 'Projects',
-    items: [
-      createNavItem({ id: 'projects', label: 'My Projects', icon: '📁', active: activeId === 'projects' }),
-      createNavItem({ id: 'discover', label: 'Discover', icon: '🔍', active: activeId === 'discover' }),
-    ],
-  });
-
-  const communitySection = createNavSection({
-    title: 'Community',
-    items: [
-      createNavItem({ id: 'meetings', label: 'Meetings', icon: '📅', active: activeId === 'meetings' }),
-      createNavItem({ id: 'discussions', label: 'Discussions', icon: '💬', active: activeId === 'discussions' }),
-    ],
-  });
-
+function createDemoNav(activeId = 'dashboard'): HTMLElement {
   return createGlobalNav({
-    sections: [dashboardSection, projectsSection, communitySection],
+    activeItemId: activeId,
+    children: [
+      createNavSection([
+        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
+        createNavItem({ id: 'projects', children: createTextNode('My Projects') }),
+        createNavItem({ id: 'discover', children: createTextNode('Discover Projects') }),
+        createNavItem({ id: 'meetings', children: createTextNode('Meetings') }),
+        createNavItem({ id: 'learning', children: createTextNode('Learning') }),
+      ]),
+    ],
   });
 }
 
@@ -665,7 +657,7 @@ function createContributorDashboard(): HTMLElement {
     ],
   });
 
-  const nav = createDemoNav('dashboard');
+  const nav = createDemoNav();
 
   const appShell = createAppShell({
     nav,
