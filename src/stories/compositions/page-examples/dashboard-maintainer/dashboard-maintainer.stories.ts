@@ -300,12 +300,22 @@ function createRecentProgressSection(): HTMLElement {
     },
   });
 
+  // Enforce fixed card dimensions
+  [securityCard, prVelocityCard, issuesTrendCard, mentoredCard, uniqueContributorsCard, healthScoreCard].forEach(card => {
+    card.style.minWidth = '280px';
+    card.style.maxWidth = '280px';
+    card.style.flex = '0 0 auto';
+  });
+
   const metricsRow = createMetricsRow({
     children: [securityCard, prVelocityCard, issuesTrendCard, mentoredCard, uniqueContributorsCard, healthScoreCard],
   });
 
+  metricsRow.style.display = 'flex';
+  metricsRow.style.gap = 'var(--spacing-16)';
   metricsRow.style.overflowX = 'auto';
   metricsRow.style.overflowY = 'hidden';
+  metricsRow.style.scrollbarWidth = 'thin';
 
   // Create container with header controls
   const container = document.createElement('div');
@@ -338,7 +348,7 @@ function createRecentProgressSection(): HTMLElement {
   const leftArrow = createButton({ label: '←', variant: 'secondary', size: 'small', onClick: () => { metricsRow.scrollBy({ left: -300, behavior: 'smooth' }); } });
   const rightArrow = createButton({ label: '→', variant: 'secondary', size: 'small', onClick: () => { metricsRow.scrollBy({ left: 300, behavior: 'smooth' }); } });
   const askLensButton = createButton({ 
-    label: 'Ask LFX Lens', 
+    label: '💬 Ask LFX Lens', 
     variant: 'secondary', 
     size: 'small', 
     onClick: () => {
@@ -681,11 +691,11 @@ function createMeetingSummarySection(): HTMLElement {
  */
 function createMyProjectsSection(): HTMLElement {
   const projectData = [
-    { name: 'api-gateway', affiliations: 'Maintainer, Reviewer', codeActivities: '42 PRs, 18 commits', nonCodeActivities: '8 issues triaged, 3 docs updated' },
-    { name: 'core', affiliations: 'Co-Maintainer', codeActivities: '28 PRs, 65 commits', nonCodeActivities: '12 issues triaged, 5 meetings' },
-    { name: 'docs', affiliations: 'Lead Maintainer', codeActivities: '15 PRs, 32 commits', nonCodeActivities: '20 docs updated, 4 meetings' },
-    { name: 'cli-tools', affiliations: 'Reviewer', codeActivities: '9 PRs reviewed', nonCodeActivities: '3 issues triaged' },
-    { name: 'web-ui', affiliations: 'Contributor', codeActivities: '6 PRs, 14 commits', nonCodeActivities: '2 bug reports' },
+    { name: 'api-gateway', affiliations: 'Maintainer, Reviewer', codeActivities: '42 PRs, 18 commits', codeValues: [5, 8, 12, 9, 8], nonCodeActivities: '8 issues triaged, 3 docs updated', nonCodeValues: [2, 3, 1, 1, 1] },
+    { name: 'core', affiliations: 'Co-Maintainer', codeActivities: '28 PRs, 65 commits', codeValues: [10, 15, 12, 18, 10], nonCodeActivities: '12 issues triaged, 5 meetings', nonCodeValues: [3, 4, 2, 5, 3] },
+    { name: 'docs', affiliations: 'Lead Maintainer', codeActivities: '15 PRs, 32 commits', codeValues: [4, 6, 8, 10, 4], nonCodeActivities: '20 docs updated, 4 meetings', nonCodeValues: [5, 6, 4, 3, 2] },
+    { name: 'cli-tools', affiliations: 'Reviewer', codeActivities: '9 PRs reviewed', codeValues: [2, 3, 1, 2, 1], nonCodeActivities: '3 issues triaged', nonCodeValues: [1, 0, 1, 1, 0] },
+    { name: 'web-ui', affiliations: 'Contributor', codeActivities: '6 PRs, 14 commits', codeValues: [2, 4, 3, 5, 0], nonCodeActivities: '2 bug reports', nonCodeValues: [1, 0, 0, 1, 0] },
   ];
 
   const headerCells = [
@@ -696,12 +706,62 @@ function createMyProjectsSection(): HTMLElement {
   ];
 
   const rows = projectData.map((project) => {
+    // Create code activities cell with sparkline
+    const codeActivitiesContainer = document.createElement('div');
+    codeActivitiesContainer.style.display = 'flex';
+    codeActivitiesContainer.style.alignItems = 'center';
+    codeActivitiesContainer.style.gap = 'var(--spacing-8)';
+
+    const codeText = document.createElement('span');
+    codeText.textContent = project.codeActivities;
+    codeText.style.fontSize = 'var(--ui-text-label-font-size)';
+
+    const codeSparkline = createChart({
+      option: createSparklineOption({
+        values: project.codeValues,
+        labels: ['W1', 'W2', 'W3', 'W4', 'W5'],
+      }),
+      height: 24,
+    });
+    codeSparkline.style.width = '60px';
+    codeSparkline.style.minWidth = '60px';
+
+    codeActivitiesContainer.appendChild(codeText);
+    codeActivitiesContainer.appendChild(codeSparkline);
+
+    // Create non-code activities cell with sparkline
+    const nonCodeActivitiesContainer = document.createElement('div');
+    nonCodeActivitiesContainer.style.display = 'flex';
+    nonCodeActivitiesContainer.style.alignItems = 'center';
+    nonCodeActivitiesContainer.style.gap = 'var(--spacing-8)';
+
+    const nonCodeText = document.createElement('span');
+    nonCodeText.textContent = project.nonCodeActivities;
+    nonCodeText.style.fontSize = 'var(--ui-text-label-font-size)';
+
+    const nonCodeSparkline = createChart({
+      option: createSparklineOption({
+        values: project.nonCodeValues,
+        labels: ['W1', 'W2', 'W3', 'W4', 'W5'],
+      }),
+      height: 24,
+    });
+    nonCodeSparkline.style.width = '60px';
+    nonCodeSparkline.style.minWidth = '60px';
+
+    nonCodeActivitiesContainer.appendChild(nonCodeText);
+    nonCodeActivitiesContainer.appendChild(nonCodeSparkline);
+
+    // Create table cell for project name with constrained width
+    const projectCell = createTableCell({ children: project.name, contentType: 'primary' });
+    projectCell.style.maxWidth = '150px';
+
     return createTableRow({
       children: [
-        createTableCell({ children: project.name, contentType: 'primary' }),
+        projectCell,
         createTableCell({ children: project.affiliations, contentType: 'secondary' }),
-        createTableCell({ children: project.codeActivities, contentType: 'secondary' }),
-        createTableCell({ children: project.nonCodeActivities, contentType: 'secondary' }),
+        createTableCell({ children: codeActivitiesContainer, contentType: 'secondary' }),
+        createTableCell({ children: nonCodeActivitiesContainer, contentType: 'secondary' }),
       ],
       clickable: true,
       onClick: () => {
