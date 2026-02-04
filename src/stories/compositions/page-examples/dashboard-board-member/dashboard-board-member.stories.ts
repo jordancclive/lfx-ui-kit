@@ -55,6 +55,11 @@ import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 import { createDrawer } from '../../../../components/drawer/drawer';
+import { 
+  createMetricClusterHeader,
+  createMetricCarousel
+} from '../../../../components/metric-cluster-header/metric-cluster-header';
+import { createAskLfxLensTrigger } from '../../../../components/ask-lfx-lens/ask-lfx-lens';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -71,189 +76,417 @@ function createTextNode(text: string): HTMLElement {
 }
 
 // =============================================================================
-// SECTION 1: Governance Health (MetricCluster with Charts)
+// SECTION 1: Foundation Health (MetricCluster with Charts)
 // =============================================================================
 
 /**
- * ✅ WORKS WELL: ChartCard + createChart integration is clean
- * ✅ WORKS WELL: Chart configs (stacked bar, sparkline) work as expected
- * ✅ WORKS WELL: Drawer component integrates seamlessly with ChartCard onClick
- * 💡 INSIGHTS ESCALATION: Drawers include clear CTAs to LFX Insights (contract compliant)
+ * Board Member-specific Foundation Health metric cluster with carousel controls
  */
-function createGovernanceHealthSection(): HTMLElement {
-  // Contributor Dependency Chart (Stacked Bar - Insights parity)
-  const contributorDependencyChart = createChart({
+function createFoundationHealthSection(): HTMLElement {
+  // Build filter pills (raw elements, no container)
+  const filterOptions = ['All', 'Contributors', 'Projects', 'Events'];
+  const filterPills = filterOptions.map((label, index) => {
+    const pill = createTag({
+      children: label,
+      variant: index === 0 ? 'primary' : 'default',
+    });
+    pill.style.cursor = 'pointer';
+    pill.style.padding = 'var(--spacing-6) var(--spacing-12)';
+    pill.addEventListener('click', () => {
+      console.log(`Filter: ${label}`);
+    });
+    return pill;
+  });
+
+  // Build Ask LFX Lens button
+  const askLensButton = createAskLfxLensTrigger({
+    context: 'Foundation Health',
+    onClick: () => {
+      console.log('Open Ask LFX Lens for Foundation Health');
+    },
+  });
+
+  // Build arrow controls (raw elements, no container)
+  // Note: onClick handlers will be wired by createMetricCarousel
+  const leftArrow = createButton({
+    label: '←',
+    variant: 'secondary',
+    size: 'small',
+  });
+
+  const rightArrow = createButton({
+    label: '→',
+    variant: 'secondary',
+    size: 'small',
+  });
+
+  // Create header - MetricClusterHeader owns all layout
+  const header = createMetricClusterHeader({
+    title: 'Foundation Health',
+    filters: filterPills,
+    actions: askLensButton,
+    controls: [leftArrow, rightArrow],
+  });
+
+  // Foundation Health Metric Cards (9 required cards)
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.gap = 'var(--spacing-16)';
+  container.appendChild(header);
+  const cards = [];
+
+  // 1. Governance Framework
+  const govValue = document.createElement('div');
+  govValue.textContent = 'Active';
+  govValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  govValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  govValue.style.color = 'var(--success-600)';
+  cards.push(createChartCard({
+    title: 'Governance Framework',
+    value: govValue,
+    onClick: () => console.log('View Governance Framework details'),
+  }));
+
+  // 2. Total Value of Projects
+  const valueChart = createChart({
+    option: createSparklineOption({
+      values: [2.1, 2.3, 2.5, 2.7, 2.9, 3.2, 3.4],
+      labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q1', 'Q2', 'Q3'],
+    }),
+    height: 80,
+  });
+  const totalValue = document.createElement('div');
+  totalValue.textContent = '$3.4B';
+  totalValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  totalValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  totalValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Total Value of Projects',
+    value: totalValue,
+    chart: valueChart,
+    onClick: () => console.log('View Total Value details'),
+  }));
+
+  // 3. Total Projects
+  const projectsValue = document.createElement('div');
+  projectsValue.textContent = '40';
+  projectsValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  projectsValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  projectsValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Total Projects',
+    value: projectsValue,
+    onClick: () => console.log('View Total Projects details'),
+  }));
+
+  // 4. Total Members
+  const membersChart = createChart({
+    option: createSparklineOption({
+      values: [842, 865, 891, 920, 948, 976, 1005],
+      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    }),
+    height: 80,
+  });
+  const membersValue = document.createElement('div');
+  membersValue.textContent = '1,005';
+  membersValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  membersValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  membersValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Total Members',
+    value: membersValue,
+    chart: membersChart,
+    onClick: () => console.log('View Total Members details'),
+  }));
+
+  // 5. Organization Dependency
+  const orgDepChart = createChart({
     option: createStackedBarOption({
       categories: [''],
       series: [
-        { name: 'Top 12 contributors', data: [53], color: '#0066CC' },
-        { name: 'Remaining contributors', data: [47], color: '#E6F0FF' },
+        { name: 'Top 5 orgs', data: [62], color: '#0066CC' },
+        { name: 'Others', data: [38], color: '#E6F0FF' },
       ],
       orientation: 'horizontal',
       showLegend: true,
     }),
     height: 80,
   });
+  cards.push(createChartCard({
+    title: 'Organization Dependency',
+    chart: orgDepChart,
+    onClick: () => console.log('View Organization Dependency details'),
+  }));
 
-  const contributorDependencyCard = createChartCard({
-    title: 'Contributor Dependency',
-    chart: contributorDependencyChart,
-    onClick: () => {
-      // ✅ WORKS WELL: Real drawer integration is clean and straightforward
-      
-      // Drawer body: Larger chart + explanatory text
-      const drawerBody = document.createElement('div');
-      
-      // Explanatory text
-      const explanation = document.createElement('div');
-      explanation.style.marginBottom = 'var(--spacing-16)';
-      explanation.innerHTML = `
-        <p style="margin: 0 0 var(--spacing-12) 0;">
-          A small group of contributors accounts for the majority of project activity.
-          This concentration presents both opportunity and risk for project sustainability.
-        </p>
-        <p style="margin: 0; color: var(--text-secondary); font-size: var(--ui-text-label-font-size);">
-          <strong>Signal only:</strong> This chart provides a high-level view. For detailed contributor analysis,
-          filtering, and time-range comparisons, use LFX Insights.
-        </p>
-      `;
-      
-      // Larger version of the chart
-      const detailChart = createChart({
-        option: createStackedBarOption({
-          categories: [''],
-          series: [
-            { name: 'Top 12 contributors', data: [53], color: '#0066CC' },
-            { name: 'Remaining contributors', data: [47], color: '#E6F0FF' },
-          ],
-          orientation: 'horizontal',
-          showLegend: true,
-        }),
-        height: 120,
-      });
-      
-      drawerBody.appendChild(explanation);
-      drawerBody.appendChild(detailChart);
-      
-      // Drawer footer: CTA to Insights
-      const footer = createButton({
-        label: 'View full analysis in LFX Insights →',
-        variant: 'primary',
-        onClick: () => console.log('Navigate to LFX Insights'),
-      });
-      
-      // Create and mount drawer
-      const drawer = createDrawer({
-        title: 'Contributor Dependency',
-        body: drawerBody,
-        footer,
-      });
-      
-      document.body.appendChild(drawer);
-    },
-  });
-
-  // Activity Trend Chart (Sparkline)
-  const activityTrendChart = createChart({
+  // 6. Active Contributors
+  const contribChart = createChart({
     option: createSparklineOption({
-      values: [45, 52, 48, 55, 58, 54, 60],
+      values: [324, 335, 342, 358, 371, 385, 398],
       labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
     }),
     height: 80,
   });
+  const contribValue = document.createElement('div');
+  contribValue.textContent = '398';
+  contribValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  contribValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  contribValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Active Contributors',
+    value: contribValue,
+    chart: contribChart,
+    onClick: () => console.log('View Active Contributors details'),
+  }));
 
-  // ⚠️ AWKWARD: Creating value element manually feels verbose
-  // ChartCard wants an HTMLElement for value, not a string
-  // This works but feels like it could be streamlined
-  const activityValueElement = document.createElement('div');
-  activityValueElement.textContent = '↑ 15%';
-  activityValueElement.style.fontSize = 'var(--ui-text-metric-value-font-size)';
-  activityValueElement.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
-  activityValueElement.style.color = 'var(--success-600)';
+  // 7. Maintainers
+  const maintainersValue = document.createElement('div');
+  maintainersValue.textContent = '87';
+  maintainersValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  maintainersValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  maintainersValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Maintainers',
+    value: maintainersValue,
+    onClick: () => console.log('View Maintainers details'),
+  }));
 
-  const activityMetaElement = document.createElement('div');
-  activityMetaElement.textContent = 'vs last month';
-  activityMetaElement.style.fontSize = 'var(--ui-text-label-font-size)';
-  activityMetaElement.style.color = 'var(--text-secondary)';
+  // 8. Events
+  const eventsChart = createChart({
+    option: createSparklineOption({
+      values: [12, 15, 14, 18, 16, 19, 21],
+      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    }),
+    height: 80,
+  });
+  const eventsValue = document.createElement('div');
+  eventsValue.textContent = '21';
+  eventsValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  eventsValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  eventsValue.style.color = 'var(--text-primary)';
+  cards.push(createChartCard({
+    title: 'Events',
+    value: eventsValue,
+    chart: eventsChart,
+    onClick: () => console.log('View Events details'),
+  }));
 
-  const activityTrendCard = createChartCard({
-    title: 'Governance Activity',
-    value: activityValueElement,
-    meta: activityMetaElement,
-    chart: activityTrendChart,
-    onClick: () => {
-      // ✅ WORKS WELL: Real drawer integration is clean and straightforward
-      
-      // Drawer body: Larger chart + explanatory text
-      const drawerBody = document.createElement('div');
-      
-      // Explanatory text
-      const explanation = document.createElement('div');
-      explanation.style.marginBottom = 'var(--spacing-16)';
-      explanation.innerHTML = `
-        <p style="margin: 0 0 var(--spacing-12) 0;">
-          Governance activity has increased <strong style="color: var(--success-600);">15%</strong> compared to last month,
-          indicating healthy engagement across votes, meetings, and decision-making processes.
-        </p>
-        <p style="margin: 0; color: var(--text-secondary); font-size: var(--ui-text-label-font-size);">
-          <strong>Signal only:</strong> This chart shows a 7-week trend. For detailed activity breakdowns,
-          per-committee analysis, and historical comparisons, use LFX Insights.
-        </p>
-      `;
-      
-      // Larger version of the chart
-      const detailChart = createChart({
-        option: createSparklineOption({
-          values: [45, 52, 48, 55, 58, 54, 60],
-          labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
-        }),
-        height: 150,
-      });
-      
-      drawerBody.appendChild(explanation);
-      drawerBody.appendChild(detailChart);
-      
-      // Drawer footer: CTA to Insights
-      const footer = createButton({
-        label: 'View full analysis in LFX Insights →',
-        variant: 'primary',
-        onClick: () => console.log('Navigate to LFX Insights'),
-      });
-      
-      // Create and mount drawer
-      const drawer = createDrawer({
-        title: 'Governance Activity Trend',
-        body: drawerBody,
-        footer,
-      });
-      
-      document.body.appendChild(drawer);
-    },
+  // 9. Project Health Status
+  const healthChart = createChart({
+    option: createStackedBarOption({
+      categories: [''],
+      series: [
+        { name: 'Healthy', data: [28], color: '#10B981' },
+        { name: 'At Risk', data: [8], color: '#F59E0B' },
+        { name: 'Critical', data: [4], color: '#EF4444' },
+      ],
+      orientation: 'horizontal',
+      showLegend: true,
+    }),
+    height: 80,
+  });
+  cards.push(createChartCard({
+    title: 'Project Health Status',
+    chart: healthChart,
+    onClick: () => console.log('View Project Health Status details'),
+  }));
+
+  // Create fully assembled carousel with cards and navigation
+  const carousel = createMetricCarousel({
+    cards,
+    leftArrow,
+    rightArrow,
   });
 
-  // Enforce fixed card dimensions for carousel behavior
-  [contributorDependencyCard, activityTrendCard].forEach(card => {
-    card.style.minWidth = '280px';
-    card.style.maxWidth = '280px';
-    card.style.flex = '0 0 auto';
-  });
+  container.appendChild(carousel);
 
-  const metricsRow = createMetricsRow({
-    children: [contributorDependencyCard, activityTrendCard],
-  });
-
-  metricsRow.style.display = 'flex';
-  metricsRow.style.flexWrap = 'nowrap';
-  metricsRow.style.gap = 'var(--spacing-16)';
-  metricsRow.style.overflowX = 'auto';
-  metricsRow.style.overflowY = 'hidden';
-  metricsRow.style.scrollbarWidth = 'thin';
-
-  return metricsRow;
+  return container;
 }
 
 // =============================================================================
-// SECTION 2: Pending Actions (ActionCard summary)
+// SECTION 2: My Organization (MetricCluster with Charts)
+// =============================================================================
+
+/**
+ * Board Member-specific My Organization metric cluster with carousel controls
+ */
+function createMyOrganizationSection(): HTMLElement {
+  // Build filter pills (raw elements, no container)
+  const filterOptions = ['All', 'Contributions', 'Events', 'Education'];
+  const filterPills = filterOptions.map((label, index) => {
+    const pill = createTag({
+      children: label,
+      variant: index === 0 ? 'primary' : 'default',
+    });
+    pill.style.cursor = 'pointer';
+    pill.style.padding = 'var(--spacing-6) var(--spacing-12)';
+    pill.addEventListener('click', () => {
+      console.log(`Filter: ${label}`);
+    });
+    return pill;
+  });
+
+  // Build Ask LFX Lens button
+  const askLensButton = createAskLfxLensTrigger({
+    context: 'My Organization',
+    onClick: () => {
+      console.log('Open Ask LFX Lens for My Organization');
+    },
+  });
+
+  // Build arrow controls (raw elements, no container)
+  // Note: onClick handlers will be wired by createMetricCarousel
+  const leftArrow = createButton({
+    label: '←',
+    variant: 'secondary',
+    size: 'small',
+  });
+
+  const rightArrow = createButton({
+    label: '→',
+    variant: 'secondary',
+    size: 'small',
+  });
+
+  // Create header - MetricClusterHeader owns all layout
+  const header = createMetricClusterHeader({
+    title: 'My Organization',
+    filters: filterPills,
+    actions: askLensButton,
+    controls: [leftArrow, rightArrow],
+  });
+
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.gap = 'var(--spacing-16)';
+  container.appendChild(header);
+
+  // My Organization Metric Cards (7 required cards)
+  const orgCards = [];
+
+  // 1. Membership Tier
+  const tierValue = document.createElement('div');
+  tierValue.textContent = 'Silver';
+  tierValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  tierValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  tierValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Membership Tier',
+    value: tierValue,
+    onClick: () => console.log('View Membership Tier details'),
+  }));
+
+  // 2. Active Contributors
+  const orgContribChart = createChart({
+    option: createSparklineOption({
+      values: [38, 39, 41, 40, 43, 41, 42],
+      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    }),
+    height: 80,
+  });
+  const orgContribValue = document.createElement('div');
+  orgContribValue.textContent = '42';
+  orgContribValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  orgContribValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  orgContribValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Active Contributors',
+    value: orgContribValue,
+    chart: orgContribChart,
+    onClick: () => console.log('View Active Contributors details'),
+  }));
+
+  // 3. Maintainers
+  const orgMaintainersValue = document.createElement('div');
+  orgMaintainersValue.textContent = '12';
+  orgMaintainersValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  orgMaintainersValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  orgMaintainersValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Maintainers',
+    value: orgMaintainersValue,
+    onClick: () => console.log('View Maintainers details'),
+  }));
+
+  // 4. Event Attendees
+  const orgAttendeesChart = createChart({
+    option: createSparklineOption({
+      values: [65, 72, 68, 78, 81, 85, 89],
+      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    }),
+    height: 80,
+  });
+  const orgAttendeesValue = document.createElement('div');
+  orgAttendeesValue.textContent = '89';
+  orgAttendeesValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  orgAttendeesValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  orgAttendeesValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Event Attendees',
+    value: orgAttendeesValue,
+    chart: orgAttendeesChart,
+    onClick: () => console.log('View Event Attendees details'),
+  }));
+
+  // 5. Event Speakers
+  const speakersValue = document.createElement('div');
+  speakersValue.textContent = '15';
+  speakersValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  speakersValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  speakersValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Event Speakers',
+    value: speakersValue,
+    onClick: () => console.log('View Event Speakers details'),
+  }));
+
+  // 6. Training Enrollments
+  const trainingChart = createChart({
+    option: createSparklineOption({
+      values: [23, 28, 31, 35, 38, 42, 47],
+      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    }),
+    height: 80,
+  });
+  const trainingValue = document.createElement('div');
+  trainingValue.textContent = '47';
+  trainingValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  trainingValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  trainingValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Training Enrollments',
+    value: trainingValue,
+    chart: trainingChart,
+    onClick: () => console.log('View Training Enrollments details'),
+  }));
+
+  // 7. Certified Employees
+  const certifiedValue = document.createElement('div');
+  certifiedValue.textContent = '28';
+  certifiedValue.style.fontSize = 'var(--ui-text-metric-value-font-size)';
+  certifiedValue.style.fontWeight = 'var(--ui-text-metric-value-font-weight)';
+  certifiedValue.style.color = 'var(--text-primary)';
+  orgCards.push(createChartCard({
+    title: 'Certified Employees',
+    value: certifiedValue,
+    onClick: () => console.log('View Certified Employees details'),
+  }));
+
+  // Create fully assembled carousel with cards and navigation
+  const carousel = createMetricCarousel({
+    cards: orgCards,
+    leftArrow,
+    rightArrow,
+  });
+
+  container.appendChild(carousel);
+
+  return container;
+}
+
+// =============================================================================
+// SECTION 3: Pending Actions (ActionCard summary)
 // =============================================================================
 
 /**
@@ -357,9 +590,15 @@ function createPendingActionsSection(): HTMLElement {
   // Section header
   const header = document.createElement('div');
   header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
   header.style.alignItems = 'center';
+  header.style.gap = 'var(--spacing-8)';
   header.style.marginBottom = 'var(--spacing-12)';
+
+  // Title group - keeps title and action together
+  const titleGroup = document.createElement('div');
+  titleGroup.style.display = 'inline-flex';
+  titleGroup.style.alignItems = 'center';
+  titleGroup.style.gap = 'var(--spacing-8)';
 
   const title = document.createElement('h3');
   title.textContent = 'Pending Actions';
@@ -367,6 +606,7 @@ function createPendingActionsSection(): HTMLElement {
   title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
   title.style.color = 'var(--text-primary)';
   title.style.margin = '0';
+  title.style.flex = '0 0 auto';
 
   const viewAllBtn = createButton({
     label: 'View All',
@@ -447,8 +687,9 @@ function createPendingActionsSection(): HTMLElement {
     },
   });
 
-  header.appendChild(title);
-  header.appendChild(viewAllBtn);
+  titleGroup.appendChild(title);
+  titleGroup.appendChild(viewAllBtn);
+  header.appendChild(titleGroup);
 
   const cardsContainer = document.createElement('div');
   cardsContainer.style.display = 'flex';
@@ -475,7 +716,7 @@ function createPendingActionsSection(): HTMLElement {
 }
 
 // =============================================================================
-// SECTION 3: Meeting Summary Cluster
+// SECTION 4: Meeting Summary Cluster
 // =============================================================================
 
 /**
@@ -569,9 +810,15 @@ function createMeetingSummarySection(): HTMLElement {
   // Section header
   const header = document.createElement('div');
   header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
   header.style.alignItems = 'center';
+  header.style.gap = 'var(--spacing-8)';
   header.style.marginBottom = 'var(--spacing-12)';
+
+  // Title group - keeps title and action together
+  const titleGroup = document.createElement('div');
+  titleGroup.style.display = 'inline-flex';
+  titleGroup.style.alignItems = 'center';
+  titleGroup.style.gap = 'var(--spacing-8)';
 
   const title = document.createElement('h3');
   title.textContent = 'Upcoming Meetings';
@@ -579,6 +826,7 @@ function createMeetingSummarySection(): HTMLElement {
   title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
   title.style.color = 'var(--text-primary)';
   title.style.margin = '0';
+  title.style.flex = '0 0 auto';
 
   const viewAllBtn = createButton({
     label: 'View All',
@@ -589,8 +837,9 @@ function createMeetingSummarySection(): HTMLElement {
     },
   });
 
-  header.appendChild(title);
-  header.appendChild(viewAllBtn);
+  titleGroup.appendChild(title);
+  titleGroup.appendChild(viewAllBtn);
+  header.appendChild(titleGroup);
 
   const cardsContainer = document.createElement('div');
   cardsContainer.style.display = 'flex';
@@ -614,103 +863,6 @@ function createMeetingSummarySection(): HTMLElement {
   container.appendChild(cardsContainer);
 
   return container;
-}
-
-// =============================================================================
-// SECTION 4: Recent Activity (Table Preview)
-// =============================================================================
-
-/**
- * ✅ WORKS WELL: TableGrid integration is seamless
- * ✅ WORKS WELL: Existing table primitives handle this use case perfectly
- * No issues - this is the cleanest section implementation
- */
-function createRecentActivitySection(): HTMLElement {
-  const activityData = [
-    { action: 'Budget proposal submitted', group: 'Finance Committee', date: 'Feb 1, 2026', status: 'Pending' },
-    { action: 'Charter update approved', group: 'TSC', date: 'Jan 30, 2026', status: 'Completed' },
-    { action: 'New member onboarded', group: 'Membership', date: 'Jan 29, 2026', status: 'Completed' },
-    { action: 'Security audit initiated', group: 'Security WG', date: 'Jan 28, 2026', status: 'In Progress' },
-    { action: 'Community survey launched', group: 'Community', date: 'Jan 27, 2026', status: 'Active' },
-  ];
-
-  const headerCells = [
-    createTableHeaderCell({ children: 'Action' }),
-    createTableHeaderCell({ children: 'Group' }),
-    createTableHeaderCell({ children: 'Date' }),
-    createTableHeaderCell({ children: 'Status' }),
-  ];
-
-  const rows = activityData.map((item) => {
-    const statusVariant =
-      item.status === 'Completed' ? 'success' :
-      item.status === 'Pending' ? 'warning' :
-      item.status === 'In Progress' ? 'info' : 'default';
-
-    return createTableRow({
-      children: [
-        createTableCell({ children: item.action, contentType: 'primary' }),
-        createTableCell({ children: item.group, contentType: 'secondary' }),
-        createTableCell({ children: item.date, contentType: 'muted' }),
-        createTableCell({
-          children: createTag({ children: item.status, variant: statusVariant }),
-          contentType: 'secondary',
-        }),
-      ],
-      clickable: true,
-    });
-  });
-
-  const table = createTableGrid({
-    columns: [
-      { key: 'action', semanticType: 'primary' },
-      { key: 'group', semanticType: 'categorical' },
-      { key: 'date', semanticType: 'meta' },
-      { key: 'status', semanticType: 'categorical' },
-    ],
-    children: [
-      createTableHeader(headerCells),
-      createTableBody(rows),
-    ],
-  });
-
-  // Wrap table in card with header
-  const activityCard = createCard({
-    children: [
-      // Section header
-      (() => {
-        const header = document.createElement('div');
-        header.style.display = 'flex';
-        header.style.justifyContent = 'space-between';
-        header.style.alignItems = 'center';
-        header.style.marginBottom = 'var(--spacing-12)';
-        header.style.padding = 'var(--spacing-12) var(--spacing-12) 0';
-
-        const title = document.createElement('h3');
-        title.textContent = 'Recent Activity';
-        title.style.fontSize = 'var(--ui-text-section-title-font-size)';
-        title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
-        title.style.color = 'var(--text-primary)';
-        title.style.margin = '0';
-
-        const viewAllBtn = createButton({
-          label: 'View All',
-          variant: 'secondary',
-          size: 'small',
-          onClick: () => {
-            console.log('[ROUTE] Navigate to Activity page: /activity');
-          },
-        });
-
-        header.appendChild(title);
-        header.appendChild(viewAllBtn);
-        return header;
-      })(),
-      table,
-    ],
-  });
-
-  return activityCard;
 }
 
 // =============================================================================
@@ -795,26 +947,26 @@ function createBoardMemberDashboard(): HTMLElement {
       // AppHeader
       createAppHeader({
         title: 'Board Member Dashboard',
-        description: 'Governance health and key actions at a glance',
+        description: 'Foundation and organizational health at a glance',
         dense: true,
       }),
 
-      // Section 1: Governance Health (MetricCluster with Charts)
+      // Section 1: Foundation Health (MetricCluster with Charts)
       createPageSection({
         dense: true,
-        children: createGovernanceHealthSection(),
+        children: createFoundationHealthSection(),
       }),
 
-      // Section 2 + 3: Pending Actions + Meetings (Paired)
+      // Section 2: Pending Actions + Meetings (Paired)
       createPageSection({
         dense: true,
         children: pairedSection,
       }),
 
-      // Section 4: Recent Activity (Table Preview)
+      // Section 3: My Organization (MetricCluster with Charts)
       createPageSection({
         dense: true,
-        children: createRecentActivitySection(),
+        children: createMyOrganizationSection(),
       }),
     ],
   });
@@ -859,30 +1011,40 @@ This example proves that the Dashboard pattern:
 
 Uses **Dashboard Page Pattern** structure:
 - AppShell → PageLayout → AppHeader → PageSection (multiple)
-- MetricsRow for charts
-- Card for action summaries and meetings
-- TableGrid for activity preview
+- MetricsRow for metric carousels with horizontal scrolling
+- ChartCard for all metric visualizations
+- SummaryCard for action summaries and meetings
+- Tag for filter pills in carousels
+- Button for carousel controls (arrows) and Ask LFX Lens
+- Drawer for detail escalation from charts and cards
 
 ## Sections
 
-1. **Governance Health (MetricCluster)**
-   - Contributor Dependency (stacked bar, Insights parity)
-   - Activity Trend (sparkline)
+1. **Foundation Health (MetricCluster)**
+   - Board Member-specific carousel with filter pills (All, Contributors, Projects, Events)
+   - Left/Right arrow buttons for horizontal scrolling
+   - Ask LFX Lens button for AI assistance
+   - 4 metric cards: Contributor Dependency, Governance Activity, Project Health, Event Participation
+   - Fixed-width cards, horizontal scrolling
    - Click opens drawer with escalation CTA
 
-2. **Pending Actions**
-   - ActionCard-style summary items
+2. **My Organization (MetricCluster)**
+   - Board Member-specific carousel with filter pills (All, Contributions, Events, Education)
+   - Left/Right arrow buttons for horizontal scrolling
+   - Ask LFX Lens button for AI assistance
+   - 4 metric cards: Active Members, Active Contributors, Maintainers, Event Attendees
+   - Fixed-width cards, horizontal scrolling
+   - Click opens drawer with escalation CTA
+
+3. **Pending Actions**
+   - ActionCard-style summary items (2 visible)
    - "View All" opens drawer
    - Action click routes to execution page
 
-3. **Upcoming Meetings**
-   - Meeting summary cards
+4. **Upcoming Meetings**
+   - Meeting summary cards (2 visible)
    - Click opens drawer with metadata
    - "View All" routes to Meetings page
-
-4. **Recent Activity (Table Preview)**
-   - TableGrid with 5 rows
-   - "View All" routes to full Activity page
 
 ## Validation Findings
 
@@ -925,11 +1087,13 @@ type Story = StoryObj;
 /**
  * Default Board Member Dashboard.
  * 
- * Demonstrates full dashboard composition with all 4 sections:
- * - Governance Health charts
- * - Pending Actions
- * - Upcoming Meetings
- * - Recent Activity table
+ * Demonstrates full dashboard composition with Board Member-specific metric clusters:
+ * - Foundation Health carousel (governance metrics with filter pills and carousel controls)
+ * - My Organization carousel (org-specific metrics with filter pills and carousel controls)
+ * - Pending Actions (paired with Meetings)
+ * - Upcoming Meetings (paired with Actions)
+ * 
+ * Board Member dashboards do NOT include table previews - they use dual metric carousels instead.
  */
 export const Default: Story = {
   render: () => createBoardMemberDashboard(),

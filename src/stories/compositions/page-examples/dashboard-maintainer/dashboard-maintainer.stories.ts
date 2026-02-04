@@ -49,6 +49,11 @@ import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
 import { createDrawer } from '../../../../components/drawer/drawer';
+import { 
+  createMetricClusterHeader,
+  createMetricCarousel
+} from '../../../../components/metric-cluster-header/metric-cluster-header';
+import { createAskLfxLensTrigger } from '../../../../components/ask-lfx-lens/ask-lfx-lens';
 
 // Chart configs
 import { createStackedBarOption } from '../../../../components/chart/config/stackedBar';
@@ -300,58 +305,27 @@ function createRecentProgressSection(): HTMLElement {
     },
   });
 
-  // Enforce fixed card dimensions
-  [securityCard, prVelocityCard, issuesTrendCard, mentoredCard, uniqueContributorsCard, healthScoreCard].forEach(card => {
-    card.style.minWidth = '280px';
-    card.style.maxWidth = '280px';
-    card.style.flex = '0 0 auto';
+  // Collect all cards for carousel
+  const cards = [securityCard, prVelocityCard, issuesTrendCard, mentoredCard, uniqueContributorsCard, healthScoreCard];
+
+  // Build filter pills (raw elements, no container)
+  const filterOptions = ['All', 'Code', 'Project Health'];
+  const filterPills = filterOptions.map((label, index) => {
+    const pill = createTag({
+      children: label,
+      variant: index === 0 ? 'primary' : 'default',
+    });
+    pill.style.cursor = 'pointer';
+    pill.style.padding = 'var(--spacing-6) var(--spacing-12)';
+    pill.addEventListener('click', () => {
+      console.log(`Filter: ${label}`);
+    });
+    return pill;
   });
 
-  const metricsRow = createMetricsRow({
-    children: [securityCard, prVelocityCard, issuesTrendCard, mentoredCard, uniqueContributorsCard, healthScoreCard],
-  });
-
-  metricsRow.style.display = 'flex';
-  metricsRow.style.flexWrap = 'nowrap';
-  metricsRow.style.gap = 'var(--spacing-16)';
-  metricsRow.style.overflowX = 'auto';
-  metricsRow.style.overflowY = 'hidden';
-  metricsRow.style.scrollbarWidth = 'thin';
-
-  // Create container with header controls
-  const container = document.createElement('div');
-  
-  // Header with filter pills, arrows, and Ask LFX Lens button
-  const header = document.createElement('div');
-  header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
-  header.style.alignItems = 'center';
-  header.style.marginBottom = 'var(--spacing-16)';
-
-  const filtersContainer = document.createElement('div');
-  filtersContainer.style.display = 'flex';
-  filtersContainer.style.gap = 'var(--spacing-8)';
-  filtersContainer.style.alignItems = 'center';
-
-  const filterAll = createButton({ label: 'All', variant: 'primary', size: 'small', onClick: () => console.log('Filter: All') });
-  const filterCode = createButton({ label: 'Code', variant: 'secondary', size: 'small', onClick: () => console.log('Filter: Code') });
-  const filterHealth = createButton({ label: 'Project Health', variant: 'secondary', size: 'small', onClick: () => console.log('Filter: Project Health') });
-
-  filtersContainer.appendChild(filterAll);
-  filtersContainer.appendChild(filterCode);
-  filtersContainer.appendChild(filterHealth);
-
-  const controlsContainer = document.createElement('div');
-  controlsContainer.style.display = 'flex';
-  controlsContainer.style.gap = 'var(--spacing-8)';
-  controlsContainer.style.alignItems = 'center';
-
-  const leftArrow = createButton({ label: '←', variant: 'secondary', size: 'small', onClick: () => { metricsRow.scrollBy({ left: -300, behavior: 'smooth' }); } });
-  const rightArrow = createButton({ label: '→', variant: 'secondary', size: 'small', onClick: () => { metricsRow.scrollBy({ left: 300, behavior: 'smooth' }); } });
-  const askLensButton = createButton({ 
-    label: '💬 Ask LFX Lens', 
-    variant: 'secondary', 
-    size: 'small', 
+  // Build Ask LFX Lens button
+  const askLensButton = createAskLfxLensTrigger({
+    context: 'Recent Progress',
     onClick: () => {
       const drawer = createDrawer({
         title: 'Ask LFX Lens',
@@ -363,18 +337,46 @@ function createRecentProgressSection(): HTMLElement {
         footer: createButton({ label: 'Close', variant: 'secondary', onClick: () => console.log('Close drawer') }),
       });
       document.body.appendChild(drawer);
-    }
+    },
   });
 
-  controlsContainer.appendChild(leftArrow);
-  controlsContainer.appendChild(rightArrow);
-  controlsContainer.appendChild(askLensButton);
+  // Build arrow controls (raw elements, no container)
+  // Note: onClick handlers will be wired by createMetricCarousel
+  const leftArrow = createButton({ 
+    label: '←', 
+    variant: 'secondary', 
+    size: 'small',
+  });
+  
+  const rightArrow = createButton({ 
+    label: '→', 
+    variant: 'secondary', 
+    size: 'small',
+  });
 
-  header.appendChild(filtersContainer);
-  header.appendChild(controlsContainer);
+  // Create header - MetricClusterHeader owns all layout
+  const header = createMetricClusterHeader({
+    title: 'Recent Progress',
+    filters: filterPills,
+    actions: askLensButton,
+    controls: [leftArrow, rightArrow],
+  });
+
+  // Create fully assembled carousel with cards and navigation
+  const carousel = createMetricCarousel({
+    cards,
+    leftArrow,
+    rightArrow,
+  });
+
+  // Create container and assemble
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.gap = 'var(--spacing-16)';
 
   container.appendChild(header);
-  container.appendChild(metricsRow);
+  container.appendChild(carousel);
 
   return container;
 }
@@ -474,9 +476,15 @@ function createPendingActionsSection(): HTMLElement {
   // Section header
   const header = document.createElement('div');
   header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
   header.style.alignItems = 'center';
+  header.style.gap = 'var(--spacing-8)';
   header.style.marginBottom = 'var(--spacing-12)';
+
+  // Title group - keeps title and action together
+  const titleGroup = document.createElement('div');
+  titleGroup.style.display = 'inline-flex';
+  titleGroup.style.alignItems = 'center';
+  titleGroup.style.gap = 'var(--spacing-8)';
 
   const title = document.createElement('h3');
   title.textContent = 'Pending Actions';
@@ -484,6 +492,7 @@ function createPendingActionsSection(): HTMLElement {
   title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
   title.style.color = 'var(--text-primary)';
   title.style.margin = '0';
+  title.style.flex = '0 0 auto';
 
   const viewAllBtn = createButton({
     label: 'View All',
@@ -528,8 +537,9 @@ function createPendingActionsSection(): HTMLElement {
     },
   });
 
-  header.appendChild(title);
-  header.appendChild(viewAllBtn);
+  titleGroup.appendChild(title);
+  titleGroup.appendChild(viewAllBtn);
+  header.appendChild(titleGroup);
 
   const cardsContainer = document.createElement('div');
   cardsContainer.style.display = 'flex';
@@ -640,9 +650,15 @@ function createMeetingSummarySection(): HTMLElement {
   // Section header
   const header = document.createElement('div');
   header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
   header.style.alignItems = 'center';
+  header.style.gap = 'var(--spacing-8)';
   header.style.marginBottom = 'var(--spacing-12)';
+
+  // Title group - keeps title and action together
+  const titleGroup = document.createElement('div');
+  titleGroup.style.display = 'inline-flex';
+  titleGroup.style.alignItems = 'center';
+  titleGroup.style.gap = 'var(--spacing-8)';
 
   const title = document.createElement('h3');
   title.textContent = 'Upcoming Meetings';
@@ -650,6 +666,7 @@ function createMeetingSummarySection(): HTMLElement {
   title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
   title.style.color = 'var(--text-primary)';
   title.style.margin = '0';
+  title.style.flex = '0 0 auto';
 
   const viewAllBtn = createButton({
     label: 'View All',
@@ -660,8 +677,9 @@ function createMeetingSummarySection(): HTMLElement {
     },
   });
 
-  header.appendChild(title);
-  header.appendChild(viewAllBtn);
+  titleGroup.appendChild(title);
+  titleGroup.appendChild(viewAllBtn);
+  header.appendChild(titleGroup);
 
   const cardsContainer = document.createElement('div');
   cardsContainer.style.display = 'flex';
@@ -832,10 +850,16 @@ function createMyProjectsSection(): HTMLElement {
       (() => {
         const header = document.createElement('div');
         header.style.display = 'flex';
-        header.style.justifyContent = 'space-between';
         header.style.alignItems = 'center';
+        header.style.gap = 'var(--spacing-8)';
         header.style.marginBottom = 'var(--spacing-12)';
         header.style.padding = 'var(--spacing-12) var(--spacing-12) 0';
+
+        // Title group - keeps title and action together
+        const titleGroup = document.createElement('div');
+        titleGroup.style.display = 'inline-flex';
+        titleGroup.style.alignItems = 'center';
+        titleGroup.style.gap = 'var(--spacing-8)';
 
         const title = document.createElement('h3');
         title.textContent = 'My Projects';
@@ -843,6 +867,7 @@ function createMyProjectsSection(): HTMLElement {
         title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
         title.style.color = 'var(--text-primary)';
         title.style.margin = '0';
+        title.style.flex = '0 0 auto';
 
         const viewAllBtn = createButton({
           label: 'Explore foundation projects',
@@ -853,8 +878,9 @@ function createMyProjectsSection(): HTMLElement {
           },
         });
 
-        header.appendChild(title);
-        header.appendChild(viewAllBtn);
+        titleGroup.appendChild(title);
+        titleGroup.appendChild(viewAllBtn);
+        header.appendChild(titleGroup);
         return header;
       })(),
       table,
