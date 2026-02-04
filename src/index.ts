@@ -56,3 +56,5 @@ export { getChartColors, getStatusColor } from './components/chart/config/colors
 export { getChartDefaults, mergeChartOptions } from './components/chart/config/defaults';
 export { createChartCard, type ChartCardProps } from './components/chart-card/chart-card';
 export { createMetricsRow, type MetricsRowProps } from './components/metrics-row/metrics-row';
+export { createMetricClusterHeader, type MetricClusterHeaderProps } from './components/metric-cluster-header/metric-cluster-header';
+export { createMetricCarousel, applyMetricCarouselStyle, applyMetricCardSizing, getCarouselScrollDistance } from './components/metric-cluster-header/metric-cluster-header';
