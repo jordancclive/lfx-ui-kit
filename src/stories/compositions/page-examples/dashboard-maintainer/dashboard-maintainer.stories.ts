@@ -312,6 +312,7 @@ function createRecentProgressSection(): HTMLElement {
   });
 
   metricsRow.style.display = 'flex';
+  metricsRow.style.flexWrap = 'nowrap';
   metricsRow.style.gap = 'var(--spacing-16)';
   metricsRow.style.overflowX = 'auto';
   metricsRow.style.overflowY = 'hidden';
@@ -415,7 +416,7 @@ function createPendingActionsSection(): HTMLElement {
     meta.appendChild(contextSpan);
     meta.appendChild(priorityTag);
 
-    return createSummaryCard({
+    const card = createSummaryCard({
       title: config.title,
       body,
       meta,
@@ -463,6 +464,9 @@ function createPendingActionsSection(): HTMLElement {
         document.body.appendChild(drawer);
       },
     });
+    
+    card.style.minHeight = '120px';
+    return card;
   }
 
   const container = document.createElement('div');
@@ -579,7 +583,7 @@ function createMeetingSummarySection(): HTMLElement {
     meta.appendChild(dateTime);
     meta.appendChild(attendeeCount);
 
-    return createSummaryCard({
+    const card = createSummaryCard({
       title: config.title,
       meta,
       onClick: () => {
@@ -626,6 +630,9 @@ function createMeetingSummarySection(): HTMLElement {
         document.body.appendChild(drawer);
       },
     });
+    
+    card.style.minHeight = '120px';
+    return card;
   }
 
   const container = document.createElement('div');
@@ -706,51 +713,27 @@ function createMyProjectsSection(): HTMLElement {
   ];
 
   const rows = projectData.map((project) => {
-    // Create code activities cell with sparkline
-    const codeActivitiesContainer = document.createElement('div');
-    codeActivitiesContainer.style.display = 'flex';
-    codeActivitiesContainer.style.alignItems = 'center';
-    codeActivitiesContainer.style.gap = 'var(--spacing-8)';
-
-    const codeText = document.createElement('span');
-    codeText.textContent = project.codeActivities;
-    codeText.style.fontSize = 'var(--ui-text-label-font-size)';
-
+    // Create code activities cell with sparkline only (signal-only)
     const codeSparkline = createChart({
       option: createSparklineOption({
         values: project.codeValues,
         labels: ['W1', 'W2', 'W3', 'W4', 'W5'],
       }),
-      height: 24,
+      height: 32,
     });
-    codeSparkline.style.width = '60px';
-    codeSparkline.style.minWidth = '60px';
+    codeSparkline.style.width = '80px';
+    codeSparkline.style.minWidth = '80px';
 
-    codeActivitiesContainer.appendChild(codeText);
-    codeActivitiesContainer.appendChild(codeSparkline);
-
-    // Create non-code activities cell with sparkline
-    const nonCodeActivitiesContainer = document.createElement('div');
-    nonCodeActivitiesContainer.style.display = 'flex';
-    nonCodeActivitiesContainer.style.alignItems = 'center';
-    nonCodeActivitiesContainer.style.gap = 'var(--spacing-8)';
-
-    const nonCodeText = document.createElement('span');
-    nonCodeText.textContent = project.nonCodeActivities;
-    nonCodeText.style.fontSize = 'var(--ui-text-label-font-size)';
-
+    // Create non-code activities cell with sparkline only (signal-only)
     const nonCodeSparkline = createChart({
       option: createSparklineOption({
         values: project.nonCodeValues,
         labels: ['W1', 'W2', 'W3', 'W4', 'W5'],
       }),
-      height: 24,
+      height: 32,
     });
-    nonCodeSparkline.style.width = '60px';
-    nonCodeSparkline.style.minWidth = '60px';
-
-    nonCodeActivitiesContainer.appendChild(nonCodeText);
-    nonCodeActivitiesContainer.appendChild(nonCodeSparkline);
+    nonCodeSparkline.style.width = '80px';
+    nonCodeSparkline.style.minWidth = '80px';
 
     // Create table cell for project name with constrained width
     const projectCell = createTableCell({ children: project.name, contentType: 'primary' });
@@ -760,8 +743,8 @@ function createMyProjectsSection(): HTMLElement {
       children: [
         projectCell,
         createTableCell({ children: project.affiliations, contentType: 'secondary' }),
-        createTableCell({ children: codeActivitiesContainer, contentType: 'secondary' }),
-        createTableCell({ children: nonCodeActivitiesContainer, contentType: 'secondary' }),
+        createTableCell({ children: codeSparkline, contentType: 'secondary' }),
+        createTableCell({ children: nonCodeSparkline, contentType: 'secondary' }),
       ],
       clickable: true,
       onClick: () => {
