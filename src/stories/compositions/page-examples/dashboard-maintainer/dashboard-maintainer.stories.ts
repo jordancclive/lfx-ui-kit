@@ -343,9 +343,15 @@ function createProjectHealthSection(): HTMLElement {
     },
   });
 
-  return createMetricsRow({
+  const metricsRow = createMetricsRow({
     children: [issueBacklogCard, prVelocityCard, contributorActivityCard, ciStabilityCard],
   });
+
+  // Ensure fixed-width cards with horizontal scrolling
+  metricsRow.style.overflowX = 'auto';
+  metricsRow.style.overflowY = 'hidden';
+
+  return metricsRow;
 }
 
 // =============================================================================
@@ -681,50 +687,44 @@ function createMeetingSummarySection(): HTMLElement {
 }
 
 // =============================================================================
-// SECTION 4: Recent Activity (Project Events)
+// SECTION 4: My Projects (Project Portfolio)
 // =============================================================================
 
 /**
  * ✅ PATTERN REUSE: Same table preview structure as Board Member
- * ✅ CONTENT DIFFERS: Project events vs governance activity
+ * ✅ CONTENT DIFFERS: Project portfolio vs governance activity
  * ✅ ROW INTERACTION: Row click opens drawer (inspection pattern)
  */
-function createRecentActivitySection(): HTMLElement {
-  const activityData = [
-    { type: 'PR', title: 'Fix authentication edge case', project: 'api-gateway', date: 'Feb 2, 2026', status: 'Merged' },
-    { type: 'Issue', title: 'Memory leak in cache layer', project: 'core', date: 'Feb 2, 2026', status: 'Open' },
-    { type: 'Release', title: 'v2.0.5 hotfix release', project: 'core', date: 'Feb 1, 2026', status: 'Published' },
-    { type: 'PR', title: 'Add rate limiting middleware', project: 'api-gateway', date: 'Feb 1, 2026', status: 'In Review' },
-    { type: 'Issue', title: 'Documentation outdated for v2.x', project: 'docs', date: 'Jan 31, 2026', status: 'Triaged' },
+function createMyProjectsSection(): HTMLElement {
+  const projectData = [
+    { name: 'api-gateway', role: 'Lead Maintainer', contributors: 12, openIssues: 8, health: 'Healthy' },
+    { name: 'core', role: 'Co-Maintainer', contributors: 24, openIssues: 15, health: 'Healthy' },
+    { name: 'docs', role: 'Lead Maintainer', contributors: 8, openIssues: 4, health: 'Attention Needed' },
+    { name: 'cli-tools', role: 'Co-Maintainer', contributors: 6, openIssues: 2, health: 'Healthy' },
+    { name: 'web-ui', role: 'Reviewer', contributors: 18, openIssues: 11, health: 'Healthy' },
   ];
 
   const headerCells = [
-    createTableHeaderCell({ children: 'Type' }),
-    createTableHeaderCell({ children: 'Title' }),
     createTableHeaderCell({ children: 'Project' }),
-    createTableHeaderCell({ children: 'Date' }),
-    createTableHeaderCell({ children: 'Status' }),
+    createTableHeaderCell({ children: 'Role' }),
+    createTableHeaderCell({ children: 'Contributors' }),
+    createTableHeaderCell({ children: 'Open Issues' }),
+    createTableHeaderCell({ children: 'Health' }),
   ];
 
-  const rows = activityData.map((item) => {
-    const statusVariant =
-      item.status === 'Merged' || item.status === 'Published' ? 'success' :
-      item.status === 'Open' ? 'warning' :
-      item.status === 'In Review' || item.status === 'Triaged' ? 'info' : 'default';
-
-    const typeTag = createTag({
-      children: item.type,
-      variant: item.type === 'Release' ? 'success' : 'default',
-    });
+  const rows = projectData.map((project) => {
+    const healthVariant =
+      project.health === 'Healthy' ? 'success' :
+      project.health === 'Attention Needed' ? 'warning' : 'default';
 
     return createTableRow({
       children: [
-        createTableCell({ children: typeTag, contentType: 'secondary' }),
-        createTableCell({ children: item.title, contentType: 'primary' }),
-        createTableCell({ children: item.project, contentType: 'secondary' }),
-        createTableCell({ children: item.date, contentType: 'muted' }),
+        createTableCell({ children: project.name, contentType: 'primary' }),
+        createTableCell({ children: project.role, contentType: 'secondary' }),
+        createTableCell({ children: project.contributors.toString(), contentType: 'secondary' }),
+        createTableCell({ children: project.openIssues.toString(), contentType: 'secondary' }),
         createTableCell({
-          children: createTag({ children: item.status, variant: statusVariant }),
+          children: createTag({ children: project.health, variant: healthVariant }),
           contentType: 'secondary',
         }),
       ],
@@ -735,46 +735,54 @@ function createRecentActivitySection(): HTMLElement {
         drawerBody.innerHTML = `
           <div style="margin-bottom: var(--spacing-16);">
             <h4 style="margin: 0 0 var(--spacing-8) 0; font-size: 15px; font-weight: var(--font-semibold);">
-              ${item.type}
+              Project Name
             </h4>
             <p style="margin: 0; color: var(--text-secondary);">
-              ${item.title}
+              ${project.name}
             </p>
           </div>
           <div style="margin-bottom: var(--spacing-16);">
             <h4 style="margin: 0 0 var(--spacing-8) 0; font-size: 15px; font-weight: var(--font-semibold);">
-              Project
+              Your Role
             </h4>
             <p style="margin: 0; color: var(--text-secondary);">
-              ${item.project}
+              ${project.role}
             </p>
           </div>
           <div style="margin-bottom: var(--spacing-16);">
             <h4 style="margin: 0 0 var(--spacing-8) 0; font-size: 15px; font-weight: var(--font-semibold);">
-              Date
+              Contributors
             </h4>
             <p style="margin: 0; color: var(--text-secondary);">
-              ${item.date}
+              ${project.contributors} active contributors
+            </p>
+          </div>
+          <div style="margin-bottom: var(--spacing-16);">
+            <h4 style="margin: 0 0 var(--spacing-8) 0; font-size: 15px; font-weight: var(--font-semibold);">
+              Open Issues
+            </h4>
+            <p style="margin: 0; color: var(--text-secondary);">
+              ${project.openIssues} open issues
             </p>
           </div>
           <div>
             <h4 style="margin: 0 0 var(--spacing-8) 0; font-size: 15px; font-weight: var(--font-semibold);">
-              Status
+              Health Status
             </h4>
             <p style="margin: 0; color: var(--text-secondary);">
-              ${item.status}
+              ${project.health}
             </p>
           </div>
         `;
         
         const footer = createButton({
-          label: `View ${item.type.toLowerCase()} →`,
+          label: 'View project →',
           variant: 'primary',
-          onClick: () => console.log(`Navigate to ${item.type}: ${item.title}`),
+          onClick: () => console.log(`Navigate to project: ${project.name}`),
         });
         
         const drawer = createDrawer({
-          title: item.title,
+          title: project.name,
           body: drawerBody,
           footer,
         });
@@ -786,11 +794,11 @@ function createRecentActivitySection(): HTMLElement {
 
   const table = createTableGrid({
     columns: [
-      { key: 'type', semanticType: 'categorical' },
-      { key: 'title', semanticType: 'primary' },
-      { key: 'project', semanticType: 'categorical' },
-      { key: 'date', semanticType: 'meta' },
-      { key: 'status', semanticType: 'categorical' },
+      { key: 'name', semanticType: 'primary' },
+      { key: 'role', semanticType: 'categorical' },
+      { key: 'contributors', semanticType: 'meta' },
+      { key: 'openIssues', semanticType: 'meta' },
+      { key: 'health', semanticType: 'categorical' },
     ],
     children: [
       createTableHeader(headerCells),
@@ -798,7 +806,7 @@ function createRecentActivitySection(): HTMLElement {
     ],
   });
 
-  const activityCard = createCard({
+  const projectsCard = createCard({
     children: [
       // Section header (duplicated pattern)
       (() => {
@@ -810,7 +818,7 @@ function createRecentActivitySection(): HTMLElement {
         header.style.padding = 'var(--spacing-12) var(--spacing-12) 0';
 
         const title = document.createElement('h3');
-        title.textContent = 'Recent Activity';
+        title.textContent = 'My Projects';
         title.style.fontSize = 'var(--ui-text-section-title-font-size)';
         title.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
         title.style.color = 'var(--text-primary)';
@@ -821,7 +829,7 @@ function createRecentActivitySection(): HTMLElement {
           variant: 'secondary',
           size: 'small',
           onClick: () => {
-            console.log('[ROUTE] Navigate to Activity page (Table Page pattern)');
+            console.log('[ROUTE] Navigate to Projects page (Table Page pattern)');
           },
         });
 
@@ -833,7 +841,7 @@ function createRecentActivitySection(): HTMLElement {
     ],
   });
 
-  return activityCard;
+  return projectsCard;
 }
 
 // =============================================================================
@@ -973,6 +981,22 @@ function wrapForStorybook(content: HTMLElement): HTMLElement {
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
 function createMaintainerDashboard(): HTMLElement {
+  // Create paired Actions + Meetings row
+  const pairedSection = document.createElement('div');
+  pairedSection.style.display = 'grid';
+  pairedSection.style.gridTemplateColumns = '1fr 1fr';
+  pairedSection.style.gap = 'var(--spacing-16)';
+  pairedSection.style.width = '100%';
+
+  const actionsWrapper = document.createElement('div');
+  actionsWrapper.appendChild(createPendingActionsSection());
+
+  const meetingsWrapper = document.createElement('div');
+  meetingsWrapper.appendChild(createMeetingSummarySection());
+
+  pairedSection.appendChild(actionsWrapper);
+  pairedSection.appendChild(meetingsWrapper);
+
   const pageContent = createPageLayout({
     dense: true,
     children: [
@@ -989,22 +1013,16 @@ function createMaintainerDashboard(): HTMLElement {
         children: createProjectHealthSection(),
       }),
 
-      // Section 2: Pending Actions
+      // Section 2 + 3: Pending Actions + Meetings (Paired)
       createPageSection({
         dense: true,
-        children: createPendingActionsSection(),
+        children: pairedSection,
       }),
 
-      // Section 3: Meeting Summary
+      // Section 4: My Projects
       createPageSection({
         dense: true,
-        children: createMeetingSummarySection(),
-      }),
-
-      // Section 4: Recent Activity
-      createPageSection({
-        dense: true,
-        children: createRecentActivitySection(),
+        children: createMyProjectsSection(),
       }),
     ],
   });
