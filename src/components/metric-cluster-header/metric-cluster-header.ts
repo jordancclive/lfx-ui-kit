@@ -128,8 +128,13 @@ export function createMetricClusterHeader(props: MetricClusterHeaderProps): HTML
   const titleRow = document.createElement('div');
   titleRow.style.display = 'flex';
   titleRow.style.alignItems = 'center';
-  titleRow.style.justifyContent = 'space-between';
-  titleRow.style.flexWrap = 'nowrap';
+  titleRow.style.gap = 'var(--spacing-8)';
+
+  // Left-aligned title + actions group
+  const titleGroup = document.createElement('div');
+  titleGroup.style.display = 'inline-flex';
+  titleGroup.style.alignItems = 'center';
+  titleGroup.style.gap = 'var(--spacing-8)';
 
   const titleElement = document.createElement('h2');
   titleElement.textContent = title;
@@ -137,19 +142,15 @@ export function createMetricClusterHeader(props: MetricClusterHeaderProps): HTML
   titleElement.style.fontWeight = 'var(--ui-text-section-title-font-weight)';
   titleElement.style.color = 'var(--text-primary)';
   titleElement.style.margin = '0';
-  titleElement.style.flexShrink = '0';
+  titleElement.style.flex = '0 0 auto';
 
-  titleRow.appendChild(titleElement);
+  titleGroup.appendChild(titleElement);
   
   if (actions) {
-    const actionsWrapper = document.createElement('div');
-    actionsWrapper.style.display = 'flex';
-    actionsWrapper.style.gap = 'var(--spacing-8)';
-    actionsWrapper.style.flexShrink = '0';
-    actionsWrapper.appendChild(actions);
-    titleRow.appendChild(actionsWrapper);
+    titleGroup.appendChild(actions);
   }
 
+  titleRow.appendChild(titleGroup);
   container.appendChild(titleRow);
 
   // Row 2: Filters (left) + Carousel Controls (right)
