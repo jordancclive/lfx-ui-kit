@@ -349,10 +349,8 @@ function createRecentProgressSection(): HTMLElement {
 /**
  * ✅ PATTERN REUSE: Same action card structure as Board Member
  * ✅ CONTENT DIFFERS: Maintainer workload (PR review, triage) vs governance actions
- * ✅ SECTION HEADER DUPLICATION: Same manual header construction pattern
- * 💡 OBSERVATION: Section header pattern appears in both roles — extraction candidate
  */
-function createPendingActionsSection(): HTMLElement {
+function createMaintainerPendingActions(): HTMLElement {
   function createActionCard(config: {
     title: string;
     description: string;
@@ -501,7 +499,7 @@ function createPendingActionsSection(): HTMLElement {
  * ✅ PATTERN REUSE: Same meeting card structure as Board Member
  * ✅ CONTENT DIFFERS: Project syncs vs board meetings
  */
-function createMeetingSummarySection(): HTMLElement {
+function createMaintainerUpcomingMeetings(): HTMLElement {
   function createMeetingCard(config: {
     title: string;
     date: string;
@@ -928,10 +926,10 @@ function createMaintainerDashboard(): HTMLElement {
   pairedSection.style.width = '100%';
 
   const actionsWrapper = document.createElement('div');
-  actionsWrapper.appendChild(createPendingActionsSection());
+  actionsWrapper.appendChild(createMaintainerPendingActions());
 
   const meetingsWrapper = document.createElement('div');
-  meetingsWrapper.appendChild(createMeetingSummarySection());
+  meetingsWrapper.appendChild(createMaintainerUpcomingMeetings());
 
   pairedSection.appendChild(actionsWrapper);
   pairedSection.appendChild(meetingsWrapper);

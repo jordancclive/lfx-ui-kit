@@ -423,7 +423,7 @@ function createMyOrganizationSection(): HTMLElement {
  * 
  * 💡 FUTURE: ActionCard may specialize from SummaryCard with action-specific semantics
  */
-function createPendingActionsSection(): HTMLElement {
+function createBoardMemberPendingActions(): HTMLElement {
   // Helper: Creates action summary card using SummaryCard primitive
   function createActionCard(config: {
     title: string;
@@ -618,7 +618,7 @@ function createPendingActionsSection(): HTMLElement {
  * 
  * 💡 FUTURE: MeetingCard may specialize from SummaryCard with meeting-specific semantics
  */
-function createMeetingSummarySection(): HTMLElement {
+function createBoardMemberUpcomingMeetings(): HTMLElement {
   // Helper: Creates meeting summary card using SummaryCard primitive
   function createMeetingCard(config: {
     title: string;
@@ -790,10 +790,10 @@ function createBoardMemberDashboard(): HTMLElement {
   pairedSection.style.width = '100%';
 
   const actionsWrapper = document.createElement('div');
-  actionsWrapper.appendChild(createPendingActionsSection());
+  actionsWrapper.appendChild(createBoardMemberPendingActions());
 
   const meetingsWrapper = document.createElement('div');
-  meetingsWrapper.appendChild(createMeetingSummarySection());
+  meetingsWrapper.appendChild(createBoardMemberUpcomingMeetings());
 
   pairedSection.appendChild(actionsWrapper);
   pairedSection.appendChild(meetingsWrapper);
