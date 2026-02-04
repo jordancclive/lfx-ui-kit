@@ -306,8 +306,9 @@ type Story = StoryObj<DashboardArgs>;
 /**
  * Anchor story for Docs tab ordering.
  * This ensures the canonical MDX documentation appears first in the sidebar.
+ * Named with underscore prefix to avoid conflict with MDX Docs entry.
  */
-export const Docs: Story = {
+export const _Docs: Story = {
   render: () => null,
   parameters: {
     docs: {
