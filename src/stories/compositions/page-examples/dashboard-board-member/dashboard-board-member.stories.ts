@@ -815,16 +815,16 @@ function createBoardMemberDashboard(): HTMLElement {
         children: createFoundationHealthSection(),
       }),
 
-      // Section 2: Pending Actions + Meetings (Paired)
-      createPageSection({
-        dense: true,
-        children: pairedSection,
-      }),
-
-      // Section 3: My Organization (MetricCluster with Charts)
+      // Section 2: My Organization (MetricCluster with Charts)
       createPageSection({
         dense: true,
         children: createMyOrganizationSection(),
+      }),
+
+      // Section 3: Pending Actions + Meetings (Paired)
+      createPageSection({
+        dense: true,
+        children: pairedSection,
       }),
     ],
   });
