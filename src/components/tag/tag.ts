@@ -15,7 +15,7 @@ export interface TagProps {
    * Semantic visual variant (visual only, no interaction)
    * @default 'default'
    */
-  variant?: 'default' | 'info' | 'success' | 'warning' | 'danger' | 'discovery';
+  variant?: 'default' | 'info' | 'success' | 'warning' | 'danger' | 'discovery' | 'primary';
 }
 
 /**

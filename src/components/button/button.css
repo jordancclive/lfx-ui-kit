@@ -67,14 +67,48 @@
 }
 
 /* ========================================
+   VARIANT: Secondary - Default State
+   ======================================== */
+
+.lfx-button--secondary {
+  background-color: var(--interactive-secondary-background);
+  color: var(--interactive-secondary-text);
+  border-color: transparent;
+}
+
+/* ========================================
+   VARIANT: Secondary - Hover State
+   ======================================== */
+
+.lfx-button--secondary:hover:not(.lfx-button--disabled):not(.lfx-button--loading) {
+  background-color: var(--interactive-secondary-background-hover);
+}
+
+/* ========================================
+   VARIANT: Secondary - Focus State
+   ======================================== */
+
+.lfx-button--secondary:focus-visible {
+  box-shadow: 0 0 0 2px var(--ui-focus-ring-offset), 0 0 0 4px var(--ui-focus-ring-color);
+}
+
+/* ========================================
    STATE: Disabled (only when NOT loading)
    Loading takes precedence over disabled
    ======================================== */
 
 .lfx-button--disabled:not(.lfx-button--loading) {
+  cursor: not-allowed;
+}
+
+.lfx-button--primary.lfx-button--disabled:not(.lfx-button--loading) {
   background-color: var(--interactive-primary-background-disabled);
   color: var(--interactive-primary-text-disabled);
-  cursor: not-allowed;
+}
+
+.lfx-button--secondary.lfx-button--disabled:not(.lfx-button--loading) {
+  background-color: var(--interactive-secondary-background-disabled);
+  color: var(--interactive-secondary-text-disabled);
 }
 
 /* ========================================
@@ -103,6 +137,18 @@
   /* Large size: ~1.14x control size (16px vs 14px) */
   font-size: calc(var(--ui-text-control-font-size) * 1.143);
   line-height: calc(var(--ui-text-control-line-height) * 1.2);
+}
+
+/* ========================================
+   SIZE: Small
+   ======================================== */
+
+.lfx-button--small {
+  padding: var(--button-sm-vertical-padding) var(--button-sm-horizontal-padding);
+  gap: var(--button-sm-spacing);
+  /* Small size: ~0.86x control size (12px vs 14px) */
+  font-size: calc(var(--ui-text-control-font-size) * 0.857);
+  line-height: var(--ui-text-control-line-height);
 }
 
 /* ========================================

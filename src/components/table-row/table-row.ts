@@ -19,6 +19,8 @@ export interface TableRowProps {
   disabled?: boolean;
   /** Whether row is clickable (shows pointer cursor, enables hover) */
   clickable?: boolean;
+  /** Reduced vertical spacing (dense layout) */
+  dense?: boolean;
   /** Click handler */
   onClick?: () => void;
 }

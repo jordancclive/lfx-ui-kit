@@ -130,7 +130,7 @@ export const WorkflowPage: Story = {
     description: 'Make decisions with your project groups.',
     dense: true, // RECOMMENDED for workflow pages
     actions: createButton({
-      children: 'Create Vote',
+      label: 'Create Vote',
       variant: 'primary',
     }),
   },
@@ -166,12 +166,12 @@ export const MultipleActions: Story = {
       container.style.gap = '8px';
       
       const secondaryButton = createButton({
-        children: 'Export',
+        label: 'Export',
         variant: 'secondary',
       });
-      
+
       const primaryButton = createButton({
-        children: 'New Project',
+        label: 'New Project',
         variant: 'primary',
       });
       

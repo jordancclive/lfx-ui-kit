@@ -12,7 +12,7 @@ import './table-cell.css';
 
 export interface TableCellProps {
   /** Text presentation style */
-  contentType?: 'primary' | 'secondary' | 'muted' | 'numeric';
+  contentType?: 'primary' | 'secondary' | 'muted' | 'numeric' | 'action';
   /** Text alignment */
   align?: 'left' | 'right';
   /** Size variant */

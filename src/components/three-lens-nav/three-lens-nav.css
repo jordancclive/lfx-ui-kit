@@ -1,0 +1,35 @@
+/**
+ * ThreeLensNav
+ *
+ * Tier 3 — Composite Layout Component
+ * Composes LensRail + GlobalNav into one continuous dark surface.
+ * This is the element passed to AppShell's nav slot.
+ *
+ * Visual outcome:
+ * - LensRail (56px dark navy) + GlobalNav panel (220px dark navy)
+ * - One seamless dark background — no gap, no dividing line visible between them
+ * - The lens rail sits flush left; the nav panel sits flush right
+ */
+
+.lfx-three-lens-nav {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  /* Exact width: rail + panel — must match --spacing-app-shell-nav-width */
+  width: calc(var(--spacing-lens-rail-width) + var(--spacing-nav-panel-width));
+
+  /* Clip overflow */
+  overflow: hidden;
+}
+
+/* The rail portion takes its natural width (56px) */
+.lfx-three-lens-nav > .lfx-lens-rail {
+  flex-shrink: 0;
+}
+
+/* The panel portion fills remaining space */
+.lfx-three-lens-nav > .lfx-global-nav {
+  flex: 1;
+  min-width: 0;
+}

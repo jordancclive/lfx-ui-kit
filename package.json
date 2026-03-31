@@ -8,7 +8,10 @@
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "steward:docs": "node scripts/steward/check-storybook-docs-boundaries.cjs"
+    "steward:docs": "node scripts/steward/check-storybook-docs-boundaries.cjs",
+    "steward:coverage": "node scripts/steward/check-page-example-story-coverage.cjs",
+    "steward": "npm run steward:docs && npm run steward:coverage",
+    "prepare": "husky"
   },
   "keywords": [
     "design-system",
@@ -27,6 +30,7 @@
     "@storybook/html-vite": "^8.4.0",
     "@storybook/test": "^8.4.0",
     "chromatic": "^13.3.5",
+    "husky": "^9.1.7",
     "storybook": "^8.4.0",
     "typescript": "^5.6.0",
     "vite": "^6.0.0"

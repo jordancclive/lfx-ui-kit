@@ -44,7 +44,8 @@ import { createTableGrid, createTableHeader, createTableBody } from '../../../..
 import { createTableHeaderCell } from '../../../../components/table-header-cell/table-header-cell';
 import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createThreeLensNav } from '../../../../components/three-lens-nav/three-lens-nav';
+import { NAV_ICONS } from '../../../../components/three-lens-nav/three-lens-nav.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
@@ -785,17 +786,44 @@ function createMyProjectsSection(): HTMLElement {
 // NAVIGATION
 // =============================================================================
 
-function createDemoNav(activeItemId = 'dashboard') {
-  return createGlobalNav({
-    activeItemId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'issues', children: createTextNode('Issues') }),
-        createNavItem({ id: 'prs', children: createTextNode('Pull Requests') }),
-        createNavItem({ id: 'releases', children: createTextNode('Releases') }),
-      ]),
+// Nav icons imported from canonical source — three-lens-nav.stories.ts
+
+function createMaintainerNav(activeItemId = 'overview') {
+  return createThreeLensNav({
+    activeLens: 'projects',
+    contextHeader: {
+      title: 'Jordan Clive',
+      roleBadge: 'Maintainer',
+      avatarInitials: 'JC',
+    },
+    activeNavItemId: activeItemId,
+    sections: [
+      {
+        items: [
+          { id: 'overview',     label: 'Overview',  icon: NAV_ICONS.overview },
+        ],
+      },
+      {
+        label: 'Community',
+        items: [
+          { id: 'projects',     label: 'Projects',          icon: NAV_ICONS.projects },
+          { id: 'meetings',     label: 'Meetings',          icon: NAV_ICONS.meetings },
+          { id: 'mailing-lists',label: 'Mailing Lists',     icon: NAV_ICONS.mailingLists },
+          { id: 'groups',       label: 'Groups',            icon: NAV_ICONS.groups },
+          { id: 'events',       label: 'Events',            icon: NAV_ICONS.events },
+          { id: 'drive',        label: 'Drive',             icon: NAV_ICONS.drive },
+          { id: 'mentorship',   label: 'Mentorship Programs', icon: NAV_ICONS.mentorship },
+        ],
+      },
+      {
+        label: 'Data Intelligence',
+        items: [
+          { id: 'eng-health',    label: 'Engineering Health',          icon: NAV_ICONS.engHealth },
+          { id: 'contrib-health',label: 'Contributor Health',          icon: NAV_ICONS.contribHealth },
+          { id: 'part-orgs',     label: 'Participating Organizations', icon: NAV_ICONS.orgOverview },
+          { id: 'contrib-indiv', label: 'Contributing Individuals',    icon: NAV_ICONS.contributors },
+        ],
+      },
     ],
   });
 }
@@ -964,7 +992,7 @@ function createMaintainerDashboard(): HTMLElement {
     ],
   });
 
-  const nav = createDemoNav('dashboard');
+  const nav = createMaintainerNav('overview');
 
   const appShell = createAppShell({
     nav,

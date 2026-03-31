@@ -50,7 +50,8 @@ import { createTableRow } from '../../../../components/table-row/table-row';
 import { createTableCell } from '../../../../components/table-cell/table-cell';
 import { createListGroup } from '../../../../components/list-group/list-group';
 import { createListItem } from '../../../../components/list-item/list-item';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createThreeLensNav } from '../../../../components/three-lens-nav/three-lens-nav';
+import { NAV_ICONS } from '../../../../components/three-lens-nav/three-lens-nav.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
@@ -727,17 +728,45 @@ function createBoardMemberUpcomingMeetings(): HTMLElement {
 // NAVIGATION
 // =============================================================================
 
-function createDemoNav(activeItemId = 'dashboard') {
-  return createGlobalNav({
-    activeItemId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'meetings', children: createTextNode('Meetings') }),
-        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
-        createNavItem({ id: 'activity', children: createTextNode('Activity') }),
-        createNavItem({ id: 'settings', children: createTextNode('Settings') }),
-      ]),
+// Nav icons imported from canonical source — three-lens-nav.stories.ts
+
+/**
+ * Foundation/Projects lens nav — matches live production prototype exactly.
+ * Context: "The Linux Foundation" with chevron dropdown.
+ * Sections: Overview (active), COMMUNITY, GOVERNANCE.
+ * Insights has external link icon — opens LFX Insights.
+ */
+function createBoardMemberNav(activeItemId = 'overview') {
+  return createThreeLensNav({
+    activeLens: 'projects',
+    contextHeader: {
+      title: 'The Linux Foundation',
+      showChevron: true,
+    },
+    activeNavItemId: activeItemId,
+    sections: [
+      {
+        items: [
+          { id: 'overview', label: 'Overview', icon: NAV_ICONS.overview },
+        ],
+      },
+      {
+        label: 'Community',
+        items: [
+          { id: 'meetings',      label: 'Meetings',      icon: NAV_ICONS.meetings },
+          { id: 'mailing-lists', label: 'Mailing Lists', icon: NAV_ICONS.mailingLists },
+          { id: 'groups',        label: 'Groups',        icon: NAV_ICONS.groups },
+        ],
+      },
+      {
+        label: 'Governance',
+        items: [
+          { id: 'votes',       label: 'Votes',       icon: NAV_ICONS.votes },
+          { id: 'surveys',     label: 'Surveys',     icon: NAV_ICONS.surveys },
+          { id: 'permissions', label: 'Permissions', icon: NAV_ICONS.permissions },
+          { id: 'insights',    label: 'Insights',    icon: NAV_ICONS.insights, externalLink: true },
+        ],
+      },
     ],
   });
 }
@@ -829,7 +858,7 @@ function createBoardMemberDashboard(): HTMLElement {
     ],
   });
 
-  const nav = createDemoNav('dashboard');
+  const nav = createBoardMemberNav('overview');
 
   const appShell = createAppShell({
     nav,

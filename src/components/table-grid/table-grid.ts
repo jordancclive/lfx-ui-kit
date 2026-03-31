@@ -34,7 +34,7 @@ import './table-grid.css';
  * - meta: Intrinsic width, metadata (e.g., Last Updated, Date)
  * - action: Intrinsic or fixed width, controls only (e.g., Row actions, Menu)
  */
-export type ColumnSemanticType = 'primary' | 'categorical' | 'numeric' | 'meta' | 'action';
+export type ColumnSemanticType = 'primary' | 'secondary' | 'categorical' | 'numeric' | 'meta' | 'action';
 
 /**
  * Column definition with semantic type

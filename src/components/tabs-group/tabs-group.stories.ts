@@ -140,7 +140,7 @@ export const Wrapped: Story = {
     (story) => {
       const container = document.createElement('div');
       container.style.maxWidth = '400px';
-      container.appendChild(story());
+      container.appendChild(story() as HTMLElement);
       return container;
     },
   ],

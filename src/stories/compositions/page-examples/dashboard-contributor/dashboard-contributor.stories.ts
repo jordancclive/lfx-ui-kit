@@ -37,7 +37,8 @@ import { createAppHeader } from '../../../../components/app-header/app-header';
 import { createPageSection } from '../../../../components/page-section/page-section';
 import { createChartCard } from '../../../../components/chart-card/chart-card';
 import { createChart } from '../../../../components/chart/chart';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createThreeLensNav } from '../../../../components/three-lens-nav/three-lens-nav';
+import { NAV_ICONS } from '../../../../components/three-lens-nav/three-lens-nav.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 import { createSummaryCard } from '../../../../components/summary-card/summary-card';
@@ -581,17 +582,44 @@ function createTextNode(text: string): HTMLElement {
   return span;
 }
 
-function createDemoNav(activeId = 'dashboard'): HTMLElement {
-  return createGlobalNav({
-    activeItemId: activeId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('My Projects') }),
-        createNavItem({ id: 'discover', children: createTextNode('Discover Projects') }),
-        createNavItem({ id: 'meetings', children: createTextNode('Meetings') }),
-        createNavItem({ id: 'learning', children: createTextNode('Learning') }),
-      ]),
+// Nav icons imported from canonical source — three-lens-nav.stories.ts
+
+/**
+ * Me Lens nav — matches the live production prototype exactly.
+ * No context header. Items: Home, ENGAGEMENT, ACCOUNT.
+ * My Actions is muted (not yet interactive in this build).
+ */
+function createContributorNav(activeId = 'overview'): HTMLElement {
+  return createThreeLensNav({
+    activeLens: 'me',
+    contextHeader: {
+      title: 'Jordan Clive',
+      roleBadge: 'Contributor',
+      avatarInitials: 'JC',
+    },
+    activeNavItemId: activeId,
+    sections: [
+      {
+        items: [
+          { id: 'overview', label: 'Overview', icon: NAV_ICONS.overview },
+        ],
+      },
+      {
+        label: 'Engagement',
+        items: [
+          { id: 'my-actions',  label: 'My Actions',  icon: NAV_ICONS.actions,  muted: true },
+          { id: 'my-meetings', label: 'My Meetings', icon: NAV_ICONS.meetings },
+          { id: 'my-groups',   label: 'My Groups',   icon: NAV_ICONS.groups },
+          { id: 'my-events',   label: 'My Events',   icon: NAV_ICONS.events },
+        ],
+      },
+      {
+        label: 'Account',
+        items: [
+          { id: 'my-profile', label: 'My Profile', icon: NAV_ICONS.profile },
+          { id: 'settings',   label: 'Settings',   icon: NAV_ICONS.settings },
+        ],
+      },
     ],
   });
 }
@@ -657,7 +685,7 @@ function createContributorDashboard(): HTMLElement {
     ],
   });
 
-  const nav = createDemoNav();
+  const nav = createContributorNav('overview');
 
   const appShell = createAppShell({
     nav,

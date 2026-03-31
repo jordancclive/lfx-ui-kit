@@ -231,8 +231,10 @@ const minimalSurveysData: SurveyRow[] = surveysData.slice(0, 3);
 // HELPER: Text Node
 // =============================================================================
 
-function createTextNode(text: string): Text {
-  return document.createTextNode(text);
+function createTextNode(text: string): HTMLElement {
+  const span = document.createElement('span');
+  span.textContent = text;
+  return span;
 }
 
 // =============================================================================
@@ -377,21 +379,6 @@ function createSurveysTable(surveys: SurveyRow[]): HTMLElement {
 // =============================================================================
 // HELPER: Demo Navigation (reused across examples)
 // =============================================================================
-
-function createDemoNav(activeItemId = 'surveys') {
-  return createGlobalNav({
-    activeItemId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
-        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
-        createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
-      ]),
-    ],
-  });
-}
 
 // =============================================================================
 // MAIN COMPOSITION FUNCTION

@@ -384,6 +384,13 @@
   --ui-text-data-font-size: var(--font-role-data-size);
   --ui-text-data-font-weight: var(--font-role-data-weight);
   --ui-text-data-line-height: var(--font-role-data-line-height);
+
+  /* Metric Value - Large display numbers in dashboard cards */
+  --ui-text-metric-value-font-size: var(--text-xl);
+  --ui-text-metric-value-font-weight: var(--font-semibold);
+
+  /* Body - General body text alias */
+  --ui-text-body-font-size: var(--text-sm);
   
   /* ========================================
      UI ROLE — Control Typography (Interactive)
@@ -416,6 +423,11 @@
   --button-lg-horizontal-padding: var(--spacing-12);
   --button-lg-vertical-padding: var(--spacing-4);
   --button-lg-spacing: var(--spacing-6);
+
+  /* Small size */
+  --button-sm-horizontal-padding: var(--spacing-6);
+  --button-sm-vertical-padding: var(--spacing-2);
+  --button-sm-spacing: var(--spacing-4);
 
   /* Button Typography - Default */
   --font-button-family: var(--font-family);
@@ -451,10 +463,20 @@
   /* Secondary */
   --interactive-secondary-background: var(--neutral-100);
   --interactive-secondary-text: var(--neutral-900);
+  --interactive-secondary-background-hover: var(--neutral-200);
+  --interactive-secondary-background-disabled: var(--neutral-100);
+  --interactive-secondary-text-disabled: var(--neutral-400);
 
   /* Surface - bound to system surface roles */
   --interactive-surface-default: var(--ui-surface-page);
   --interactive-surface-subtle: var(--ui-surface-subtle);
+
+  /* Accent backgrounds — for charts, sparklines, and data visualizations */
+  --ui-accent-bg: var(--accent-500);
+  --ui-accent-bg-hover: var(--accent-300);
+
+  /* Radius alias — matches --rounded-sm for component story usage */
+  --radius-sm: var(--rounded-sm);
 
   /* ========================================
      UI ROLE - Text Colors
@@ -464,6 +486,7 @@
   
   --text-primary: var(--neutral-900);
   --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-400);
   --text-disabled: var(--neutral-400);
   --text-on-accent: var(--neutral-0);
 
@@ -675,6 +698,11 @@
   --ui-tag-variant-discovery-border: var(--discovery-200);
   --ui-tag-variant-discovery-text: var(--discovery-700);
 
+  /* primary variant (selected/active filter state — accent blue) */
+  --ui-tag-variant-primary-background: var(--accent-500);
+  --ui-tag-variant-primary-border: var(--accent-500);
+  --ui-tag-variant-primary-text: var(--neutral-0);
+
   /* ========================================
      UI ROLE - List Item
      
@@ -718,27 +746,56 @@
   --radius-list: var(--rounded-lg);
 
   /* ========================================
+     UI ROLE - Lens Rail (Layout Only)
+
+     The narrow dark strip on the far left of the app.
+     Contains the LF logo, lens switcher icons, and
+     bottom utility icons. Forms a continuous dark surface
+     with the GlobalNav panel.
+     ======================================== */
+
+  --color-lens-rail-background: var(--neutral-900);
+  --color-lens-rail-active-indicator: var(--accent-500);
+  --color-lens-rail-icon: var(--neutral-400);
+  --color-lens-rail-icon-active: var(--neutral-0);
+  --color-lens-rail-logo-background: var(--accent-500);
+  --color-lens-rail-badge: var(--accent-500);
+  --spacing-lens-rail-width: 56px;
+  --spacing-lens-rail-icon-size: 20px;
+
+  /* ========================================
      UI ROLE - Global Nav (Layout Only)
-     
+
      Token naming: color.nav.surface.* (conceptual)
      CSS variable: --color-nav-* (hyphenated)
-     
-     NOTE: GlobalNav is a Tier 3 Composite Layout Component.
-     Owns container styling and selected item highlight ONLY.
-     Text/icon styling is owned by nav item components.
-     
-     REBINDING: All surfaces now reference ui.surface.* tokens.
+
+     NOTE: The nav panel is DARK — the same neutral-900 as
+     the lens rail. Rail and panel form one continuous dark surface.
+     Do NOT bind to ui.surface.container (light/white).
      ======================================== */
-  
-  /* Container surface - bound to system surface roles */
-  --color-nav-surface-background: var(--ui-surface-container);
-  --color-nav-surface-border: var(--ui-surface-divider);
-  
-  /* Selected item highlight - bound to system surface roles */
-  --color-nav-item-background-selected: var(--ui-surface-selected);
-  
+
+  /* Container surface — white panel, rail is independently dark */
+  --color-nav-surface-background: var(--neutral-0);
+  --color-nav-surface-border: var(--neutral-200);
+
+  /* Item states */
+  --color-nav-item-background-hover: var(--neutral-50);
+  --color-nav-item-background-selected: var(--accent-50);
+
+  /* Text — dark on white surface */
+  --color-nav-item-text: var(--neutral-700);
+  --color-nav-item-text-selected: var(--accent-700);
+  --color-nav-item-icon: var(--neutral-400);
+  --color-nav-item-icon-selected: var(--accent-500);
+  --color-nav-section-label-text: var(--neutral-400);
+  --color-nav-section-chevron: var(--neutral-400);
+
+  /* Context header (top of panel — avatar, name, subtitle) */
+  --color-nav-context-title-text: var(--neutral-900);
+  --color-nav-context-subtitle-text: var(--neutral-500);
+
   /* Layout */
-  --radius-nav: var(--rounded-lg);
+  --radius-nav: var(--rounded-md);
   --spacing-nav-padding: var(--spacing-16);
   --spacing-nav-section-gap: var(--spacing-24);
   --spacing-nav-item-gap: var(--spacing-4);
@@ -764,7 +821,8 @@
   --radius-app-shell: var(--rounded-none);
   --spacing-app-shell-padding: var(--spacing-0);
   --spacing-app-shell-region-gap: var(--spacing-0);
-  --spacing-app-shell-nav-width: 240px;
+  --spacing-nav-panel-width: 220px;
+  --spacing-app-shell-nav-width: calc(var(--spacing-lens-rail-width) + var(--spacing-nav-panel-width));
 
   /* ========================================
      UI ROLE - App Header (Layout Only)

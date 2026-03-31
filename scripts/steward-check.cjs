@@ -344,6 +344,60 @@ const checks = {
     }
   },
   
+  // P0 - Page example story coverage
+  // Rule: page examples may only compose UI components that have a .stories.ts file.
+  // Discriminator: a component directory is a "UI component" if it contains a .css file.
+  page_example_story_coverage: {
+    id: 'page_example_story_coverage',
+    name: 'Page Example Story Coverage',
+    severity: 'high',
+    scan: async () => {
+      const pageExamplesDir = path.join(ROOT_DIR, 'src', 'stories', 'compositions', 'page-examples');
+      const componentsDir   = path.join(ROOT_DIR, 'src', 'components');
+
+      const IMPORT_RE = /from\s+['"]([^'"]*\/components\/([^/'"]+)[^'"]*)['"]/g;
+
+      function dirContains(dir, suffix) {
+        if (!fs.existsSync(dir)) return false;
+        return fs.readdirSync(dir).some(f => f.endsWith(suffix));
+      }
+
+      const pageExampleFiles = findFiles(pageExamplesDir, /\.stories\.ts$/, [], global.STEWARD_CHANGED_FILES);
+      const componentMap = new Map();
+
+      for (const relFile of pageExampleFiles) {
+        const content = fs.readFileSync(path.join(ROOT_DIR, relFile), 'utf8');
+        let match;
+        IMPORT_RE.lastIndex = 0;
+        while ((match = IMPORT_RE.exec(content)) !== null) {
+          const componentName = match[2];
+          if (!componentMap.has(componentName)) {
+            const componentDir = path.join(componentsDir, componentName);
+            componentMap.set(componentName, {
+              hasCss:   dirContains(componentDir, '.css'),
+              hasStory: dirContains(componentDir, '.stories.ts'),
+              relDir:   path.relative(ROOT_DIR, componentDir),
+              usedIn:   [],
+            });
+          }
+          componentMap.get(componentName).usedIn.push(relFile);
+        }
+      }
+
+      const violations = [];
+      for (const [name, info] of componentMap.entries()) {
+        if (info.hasCss && !info.hasStory) {
+          violations.push({
+            file: `${info.relDir}/${name}.stories.ts`,
+            description: `UI component "${name}" used in page examples but has no .stories.ts`,
+          });
+        }
+      }
+
+      return violations;
+    }
+  },
+
   // P0 - Insights escalation compliance
   insights_escalation_compliance: {
     id: 'insights_escalation_compliance',

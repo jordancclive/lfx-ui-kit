@@ -1,0 +1,236 @@
+/**
+ * LensRail
+ *
+ * Tier 3 — Composite Layout Component
+ * The leftmost dark navy strip of the three-lens navigation.
+ * Provides lens switching (Me / Projects / Org) and the LF logo.
+ *
+ * Visual spec:
+ * - Dark navy background (neutral-900), same surface as nav panel
+ * - 56px wide, full viewport height
+ * - LF logo icon at top
+ * - Lens icons stacked vertically, centered
+ * - Blue vertical bar on left edge of active lens button
+ * - Bottom utility icons (settings, help, avatar)
+ *
+ * Token bindings (LAYOUT + SURFACE ONLY):
+ * - --color-lens-rail-background
+ * - --color-lens-rail-active-indicator
+ * - --color-lens-rail-icon
+ * - --color-lens-rail-icon-active
+ * - --color-lens-rail-logo-background
+ * - --spacing-lens-rail-width
+ * - --spacing-lens-rail-icon-size
+ *
+ * NOT allowed:
+ * - Typography tokens
+ * - Routing logic
+ * - Application state
+ */
+
+.lfx-lens-rail {
+  /* Fixed width column */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--spacing-lens-rail-width);
+  flex-shrink: 0;
+
+  /* Full height */
+  height: 100%;
+
+  /* Dark navy — same surface as nav panel */
+  background-color: var(--color-lens-rail-background);
+
+  /* No gap between sections — manual padding used */
+  gap: 0;
+
+  /* Prevent content overflow */
+  overflow: hidden;
+}
+
+/* ========================================
+   Logo Area
+   Top: LF logo mark
+   ======================================== */
+
+.lfx-lens-rail__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--spacing-16) 0 var(--spacing-8);
+  flex-shrink: 0;
+}
+
+.lfx-lens-rail__logo-mark {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lfx-lens-rail__logo-mark svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================
+   Lens Buttons
+   Middle: stacked lens icon buttons
+   ======================================== */
+
+.lfx-lens-rail__lenses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8) 0;
+  flex: 1;
+  width: 100%;
+}
+
+/* Single lens button */
+.lfx-lens-rail__lens-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+
+  /* Transition for hover */
+  transition: background-color var(--ui-transition-duration-default) ease;
+}
+
+.lfx-lens-rail__lens-btn:hover {
+  background-color: var(--neutral-800);
+}
+
+/* Icon inside button */
+.lfx-lens-rail__lens-btn svg {
+  width: var(--spacing-lens-rail-icon-size);
+  height: var(--spacing-lens-rail-icon-size);
+  color: var(--color-lens-rail-icon);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: color var(--ui-transition-duration-default) ease;
+}
+
+/* Active state — rounded rect background + white icon */
+.lfx-lens-rail__lens-btn--active {
+  background: transparent;
+}
+
+.lfx-lens-rail__lens-btn--active svg {
+  color: var(--color-lens-rail-icon-active);
+}
+
+/* Active indicator: rounded rectangle container around the icon (uses ::before so ::after is free for tooltip) */
+.lfx-lens-rail__lens-btn--active::before {
+  content: '';
+  position: absolute;
+  inset: 6px 8px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: var(--rounded-md);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep icon above the background */
+.lfx-lens-rail__lens-btn--active svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tooltip label (shown on hover) — applies to both lens buttons and utility buttons */
+.lfx-lens-rail__lens-btn[data-lens-label]::after,
+.lfx-lens-rail__utility-btn[data-lens-label]::after {
+  content: attr(data-lens-label);
+  position: absolute;
+  left: calc(100% + var(--spacing-8));
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--neutral-800);
+  color: var(--neutral-0);
+  font-family: var(--font-family-base);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: var(--rounded-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--ui-transition-duration-default) ease;
+  z-index: 1200;
+}
+
+.lfx-lens-rail__lens-btn:hover::after,
+.lfx-lens-rail__utility-btn:hover::after {
+  opacity: 1;
+}
+
+/* ========================================
+   Divider
+   ======================================== */
+
+.lfx-lens-rail__divider {
+  width: 24px;
+  height: 1px;
+  background-color: var(--neutral-800);
+  margin: var(--spacing-8) auto;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   Utility Icons
+   Bottom: settings, help, user avatar
+   ======================================== */
+
+.lfx-lens-rail__utilities {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8) 0 var(--spacing-16);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* Utility icon button — same style as lens btn */
+.lfx-lens-rail__utility-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  transition: background-color var(--ui-transition-duration-default) ease;
+}
+
+.lfx-lens-rail__utility-btn:hover {
+  background-color: var(--neutral-800);
+}
+
+.lfx-lens-rail__utility-btn svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-lens-rail-icon);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+/* Avatar is now in the nav panel context header, not the rail */

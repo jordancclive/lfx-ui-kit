@@ -1,0 +1,35 @@
+#!/bin/sh
+# LFX UI Kit — Pre-commit enforcement
+# Runs in order: TypeScript → Storybook docs boundaries → Page example story coverage
+# All three must pass. A failure in any step blocks the commit.
+
+echo "⚙️  Pre-commit checks running...\n"
+
+# 1. TypeScript — must compile before structural checks matter
+echo "1/3  TypeScript..."
+npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "\n❌ TypeScript errors found. Fix compilation before committing.\n"
+  exit 1
+fi
+echo "     ✅ TypeScript clean\n"
+
+# 2. Storybook documentation boundaries
+echo "2/3  Storybook docs boundaries..."
+npm run steward:docs
+if [ $? -ne 0 ]; then
+  echo "\n❌ Storybook documentation boundary violations found.\n"
+  exit 1
+fi
+
+# 3. Page example story coverage
+echo "3/3  Page example story coverage..."
+npm run steward:coverage
+if [ $? -ne 0 ]; then
+  echo "\n❌ Page example story coverage violation found."
+  echo "   Every UI component imported by a page example must have a .stories.ts file."
+  echo "   Create the story at the appropriate level before using the component in a page example.\n"
+  exit 1
+fi
+
+echo "✅  All pre-commit checks passed.\n"

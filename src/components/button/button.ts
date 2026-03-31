@@ -11,9 +11,9 @@ export interface ButtonProps {
   /** Button label text */
   label: string;
   /** Button variant */
-  variant?: 'primary';
+  variant?: 'primary' | 'secondary';
   /** Button size */
-  size?: 'default' | 'large';
+  size?: 'default' | 'large' | 'small';
   /** Disabled state */
   disabled?: boolean;
   /** Loading state - takes precedence over disabled */
@@ -60,6 +60,8 @@ export const createButton = ({
   
   if (size === 'large') {
     classes.push('lfx-button--large');
+  } else if (size === 'small') {
+    classes.push('lfx-button--small');
   }
   
   // State precedence: loading takes priority over disabled

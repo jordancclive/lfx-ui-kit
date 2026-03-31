@@ -104,13 +104,20 @@
   color: var(--ui-tag-variant-discovery-text);
 }
 
+/* primary variant (active/selected filter state — accent blue fill) */
+.lfx-tag--variant-primary {
+  background-color: var(--ui-tag-variant-primary-background);
+  border-color: var(--ui-tag-variant-primary-border);
+  color: var(--ui-tag-variant-primary-text);
+}
+
 /**
  * State Constraints:
  * - No hover styles (Tag is non-interactive)
  * - No focus styles (Tag is not focusable)
  * - No disabled styles (Tag has no state)
  * - No transitions (Tag is stateless)
- * 
+ *
  * Variant Constraints:
  * - Variants override color only (background, border, text)
  * - Variants do NOT add hover, focus, or interaction states

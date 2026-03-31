@@ -7,13 +7,13 @@
  * 
  * ⚠️ CANONICAL PATTERN DOCUMENTATION IS IN dashboard.mdx
  * 
- * For the authoritative Dashboard Page Pattern definition, see:
+ * For the authoritative Dashboard Page reference, see:
  * src/stories/compositions/page-patterns/dashboard/dashboard.mdx
  * 
  * OR navigate to: "2. Page Patterns / Dashboard" (Docs tab) in Storybook
  * 
  * This file contains ONLY the visual demonstration story.
- * All pattern rules, archetypes, and guidelines are in dashboard.mdx.
+ * All archetypes and guidelines are in dashboard.mdx.
  * 
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
@@ -130,7 +130,7 @@ function createDemoListGroup() {
   return createListGroup({
     children: items.map((text) =>
       createListItem({
-        children: document.createTextNode(text),
+        children: createTextNode(text),
       })
     ),
   });

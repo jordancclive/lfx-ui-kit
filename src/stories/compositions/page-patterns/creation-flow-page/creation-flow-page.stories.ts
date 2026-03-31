@@ -439,7 +439,7 @@ export const ReadyToSubmit: Story = {
  * 
  * DOCUMENTATION VALIDATED:
  * ✓ Purpose clearly stated
- * ✓ When to use / when not to use
+ * ✓ Usage guidance documented in MDX
  * ✓ Default interaction model explained
  * ✓ Required elements listed
  * ✓ Forbidden patterns explicit
@@ -448,5 +448,5 @@ export const ReadyToSubmit: Story = {
  * ✓ Agent Contract (Normative) included
  * ✓ Future extensibility noted
  * 
- * If this pattern feels wrong, fix in the pattern definition — not in implementations.
+ * If this pattern feels wrong, fix in the MDX doc — not in implementations.
  */

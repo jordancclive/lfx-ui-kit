@@ -221,21 +221,21 @@ export const InContextWithAppShell: Story = {
       activeItemId: 'dashboard',
       children: [
         createNavSection([
-          createNavItem({ 
-            id: 'dashboard', 
-            children: document.createTextNode('Dashboard')
+          createNavItem({
+            id: 'dashboard',
+            children: (() => { const s = document.createElement('span'); s.textContent = 'Dashboard'; return s; })()
           }),
-          createNavItem({ 
-            id: 'projects', 
-            children: document.createTextNode('Projects')
+          createNavItem({
+            id: 'projects',
+            children: (() => { const s = document.createElement('span'); s.textContent = 'Projects'; return s; })()
           }),
-          createNavItem({ 
-            id: 'team', 
-            children: document.createTextNode('Team')
+          createNavItem({
+            id: 'team',
+            children: (() => { const s = document.createElement('span'); s.textContent = 'Team'; return s; })()
           }),
-          createNavItem({ 
-            id: 'settings', 
-            children: document.createTextNode('Settings')
+          createNavItem({
+            id: 'settings',
+            children: (() => { const s = document.createElement('span'); s.textContent = 'Settings'; return s; })()
           }),
         ]),
       ],

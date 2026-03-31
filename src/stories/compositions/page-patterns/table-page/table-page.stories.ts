@@ -80,7 +80,8 @@ import { createFilterDropdownTrigger } from '../../../../components/filter-dropd
 import { createTableToolbar } from '../../../../components/table-toolbar/table-toolbar';
 import { createTablePagination } from '../../../../components/table-pagination/table-pagination';
 import { createDataTable } from '../../../../components/data-table/data-table';
-import { createGlobalNav, createNavSection, createNavItem } from '../../../../components/global-nav/global-nav';
+import { createThreeLensNav } from '../../../../components/three-lens-nav/three-lens-nav';
+import { NAV_ICONS } from '../../../../components/three-lens-nav/three-lens-nav.stories';
 import { createTag } from '../../../../components/tag/tag';
 import { createButton } from '../../../../components/button/button';
 
@@ -300,20 +301,38 @@ function createProjectsTable(data: ProjectRow[], dense = false): HTMLElement {
   });
 }
 
-function createDemoNav(activeItemId?: string) {
-  return createGlobalNav({
-    activeItemId,
-    children: [
-      createNavSection([
-        createNavItem({ id: 'dashboard', children: createTextNode('Dashboard') }),
-        createNavItem({ id: 'mailing-lists', children: createTextNode('Mailing Lists') }),
-        createNavItem({ id: 'votes', children: createTextNode('Votes') }),
-        createNavItem({ id: 'surveys', children: createTextNode('Surveys') }),
-        createNavItem({ id: 'drive', children: createTextNode('Drive') }),
-        createNavItem({ id: 'groups', children: createTextNode('Groups') }),
-        createNavItem({ id: 'projects', children: createTextNode('Projects') }),
-        createNavItem({ id: 'settings', children: createTextNode('Settings') }),
-      ]),
+function createDemoNav(activeNavItemId?: string) {
+  return createThreeLensNav({
+    activeLens: 'projects',
+    contextHeader: {
+      title: 'The Linux Foundation',
+      showChevron: true,
+    },
+    activeNavItemId,
+    sections: [
+      {
+        items: [
+          { id: 'overview', label: 'Overview', icon: NAV_ICONS.overview },
+        ],
+      },
+      {
+        label: 'Community',
+        items: [
+          { id: 'meetings',      label: 'Meetings',      icon: NAV_ICONS.meetings },
+          { id: 'mailing-lists', label: 'Mailing Lists', icon: NAV_ICONS.mailingLists },
+          { id: 'groups',        label: 'Groups',        icon: NAV_ICONS.groups },
+          { id: 'drive',         label: 'Drive',         icon: NAV_ICONS.drive },
+        ],
+      },
+      {
+        label: 'Governance',
+        items: [
+          { id: 'votes',       label: 'Votes',       icon: NAV_ICONS.votes },
+          { id: 'surveys',     label: 'Surveys',     icon: NAV_ICONS.surveys },
+          { id: 'permissions', label: 'Permissions', icon: NAV_ICONS.permissions },
+          { id: 'insights',    label: 'Insights',    icon: NAV_ICONS.insights, externalLink: true },
+        ],
+      },
     ],
   });
 }
@@ -407,7 +426,7 @@ interface TablePageConfig {
    * GlobalNav is ALWAYS rendered as part of AppShell.
    * This property only controls the active state.
    */
-  navKey?: 'dashboard' | 'mailing-lists' | 'votes' | 'surveys' | 'drive' | 'groups' | 'projects' | 'settings';
+  navKey?: 'overview' | 'meetings' | 'mailing-lists' | 'groups' | 'drive' | 'votes' | 'surveys' | 'permissions' | 'insights';
 }
 
 // Legacy interface for backward compatibility with existing stories
